@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:tx="http://www.springframework.org/schema/tx"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:mvc="http://www.springframework.org/schema/mvc" xmlns:aop="http://www.springframework.org/schema/aop"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans
+	http://www.springframework.org/schema/beans/spring-beans.xsd
+	http://www.springframework.org/schema/tx
+	http://www.springframework.org/schema/tx/spring-tx.xsd
+	http://www.springframework.org/schema/context
+	http://www.springframework.org/schema/context/spring-context.xsd
+	http://www.springframework.org/schema/aop  
+	http://www.springframework.org/schema/aop/spring-aop.xsd
+	http://www.springframework.org/schema/mvc
+	http://www.springframework.org/schema/mvc/spring-mvc.xsd">
+
+
+	<!-- 引入properties配置文件 -->
+	<context:property-placeholder location="classpath:config.properties" />
+
+	<!-- aop启动 -->
+	<aop:aspectj-autoproxy />
+
+	<!-- 自动扫描的包名 -->
+	<context:component-scan base-package="sds"></context:component-scan>
+
+
+	<!-- 默认的注解映射的支持 --><!-- 解决@ResponseBody中文乱码 --><!-- 启动spring内置json转换(注释) -->
+	<mvc:annotation-driven>
+        <mvc:message-converters>
+            <bean class="org.springframework.http.converter.StringHttpMessageConverter">
+                <constructor-arg value="UTF-8" />
+            </bean>
+        </mvc:message-converters>
+    </mvc:annotation-driven>
+	<!-- 注解请求映射 相当与 <mvc:annotation-driven /> 优势：可扩展自定义 <bean class="org.springframework.web.servlet.mvc.annotation.DefaultAnnotationHandlerMapping"> 
+		<property name="interceptors"> <list> <ref bean="logNDCInteceptor"/> 日志拦截器，这是你自定义的拦截器 
+		<ref bean="myRequestHelperInteceptor"/> RequestHelper拦截器，这是你自定义的拦截器 <ref 
+		bean="myPermissionsInteceptor"/> 权限拦截器，这是你自定义的拦截器 <ref bean="myUserInfoInteceptor"/> 
+		用户信息拦截器，这是你自定义的拦截器 </list> </property> </bean> <bean class="org.springframework.web.servlet.mvc.annotation.AnnotationMethodHandlerAdapter"> 
+		<property name="messageConverters"> <list> <ref bean="byteArray_hmc" /> <ref 
+		bean="string_hmc" /> <ref bean="resource_hmc" /> <ref bean="source_hmc" /> 
+		<ref bean="xmlAwareForm_hmc" /> <ref bean="jaxb2RootElement_hmc" /> <ref 
+		bean="jackson_hmc" /> </list> </property> </bean> <bean id="byteArray_hmc" 
+		class="org.springframework.http.converter.ByteArrayHttpMessageConverter" 
+		/> 处理.. <bean id="string_hmc" class="org.springframework.http.converter.StringHttpMessageConverter" 
+		/> 处理.. <bean id="resource_hmc" class="org.springframework.http.converter.ResourceHttpMessageConverter" 
+		/> 处理.. <bean id="source_hmc" class="org.springframework.http.converter.xml.SourceHttpMessageConverter" 
+		/> 处理.. <bean id="xmlAwareForm_hmc" class="org.springframework.http.converter.xml.XmlAwareFormHttpMessageConverter" 
+		/> 处理.. <bean id="jaxb2RootElement_hmc" class="org.springframework.http.converter.xml.Jaxb2RootElementHttpMessageConverter" 
+		/> 处理.. <bean id="jackson_hmc" class="org.springframework.http.converter.json.MappingJacksonHttpMessageConverter" 
+		/> 处理json -->
+
+
+	<!-- 上传文件配置 -->
+	<!-- <bean id="multipartResolver" -->
+	<!-- class="org.springframework.web.multipart.commons.CommonsMultipartResolver"> -->
+	<!-- <property name="maxUploadSize" value="200000" /> -->
+	<!-- </bean> -->
+
+
+	<!-- 视图解释类 -->
+	<bean
+		class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+		<property name="prefix" value="/WEB-INF/pages/" />
+		<!--<property name="suffix" value=".jsp"/> 可为空,方便实现自已的依据扩展名来选择视图解释类的逻辑 -->
+		<property name="viewClass"
+			value="org.springframework.web.servlet.view.JstlView" />
+	</bean>
+
+
+
+
+	<!-- 拦截器 -->
+	<mvc:interceptors>
+		<mvc:interceptor>
+			<mvc:mapping path="/**" />
+			<bean class="sds.web.interceptor.BaseInterceptor" />
+		</mvc:interceptor>
+		<mvc:interceptor>
+			<mvc:mapping path="/crm/**" />
+			<mvc:exclude-mapping path="/crm/menuAction/**" />
+			<bean class="sds.web.interceptor.LoginInterceptor" />
+		</mvc:interceptor>
+	</mvc:interceptors>
+
+
+	<!-- 对静态资源文件的访问 方案一 （二选一） -->
+	<mvc:default-servlet-handler />
+
+	<!-- 对静态资源文件的访问 方案二 （二选一） <mvc:resources mapping="/images/**" location="/images/" 
+		cache-period="31556926"/> <mvc:resources mapping="/js/**" location="/js/" 
+		cache-period="31556926"/> <mvc:resources mapping="/css/**" location="/css/" 
+		cache-period="31556926"/> -->
+
+
+	<!-- <bean id="springContextHolder" -->
+	<!-- class="com.riozenc.quicktool.springmvc.context.SpringContextHolder" 
+		/> -->
+	<!-- <bean id="dfFactory" class="com.riozenc.quicktool.mybatis.db.DbFactory" -->
+	<!-- init-method="initDBs" /> -->
+
+
+	<import resource="applicationContext-dataSource.xml" />
+<!-- 	<import resource="applicationContext-mybatis.xml" /> -->
+	<import resource="applicationContext-shiro.xml" />
+
+
+	<!-- 业务 -->
+	<!-- <import resource="applicationContext-aop.xml" /> -->
+</beans>
