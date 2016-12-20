@@ -220,6 +220,7 @@ $(function(){
                             <ul id="bjui-hnav-tree1" class="ztree ztree_main" data-toggle="ztree" data-on-click="MainMenuClick" data-expand-all="true" data-faicon="check-square-o">
                                 <li data-id="1" data-pid="0" data-faicon="folder-open-o" data-faicon-close="folder-o">新增用户</li>
                                 <li data-id="10" data-pid="1" data-url="form-button.html" data-tabid="form-button" data-faicon="hand-o-up">商户列表</li>
+                                <li data-id="11" data-pid="1" data-url="addUser.jsp" data-tabid="form-button" data-faicon="hand-o-up">商户新增</li>
                                 
                             </ul>
                         </div>

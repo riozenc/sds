@@ -172,11 +172,7 @@ a:link {
 								}); //删除cookie
 							}
 							$("#login_ok").attr("disabled", true).val('登陆中..');
-							var password = HMAC_SHA256_MAC($("#j_username")
-									.val(), $("#j_password").val());
-							$("#j_password").val(
-									HMAC_SHA256_MAC($("#j_randomKey").val(),
-											password));
+
 							var ajaxCallUrl = "loginAction/login.do";
 							$.ajax({
 								cache : false,
