@@ -1,5 +1,6 @@
 package sds.webapp.sys.action;
 
+import java.util.HashMap;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
@@ -13,7 +14,6 @@ import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.google.common.collect.Maps;
 import com.riozenc.quicktool.common.util.StringUtils;
 import com.riozenc.quicktool.common.util.json.JSONUtil;
 
@@ -92,7 +92,7 @@ public class LoginAction {
 		Map<String, Integer> loginFailMap = null;// (Map<String, Integer>)
 													// CacheUtils.get("loginFailMap");
 		if (loginFailMap == null) {
-			loginFailMap = Maps.newHashMap();
+			loginFailMap = new HashMap<>();
 			// CacheUtils.put("loginFailMap", loginFailMap);
 		}
 		Integer loginFailNum = loginFailMap.get(useruame);

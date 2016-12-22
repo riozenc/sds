@@ -65,4 +65,16 @@ public class UserServiceImpl implements UserService {
 		return userDAO.getUser(userDomain);
 	}
 
+	@Override
+	public int checkUser(UserDomain userDomain) {
+		// TODO Auto-generated method stub
+		return userDAO.checkUser(userDomain);
+	}
+
+	@Override
+	public int updateRate(UserDomain userDomain) {
+		// TODO Auto-generated method stub
+		return userDAO.updateRate(userDomain);
+	}
+
 }

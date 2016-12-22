@@ -128,9 +128,6 @@
 	<update id="update" parameterType="UserDomain" flushCache="true">
 		update fm_user
 		<set>
-			<if test="id !=null">
-				ID = #{id},
-			</if>
 			<if test="parentId !=null">
 				PARENT_ID = #{parentId},
 			</if>
@@ -242,8 +239,8 @@
 			</if>
 		</where>
 	</delete>
-	
-	
+
+
 	<select id="getUser" parameterType="UserDomain" resultType="UserDomain"
 		useCache="false" flushCache="true">
 		select
@@ -255,4 +252,46 @@
 			</if>
 		</where>
 	</select>
+
+	<update id="checkUser" parameterType="UserDomain" flushCache="true">
+		update fm_user
+		<set>
+			STATUS = #{status}
+		</set>
+		<where>
+			<if test="id !=null">
+				and ID = #{id}
+			</if>
+		</where>
+	</update>
+
+	<update id="updateRate" parameterType="UserDomain" flushCache="true">
+		update fm_user
+		<set>
+			<if test="costWrate !=null">
+				COST_WRATE = #{costWrate},
+			</if>
+			<if test="costKrate !=null">
+				COST_KRATE = #{costKrate},
+			</if>
+			<if test="costArate !=null">
+				COST_ARATE = #{costArate},
+			</if>
+			<if test="userWrate !=null">
+				USER_WRATE = #{userWrate},
+			</if>
+			<if test="userArate !=null">
+				USER_ARATE = #{userArate},
+			</if>
+			<if test="userKrate !=null">
+				USER_KRATE = #{userKrate},
+			</if>
+		</set>
+		<where>
+			<if test="id !=null">
+				and ID = #{id}
+			</if>
+		</where>
+	</update>
+
 </mapper>

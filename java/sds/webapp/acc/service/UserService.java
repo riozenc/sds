@@ -10,4 +10,8 @@ import sds.webapp.acc.domain.UserDomain;
 
 public interface UserService extends BaseService<UserDomain> {
 	public UserDomain getUser(UserDomain userDomain);
+
+	public int checkUser(UserDomain userDomain);
+
+	public int updateRate(UserDomain userDomain);
 }
