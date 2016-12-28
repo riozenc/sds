@@ -41,4 +41,7 @@ public class MerchantDAO extends AbstractTransactionDAOSupport implements BaseDA
 		return getPersistanceManager().find(getNamespace() + ".findByWhere", t);
 	}
 
+	public int updateRate(MerchantDomain merchantDomain) {
+		return getPersistanceManager().update(getNamespace() + ".updateRate", merchantDomain);
+	}
 }

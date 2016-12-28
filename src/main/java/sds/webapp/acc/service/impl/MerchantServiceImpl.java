@@ -45,4 +45,11 @@ public class MerchantServiceImpl implements MerchantService {
 		return merchantDAO.findByWhere(t);
 	}
 
+	@Override
+	public int updateRate(MerchantDomain merchantDomain) {
+		// TODO Auto-generated method stub
+		return merchantDAO.updateRate(merchantDomain);
+	}
+
+	
 }

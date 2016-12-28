@@ -54,6 +54,11 @@ public class UserAction extends BaseAction {
 		}
 	}
 
+	/**
+	 * 更新代理商信息
+	 * @param userDomain
+	 * @return
+	 */
 	@ResponseBody
 	@RequestMapping(params = "type=update")
 	public String update(UserDomain userDomain) {
@@ -87,6 +92,12 @@ public class UserAction extends BaseAction {
 	 * @return
 	 */
 	public String updateRate(UserDomain userDomain) {
+
+		// 审核后的代理商信息不能被修改
+		if (userDomain.getStatus() == 1) {
+			return "该代理商已被审核，相关信息无法修改.";
+		}
+
 		if (userService.updateRate(userDomain) > 0) {
 			return JSONUtil.toJsonString(new JsonResult(JsonResult.SUCCESS, "更新成功."));
 		} else {
