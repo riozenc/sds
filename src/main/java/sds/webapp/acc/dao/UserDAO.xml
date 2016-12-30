@@ -294,4 +294,8 @@
 		</where>
 	</update>
 
+	<select id="getAllCheckedMerchant" resultType="MerchantDomain"
+		useCache="true">
+		SELECT * FROM fm_user where status = 1
+	</select>
 </mapper>

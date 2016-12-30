@@ -11,13 +11,13 @@ public class OrderDomain {
 							// '订单号',
 	private String orderNo;// `order_no` varchar(255) DEFAULT NULL COMMENT
 							// '微信订单号',
-	private String channelCode;// `channel_code` varchar(255) DEFAULT NULL
+	private Integer channelCode;// `channel_code` varchar(255) DEFAULT NULL
 								// COMMENT '支付通道',
 	private String respCode;// `resp_code` varchar(255) DEFAULT NULL COMMENT
 							// '交易返回码',
 	private String respInfo;// `resp_info` varchar(200) DEFAULT NULL COMMENT
 							// '返回码描述',
-	private String amount;// `amount` varchar(255) DEFAULT NULL COMMENT '交易金额',
+	private Double amount;// `amount` double(10,5) DEFAULT NULL COMMENT '交易金额',
 	private Date date;// `date` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP
 						// COMMENT '交易日期',
 	private String account;// `account` varchar(255) DEFAULT NULL COMMENT
@@ -54,11 +54,11 @@ public class OrderDomain {
 		this.orderNo = orderNo;
 	}
 
-	public String getChannelCode() {
+	public Integer getChannelCode() {
 		return channelCode;
 	}
 
-	public void setChannelCode(String channelCode) {
+	public void setChannelCode(Integer channelCode) {
 		this.channelCode = channelCode;
 	}
 
@@ -78,11 +78,11 @@ public class OrderDomain {
 		this.respInfo = respInfo;
 	}
 
-	public String getAmount() {
+	public Double getAmount() {
 		return amount;
 	}
 
-	public void setAmount(String amount) {
+	public void setAmount(Double amount) {
 		this.amount = amount;
 	}
 

@@ -51,5 +51,10 @@ public class MerchantServiceImpl implements MerchantService {
 		return merchantDAO.updateRate(merchantDomain);
 	}
 
-	
+	@Override
+	public List<MerchantDomain> getAllCheckedMerchant() {
+		// TODO Auto-generated method stub
+		return merchantDAO.getAllCheckedMerchant();
+	}
+
 }

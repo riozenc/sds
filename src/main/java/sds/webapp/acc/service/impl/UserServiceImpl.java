@@ -77,4 +77,10 @@ public class UserServiceImpl implements UserService {
 		return userDAO.updateRate(userDomain);
 	}
 
+	@Override
+	public List<UserDomain> getAllCheckedUser() {
+		// TODO Auto-generated method stub
+		return userDAO.getAllCheckedUser();
+	}
+
 }

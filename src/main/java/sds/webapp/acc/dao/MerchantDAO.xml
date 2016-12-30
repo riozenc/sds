@@ -221,4 +221,9 @@
 			</if>
 		</where>
 	</delete>
+
+	<select id="getAllCheckedMerchant" resultType="MerchantDomain"
+		useCache="true">
+		SELECT * FROM fm_merchant where status = 1
+	</select>
 </mapper>

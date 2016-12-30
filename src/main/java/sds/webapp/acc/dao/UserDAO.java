@@ -57,4 +57,8 @@ public class UserDAO extends AbstractTransactionDAOSupport implements BaseDAO<Us
 	public int updateRate(UserDomain userDomain) {
 		return getPersistanceManager().update(getNamespace() + ".updateRate", userDomain);
 	}
+	
+	public List<UserDomain> getAllCheckedUser() {
+		return getPersistanceManager().find(getNamespace() + ".getAllCheckedUser", null);
+	}
 }

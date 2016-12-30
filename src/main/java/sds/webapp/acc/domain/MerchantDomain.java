@@ -5,7 +5,7 @@ import java.util.Date;
 import com.riozenc.quicktool.annotation.TablePrimaryKey;
 import com.riozenc.quicktool.mybatis.MybatisEntity;
 
-public class MerchantDomain implements MybatisEntity{
+public class MerchantDomain implements MybatisEntity {
 	@TablePrimaryKey
 	private Integer id;// `id` int(11) NOT NULL AUTO_INCREMENT,
 	private String account;// `account` varchar(255) DEFAULT NULL COMMENT
@@ -19,7 +19,7 @@ public class MerchantDomain implements MybatisEntity{
 	private String cmer;// `cmer` varchar(255) DEFAULT NULL COMMENT '商户名称',
 	private String cmerSort;// `cmer_sort` varchar(255) DEFAULT NULL COMMENT
 							// '商户简称',
-	private String channelCode;// `channel_code` varchar(255) DEFAULT NULL
+	private Integer channelCode;// `channel_code` varchar(255) DEFAULT NULL
 								// COMMENT '支付通道，默认WXPAY',
 	private String businessId;// `business_id` varchar(255) DEFAULT NULL COMMENT
 								// '行业代码',
@@ -121,11 +121,11 @@ public class MerchantDomain implements MybatisEntity{
 		this.cmerSort = cmerSort;
 	}
 
-	public String getChannelCode() {
+	public Integer getChannelCode() {
 		return channelCode;
 	}
 
-	public void setChannelCode(String channelCode) {
+	public void setChannelCode(Integer channelCode) {
 		this.channelCode = channelCode;
 	}
 

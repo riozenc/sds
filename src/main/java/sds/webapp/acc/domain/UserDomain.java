@@ -12,7 +12,7 @@ import org.apache.shiro.authc.UsernamePasswordToken;
 import com.riozenc.quicktool.annotation.TablePrimaryKey;
 import com.riozenc.quicktool.mybatis.MybatisEntity;
 
-public class UserDomain implements MybatisEntity{
+public class UserDomain implements MybatisEntity {
 	@TablePrimaryKey
 	private Integer id;
 	private Integer parentId;// `parent_id` int(255) DEFAULT NULL COMMENT
@@ -70,6 +70,11 @@ public class UserDomain implements MybatisEntity{
 							// '创建者账号',
 	private Date createDate;// `create_date` varchar(255) DEFAULT NULL COMMENT
 							// '创建时间',
+
+	private Integer tj_status;
+	private Double tj_rate;
+	private Double tj_limit;
+
 	private Integer status;
 
 	public UserDomain() {
@@ -333,6 +338,30 @@ public class UserDomain implements MybatisEntity{
 
 	public void setCreateDate(Date createDate) {
 		this.createDate = createDate;
+	}
+
+	public Integer getTj_status() {
+		return tj_status;
+	}
+
+	public void setTj_status(Integer tj_status) {
+		this.tj_status = tj_status;
+	}
+
+	public Double getTj_rate() {
+		return tj_rate;
+	}
+
+	public void setTj_rate(Double tj_rate) {
+		this.tj_rate = tj_rate;
+	}
+
+	public Double getTj_limit() {
+		return tj_limit;
+	}
+
+	public void setTj_limit(Double tj_limit) {
+		this.tj_limit = tj_limit;
 	}
 
 	public Integer getStatus() {
