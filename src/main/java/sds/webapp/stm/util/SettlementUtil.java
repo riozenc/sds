@@ -17,6 +17,8 @@ import sds.webapp.stm.domain.ProfitDomain;
  */
 public class SettlementUtil {
 
+	private final static int DEFAULT_PAY = 1;// 微信
+
 	public static Double computeProfit(Double amount, Double rate) {
 		return amount * rate;
 	}
@@ -43,6 +45,8 @@ public class SettlementUtil {
 						mar.getAgents().getFirst()));
 			}
 		}
+		
+		checkProfit(list);
 		return list;
 	}
 
@@ -97,6 +101,7 @@ public class SettlementUtil {
 			profitDomain.setAgentId(agent.getId());
 			profitDomain.setAgentProfit(order.getAmount() * (getAgentRate(agent, order.getChannelCode())));
 			profitDomain.setOrderDay(order.getDate());
+			return profitDomain;
 		}
 
 		profitDomain.setOrderId(order.getOrderId());
@@ -126,6 +131,18 @@ public class SettlementUtil {
 
 		return profitDomain;
 	}
+	
+	private static void checkProfit(List<ProfitDomain> list) {
+		double sum = 0;
+		for (int i = 0; i < list.size(); i++) {
+			if ((i + 2) == list.size()) {
+				if (sum != list.get(i).getAgentProfit()) {
+					list.get(i).setAgentProfit(list.get(i).getTotalProfit() - sum);
+				}
+			}
+			sum += list.get(i).getAgentProfit();
+		}
+	}
 
 	/**
 	 * 返回商户费率，默认返回微信费率
@@ -133,16 +150,24 @@ public class SettlementUtil {
 	 * @param merchantDomain
 	 * @return
 	 */
-	private static Double getMerchantRate(MerchantDomain merchantDomain, int channel) {
-		merchantDomain.getChannelCode();// 微信or支付宝
-		switch (merchantDomain.getChannelCode()) {
+	private static Double getMerchantRate(MerchantDomain merchantDomain, Integer channel) {
+		// 微信or支付宝//默认1，微信
+		Double rate = null;
+		switch (channel == null ? DEFAULT_PAY : channel) {
 		case 1:// 微信
-			return merchantDomain.getWxRate();
+			rate = merchantDomain.getWxRate();
+			break;
 		case 2:// 支付宝
-			return merchantDomain.getWxRate();
+			rate = merchantDomain.getWxRate();
+			break;
 		default:
-			return merchantDomain.getWxRate();
+			rate = merchantDomain.getWxRate();
+			break;
 		}
+		if (rate == null || rate == 0) {
+			throw new RuntimeException(merchantDomain.getAccount() + "费率为空,无法计算分润..");
+		}
+		return rate;
 	}
 
 	/**
@@ -151,18 +176,27 @@ public class SettlementUtil {
 	 * @param merchantDomain
 	 * @return
 	 */
-	private static Double getAgentRate(UserDomain userDomain, int channel) {
+	private static Double getAgentRate(UserDomain userDomain, Integer channel) {
 		// 微信or支付宝
-		switch (channel) {
+		Double rate = null;
+		switch (channel == null ? DEFAULT_PAY : channel) {
 		case 1:// 微信cost_wrate
-			return userDomain.getCostWrate();
+			rate = userDomain.getCostWrate();
+			break;
 		case 2:// 支付宝cost_arate
-			return userDomain.getCostArate();
+			rate = userDomain.getCostArate();
+			break;
 		case 3:// 快捷支付cost_krate
-			return userDomain.getCostKrate();
+			rate = userDomain.getCostKrate();
+			break;
 		default:
-			return userDomain.getCostWrate();
+			rate = userDomain.getCostWrate();
+			break;
 		}
+		if (rate == null || rate == 0) {
+			throw new RuntimeException(userDomain.getAccount() + "费率为空,无法计算分润..");
+		}
+		return rate;
 	}
 
 }

@@ -4,11 +4,13 @@ import java.util.List;
 
 import org.apache.ibatis.session.ExecutorType;
 
+import com.riozenc.quicktool.annotation.TransactionDAO;
 import com.riozenc.quicktool.mybatis.dao.AbstractTransactionDAOSupport;
 import com.riozenc.quicktool.mybatis.dao.BaseDAO;
 
 import sds.webapp.stm.domain.ProfitDomain;
 
+@TransactionDAO
 public class ProfitDAO extends AbstractTransactionDAOSupport implements BaseDAO<ProfitDomain> {
 
 	@Override
