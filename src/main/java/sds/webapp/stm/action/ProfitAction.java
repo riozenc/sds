@@ -6,6 +6,11 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.web.bind.annotation.ControllerAdvice;
+import org.springframework.web.bind.annotation.RequestMapping;
+
 import sds.common.webapp.base.action.BaseAction;
 import sds.webapp.acc.domain.MerchantDomain;
 import sds.webapp.acc.domain.UserDomain;
@@ -24,13 +29,24 @@ import sds.webapp.stm.util.SettlementUtil;
  * @author riozenc
  *
  */
+@ControllerAdvice
+@RequestMapping("profit")
 public class ProfitAction extends BaseAction {
 
+	@Autowired
+	@Qualifier("profitServiceImpl")
 	private ProfitService profitService;
+	@Autowired
+	@Qualifier("orderServiceImpl")
 	private OrderService orderService;
+	@Autowired
+	@Qualifier("merchantServiceImpl")
 	private MerchantService merchantService;
+	@Autowired
+	@Qualifier("userServiceImpl")
 	private UserService userService;
 
+	@RequestMapping(params = "type=profit")
 	public String profit() {
 		OrderDomain orderDomain = new OrderDomain();
 		// 获取指定时间的所有交易订单
@@ -41,6 +57,7 @@ public class ProfitAction extends BaseAction {
 		List<ProfitDomain> list = call(orderDomains, marMap);
 
 		// 批量插入
+		profitService.insertBatch(list);
 
 		return null;
 	}
@@ -79,24 +96,13 @@ public class ProfitAction extends BaseAction {
 	private List<ProfitDomain> call(List<OrderDomain> orderDomains, Map<String, MARDomain> marMap) {
 		List<ProfitDomain> result = new ArrayList<>();
 
-		orderDomains.stream().forEach(order -> {
-			List<ProfitDomain> list = SettlementUtil.createProfit(marMap.get(order.getAccount()), order);
-			checkProfit(list);
-			result.addAll(list);
+		orderDomains.stream().forEach((order) -> {
+			System.out.println(order.getAccount());
+//			List<ProfitDomain> list = SettlementUtil.createProfit(marMap.get(order.getAccount()), order);
+//			System.out.println(list.size());
+			result.addAll(SettlementUtil.createProfit(marMap.get(order.getAccount()), order));
 		});
 		return result;
-	}
-
-	private void checkProfit(List<ProfitDomain> list) {
-		double sum = 0;
-		for (int i = 0; i < list.size(); i++) {
-			if ((i + 2) == list.size()) {
-				if (sum != list.get(i).getAgentProfit()) {
-					list.get(i).setAgentProfit(list.get(i).getTotalProfit() - sum);
-				}
-			}
-			sum += list.get(i).getAgentProfit();
-		}
 	}
 
 }

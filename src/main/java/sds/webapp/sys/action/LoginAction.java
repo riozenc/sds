@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.riozenc.quicktool.common.util.StringUtils;
 import com.riozenc.quicktool.common.util.json.JSONUtil;
 
+import sds.common.json.JsonResult;
 import sds.common.security.Principal;
 import sds.common.security.filter.PasswordShiroFilter;
 
@@ -41,7 +42,8 @@ public class LoginAction {
 				return loginFail("IncorrectCredentialsException", httpServletRequest, httpServletResponse);
 			}
 
-			return JSONUtil.writeSuccessMsg("登录成功,欢迎" + principal.getUserName() + "!");
+			return JSONUtil.toJsonString(new JsonResult(JsonResult.SUCCESS, "登录成功,欢迎" + principal.getUserName() + "!"));
+
 		} else {
 			// 失败
 			System.out.println(errorClassName);
@@ -77,7 +79,7 @@ public class LoginAction {
 		// return renderString(response, model);
 		// }
 
-		return JSONUtil.writeErrorMsg(message);
+		return JSONUtil.toJsonString(new JsonResult(JsonResult.ERROR, message));
 	}
 
 	@RequestMapping(value = "/logout")
