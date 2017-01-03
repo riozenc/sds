@@ -10,6 +10,5 @@ import org.springframework.context.annotation.Configuration;
 import com.riozenc.quicktool.springmvc.transaction.registry.TransactionDAORegistryPostProcessor;
 
 @Configuration
-public final class TransactionDAOSupport extends TransactionDAORegistryPostProcessor {
-
+public class TransactionDAOSupport extends TransactionDAORegistryPostProcessor {
 }

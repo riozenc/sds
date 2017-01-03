@@ -1,6 +1,7 @@
 package sds.webapp.acc.action;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.RequestMapping;
 
@@ -16,6 +17,7 @@ import sds.webapp.acc.service.MerchantService;
 public class MerchantAction extends BaseAction {
 
 	@Autowired
+	@Qualifier("merchantServiceImpl")
 	private MerchantService merchantService;
 
 	/**

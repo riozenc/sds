@@ -3,6 +3,7 @@ package sds.webapp.stm.domain;
 import java.util.Date;
 
 import com.riozenc.quicktool.annotation.TablePrimaryKey;
+import com.riozenc.quicktool.mybatis.MybatisEntity;
 
 /**
  * 利润
@@ -10,7 +11,7 @@ import com.riozenc.quicktool.annotation.TablePrimaryKey;
  * @author riozenc
  *
  */
-public class ProfitDomain {
+public class ProfitDomain implements MybatisEntity{
 	@TablePrimaryKey
 	private Integer id;// `id` int(11) NOT NULL AUTO_INCREMENT,
 	private String orderId;// '订单号',

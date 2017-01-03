@@ -10,6 +10,5 @@ import org.springframework.context.annotation.Configuration;
 import com.riozenc.quicktool.springmvc.transaction.registry.TransactionServiceRegistryPostProcessor;
 
 @Configuration
-public final class TransactionServiceSupport extends TransactionServiceRegistryPostProcessor {
-
+public  class TransactionServiceSupport extends TransactionServiceRegistryPostProcessor {
 }
