@@ -1,0 +1,183 @@
+<div class="bjui-pageContent">
+    <div class="bs-example">
+        <form action="../../json/ajaxDone.json" id="j_custom_form" data-toggle="ajaxform">
+        <div class="bjui-row col-2">
+            <label class="row-label">系统账号</label>
+            <div class="row-input">
+                <input type="text" name="account" value="登录手机号" data-rule="required">
+            </div>
+            <label class="row-label">所属上级代理商</label>
+            <div class="row-input">
+                <select data-toggle="selectpicker" name="parent_id" id="parent_id" >
+                    <option value="0" selected>总部</option>
+                    <option value="1">一级代理商</option>
+                    <option value="2">嗨嗨代理商</option>
+                    <option value="3">啦啦代理商</option>
+                    <option value="4">么么代理商</option>
+                </select>
+            </div>
+            <label class="row-label">企业全称</label>
+            <div class="row-input">
+                <input type="text" value="" name="full_name" data-rule="required">
+            </div>
+            <label class="row-label">企业简称</label>
+            <div class="row-input">
+                <input type="text" value="" name="simple_name" data-rule="required">
+            </div>
+            <label class="row-label">企业类型</label>
+            <div class="row-input">
+                <input type="text" value="" name="ag_type" data-rule="required">
+            </div>
+            <label class="row-label">公司地址</label>
+            <div class="row-input">
+                <input type="text" value="" name="ag_address" data-rule="required">
+            </div>
+            <label class="row-label">法人姓名</label>
+            <div class="row-input">
+                <input type="text" value="" name="reg_name" data-rule="required">
+            </div>
+            <label class="row-label">身份证号</label>
+            <div class="row-input">
+                <input type="text" value="" name="reg_card" data-rule="required">
+            </div>
+            <label class="row-label">身份证地址</label>
+            <div class="row-input">
+                <input type="text" value="" name="reg_address" data-rule="required">
+            </div>
+            <label class="row-label">注册资本</label>
+            <div class="row-input">
+                <input type="text" value="" name="reg_money" data-rule="required">
+            </div>
+            <label class="row-label">成立日期</label>
+            <div class="row-input">
+                 <input value="2016-10-01" name="reg_date" data-toggle="datepicker" type="text">
+            </div>
+            <label class="row-label">经营范围</label>
+            <div class="row-input">
+                <input type="text" value="" name="reg_ext" data-rule="required">
+            </div>
+            <label class="row-label">营业执照编号</label>
+            <div class="row-input">
+                <input type="text" value="" name="reg_no" data-rule="required">
+            </div>
+            <label class="row-label">营业期限</label>
+            <div class="row-input">
+                <input type="text" value="" name="bus_term" data-rule="required">
+            </div>
+            <label class="row-label">机构组织代码</label>
+            <div class="row-input">
+                <input type="text" value="" name="bus_ano" data-rule="required">
+            </div>
+            <label class="row-label">税务登记号</label>
+            <div class="row-input">
+                <input type="text" value="" name="bus_sno" data-rule="required">
+            </div>
+            <label class="row-label">微信成本费率</label>
+            <div class="row-input">
+                <input type="text" value="" name="cost_wrate" data-rule="required">
+            </div>
+            <label class="row-label">支付宝成本费率</label>
+            <div class="row-input">
+                <input type="text" value="" name="cost_arate" data-rule="required">
+            </div>
+            <label class="row-label">快捷成本费率</label>
+            <div class="row-input">
+                <input type="text" value="" name="cost_krate" data-rule="required">
+            </div>
+            <label class="row-label">商户微信费率</label>
+            <div class="row-input">
+                <input type="text" value="" name="user_wrate" data-rule="required">
+            </div>
+            <label class="row-label">商户支付宝费率</label>
+            <div class="row-input">
+                <input type="text" value="" name="user_arate" data-rule="required">
+            </div>
+            <label class="row-label">商户快捷费率</label>
+            <div class="row-input">
+                <input type="text" value="" name="user_krate" data-rule="required">
+            </div>
+            <hr>
+            <h4>结算账户</h4>
+            <label class="row-label">账户类型</label>
+            <div class="row-input">
+                <input type="text" value="" name="js_actype" data-rule="required">
+            </div>
+            <label class="row-label">开户账号</label>
+            <div class="row-input">
+                <input type="text" value="" name="js_card" data-rule="required">
+            </div>
+            <label class="row-label">开户地</label>
+            <div class="row-input">
+                <input type="text" value="" name="js_address" data-rule="required">
+            </div>
+            <label class="row-label">开户行</label>
+            <div class="row-input">
+                <select name="js_bank" id="CACCBANK">
+                                    
+                    <option value="中国工商银行">中国工商银行</option>
+                        
+                    <option value="中国农业银行">中国农业银行</option>
+                        
+                    <option value="中国银行">中国银行</option>
+                        
+                    <option value="中国建设银行">中国建设银行</option>
+                        
+                    <option value="交通银行">交通银行</option>
+                        
+                    <option value="中信银行">中信银行</option>
+                        
+                    <option value="中国光大银行">中国光大银行</option>
+                        
+                    <option value="华夏银行">华夏银行</option>
+                        
+                    <option value="中国民生银行">中国民生银行</option>
+                        
+                    <option value="平安银行">平安银行</option>
+                        
+                    <option value="招商银行">招商银行</option>
+                        
+                    <option value="兴业银行">兴业银行</option>
+                        
+                    <option value="上海浦东发展银行">上海浦东发展银行</option>
+                        
+                    <option value="盛京银行">盛京银行</option>
+                        
+                    <option value="恒丰银行">恒丰银行</option>
+                        
+                    <option value="浙商银行">浙商银行</option>
+                        
+                    <option value="渤海银行">渤海银行</option>
+                        
+                    <option value="徽商银行">徽商银行</option>
+                        
+                    <option value="上海农村商业银行">上海农村商业银行</option>
+                        
+                    <option value="中国邮政储蓄银行">中国邮政储蓄银行</option>
+                        
+                </select>
+                <input type="text" value="" name="js_bankadd" style="width:150px" data-rule="required">
+            </div>
+            <label class="row-label">开户名</label>
+            <div class="row-input">
+                <input type="text" value="" name="js_name" data-rule="required">
+            </div>
+            <label class="row-label">联行号</label>
+            <div class="row-input">
+                <input type="text" value="" name="js_lhno" data-rule="required">
+            </div>
+            
+        </div>
+        </form>
+    </div>
+    
+    <div class="bs-callout bs-callout-info">
+        <h4>联行号<code></code></h4>
+        <p><a href="https://www.hebbank.com/corporbank/otherBankQueryWeb.do"  target="_blank">银行联行号在线查询</a></p>
+    </div>
+</div>
+<div class="bjui-pageFooter">
+    <ul>
+        <li><button type="button" class="btn-close" data-icon="close">关闭</button></li>
+        <li><button type="submit" class="btn-default" data-icon="save">保存</button></li>
+    </ul>
+</div>

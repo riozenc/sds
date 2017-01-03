@@ -1,280 +1,165 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
-	pageEncoding="UTF-8"%>
-<!DOCTYPE html>
+    pageEncoding="UTF-8"%>
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
 <base href="<%=request.getContextPath()+"/" %>">
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="renderer" content="webkit">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
 <title>系统登录</title>
-<script src="BJUI/js/jquery-1.7.2.min.js"></script>
-<script src="BJUI/js/jquery.cookie.js"></script>
-<script src="js/sha256.js"></script>
-<link href="BJUI/themes/css/bootstrap.min.css" rel="stylesheet">
+<script src="B-JUI/js/jquery-1.11.3.min.js"></script>
+<script src="B-JUI/js/jquery.cookie.js"></script>
+<link href="B-JUI/themes/css/bootstrap.min.css" rel="stylesheet">
+
 <style type="text/css">
-* {
-	font-family: "Verdana", "Tahoma", "Lucida Grande", "Microsoft YaHei",
-		"Hiragino Sans GB", sans-serif;
-}
-
+html, body { height: 100%; overflow: hidden; }
 body {
-	background: url(images/loginbg_01.jpg) no-repeat center center fixed;
-	-webkit-background-size: cover;
-	-moz-background-size: cover;
-	-o-background-size: cover;
-	background-size: cover;
+    font-family: "Verdana", "Tahoma", "Lucida Grande", "Microsoft YaHei", "Hiragino Sans GB", sans-serif;
+    background: url(images/loginbg_01.jpg) no-repeat center center fixed;
+    background-size: cover;
 }
-
-a:link {
-	color: #285e8e;
-}
-
-.main_box {
-	position: absolute;
-	top: 50%;
-	left: 50%;
-	margin-top: -260px;
-	margin-left: -300px;
-	padding: 30px;
-	width: 600px;
-	height: 460px;
-	background: #FAFAFA;
-	background: rgba(255, 255, 255, 0.5);
-	border: 1px #DDD solid;
-	border-radius: 5px;
-	-webkit-box-shadow: 1px 5px 8px #888888;
-	-moz-box-shadow: 1px 5px 8px #888888;
-	box-shadow: 1px 5px 8px #888888;
-}
-
-.main_box .setting {
-	position: absolute;
-	top: 5px;
-	right: 10px;
-	width: 10px;
-	height: 10px;
-}
-
-.main_box .setting a {
-	color: #FF6600;
-}
-
-.main_box .setting a:hover {
-	color: #555;
-}
-
-.login_logo {
-	margin-bottom: 20px;
-	height: 45px;
-	text-align: center;
-}
-
-.login_logo img {
-	height: 45px;
-}
-
-.login_msg {
-	text-align: center;
-	font-size: 16px;
-}
-
-.login_form {
-	padding-top: 20px;
-	font-size: 16px;
-}
-
-.login_box .form-control {
-	display: inline-block;
-	*display: inline;
-	zoom: 1;
-	width: auto;
-	font-size: 18px;
-}
-
-.login_box .form-control.x319 {
-	width: 319px;
-}
-
-.login_box .form-control.x164 {
-	width: 164px;
-}
-
-.login_box .form-group {
-	margin-bottom: 20px;
-}
-
-.login_box .form-group label.t {
-	width: 120px;
-	text-align: right;
-	cursor: pointer;
-}
-
-.login_box .form-group.space {
-	padding-top: 15px;
-	border-top: 1px #FFF dotted;
-}
-
-.login_box .form-group img {
-	margin-top: 1px;
-	height: 32px;
-	vertical-align: top;
-}
-
-.login_box .m {
-	cursor: pointer;
-}
-
-.bottom {
-	text-align: center;
-	font-size: 12px;
+.form-control{height:37px;}
+.main_box{position:absolute; top:45%; left:50%; margin:-200px 0 0 -180px; padding:15px 20px; width:360px; height:400px; min-width:320px; background:#FAFAFA; background:rgba(255,255,255,0.5); box-shadow: 1px 5px 8px #888888; border-radius:6px;}
+.login_msg{height:30px;}
+.input-group >.input-group-addon.code{padding:0;}
+#captcha_img{cursor:pointer;}
+.main_box .logo img{height:35px;}
+@media (min-width: 768px) {
+    .main_box {margin-left:-240px; padding:15px 55px; width:480px;}
+    .main_box .logo img{height:40px;}
 }
 </style>
 <script type="text/javascript">
-	var COOKIE_NAME = 'sys__username';
-	$(function() {
-		choose_bg();
-		changeCode();//更改验证码
-		if ($.cookie(COOKIE_NAME)) {
-			$("#j_username").val($.cookie(COOKIE_NAME));
-			$("#j_password").focus();
-			$("#j_remember").attr('checked', true);
-		} else {
-			$("#j_username").focus();
-		}
-		// 	$("#captcha_img").click(function(){
-		// 		changeCode();
-		// 	});
-		$("#login_ok")
-				.click(
-						function() {
-							var issubmit = true;
-							var i_index = 0;
-							$(this).find('.in').each(function(i) {
-								if ($.trim($(this).val()).length == 0) {
-									$(this).css('border', '1px #ff0000 solid');
-									issubmit = false;
-									if (i_index == 0)
-										i_index = i;
-								}
-							});
-							if (!issubmit) {
-								$(this).find('.in').eq(i_index).focus();
-								return false;
-							}
-							var $remember = $("#j_remember");
-							if ($remember.attr('checked')) {
-								$.cookie(COOKIE_NAME, $("#j_username").val(), {
-									path : '/',
-									expires : 15
-								});
-							} else {
-								$.cookie(COOKIE_NAME, null, {
-									path : '/'
-								}); //删除cookie
-							}
-							$("#login_ok").attr("disabled", true).val('登陆中..');
+var COOKIE_NAME = 'sys_em_username';
+$(function() {
+    choose_bg();
+    changeCode();
+    if ($.cookie(COOKIE_NAME)){
+        $("#j_username").val($.cookie(COOKIE_NAME));
+        $("#j_password").focus();
+        $("#j_remember").attr('checked', true);
+    } else {
+        $("#j_username").focus();
+    }
+    $("#captcha_img").click(function(){
+        changeCode();
+    });
+    $("#login_ok").click(function() {
+			var issubmit = true;
+			var i_index = 0;
+			$(this).find('.form-control').each(function(i) {
+				if ($.trim($(this).val()).length == 0) {
+					$(this).css('border', '1px #ff0000 solid');
+					issubmit = false;
+					if (i_index == 0)
+						i_index = i;
+				}
+			});
+			if (!issubmit) {
+				$(this).find('.form-control').eq(i_index).focus();
+				return false;
+			}
+			var $remember = $("#j_remember");
+			if ($remember.attr('checked')) {
+				$.cookie(COOKIE_NAME, $("#j_username").val(), {
+					path : '/',
+					expires : 15
+				});
+			} else {
+				$.cookie(COOKIE_NAME, null, {
+					path : '/'
+				}); //删除cookie
+			}
+			$("#login_ok").attr("disabled", true).val('登陆中..');
 
-							var ajaxCallUrl = "loginAction/login.do";
-							$.ajax({
-								cache : false,
-								type : "POST",
-								url : ajaxCallUrl,
-								data : $('#login_form').serialize(),// 你的formid
-								async : false,
-								error : function(request) {
-									alert("Connection error");
-									$("#login_ok").attr("disabled", false).val(
-											'登录');
-								},
-								success : function(data) {
-									if (data.status == 1)
-										window.location.href = 'index.html';
-									else
-										$("#login_ok").attr("disabled", false)
-												.val('登录');
-								}
-							});
-						});
-		// $("#login_form").submit(function(){
-
-		//        // window.location.href = 'index.html'; /*注意：生产环境时请删除此行*/
-
-		//        return false;
-		// });
-	});
-	function genTimestamp() {
-		var time = new Date();
-		return time.getTime();
-	}
-	function changeCode() { //更改验证码
-		$("#captcha_img").attr("src", "/captcha.jpeg?t=" + genTimestamp());
-	}
-	function choose_bg() {
-		var bg = Math.floor(Math.random() * 9 + 1);
-		$('body')
-				.css('background-image', 'url(images/loginbg_0' + bg + '.jpg)');
-	}
+			var ajaxCallUrl = "loginAction/login.do";
+			$.ajax({
+				cache : false,
+				type : "POST",
+				url : ajaxCallUrl,
+				data : $('#login_form').serialize(),// 你的formid
+				async : false,
+				error : function(request) {
+					alert("Connection error");
+					//$("#login_ok").attr("disabled", false).val('登录');
+					return false;
+				},
+				success : function(data) {
+					alert(data);
+					//if (data.status == 0)
+						//window.location.href = 'index.html';
+					//else
+						//$("#login_ok").attr("disabled", false).val('登录');
+				}
+			});
+		});
+});
+function changeCode(){
+    //$("#captcha_img").attr("src", "sys/login/getCaptcha?t="+ (new Date().getTime()));
+}
+function choose_bg() {
+    var bg = Math.floor(Math.random() * 9 + 1);
+    $('body').css('background-image', 'url(images/loginbg_0'+ bg +'.jpg)');
+}
 </script>
 </head>
 <body>
-	<!--[if lte IE 7]>
+<!--[if lte IE 7]>
 <style type="text/css">
 #errorie {position: fixed; top: 0; z-index: 100000; height: 30px; background: #FCF8E3;}
 #errorie div {width: 900px; margin: 0 auto; line-height: 30px; color: orange; font-size: 14px; text-align: center;}
 #errorie div a {color: #459f79;font-size: 14px;}
 #errorie div a:hover {text-decoration: underline;}
 </style>
-<div id="errorie"><div>您还在使用老掉牙的IE，请升级您的浏览器到 IE8以上版本 <a target="_blank" href="http://windows.microsoft.com/zh-cn/internet-explorer/ie-8-worldwide-languages">点击升级</a>&nbsp;&nbsp;强烈建议您更改换浏览器：<a href="http://down.tech.sina.com.cn/content/40975.html" target="_blank">谷歌浏览器</a></div></div>
+<div id="errorie"><div>您还在使用老掉牙的IE，请升级您的浏览器到 IE8以上版本  <a target="_blank" href="http://windows.microsoft.com/zh-cn/internet-explorer/ie-8-worldwide-languages">点击升级</a>&nbsp;&nbsp;强烈建议您更改换浏览器<a href="http://down.tech.sina.com.cn/content/40975.html" target="_blank">谷歌­ Chrome</a></div></div>
 <![endif]-->
-	<div class="main_box">
-		<div class="setting">
+<div class="container">
+    <div class="main_box">
+    	<div class="setting">
 			<a href="javascript:;" onclick="choose_bg();" title="更换背景"><span
 				class="glyphicon glyphicon-th-large"></span></a>
 		</div>
-		<div class="login_box">
-			<div class="login_logo">
-				<img src="images/logo.png">
-			</div>
-			<!--
-		<c:if test="${!empty message}">
-			<div class="login_msg">
-	      		<font color="red">${message }</font>
-	    	</div>
-	    </c:if>
-        -->
-			<div class="login_form">
-				<input type="hidden" value="${randomKey }" id="j_randomKey" />
-				<form action="#" id="login_form" method="post">
-					<input type="hidden" name="jfinal_token" value="${jfinal_token }" />
-					<div class="form-group">
-						<label for="j_username" class="t">用户名：</label> <input
-							id="j_username" value="" name="username" type="text"
-							class="form-control x319 in" autocomplete="off">
-					</div>
-					<div class="form-group">
-						<label for="j_password" class="t">密 码：</label> <input
-							id="j_password" value="" name="password" type="password"
-							class="form-control x319 in">
-					</div>
-					<!--     			<div class="form-group"> -->
-					<!--     				<label for="j_captcha" class="t">验证码：</label> <input id="j_captcha" name="validateCode" type="text" class="form-control x164 in"> -->
-					<!--     				<img id="captcha_img" alt="点击更换" title="点击更换" src="images/captcha.jpeg" class="m"> -->
-					<!--     			</div> -->
-					<div class="form-group">
-						<label class="t"></label> <label for="j_remember" class="m"><input
-							id="j_remember" type="checkbox" value="true">&nbsp;记住登陆账号!</label>
-					</div>
-					<div class="form-group space">
-						<label class="t"></label>
-						<button id="login_ok" class="btn btn-primary btn-lg">&nbsp;登&nbsp;录&nbsp;</button>
-						&nbsp;&nbsp;&nbsp;&nbsp; <input type="reset"
-							value="&nbsp;重&nbsp;置&nbsp;" class="btn btn-default btn-lg">
-					</div>
-				</form>
-			</div>
-		</div>
-		<div class="bottom">
-			Copyright &copy; 2013 - 2014 <a href="#">B-JUI 前端框架 - 系统登陆</a>
-		</div>
-	</div>
+        <form action="index.html" id="login_form" method="post">
+            <input type="hidden" value="" id="j_randomKey" />
+            <input type="hidden" name="jfinal_token" value="" />
+            <p class="text-center logo"><img src="images/logo.png" height="45"></p>
+            <div class="login_msg text-center"><font color="red"></font></div>
+            <div class="form-group">
+                <div class="input-group">
+                    <span class="input-group-addon" id="sizing-addon-user"><span class="glyphicon glyphicon-user"></span></span>
+                    <input type="text" class="form-control" id="j_username" name="username" value="" placeholder="登录账号" aria-describedby="sizing-addon-user">
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="input-group">
+                    <span class="input-group-addon" id="sizing-addon-password"><span class="glyphicon glyphicon-lock"></span></span>
+                    <input type="password" class="form-control" id="j_password" name="password" placeholder="登录密码" aria-describedby="sizing-addon-password">
+                </div>
+            </div>
+            <!-- <div class="form-group">
+                <div class="input-group">
+                    <span class="input-group-addon" id="sizing-addon-password"><span class="glyphicon glyphicon-exclamation-sign"></span></span>
+                    <input type="text" class="form-control" id="j_captcha" name="captcha" placeholder="éªè¯ç " aria-describedby="sizing-addon-password">
+                    <span class="input-group-addon code" id="basic-addon-code"><img id="captcha_img" src="images/captcha.jpg" alt="ç¹å»æ´æ¢" title="ç¹å»æ´æ¢" class="m"></span>
+                </div>
+            </div> -->
+            <div class="form-group">
+                <div class="checkbox">
+                    <label for="j_remember" class="m"><input id="j_remember" type="checkbox" value="true">&nbsp;记住登陆账号</label>
+                </div>
+            </div>
+            <div class="text-center">
+                <button type="submit" id="login_ok" class="btn btn-primary btn-lg">&nbsp;登&nbsp;录&nbsp;</button>&nbsp;&nbsp;&nbsp;&nbsp;
+                <button type="reset" class="btn btn-default btn-lg">&nbsp;重&nbsp;置&nbsp;</button>
+            </div>
+            <div class="text-center">
+                <hr>
+                2014 - 2016 <a href="login.html">云收单系统</a>
+            </div>
+        </form>
+    </div>
+</div>
 </body>
 </html>
