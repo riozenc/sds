@@ -71,9 +71,10 @@ public class UserDomain implements MybatisEntity {
 	private Date createDate;// `create_date` varchar(255) DEFAULT NULL COMMENT
 							// '创建时间',
 
-	private Integer tj_status;
-	private Double tj_rate;
-	private Double tj_limit;
+	private String regCard;// 开户人身份证
+	private Integer tjStatus;
+	private Double tjRate;
+	private Double tjLimit;
 
 	private Integer status;
 
@@ -340,28 +341,36 @@ public class UserDomain implements MybatisEntity {
 		this.createDate = createDate;
 	}
 
-	public Integer getTj_status() {
-		return tj_status;
+	public String getRegCard() {
+		return regCard;
 	}
 
-	public void setTj_status(Integer tj_status) {
-		this.tj_status = tj_status;
+	public void setRegCard(String regCard) {
+		this.regCard = regCard;
 	}
 
-	public Double getTj_rate() {
-		return tj_rate;
+	public Integer getTjStatus() {
+		return tjStatus;
 	}
 
-	public void setTj_rate(Double tj_rate) {
-		this.tj_rate = tj_rate;
+	public void setTjStatus(Integer tjStatus) {
+		this.tjStatus = tjStatus;
 	}
 
-	public Double getTj_limit() {
-		return tj_limit;
+	public Double getTjRate() {
+		return tjRate;
 	}
 
-	public void setTj_limit(Double tj_limit) {
-		this.tj_limit = tj_limit;
+	public void setTjRate(Double tjRate) {
+		this.tjRate = tjRate;
+	}
+
+	public Double getTjLimit() {
+		return tjLimit;
+	}
+
+	public void setTjLimit(Double tjLimit) {
+		this.tjLimit = tjLimit;
 	}
 
 	public Integer getStatus() {
