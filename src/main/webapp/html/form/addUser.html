@@ -1,14 +1,19 @@
 <div class="bjui-pageContent">
     <div class="bs-example">
-        <form action="../../json/ajaxDone.json" id="j_custom_form" data-toggle="ajaxform">
+        <form action="user.do?type=insert" id="j_custom_form" data-toggle="ajaxform">
+        <h4>基 本 信 息</h4>
         <div class="bjui-row col-2">
-            <label class="row-label">系统账号</label>
-            <div class="row-input">
-                <input type="text" name="account" value="登录手机号" data-rule="required">
+            <label class="row-label " >系统账号</label>
+            <div class="row-input required">
+                <input type="text" name="account" value="" data-rule="required">
+            </div>
+            <label class="row-label " >系统密码</label>
+            <div class="row-input required">
+                <input type="text" name="password" value="" data-rule="required">
             </div>
             <label class="row-label">所属上级代理商</label>
             <div class="row-input">
-                <select data-toggle="selectpicker" name="parent_id" id="parent_id" >
+                <select data-toggle="selectpicker" name="parentId" id="parent_id" >
                     <option value="0" selected>总部</option>
                     <option value="1">一级代理商</option>
                     <option value="2">嗨嗨代理商</option>
@@ -18,23 +23,23 @@
             </div>
             <label class="row-label">企业全称</label>
             <div class="row-input">
-                <input type="text" value="" name="full_name" data-rule="required">
+                <input type="text" value="" name="fullName" data-rule="required">
             </div>
             <label class="row-label">企业简称</label>
             <div class="row-input">
-                <input type="text" value="" name="simple_name" data-rule="required">
+                <input type="text" value="" name="simpleName" data-rule="required">
             </div>
             <label class="row-label">企业类型</label>
             <div class="row-input">
-                <input type="text" value="" name="ag_type" data-rule="required">
+                <input type="text" value="" name="agType" data-rule="required">
             </div>
             <label class="row-label">公司地址</label>
             <div class="row-input">
-                <input type="text" value="" name="ag_address" data-rule="required">
+                <input type="text" value="" name="agAddress" data-rule="required">
             </div>
             <label class="row-label">法人姓名</label>
             <div class="row-input">
-                <input type="text" value="" name="reg_name" data-rule="required">
+                <input type="text" value="" name="regName" data-rule="required">
             </div>
             <label class="row-label">身份证号</label>
             <div class="row-input">
@@ -42,77 +47,77 @@
             </div>
             <label class="row-label">身份证地址</label>
             <div class="row-input">
-                <input type="text" value="" name="reg_address" data-rule="required">
+                <input type="text" value="" name="regAddress" data-rule="required">
             </div>
             <label class="row-label">注册资本</label>
             <div class="row-input">
-                <input type="text" value="" name="reg_money" data-rule="required">
+                <input type="text" value="" name="regMoney" data-rule="required">
             </div>
             <label class="row-label">成立日期</label>
             <div class="row-input">
-                 <input value="2016-10-01" name="reg_date" data-toggle="datepicker" type="text">
+                 <input value="2016-10-01" name="regDate" data-toggle="datepicker" type="text">
             </div>
             <label class="row-label">经营范围</label>
             <div class="row-input">
-                <input type="text" value="" name="reg_ext" data-rule="required">
+                <input type="text" value="" name="regExt" data-rule="required">
             </div>
             <label class="row-label">营业执照编号</label>
             <div class="row-input">
-                <input type="text" value="" name="reg_no" data-rule="required">
+                <input type="text" value="" name="regNo" data-rule="required">
             </div>
             <label class="row-label">营业期限</label>
             <div class="row-input">
-                <input type="text" value="" name="bus_term" data-rule="required">
+                <input type="text" value="" name="busTerm" data-rule="required">
             </div>
             <label class="row-label">机构组织代码</label>
             <div class="row-input">
-                <input type="text" value="" name="bus_ano" data-rule="required">
+                <input type="text" value="" name="busAno" data-rule="required">
             </div>
             <label class="row-label">税务登记号</label>
             <div class="row-input">
-                <input type="text" value="" name="bus_sno" data-rule="required">
+                <input type="text" value="" name="busSno" data-rule="required">
             </div>
             <label class="row-label">微信成本费率</label>
             <div class="row-input">
-                <input type="text" value="" name="cost_wrate" data-rule="required">
+                <input type="text" value="" name="costWrate" data-rule="required">
             </div>
             <label class="row-label">支付宝成本费率</label>
             <div class="row-input">
-                <input type="text" value="" name="cost_arate" data-rule="required">
+                <input type="text" value="" name="costArate" data-rule="required">
             </div>
             <label class="row-label">快捷成本费率</label>
             <div class="row-input">
-                <input type="text" value="" name="cost_krate" data-rule="required">
+                <input type="text" value="" name="costKrate" data-rule="required">
             </div>
             <label class="row-label">商户微信费率</label>
             <div class="row-input">
-                <input type="text" value="" name="user_wrate" data-rule="required">
+                <input type="text" value="" name="userWrate" data-rule="required">
             </div>
             <label class="row-label">商户支付宝费率</label>
             <div class="row-input">
-                <input type="text" value="" name="user_arate" data-rule="required">
+                <input type="text" value="" name="userArate" data-rule="required">
             </div>
             <label class="row-label">商户快捷费率</label>
             <div class="row-input">
-                <input type="text" value="" name="user_krate" data-rule="required">
+                <input type="text" value="" name="userKrate" data-rule="required">
             </div>
             <hr>
-            <h4>结算账户</h4>
+            <h4>结 算 账 户</h4>
             <label class="row-label">账户类型</label>
             <div class="row-input">
-                <input type="text" value="" name="js_actype" data-rule="required">
+                <input type="text" value="" name="jsActype" data-rule="required">
             </div>
             <label class="row-label">开户账号</label>
             <div class="row-input">
-                <input type="text" value="" name="js_card" data-rule="required">
+                <input type="text" value="" name="jsCard" data-rule="required">
             </div>
             <label class="row-label">开户地</label>
             <div class="row-input">
-                <input type="text" value="" name="js_address" data-rule="required">
+                <input type="text" value="" name="jsAddress" data-rule="required">
             </div>
             <label class="row-label">开户行</label>
             <div class="row-input">
-                <select name="js_bank" id="CACCBANK">
+                <select name="jsBank" id="CACCBANK">
                                     
                     <option value="中国工商银行">中国工商银行</option>
                         
@@ -155,17 +160,27 @@
                     <option value="中国邮政储蓄银行">中国邮政储蓄银行</option>
                         
                 </select>
-                <input type="text" value="" name="js_bankadd" style="width:150px" data-rule="required">
+                <input type="text" value="" name="jsBankadd" style="width:150px" data-rule="required">
             </div>
             <label class="row-label">开户名</label>
             <div class="row-input">
-                <input type="text" value="" name="js_name" data-rule="required">
+                <input type="text" value="" name="jsName" data-rule="required">
             </div>
             <label class="row-label">联行号</label>
             <div class="row-input">
-                <input type="text" value="" name="js_lhno" data-rule="required">
+                <input type="text" value="" name="jsLhno" data-rule="required">
             </div>
-            
+            <hr>
+            <h4>推 荐 功 能</h4>
+            <label class="row-label">开关</label>
+            <div class="row-input">
+            <select data-toggle="selectpicker" name="tjStatus">
+	            <option value="0" selected="">关闭</option>
+	            <option value="1">开启</option>
+	            
+	        </select>
+                
+            </div>
         </div>
         </form>
     </div>

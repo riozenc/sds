@@ -72,26 +72,33 @@ $(function() {
 					path : '/'
 				}); //删除cookie
 			}
-			$("#login_ok").attr("disabled", true).val('登陆中..');
-
+			$("#login_ok").attr("disabled", "disabled");
+			$("#login_ok").text(" 登录中... ");
 			var ajaxCallUrl = "loginAction/login.do";
+			
 			$.ajax({
+				 
 				cache : false,
 				type : "POST",
 				url : ajaxCallUrl,
 				data : $('#login_form').serialize(),// 你的formid
-				async : false,
+				dataType : "json",
 				error : function(request) {
 					alert("Connection error");
-					//$("#login_ok").attr("disabled", false).val('登录');
+					
 					return false;
 				},
 				success : function(data) {
-					alert(data);
-					//if (data.status == 0)
-						//window.location.href = 'index.html';
-					//else
-						//$("#login_ok").attr("disabled", false).val('登录');
+					alert(data.message);
+					if (data.statusCode == 200){
+						
+						window.location.href = 'index.jsp';
+					}else{
+						//alert(data.message);
+						$("#login_ok").text("&nbsp;登&nbsp;录&nbsp;");
+						$("#login_ok").removeAttr("disabled");
+					}
+					return false;	
 				}
 			});
 		});
@@ -121,7 +128,7 @@ function choose_bg() {
 			<a href="javascript:;" onclick="choose_bg();" title="更换背景"><span
 				class="glyphicon glyphicon-th-large"></span></a>
 		</div>
-        <form action="index.html" id="login_form" method="post">
+        <form  id="login_form" >
             <input type="hidden" value="" id="j_randomKey" />
             <input type="hidden" name="jfinal_token" value="" />
             <p class="text-center logo"><img src="images/logo.png" height="45"></p>
@@ -151,12 +158,12 @@ function choose_bg() {
                 </div>
             </div>
             <div class="text-center">
-                <button type="submit" id="login_ok" class="btn btn-primary btn-lg">&nbsp;登&nbsp;录&nbsp;</button>&nbsp;&nbsp;&nbsp;&nbsp;
+                <button type="button" id="login_ok" class="btn btn-primary btn-lg">&nbsp;登&nbsp;录&nbsp;</button>&nbsp;&nbsp;&nbsp;&nbsp;
                 <button type="reset" class="btn btn-default btn-lg">&nbsp;重&nbsp;置&nbsp;</button>
             </div>
             <div class="text-center">
                 <hr>
-                2014 - 2016 <a href="login.html">云收单系统</a>
+                2014 - 2016 <a href="login.html">收单云系统</a>
             </div>
         </form>
     </div>
