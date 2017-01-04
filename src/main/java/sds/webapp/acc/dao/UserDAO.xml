@@ -4,7 +4,7 @@
 	<select id="findByKey" parameterType="UserDomain" resultType="UserDomain"
 		useCache="true">
 		select
-		ID,PARENT_ID,ACCOUNT,FULL_NAME,SIMPLE_NAME,AG_TYPE,AG_ADDRESS,REG_MONEY,REG_NAME,REG_ADDRESS,REG_DATE,REG_EXT,REG_NO,BUS_TERM,BUS_ANO,BUS_SNO,COST_WRATE,COST_KRATE,COST_ARATE,USER_WRATE,USER_ARATE,USER_KRATE,JS_ACTYPE,JS_CARD,JS_ADDRESS,JS_BANK,JS_BANKADD,JS_NAME,JS_LHNO,CREATE_ID,CREATE_DATE,STATUS
+		ID,PARENT_ID,ACCOUNT,PASSWORD,FULL_NAME,SIMPLE_NAME,AG_TYPE,AG_ADDRESS,REG_MONEY,REG_NAME,REG_ADDRESS,REG_DATE,REG_EXT,REG_NO,BUS_TERM,BUS_ANO,BUS_SNO,COST_WRATE,COST_KRATE,COST_ARATE,USER_WRATE,USER_ARATE,USER_KRATE,JS_ACTYPE,JS_CARD,JS_ADDRESS,JS_BANK,JS_BANKADD,JS_NAME,JS_LHNO,CREATE_ID,CREATE_DATE,REG_CARD,TJ_STATUS,TJ_RATE,TJ_LIMIT,STATUS
 		from fm_user
 		<where>
 			<if test="id !=null">
@@ -15,7 +15,7 @@
 	<select id="findByWhere" parameterType="UserDomain" resultType="UserDomain"
 		useCache="true">
 		select
-		ID,PARENT_ID,ACCOUNT,FULL_NAME,SIMPLE_NAME,AG_TYPE,AG_ADDRESS,REG_MONEY,REG_NAME,REG_ADDRESS,REG_DATE,REG_EXT,REG_NO,BUS_TERM,BUS_ANO,BUS_SNO,COST_WRATE,COST_KRATE,COST_ARATE,USER_WRATE,USER_ARATE,USER_KRATE,JS_ACTYPE,JS_CARD,JS_ADDRESS,JS_BANK,JS_BANKADD,JS_NAME,JS_LHNO,CREATE_ID,CREATE_DATE,STATUS
+		ID,PARENT_ID,ACCOUNT,PASSWORD,FULL_NAME,SIMPLE_NAME,AG_TYPE,AG_ADDRESS,REG_MONEY,REG_NAME,REG_ADDRESS,REG_DATE,REG_EXT,REG_NO,BUS_TERM,BUS_ANO,BUS_SNO,COST_WRATE,COST_KRATE,COST_ARATE,USER_WRATE,USER_ARATE,USER_KRATE,JS_ACTYPE,JS_CARD,JS_ADDRESS,JS_BANK,JS_BANKADD,JS_NAME,JS_LHNO,CREATE_ID,CREATE_DATE,REG_CARD,TJ_STATUS,TJ_RATE,TJ_LIMIT,STATUS
 		from fm_user
 		<where>
 			<if test="id !=null">
@@ -114,6 +114,18 @@
 			<if test="createDate !=null">
 				and CREATE_DATE = #{createDate}
 			</if>
+			<if test="regCard !=null">
+				and REG_CARD = #{regCard}
+			</if>
+			<if test="tjStatus !=null">
+				and TJ_STATUS = #{tjStatus}
+			</if>
+			<if test="tjRate !=null">
+				and TJ_RATE = #{tjRate}
+			</if>
+			<if test="tjLimit !=null">
+				and TJ_LIMIT = #{tjLimit}
+			</if>
 			<if test="status !=null">
 				and STATUS = #{status}
 			</if>
@@ -121,9 +133,9 @@
 	</select>
 	<insert id="insert" parameterType="UserDomain" flushCache="true">
 		insert into
-		fm_user(ID,PARENT_ID,ACCOUNT,PASSWORD,FULL_NAME,SIMPLE_NAME,AG_TYPE,AG_ADDRESS,REG_MONEY,REG_NAME,REG_ADDRESS,REG_DATE,REG_EXT,REG_NO,BUS_TERM,BUS_ANO,BUS_SNO,COST_WRATE,COST_KRATE,COST_ARATE,USER_WRATE,USER_ARATE,USER_KRATE,JS_ACTYPE,JS_CARD,JS_ADDRESS,JS_BANK,JS_BANKADD,JS_NAME,JS_LHNO,CREATE_ID,CREATE_DATE,STATUS)
+		fm_user(ID,PARENT_ID,ACCOUNT,PASSWORD,FULL_NAME,SIMPLE_NAME,AG_TYPE,AG_ADDRESS,REG_MONEY,REG_NAME,REG_ADDRESS,REG_DATE,REG_EXT,REG_NO,BUS_TERM,BUS_ANO,BUS_SNO,COST_WRATE,COST_KRATE,COST_ARATE,USER_WRATE,USER_ARATE,USER_KRATE,JS_ACTYPE,JS_CARD,JS_ADDRESS,JS_BANK,JS_BANKADD,JS_NAME,JS_LHNO,CREATE_ID,CREATE_DATE,REG_CARD,TJ_STATUS,TJ_RATE,TJ_LIMIT,STATUS)
 		values
-		(#{id},#{parentId},#{account},#{password},#{fullName},#{simpleName},#{agType},#{agAddress},#{regMoney},#{regName},#{regAddress},#{regDate},#{regExt},#{regNo},#{busTerm},#{busAno},#{busSno},#{costWrate},#{costKrate},#{costArate},#{userWrate},#{userArate},#{userKrate},#{jsActype},#{jsCard},#{jsAddress},#{jsBank},#{jsBankadd},#{jsName},#{jsLhno},#{createId},#{createDate},#{status})
+		(#{id},#{parentId},#{account},#{password},#{fullName},#{simpleName},#{agType},#{agAddress},#{regMoney},#{regName},#{regAddress},#{regDate},#{regExt},#{regNo},#{busTerm},#{busAno},#{busSno},#{costWrate},#{costKrate},#{costArate},#{userWrate},#{userArate},#{userKrate},#{jsActype},#{jsCard},#{jsAddress},#{jsBank},#{jsBankadd},#{jsName},#{jsLhno},#{createId},#{createDate},#{regCard},#{tjStatus},#{tjRate},#{tjLimit},#{status})
 	</insert>
 	<update id="update" parameterType="UserDomain" flushCache="true">
 		update fm_user
@@ -221,6 +233,18 @@
 			<if test="createDate !=null">
 				CREATE_DATE = #{createDate},
 			</if>
+			<if test="regCard !=null">
+				REG_CARD = #{regCard},
+			</if>
+			<if test="tjStatus !=null">
+				TJ_STATUS = #{tjStatus},
+			</if>
+			<if test="tjRate !=null">
+				TJ_RATE = #{tjRate},
+			</if>
+			<if test="tjLimit !=null">
+				TJ_LIMIT = #{tjLimit},
+			</if>
 			<if test="status !=null">
 				STATUS = #{status},
 			</if>
@@ -239,12 +263,11 @@
 			</if>
 		</where>
 	</delete>
-
-
+	
 	<select id="getUser" parameterType="UserDomain" resultType="UserDomain"
 		useCache="false" flushCache="true">
 		select
-		ID,PARENT_ID,ACCOUNT,PASSWORD,FULL_NAME,SIMPLE_NAME,AG_TYPE,AG_ADDRESS,REG_MONEY,REG_NAME,REG_ADDRESS,REG_DATE,REG_EXT,REG_NO,BUS_TERM,BUS_ANO,BUS_SNO,COST_WRATE,COST_KRATE,COST_ARATE,USER_WRATE,USER_ARATE,USER_KRATE,JS_ACTYPE,JS_CARD,JS_ADDRESS,JS_BANK,JS_BANKADD,JS_NAME,JS_LHNO,CREATE_ID,CREATE_DATE,STATUS
+		ID,PARENT_ID,ACCOUNT,PASSWORD,FULL_NAME,SIMPLE_NAME,AG_TYPE,AG_ADDRESS,REG_MONEY,REG_NAME,REG_ADDRESS,REG_DATE,REG_EXT,REG_NO,BUS_TERM,BUS_ANO,BUS_SNO,COST_WRATE,COST_KRATE,COST_ARATE,USER_WRATE,USER_ARATE,USER_KRATE,JS_ACTYPE,JS_CARD,JS_ADDRESS,JS_BANK,JS_BANKADD,JS_NAME,JS_LHNO,CREATE_ID,CREATE_DATE,REG_CARD,TJ_STATUS,TJ_RATE,TJ_LIMIT,STATUS
 		from fm_user
 		<where>
 			<if test="account !=null">
