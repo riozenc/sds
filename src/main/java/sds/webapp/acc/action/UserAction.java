@@ -75,6 +75,8 @@ public class UserAction extends BaseAction {
 	 * @param userDomain
 	 * @return
 	 */
+	@ResponseBody
+	@RequestMapping(params = "type=checkUser")
 	public String checkUser(UserDomain userDomain) {
 
 		if (userService.checkUser(userDomain) > 0) {
@@ -91,6 +93,8 @@ public class UserAction extends BaseAction {
 	 * @param userDomain
 	 * @return
 	 */
+	@ResponseBody
+	@RequestMapping(params = "type=updateRate")
 	public String updateRate(UserDomain userDomain) {
 
 		// 审核后的代理商信息不能被修改
@@ -111,6 +115,8 @@ public class UserAction extends BaseAction {
 	 * @param userDomain
 	 * @return
 	 */
+	@ResponseBody
+	@RequestMapping(params = "type=findUserByKey")
 	public String findUserByKey(UserDomain userDomain) {
 
 		return JSONUtil.toJsonString(userService.findByKey(userDomain));
