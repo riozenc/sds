@@ -68,6 +68,15 @@ public class UserAction extends BaseAction {
 			return JSONUtil.toJsonString(new JsonResult(JsonResult.ERROR, "更新失败."));
 		}
 	}
+	@ResponseBody
+	@RequestMapping(params = "type=delete")
+	public String delete(UserDomain userDomain){
+		if (userService.delete(userDomain) > 0) {
+			return JSONUtil.toJsonString(new JsonResult(JsonResult.SUCCESS, "删除成功."));
+		} else {
+			return JSONUtil.toJsonString(new JsonResult(JsonResult.ERROR, "删除失败."));
+		}
+	}
 
 	/**
 	 * 审核代理商
@@ -133,7 +142,7 @@ public class UserAction extends BaseAction {
 	public String findUserByWhere(UserDomain userDomain) {
 		List<UserDomain> list = userService.findByWhere(userDomain);
 
-		return JSONUtil.getJsonResult(new JsonGrid(list.size(), 10, list));
+		return JSONUtil.toJsonString(new JsonGrid(list.size(), 10, list));
 	}
 
 }
