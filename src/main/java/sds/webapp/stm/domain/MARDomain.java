@@ -1,6 +1,7 @@
 package sds.webapp.stm.domain;
 
 import java.util.LinkedList;
+import java.util.List;
 
 import sds.webapp.acc.domain.MerchantDomain;
 import sds.webapp.acc.domain.UserDomain;
@@ -8,9 +9,9 @@ import sds.webapp.acc.domain.UserDomain;
 public class MARDomain {
 
 	private MerchantDomain merchant;
-	private LinkedList<UserDomain> agents;
+	private List<UserDomain> agents;
 
-	public MARDomain(MerchantDomain merchantDomain, LinkedList<UserDomain> agents) {
+	public MARDomain(MerchantDomain merchantDomain, List<UserDomain> agents) {
 
 		this.merchant = merchantDomain;
 		this.agents = agents;
@@ -25,7 +26,7 @@ public class MARDomain {
 		this.merchant = merchant;
 	}
 
-	public LinkedList<UserDomain> getAgents() {
+	public List<UserDomain> getAgents() {
 		return agents;
 	}
 

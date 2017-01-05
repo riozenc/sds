@@ -1,6 +1,8 @@
 package sds.webapp.stm.util;
 
 import java.util.ArrayList;
+import java.util.Date;
+import java.util.LinkedList;
 import java.util.List;
 
 import sds.webapp.acc.domain.MerchantDomain;
@@ -26,26 +28,27 @@ public class SettlementUtil {
 	public static List<ProfitDomain> createProfit(MARDomain mar, OrderDomain order) {
 
 		List<ProfitDomain> list = new ArrayList<ProfitDomain>();
+		LinkedList<UserDomain> agents = new LinkedList<>(mar.getAgents());
+
 		int size = mar.getAgents().size();
 		if (size == 0) {
 			return null;
 		}
 
 		// 商户代理分润
-		list.add(buildStmDomain(order, mar.getMerchant(), mar.getAgents().getFirst()));
+		list.add(buildStmDomain(order, mar.getMerchant(), agents.getFirst()));
 
 		// 代理分润
 		for (int i = 0; i < size; i++) {
 			// 判断代理商是否为主代理
-			if (mar.getAgents().getFirst().getParentId() == 0) {
+			if (agents.get(i).getParentId() == 0) {
 				// 剩余
-				list.add(buildStmDomain(order, mar.getMerchant(), mar.getAgents().removeFirst(), null));
+				list.add(buildStmDomain(order, mar.getMerchant(), agents.get(i), null));
 			} else {
-				list.add(buildStmDomain(order, mar.getMerchant(), mar.getAgents().removeFirst(),
-						mar.getAgents().getFirst()));
+				list.add(buildStmDomain(order, mar.getMerchant(), agents.get(i), agents.get(i + 1)));
 			}
 		}
-		
+
 		checkProfit(list);
 		return list;
 	}
@@ -62,22 +65,10 @@ public class SettlementUtil {
 		profitDomain.setTotalProfit(order.getAmount() * (getMerchantRate(merchantDomain, order.getChannelCode())));
 
 		profitDomain.setAgentId(agent.getId());
-		profitDomain.setAgentProfit(
-				getMerchantRate(merchantDomain, order.getChannelCode()) - getAgentRate(agent, order.getChannelCode()));
+		profitDomain.setAgentProfit(order.getAmount() * (getMerchantRate(merchantDomain, order.getChannelCode())
+				- getAgentRate(agent, order.getChannelCode())));
 		profitDomain.setOrderDay(order.getDate());
-
-		// StmDomain stmDomain = new StmDomain();
-		// stmDomain.setOrderId(order.getId());
-		// stmDomain.setMerchantAccount(order.getAccount());
-		// stmDomain.setAmount(order.getAmount());
-		// stmDomain.setPaymentChannle(order.getChannelCode());
-		// stmDomain.setMerchantRate(getMerchantRate(merchantDomain,
-		// order.getChannelCode()));
-		// stmDomain.setRateDiff(
-		// getMerchantRate(merchantDomain, order.getChannelCode()) -
-		// getAgentRate(agent, order.getChannelCode()));
-		// stmDomain.setAgent(agent);
-		// stmDomain.setOrderDate(order.getDate());
+		profitDomain.setCreateDate(new Date());
 
 		return profitDomain;
 	};
@@ -98,9 +89,10 @@ public class SettlementUtil {
 					order.getAmount() * (1 - getMerchantRate(merchantDomain, order.getChannelCode())));
 			profitDomain.setTotalProfit(order.getAmount() * (getMerchantRate(merchantDomain, order.getChannelCode())));
 
-			profitDomain.setAgentId(agent.getId());
+			profitDomain.setAgentId(agent.getParentId());
 			profitDomain.setAgentProfit(order.getAmount() * (getAgentRate(agent, order.getChannelCode())));
 			profitDomain.setOrderDay(order.getDate());
+			profitDomain.setCreateDate(new Date());
 			return profitDomain;
 		}
 
@@ -115,27 +107,20 @@ public class SettlementUtil {
 		profitDomain.setAgentProfit(order.getAmount()
 				* (getAgentRate(agent, order.getChannelCode()) - getAgentRate(parent, order.getChannelCode())));
 		profitDomain.setOrderDay(order.getDate());
-
-		// StmDomain stmDomain = new StmDomain();
-		// stmDomain.setOrderId(order.getOrderId());
-		// stmDomain.setMerchantAccount(order.getAccount());
-		// stmDomain.setAmount(order.getAmount());
-		// stmDomain.setPaymentChannle(order.getChannelCode());
-		// stmDomain.setMerchantRate(getMerchantRate(merchantDomain,
-		// order.getChannelCode()));
-		// stmDomain.setRateDiff(getAgentRate(agent,
-		// order.getChannelCode())-getAgentRate(parent,
-		// order.getChannelCode()));
-		// stmDomain.setAgent(agent);
-		// stmDomain.setOrderDate(order.getDate());
+		profitDomain.setCreateDate(new Date());
 
 		return profitDomain;
 	}
-	
+
+	/**
+	 * 校验最后结果
+	 * 
+	 * @param list
+	 */
 	private static void checkProfit(List<ProfitDomain> list) {
 		double sum = 0;
 		for (int i = 0; i < list.size(); i++) {
-			if ((i + 2) == list.size()) {
+			if ((i + 1) == list.size()) {//最后一位
 				if (sum != list.get(i).getAgentProfit()) {
 					list.get(i).setAgentProfit(list.get(i).getTotalProfit() - sum);
 				}

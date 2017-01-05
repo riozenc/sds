@@ -1,32 +1,30 @@
 package sds.common.json;
 
-import java.util.List;
-
 public class JsonGrid {
-	private Integer count;
-	private Integer psize;
+	private Integer totalRow;
+	private Integer pageCurrent;
 	private Object list;
 
-	public JsonGrid(Integer count, Integer psize, Object list) {
-		this.count = count;
-		this.psize = psize;
+	public JsonGrid(Integer totalRow, Integer pageCurrent, Object list) {
+		this.totalRow = totalRow;
+		this.pageCurrent = pageCurrent;
 		this.list = list;
 	}
 
-	public Integer getCount() {
-		return count;
+	public Integer getTotalRow() {
+		return totalRow;
 	}
 
-	public void setCount(Integer count) {
-		this.count = count;
+	public void setTotalRow(Integer totalRow) {
+		this.totalRow = totalRow;
 	}
 
-	public Integer getPsize() {
-		return psize;
+	public Integer getPageCurrent() {
+		return pageCurrent;
 	}
 
-	public void setPsize(Integer psize) {
-		this.psize = psize;
+	public void setPageCurrent(Integer pageCurrent) {
+		this.pageCurrent = pageCurrent;
 	}
 
 	public Object getList() {

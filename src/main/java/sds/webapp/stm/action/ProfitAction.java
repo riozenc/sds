@@ -1,15 +1,20 @@
 package sds.webapp.stm.action;
 
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.RequestMapping;
+
+import com.riozenc.quicktool.mybatis.db.DbFactory;
+import com.riozenc.quicktool.mybatis.db.SqlSessionManager;
 
 import sds.common.webapp.base.action.BaseAction;
 import sds.webapp.acc.domain.MerchantDomain;
@@ -45,10 +50,34 @@ public class ProfitAction extends BaseAction {
 	@Autowired
 	@Qualifier("userServiceImpl")
 	private UserService userService;
+	
+	@RequestMapping(params = "type=test")
+	public void test(){
+		
+		SqlSession sqlSession = DbFactory.getSqlSessionFactory().openSession(false);
+		
+		try {
+			
+			sqlSession.getConnection().setAutoCommit(false);
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		ProfitDomain profitDomain = new ProfitDomain();
+		profitDomain.setAccount("123");
+		profitDomain.setOrderId("123123");
+		
+		int i = sqlSession.insert("sds.webapp.stm.dao.ProfitDAO.insert", profitDomain);
+		System.out.println(i);
+		sqlSession.rollback();
+		
+	}
 
 	@RequestMapping(params = "type=profit")
 	public String profit() {
 		OrderDomain orderDomain = new OrderDomain();
+		orderDomain.setStatus(1);
 		// 获取指定时间的所有交易订单
 		List<OrderDomain> orderDomains = orderService.findByWhere(orderDomain);
 		// 获取商户代理商关系
@@ -57,10 +86,12 @@ public class ProfitAction extends BaseAction {
 		List<ProfitDomain> list = call(orderDomains, marMap);
 
 		// 批量插入
-		profitService.insertBatch(list);
-
+		profitService.insert(list.get(1));
+		int i = profitService.insertBatch(list);
+//		System.out.println(i);
 		return null;
 	}
+	
 
 	/**
 	 * 获取代理商商户关系
@@ -87,8 +118,8 @@ public class ProfitAction extends BaseAction {
 				}
 			}
 
-			MARDomain MARDomain = new MARDomain(temp, list);
-			marMap.put(temp.getAccount(), MARDomain);
+			MARDomain marDomain = new MARDomain(temp, list);
+			marMap.put(temp.getAccount(), marDomain);
 		}
 		return marMap;
 	}
@@ -97,10 +128,11 @@ public class ProfitAction extends BaseAction {
 		List<ProfitDomain> result = new ArrayList<>();
 
 		orderDomains.stream().forEach((order) -> {
-			System.out.println(order.getAccount());
-//			List<ProfitDomain> list = SettlementUtil.createProfit(marMap.get(order.getAccount()), order);
-//			System.out.println(list.size());
-			result.addAll(SettlementUtil.createProfit(marMap.get(order.getAccount()), order));
+
+			List<ProfitDomain> list = SettlementUtil.createProfit(marMap.get(order.getAccount()), order);
+			
+			result.addAll(list);
+
 		});
 		return result;
 	}
