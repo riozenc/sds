@@ -170,10 +170,10 @@ function bjui_index_exchange() {
                     </li>
                     <li class="dropdown active"><a href="#" class="dropdown-toggle theme" data-toggle="dropdown" title="切换皮肤"><i class="fa fa-tree"></i></a>
                         <ul class="dropdown-menu" role="menu" id="bjui-themes">
-                            <!--
+                            
                             <li><a href="javascript:;" class="theme_default" data-toggle="theme" data-theme="default">&nbsp;<i class="fa fa-tree"></i> 黑白分明&nbsp;&nbsp;</a></li>
                             <li><a href="javascript:;" class="theme_orange" data-toggle="theme" data-theme="orange">&nbsp;<i class="fa fa-tree"></i> 橘子红了</a></li>
-                            -->
+                            
                             <li><a href="javascript:;" class="theme_purple" data-toggle="theme" data-theme="purple">&nbsp;<i class="fa fa-tree"></i> 紫罗兰</a></li>
                             <li class="active"><a href="javascript:;" class="theme_blue" data-toggle="theme" data-theme="blue">&nbsp;<i class="fa fa-tree"></i> 天空蓝</a></li>
                             <li><a href="javascript:;" class="theme_green" data-toggle="theme" data-theme="green">&nbsp;<i class="fa fa-tree"></i> 绿草如茵</a></li>
@@ -195,21 +195,21 @@ function bjui_index_exchange() {
             <nav class="collapse navbar-collapse" id="bjui-navbar-collapse">
                 <ul class="nav navbar-nav navbar-right" id="bjui-hnav-navbar">
                     <li class="active">
-                        <a href="json/menu-form.json" data-toggle="sidenav" data-id-key="targetid">代理商管理</a>
+                        <a href="json/menu-user.json" data-toggle="sidenav" data-id-key="targetid">代理商管理</a>
                     </li>
                     <li>
-                        <a href="json/menu-base.json" data-toggle="sidenav" data-id-key="targetid">基础组件</a>
+                        <a href="json/menu-merchant.json" data-toggle="sidenav" data-id-key="targetid">商户管理</a>
                     </li>
                     <li>
-                        <a href="json/menu-datagrid.json" data-toggle="sidenav" data-id-key="targetid">数据表格(Datagrid)</a>
+                        <a href="json/menu-order.json" data-toggle="sidenav" data-id-key="targetid">订单管理</a>
                     </li>
                     <li>
-                        <a href="javascript:;" data-toggle="sidenav" data-tree="true" data-tree-options="{onClick:MainMenuClick}" data-id-key="targetid">待续……</a>
-                        <script class="items"></script>
+                        <a href="json/menu-profit.json" data-toggle="sidenav" data-id-key="targetid">分润管理</a>
                     </li>
                     <li>
-                        <a href="1.2" target="_blank">旧版DEMO</a>
+                        <a href="json/menu-conf.json" data-toggle="sidenav" data-id-key="targetid">系统设置</a>
                     </li>
+                   
                 </ul>
             </nav>
         </div>
@@ -249,17 +249,12 @@ function bjui_index_exchange() {
                             <div class="highlight">
                                 <pre class="prettyprint">
 ------------------------
-BJUI 更新至 V1.31
+系统说明
 ------------------------
-[修复] datagrid参数templateWidth、dialogFilterW为0时默认为启用；修复排序bug；新增字段参数itemattr，为items参数指定key/value；新增方法filter，用于数据筛选。
-[修复] 分页组件。
-[更新] ajaxform、ajaxsearch新增参数validate，是否验证标记。
-[更新] 验证插件nice validate更新至1.0.7。
-[更新] 图标字体Font Awesome更新至4.7.0。
-[调整] CSS细微调整。
+Hello World :）
 ------------------------
 
-　　　　　　2016-11-01 by.萧克南
+　　　　　　
                                 </pre>
                             </div>
                         </div>

@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="sds.webapp.ord.dao.OrderDAO">
+	<select id="findByKey" parameterType="OrderDomain" resultType="OrderDomain"
+		useCache="true">
+		select
+		ID,ORDER_ID,ORDER_NO,CHANNEL_CODE,RESP_CODE,RESP_INFO,AMOUNT,DATE,ACCOUNT,CODE_URL,REMARK,RETURN_CODE,STATUS
+		from fm_order
+		<where>
+			<if test="id !=null">
+				and ID = #{id}
+			</if>
+		</where>
+	</select>
+	<select id="findByWhere" parameterType="OrderDomain" resultType="OrderDomain"
+		useCache="true">
+		select
+		ID,ORDER_ID,ORDER_NO,CHANNEL_CODE,RESP_CODE,RESP_INFO,AMOUNT,DATE,ACCOUNT,CODE_URL,REMARK,RETURN_CODE,STATUS
+		from fm_order
+		<where>
+			<if test="id !=null">
+				and ID = #{id}
+			</if>
+			<if test="orderId !=null">
+				and ORDER_ID = #{orderId}
+			</if>
+			<if test="orderNo !=null">
+				and ORDER_NO = #{orderNo}
+			</if>
+			<if test="channelCode !=null">
+				and CHANNEL_CODE = #{channelCode}
+			</if>
+			<if test="respCode !=null">
+				and RESP_CODE = #{respCode}
+			</if>
+			<if test="respInfo !=null">
+				and RESP_INFO = #{respInfo}
+			</if>
+			<if test="amount !=null">
+				and AMOUNT = #{amount}
+			</if>
+			<if test="date !=null">
+				and DATE = #{date}
+			</if>
+			<if test="account !=null">
+				and ACCOUNT = #{account}
+			</if>
+			<if test="codeUrl !=null">
+				and CODE_URL = #{codeUrl}
+			</if>
+			<if test="remark !=null">
+				and REMARK = #{remark}
+			</if>
+			<if test="returnCode !=null">
+				and RETURN_CODE = #{returnCode}
+			</if>
+			<if test="status !=null">
+				and STATUS = #{status}
+			</if>
+		</where>
+	</select>
+	<insert id="insert" parameterType="OrderDomain" flushCache="true">
+		insert into
+		fm_order(ID,ORDER_ID,ORDER_NO,CHANNEL_CODE,RESP_CODE,RESP_INFO,AMOUNT,DATE,ACCOUNT,CODE_URL,REMARK,RETURN_CODE,STATUS)
+		values
+		(#{id},#{orderId},#{orderNo},#{channelCode},#{respCode},#{respInfo},#{amount},#{date},#{account},#{codeUrl},#{remark},#{returnCode},#{status})
+	</insert>
+	<update id="update" parameterType="OrderDomain" flushCache="true">
+		update fm_order
+		<set>
+			<if test="id !=null">
+				ID = #{id},
+			</if>
+			<if test="orderId !=null">
+				ORDER_ID = #{orderId},
+			</if>
+			<if test="orderNo !=null">
+				ORDER_NO = #{orderNo},
+			</if>
+			<if test="channelCode !=null">
+				CHANNEL_CODE = #{channelCode},
+			</if>
+			<if test="respCode !=null">
+				RESP_CODE = #{respCode},
+			</if>
+			<if test="respInfo !=null">
+				RESP_INFO = #{respInfo},
+			</if>
+			<if test="amount !=null">
+				AMOUNT = #{amount},
+			</if>
+			<if test="date !=null">
+				DATE = #{date},
+			</if>
+			<if test="account !=null">
+				ACCOUNT = #{account},
+			</if>
+			<if test="codeUrl !=null">
+				CODE_URL = #{codeUrl},
+			</if>
+			<if test="remark !=null">
+				REMARK = #{remark},
+			</if>
+			<if test="returnCode !=null">
+				RETURN_CODE = #{returnCode},
+			</if>
+			<if test="status !=null">
+				STATUS = #{status},
+			</if>
+		</set>
+		<where>
+			<if test="id !=null">
+				and ID = #{id}
+			</if>
+		</where>
+	</update>
+	<delete id="delete" parameterType="OrderDomain" flushCache="true">
+		delete from fm_order
+		<where>
+			<if test="id !=null">
+				and ID = #{id}
+			</if>
+		</where>
+	</delete>
+</mapper>

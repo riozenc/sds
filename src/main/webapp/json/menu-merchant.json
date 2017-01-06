@@ -1,0 +1,6 @@
+[
+    {"name":"商户管理", "children":[
+        {"id":"base-button", "name":"添加商户", "target":"navtab", "url":"html/form/merchantAdd.jsp"},
+        {"id":"base-input", "name":"商户列表", "target":"navtab", "url":"html/datagrid/merchantData.html"}
+    ]}
+]

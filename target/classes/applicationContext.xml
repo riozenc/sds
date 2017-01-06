@@ -78,8 +78,8 @@
 			<bean class="sds.web.interceptor.BaseInterceptor" />
 		</mvc:interceptor>
 		<mvc:interceptor>
-			<mvc:mapping path="/crm/**" />
-			<mvc:exclude-mapping path="/crm/menuAction/**" />
+			<mvc:mapping path="/sds/**" />
+			<mvc:exclude-mapping path="/sds/user**" />
 			<bean class="sds.web.interceptor.LoginInterceptor" />
 		</mvc:interceptor>
 	</mvc:interceptors>
@@ -101,8 +101,6 @@
 	<!-- init-method="initDBs" /> -->
 
 
-	<import resource="applicationContext-dataSource.xml" />
-<!-- 	<import resource="applicationContext-mybatis.xml" /> -->
 	<import resource="applicationContext-shiro.xml" />
 
 

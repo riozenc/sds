@@ -36,10 +36,11 @@ var COOKIE_NAME = 'sys_em_username';
 $(function() {
     choose_bg();
     changeCode();
+   
     if ($.cookie(COOKIE_NAME)){
         $("#j_username").val($.cookie(COOKIE_NAME));
         $("#j_password").focus();
-        $("#j_remember").attr('checked', true);
+        $("#j_remember").attr("checked",true);
     } else {
         $("#j_username").focus();
     }
@@ -72,30 +73,26 @@ $(function() {
 					path : '/'
 				}); //删除cookie
 			}
+			
 			$("#login_ok").attr("disabled", "disabled");
 			$("#login_ok").text(" 登录中... ");
-			var ajaxCallUrl = "loginAction/login.do";
-			
-			$.ajax({
-				 
+			$.ajax({	 
 				cache : false,
 				type : "POST",
-				url : ajaxCallUrl,
-				data : $('#login_form').serialize(),// 你的formid
+				url : "loginAction/login.do",
+				data : $('#login_form').serialize(),
 				dataType : "json",
 				error : function(request) {
 					alert("Connection error");
-					
 					return false;
 				},
 				success : function(data) {
-					alert(data.message);
 					if (data.statusCode == 200){
-						
-						window.location.href = 'index.jsp';
+						console.info(data);
+					    window.location.href = 'index.jsp';
 					}else{
-						//alert(data.message);
-						$("#login_ok").text("&nbsp;登&nbsp;录&nbsp;");
+						alert( data.message);
+						$("#login_ok").text(" 登 录 ");
 						$("#login_ok").removeAttr("disabled");
 					}
 					return false;	
@@ -142,14 +139,14 @@ function choose_bg() {
             <div class="form-group">
                 <div class="input-group">
                     <span class="input-group-addon" id="sizing-addon-password"><span class="glyphicon glyphicon-lock"></span></span>
-                    <input type="password" class="form-control" id="j_password" name="password" placeholder="登录密码" aria-describedby="sizing-addon-password">
+                    <input type="password" class="form-control" id="j_password" name="password" value="" placeholder="登录密码" aria-describedby="sizing-addon-password">
                 </div>
             </div>
             <!-- <div class="form-group">
                 <div class="input-group">
                     <span class="input-group-addon" id="sizing-addon-password"><span class="glyphicon glyphicon-exclamation-sign"></span></span>
-                    <input type="text" class="form-control" id="j_captcha" name="captcha" placeholder="éªè¯ç " aria-describedby="sizing-addon-password">
-                    <span class="input-group-addon code" id="basic-addon-code"><img id="captcha_img" src="images/captcha.jpg" alt="ç¹å»æ´æ¢" title="ç¹å»æ´æ¢" class="m"></span>
+                    <input type="text" class="form-control" id="j_captcha" name="captcha" placeholder="验证码" aria-describedby="sizing-addon-password">
+                    <span class="input-group-addon code" id="basic-addon-code"><img id="captcha_img" src="images/captcha.jpg" alt="点击更换" title="点击更换" class="m"></span>
                 </div>
             </div> -->
             <div class="form-group">
@@ -163,7 +160,7 @@ function choose_bg() {
             </div>
             <div class="text-center">
                 <hr>
-                2014 - 2016 <a href="login.html">收单云系统</a>
+                2016 - 2017 <a href="javascript:;" onclick="choose_bg()">收单云系统</a>
             </div>
         </form>
     </div>
