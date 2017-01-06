@@ -98,7 +98,7 @@ $(function() {
 			    //editUrl: 'user.do?type=update',
 			    delUrl:'user.do?type=delete',
 			    delPK:'id',
-			    paging: false,
+			    paging: {pageSize:10, pageCurrent:data.pageCurrent},
 			    linenumberAll: true
 			})
 		}

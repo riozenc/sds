@@ -1,8 +1,21 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<script type="text/javascript">
+BJUI.ajax('ajaxform', {
+    url: 'merchant.do?type=update',
+    form: $('#j_custom_form'),
+    validate: true,
+    loadingmask: true,
+    okCallback: function(json, options) {
+    	BJUI.dialog('close', 'editUser'); //关闭
+    	BJUI.navtab('refresh', 'base-input'); //刷新
+       
+    }
+})
+</script>
 <div class="bjui-pageContent">
     <div class="bs-example">
-        <form action="user.do?type=insert" id="j_custom_form" data-toggle="ajaxform">
+        <form  id="j_custom_form" data-toggle="ajaxform">
         <h4>基 本 信 息</h4>
         <div class="bjui-row col-2">
             <label class="row-label " >ID</label>

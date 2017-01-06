@@ -3,110 +3,93 @@
 <script type="text/javascript">
 
 $(function() {
-	$.ajax({
-		cache : false,
-		type : "POST",
-		url : "user.do?type=findUserByWhere",
-		data : null,
-		dataType : "json",
-		error : function(request) {
-			console.info(request);
-			alert("Connection error");
-			return false;
-		},
-		success : function(data) {
-			
-			var count = data.totalRow;  //总数
-			var listObj=data.list;
-			var list = JSON.stringify(listObj);  
-			console.info(list);
-			var jsonData = JSON.parse(list); 
-			
-			$('#user_datagrid').datagrid({
-			    height: '100%',
-			    tableWidth:'99%',
-			    gridTitle : '代理商列表',
-			    showToolbar: true,
-			    toolbarItem: 'del',
-			    local: 'local',
-			    data: jsonData,
-			    columns: [
-			         {
-			             name: 'account',
-			             label: '登录帐号',
-			             align: 'center',
-			             width: 130
-			         },
-			        {
-			            name: 'fullName',
-			            label: '企业名称',
-			            align: 'center',
-			            width: 200
-			        },
-			        {
-			            name: 'agType',
-			            label: '企业类型',
-			            align: 'center',
-			            width: 100
-			        },
-			        {
-			            name: 'regName',
-			            label: '法人姓名',
-			            align: 'center',
-			            width: 80
-			        },
-			        {
-			            name: 'parentId',
-			            label: '上级名称',
-			            align: 'center'
-			            
-			        },
-			        {
-			            name: 'status',
-			            label: '状态',
-			            align: 'center',
-			            width: 70,
-			            render: function(value) {
-			            	if(value == 0){
-			            		return "未审核";
-			            	}else if(value == 1){
-			            		return "通过";
-			            	}else if(value == 2){
-			            		return "禁用";
-			            	}else{
-			            		return value;
-			            	}
-			                
-			            }
-			        },
-			        {
-			            name: 'createDate',
-			            label: '注册时间',
-			            align: 'center',
-			            width:105
-			        },
-			        {
-			            name: 'id',
-			            label: '操作',
-			            align: 'center',
-			            render: function(value) {
-			            	return '<button type="button" class="btn-blue btn" data-icon="edit" onclick="dialog_user('+value+');">详情</button>';
-			            }
-			        }
-			    ],
-			    //editMode:'dialog',
-			    //editUrl: 'user.do?type=update',
-			    delUrl:'user.do?type=delete',
-			    delPK:'id',
-			    paging: false,
-			    linenumberAll: true
-			})
-		}
-	});
+
+	$('#merchant_datagrid').datagrid({
+	    height: '100%',
+	    tableWidth:'99.5%',
+	    gridTitle : ' ',
+	    showToolbar: true,
+	    toolbarItem: 'del',
+	    local: 'local',
+	    dataUrl: 'merchant.do?type=findMerchantByWhere',
+	    columns: [
+	         {
+	             name: 'account',
+	             label: '帐号',
+	             align: 'center',
+	             width: 130
+	         },
+	        {
+	            name: 'password',
+	            label: '密码',
+	            align: 'center',
+	            width: 200
+	        },
+	        {
+	            name: 'realName',
+	            label: '真实姓名',
+	            align: 'center',
+	            width: 100
+	        },
+	        {
+	            name: 'cmerSort',
+	            label: '商户简称',
+	            align: 'center',
+	            width: 80
+	        },
+	        {
+	            name: 'agentId',
+	            label: '上级名称',
+	            align: 'center'
+	            
+	        },
+	        {
+	            name: 'status',
+	            label: '状态',
+	            align: 'center',
+	            width: 70,
+	            render: function(value) {
+	            	if(value == 0){
+	            		return "未审核";
+	            	}else if(value == 1){
+	            		return "通过";
+	            	}else if(value == 2){
+	            		return "禁用";
+	            	}else{
+	            		return value;
+	            	}
+	                
+	            }
+	        },
+	        {
+	            name: 'createDate',
+	            label: '注册时间',
+	            align: 'center',
+	            width:105,
+	            type:'date',
+	            pattern:'yyyy-MM-dd',
+	            render:function(value){return value?value.substr(0,16):value}
+	        },
+	        {
+	            name: 'id',
+	            label: '操作',
+	            align: 'center',
+	            render: function(value) {
+	            	return '<button type="button" class="btn-blue btn" data-icon="edit" onclick="dialog_merchant('+value+');">详情</button>';
+	            }
+	        }
+	    ],
+	    //editMode:'dialog',
+	    //editUrl: 'user.do?type=update',
+	    delUrl:'merchant.do?type=delete',
+	    delPK:'id',
+	    paging: false,
+	    linenumberAll: true
+	})
 });
-function dialog_user(id) {
+function dialog_merchant(id) {
 	var ajaxdata={id:id} ;
-    var ajaxCallUrl="user.do?type=findUserByKey";
+    var ajaxCallUrl="merchant.do?type=findMerchantByWhere";
 	$.ajax({
 		cache : false,
 		type : "POST",
@@ -120,7 +103,7 @@ function dialog_user(id) {
 		success : function(data) {
 			BJUI.dialog({
 			    id:'editUser',
-			    url:'html/form/editUser.jsp',
+			    url:'html/form/merchantEdit.jsp',
 			    title:'详情',
 			    width:1000,
 			    height:500,
@@ -149,5 +132,5 @@ function dialog_user(id) {
 }
 
 </script>
-<table id="user_datagrid" class="table table-bordered">
+<table id="merchant_datagrid" class="table table-bordered">
 </table>
