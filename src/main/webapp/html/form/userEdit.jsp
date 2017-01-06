@@ -15,7 +15,7 @@ BJUI.ajax('ajaxform', {
 </script>
 <div class="bjui-pageContent">
     <div class="bs-example">
-        <form action="user.do?type=update" id="j_custom_form" data-toggle="ajaxform" closeCurrent="true">
+        <form action="user.do?type=update" id="j_custom_form" data-toggle="ajaxform" >
         <h4>基 本 信 息</h4>
         <div class="bjui-row col-2">
         	<label class="row-label " >ID</label>

@@ -8,9 +8,9 @@ $(function() {
 	    height: '100%',
 	    tableWidth:'99.5%',
 	    gridTitle : ' ',
+	    local:'remote',
 	    showToolbar: true,
 	    toolbarItem: 'del',
-	    local: 'local',
 	    dataUrl: 'merchant.do?type=findMerchantByWhere',
 	    columns: [
 	         {
@@ -75,25 +75,22 @@ $(function() {
 	            label: '操作',
 	            align: 'center',
 	            render: function(value) {
-	            	return '<button type="button" class="btn-blue btn" data-icon="edit" onclick="dialog_merchant('+value+');">详情</button>';
+	            	return value+'<button type="button" class="btn-blue btn" data-icon="edit" onclick="dialog_merchant('+value+');">详情</button>';
 	            }
 	        }
 	    ],
-	    //editMode:'dialog',
-	    //editUrl: 'user.do?type=update',
+	    paging:{pageSize:5,selectPageSize:'5,10,20'},
 	    delUrl:'merchant.do?type=delete',
 	    delPK:'id',
-	    paging: false,
 	    linenumberAll: true
 	})
 });
 function dialog_merchant(id) {
 	var ajaxdata={id:id} ;
-    var ajaxCallUrl="merchant.do?type=findMerchantByWhere";
 	$.ajax({
 		cache : false,
 		type : "POST",
-		url : ajaxCallUrl,
+		url : "merchant.do?type=findMerchantByWhere",
 		data : ajaxdata,
 		dataType : "json",
 		error : function(request) {
@@ -101,30 +98,19 @@ function dialog_merchant(id) {
 			return false;
 		},
 		success : function(data) {
+			console.info(data);
 			BJUI.dialog({
-			    id:'editUser',
+			    id:'editMerchant',
 			    url:'html/form/merchantEdit.jsp',
 			    title:'详情',
 			    width:1000,
 			    height:500,
 			    onLoad:function(){
-			    	$.each(data, function(key, obj) {
+			    	$.each(data.list[0], function(key, obj) {
 			    		$("#"+key).val(obj);
 					});
 			    }
 			});
-			
-			
-			/*
-			if (data.statusCode == 200){
-				
-			        	window.location.href = 'index.jsp';
-			      
-			}else{
-				alert( data.message);
-				$("#login_ok").text("&nbsp;登&nbsp;录&nbsp;");
-				$("#login_ok").removeAttr("disabled");
-			}*/
 			return false;	
 		}
 	});

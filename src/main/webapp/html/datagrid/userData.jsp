@@ -15,11 +15,11 @@ $(function() {
 			return false;
 		},
 		success : function(data) {
-			
+			console.info(data);
 			var count = data.totalRow;  //总数
 			var listObj=data.list;
 			var list = JSON.stringify(listObj);  
-			console.info(list);
+			
 			var jsonData = JSON.parse(list); 
 			
 			$('#user_datagrid').datagrid({
