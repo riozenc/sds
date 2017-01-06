@@ -68,6 +68,12 @@ public class UserAction extends BaseAction {
 			return JSONUtil.toJsonString(new JsonResult(JsonResult.ERROR, "更新失败."));
 		}
 	}
+	
+	/**
+	 * 删除代理商
+	 * @param userDomain
+	 * @return
+	 */
 	@ResponseBody
 	@RequestMapping(params = "type=delete")
 	public String delete(UserDomain userDomain){

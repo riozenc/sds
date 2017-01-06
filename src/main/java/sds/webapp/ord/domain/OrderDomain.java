@@ -5,7 +5,7 @@ import java.util.Date;
 import com.riozenc.quicktool.annotation.TablePrimaryKey;
 import com.riozenc.quicktool.mybatis.MybatisEntity;
 
-public class OrderDomain implements MybatisEntity{
+public class OrderDomain extends MybatisEntity{
 	@TablePrimaryKey
 	private Integer id;// `id` int(11) NOT NULL AUTO_INCREMENT,
 	private String orderId;// `order_id` varchar(255) DEFAULT NULL COMMENT

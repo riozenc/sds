@@ -12,7 +12,7 @@ import org.apache.shiro.authc.UsernamePasswordToken;
 import com.riozenc.quicktool.annotation.TablePrimaryKey;
 import com.riozenc.quicktool.mybatis.MybatisEntity;
 
-public class UserDomain implements MybatisEntity {
+public class UserDomain extends MybatisEntity {
 	@TablePrimaryKey
 	private Integer id;
 	private Integer parentId;// `parent_id` int(255) DEFAULT NULL COMMENT
