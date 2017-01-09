@@ -11,8 +11,9 @@ import org.apache.shiro.authc.UsernamePasswordToken;
 
 import com.riozenc.quicktool.annotation.TablePrimaryKey;
 import com.riozenc.quicktool.mybatis.MybatisEntity;
+import com.riozenc.quicktool.mybatis.persistence.Page;
 
-public class UserDomain extends MybatisEntity {
+public class UserDomain extends Page implements MybatisEntity {
 	@TablePrimaryKey
 	private Integer id;
 	private Integer parentId;// `parent_id` int(255) DEFAULT NULL COMMENT

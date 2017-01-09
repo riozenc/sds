@@ -3,7 +3,7 @@ package sds.webapp.sys.domain;
 import com.riozenc.quicktool.annotation.TablePrimaryKey;
 import com.riozenc.quicktool.mybatis.MybatisEntity;
 
-public class ConfDomain extends MybatisEntity{
+public class ConfDomain implements MybatisEntity{
 	@TablePrimaryKey
 	private Integer id;
 	private String type;//

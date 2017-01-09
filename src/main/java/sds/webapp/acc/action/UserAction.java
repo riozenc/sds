@@ -56,6 +56,7 @@ public class UserAction extends BaseAction {
 
 	/**
 	 * 更新代理商信息
+	 * 
 	 * @param userDomain
 	 * @return
 	 */
@@ -68,15 +69,16 @@ public class UserAction extends BaseAction {
 			return JSONUtil.toJsonString(new JsonResult(JsonResult.ERROR, "更新失败."));
 		}
 	}
-	
+
 	/**
 	 * 删除代理商
+	 * 
 	 * @param userDomain
 	 * @return
 	 */
 	@ResponseBody
 	@RequestMapping(params = "type=delete")
-	public String delete(UserDomain userDomain){
+	public String delete(UserDomain userDomain) {
 		if (userService.delete(userDomain) > 0) {
 			return JSONUtil.toJsonString(new JsonResult(JsonResult.SUCCESS, "删除成功."));
 		} else {
@@ -148,7 +150,7 @@ public class UserAction extends BaseAction {
 	public String findUserByWhere(UserDomain userDomain) {
 		List<UserDomain> list = userService.findByWhere(userDomain);
 
-		return JSONUtil.toJsonString(new JsonGrid(list.size(), 10, list));
+		return JSONUtil.toJsonString(new JsonGrid(userDomain.getTotalRow(), userDomain.getPageCurrent(), list));
 	}
 
 }

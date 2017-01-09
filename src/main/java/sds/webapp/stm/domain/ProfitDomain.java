@@ -11,7 +11,7 @@ import com.riozenc.quicktool.mybatis.MybatisEntity;
  * @author riozenc
  *
  */
-public class ProfitDomain extends MybatisEntity{
+public class ProfitDomain implements MybatisEntity{
 	@TablePrimaryKey
 	private Integer id;// `id` int(11) NOT NULL AUTO_INCREMENT,
 	private String orderId;// '订单号',
