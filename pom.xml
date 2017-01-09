@@ -170,7 +170,7 @@
 			<artifactId>quicktool</artifactId>
 			<version>0.0.1-SNAPSHOT</version>
 			<scope>system</scope>
-			<systemPath>${project.basedir}/lib/quicktool.jar</systemPath>
+			<systemPath>${project.basedir}/lib/quicktool-1.2.jar</systemPath>
 		</dependency>
 
 
