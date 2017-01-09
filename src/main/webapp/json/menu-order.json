@@ -1,0 +1,5 @@
+[
+    {"name":"交易管理", "children":[
+        {"id":"orderData", "name":"订单查询", "target":"navtab", "url":"html/datagrid/orderData.jsp"}
+    ]}
+]
