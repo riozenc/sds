@@ -119,7 +119,8 @@ function dialog_user(id) {
             <input type="text" name="account" class="form-control" size="15">
                 
             <span>交易时间：</span>
-            <input type="text" name="date" class="form-control" data-toggle="datepicker" placeholder="点击选择日期" >
+            <input type="text" name="startDate" class="form-control" data-toggle="datepicker" placeholder="点击选择日期" >
+            <input type="text" name="endDate" class="form-control" data-toggle="datepicker" placeholder="点击选择日期" >
                 
             <div class="btn-group">
                 <button type="submit" class="btn-green" data-icon="search">开始搜索！</button>
@@ -129,5 +130,7 @@ function dialog_user(id) {
     </fieldset>
 </form>
 </div>
+<div class="bjui-pageContent">
 <table id="order_datagrid" class="table table-bordered">
 </table>
+</div>
