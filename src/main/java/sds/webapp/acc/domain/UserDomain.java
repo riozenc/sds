@@ -73,6 +73,7 @@ public class UserDomain extends Page<UserDomain> implements MybatisEntity {
 							// '创建时间',
 
 	private String regCard;// 开户人身份证
+	private String appCode;// 推荐码
 	private Integer tjStatus;
 	private Double tjRate;
 	private Double tjLimit;
@@ -348,6 +349,14 @@ public class UserDomain extends Page<UserDomain> implements MybatisEntity {
 
 	public void setRegCard(String regCard) {
 		this.regCard = regCard;
+	}
+
+	public String getAppCode() {
+		return appCode;
+	}
+
+	public void setAppCode(String appCode) {
+		this.appCode = appCode;
 	}
 
 	public Integer getTjStatus() {

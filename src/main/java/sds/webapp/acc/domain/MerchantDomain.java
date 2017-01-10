@@ -49,8 +49,8 @@ public class MerchantDomain extends Page<MerchantDomain> implements MybatisEntit
 							// '微信费率',
 	private Double aliRate;// `ali_rate` double(10,5) DEFAULT NULL COMMENT
 							// '支付宝费率',
-	private String appcode;// `appcode` varchar(255) DEFAULT NULL COMMENT '推广码',
-	private String precode;// `precode` varchar(255) DEFAULT NULL COMMENT
+	private String appCode;// `appcode` varchar(255) DEFAULT NULL COMMENT '推广码',
+	private String preCode;// `precode` varchar(255) DEFAULT NULL COMMENT
 							// '受邀邀请码',
 	private Integer userType;// `user_type` tinyint(4) DEFAULT '1' COMMENT
 								// '用户类型，1普通用户，2企业用户',
@@ -59,6 +59,8 @@ public class MerchantDomain extends Page<MerchantDomain> implements MybatisEntit
 	private String busNo;// `bus_no` varchar(255) DEFAULT NULL COMMENT
 							// '营业执照注册号',
 	private Integer agentId;// `agent_id` int(11) DEFAULT NULL COMMENT '所属代理商',
+	
+	public MerchantDomain(){}
 
 	public MerchantDomain(UsernamePasswordToken usernamePasswordToken) {
 		this.account = usernamePasswordToken.getUsername();// 手机号
@@ -256,20 +258,20 @@ public class MerchantDomain extends Page<MerchantDomain> implements MybatisEntit
 		this.aliRate = aliRate;
 	}
 
-	public String getAppcode() {
-		return appcode;
+	public String getAppCode() {
+		return appCode;
 	}
 
-	public void setAppcode(String appcode) {
-		this.appcode = appcode;
+	public void setAppCode(String appCode) {
+		this.appCode = appCode;
 	}
 
-	public String getPrecode() {
-		return precode;
+	public String getPreCode() {
+		return preCode;
 	}
 
-	public void setPrecode(String precode) {
-		this.precode = precode;
+	public void setPreCode(String preCode) {
+		this.preCode = preCode;
 	}
 
 	public Integer getUserType() {

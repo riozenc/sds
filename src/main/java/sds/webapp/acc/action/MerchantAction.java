@@ -14,7 +14,9 @@ import sds.common.json.JsonGrid;
 import sds.common.json.JsonResult;
 import sds.common.webapp.base.action.BaseAction;
 import sds.webapp.acc.domain.MerchantDomain;
+import sds.webapp.acc.domain.UserDomain;
 import sds.webapp.acc.service.MerchantService;
+import sds.webapp.acc.service.UserService;
 
 @ControllerAdvice
 @RequestMapping("merchant")
@@ -23,6 +25,9 @@ public class MerchantAction extends BaseAction {
 	@Autowired
 	@Qualifier("merchantServiceImpl")
 	private MerchantService merchantService;
+	@Autowired
+	@Qualifier("userServiceImpl")
+	private UserService userService;
 
 	/**
 	 * 新增商户
@@ -41,6 +46,12 @@ public class MerchantAction extends BaseAction {
 		}
 	}
 
+	/**
+	 * 删除商户
+	 * 
+	 * @param merchantDomain
+	 * @return
+	 */
 	@ResponseBody
 	@RequestMapping(params = "type=delete")
 	public String delete(MerchantDomain merchantDomain) {
@@ -97,5 +108,35 @@ public class MerchantAction extends BaseAction {
 		} else {
 			return JSONUtil.toJsonString(new JsonResult(JsonResult.ERROR, "更新商户失败"));
 		}
+	}
+
+	@ResponseBody
+	@RequestMapping(params = "type=checkMerchant")
+	public String checkMerchant(MerchantDomain merchantDomain) {
+
+		String appCode = merchantDomain.getAppCode();// 推荐码
+		String account = null;
+		if (appCode.startsWith("EA")) {
+			// 代理商
+			account = appCode.substring(2);
+			UserDomain param = new UserDomain();
+			param.setAccount(account);
+			param = userService.findByKey(param);
+
+			merchantDomain.setAgentId(param.getId());// 建立代理商与商户关系
+
+		} else if (appCode.startsWith("UA")) {
+			// 商户
+			account = appCode.substring(2);
+			MerchantDomain param = new MerchantDomain();
+			param.setAccount(account);
+			param = merchantService.findByKey(param);
+
+		} else {
+			// 违法推荐码
+			return JSONUtil.toJsonString(new JsonResult(JsonResult.ERROR, "无效的推荐码."));
+		}
+
+		return JSONUtil.toJsonString(new JsonResult(JsonResult.SUCCESS, "审核商户成功."));
 	}
 }
