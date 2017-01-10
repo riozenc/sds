@@ -4,44 +4,44 @@
 
 $(function() {
 		
-	$('#user_datagrid').datagrid({
+	$('#order_datagrid').datagrid({
 	    height: '100%',
 	    tableWidth:'99.5%',
 	    gridTitle : ' ',
 	    local: 'remote',
 	    showToolbar: true,
 	    toolbarItem: 'del',
-	    dataUrl:"user.do?type=findUserByWhere",
+	    dataUrl:"order.do?type=findOrder",
 	    columns: [
 	         {
-	             name: 'account',
-	             label: '登录帐号',
+	             name: 'orderId',
+	             label: '订单号',
 	             align: 'center',
 	             width: 130
 	         },
 	        {
-	            name: 'fullName',
-	            label: '企业名称',
+	            name: 'account',
+	            label: '登录手机号',
 	            align: 'center',
-	            width: 200
+	            width:100
 	        },
 	        {
-	            name: 'agType',
-	            label: '企业类型',
+	            name: 'channelCode',
+	            label: '交易通道',
 	            align: 'center',
 	            width: 100
 	        },
 	        {
-	            name: 'regName',
-	            label: '法人姓名',
+	            name: 'amount',
+	            label: '交易金额',
 	            align: 'center',
-	            width: 80
+	            width: 50
 	        },
 	        {
-	            name: 'parentId',
-	            label: '上级名称',
-	            align: 'center'
-	            
+	            name: 'date',
+	            label: '交易时间',
+	            align: 'center',
+	            width:105
 	        },
 	        {
 	            name: 'status',
@@ -50,23 +50,18 @@ $(function() {
 	            width: 70,
 	            render: function(value) {
 	            	if(value == 0){
-	            		return "未审核";
+	            		return "未查询";
 	            	}else if(value == 1){
-	            		return "通过";
+	            		return "成功";
 	            	}else if(value == 2){
-	            		return "禁用";
+	            		return "失败";
 	            	}else{
 	            		return value;
 	            	}
 	                
 	            }
 	        },
-	        {
-	            name: 'createDate',
-	            label: '注册时间',
-	            align: 'center',
-	            width:105
-	        },
+	       
 	        {
 	            name: 'id',
 	            label: '操 作',
@@ -77,7 +72,7 @@ $(function() {
 	        }
 	    ],
 	    
-	    delUrl:'user.do?type=delete',
+	    delUrl:'order.do?type=delete',
 	    delPK:'id',
 	    paging:{pageSize:5,selectPageSize:'5,10,20'},
 	    linenumberAll: true
@@ -115,5 +110,24 @@ function dialog_user(id) {
     
 }
 </script>
-<table id="user_datagrid" class="table table-bordered">
+<div class="bjui-pageHeader" style="background-color:#fefefe; border-bottom:none;">
+<form data-toggle="ajaxsearch" data-options="{searchDatagrid:$.CurrentNavtab.find('#order_datagrid')}">
+    <fieldset>
+        <legend style="font-weight:normal;">页头搜索：</legend>
+        <div style="margin:0; padding:1px 5px 5px;">
+            <span>登录手机号：</span>
+            <input type="text" name="account" class="form-control" size="15">
+                
+            <span>交易时间：</span>
+            <input type="text" name="date" class="form-control" data-toggle="datepicker" placeholder="点击选择日期" >
+                
+            <div class="btn-group">
+                <button type="submit" class="btn-green" data-icon="search">开始搜索！</button>
+                <button type="reset" class="btn-orange" data-icon="times">重置</button>
+            </div>
+        </div>
+    </fieldset>
+</form>
+</div>
+<table id="order_datagrid" class="table table-bordered">
 </table>
