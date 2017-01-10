@@ -11,12 +11,13 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.riozenc.quicktool.common.util.json.JSONUtil;
 
 import sds.common.json.JsonGrid;
+import sds.common.webapp.base.action.BaseAction;
 import sds.webapp.ord.domain.OrderDomain;
 import sds.webapp.ord.service.OrderService;
 
 @ControllerAdvice
 @RequestMapping("/order")
-public class OrderAction {
+public class OrderAction extends BaseAction {
 
 	@Autowired
 	@Qualifier("orderServiceImpl")

@@ -71,7 +71,6 @@ public class ProfitAction extends BaseAction {
 		List<ProfitDomain> list = call(orderDomains, marMap);
 
 		// 批量插入
-		profitService.insert(list.get(1));
 		int i = profitService.insertBatch(list);
 		// System.out.println(i);
 		return null;

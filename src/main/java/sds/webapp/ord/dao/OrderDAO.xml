@@ -40,10 +40,10 @@
 				and AMOUNT = #{amount}
 			</if>
 			<if test="startDate !=null">
-				and DATE &gt;=#{startDate}
+				and DATE_FORMAT(DATE, '%Y-%m-%d') &gt;= DATE_FORMAT(#{startDate}, '%Y-%m-%d')
 			</if>
 			<if test="endDate !=null">
-				and DATE &lt;= #{endDate}
+				and DATE_FORMAT(DATE, '%Y-%m-%d') &lt;= DATE_FORMAT(#{endDate}, '%Y-%m-%d')
 			</if>
 			<if test="account !=null">
 				and ACCOUNT = #{account}

@@ -53,6 +53,17 @@ public class SettlementUtil {
 		return list;
 	}
 
+	/**
+	 * 推荐人分润
+	 */
+	private static void tjStm(OrderDomain order, MerchantDomain merchantDomain, UserDomain agent) {
+		if (agent.getTjStatus() == 1) {
+			// 开启
+			
+			
+		}
+	}
+
 	// 处理商户跟代理商分润
 	private static ProfitDomain buildStmDomain(OrderDomain order, MerchantDomain merchantDomain, UserDomain agent) {
 
@@ -120,7 +131,7 @@ public class SettlementUtil {
 	private static void checkProfit(List<ProfitDomain> list) {
 		double sum = 0;
 		for (int i = 0; i < list.size(); i++) {
-			if ((i + 1) == list.size()) {//最后一位
+			if ((i + 1) == list.size()) {// 最后一位
 				if (sum != list.get(i).getAgentProfit()) {
 					list.get(i).setAgentProfit(list.get(i).getTotalProfit() - sum);
 				}
