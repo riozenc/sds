@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.riozenc.quicktool.common.util.json.JSONUtil;
 
@@ -21,6 +22,7 @@ public class OrderAction {
 	@Qualifier("orderServiceImpl")
 	private OrderService orderService;
 
+	@ResponseBody
 	@RequestMapping(params = "type=findOrder")
 	public String findOrderByWhere(OrderDomain orderDomain) {
 

@@ -94,17 +94,17 @@
 			</if>
 		</set>
 		<where>
-			<if test="id !=null">
-				and ID = #{id}
-			</if>
+			
+				ID = #{id}
+			
 		</where>
 	</update>
 	<delete id="delete" parameterType="ProfitDomain" flushCache="true">
 		delete from fm_profit
 		<where>
-			<if test="id !=null">
-				and ID = #{id}
-			</if>
+			
+				 ID = #{id}
+			
 		</where>
 	</delete>
 </mapper>

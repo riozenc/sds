@@ -10,7 +10,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.riozenc.quicktool.common.util.json.JSONUtil;
+
+import sds.common.json.JsonGrid;
 import sds.common.webapp.base.action.BaseAction;
 import sds.webapp.acc.domain.MerchantDomain;
 import sds.webapp.acc.domain.UserDomain;
@@ -45,6 +49,15 @@ public class ProfitAction extends BaseAction {
 	@Autowired
 	@Qualifier("userServiceImpl")
 	private UserService userService;
+
+	@ResponseBody
+	@RequestMapping(params = "type=getProfit")
+	public String getProfit(ProfitDomain profitDomain) {
+
+		List<ProfitDomain> list = profitService.findByWhere(profitDomain);
+
+		return JSONUtil.toJsonString(new JsonGrid(list.size(), 1, list));
+	}
 
 	@RequestMapping(params = "type=profit")
 	public String profit() {

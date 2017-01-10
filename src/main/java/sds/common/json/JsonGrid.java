@@ -12,6 +12,12 @@ public class JsonGrid {
 		this.pageCurrent = page.getPageCurrent();
 		this.list = list;
 	}
+	
+	public JsonGrid(int totalRow,int pageCurrent, Object list) {
+		this.totalRow = totalRow;
+		this.pageCurrent = pageCurrent;
+		this.list = list;
+	}
 
 	public Integer getTotalRow() {
 		return totalRow;
