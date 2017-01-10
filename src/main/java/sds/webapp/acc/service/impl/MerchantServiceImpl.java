@@ -5,11 +5,9 @@ import java.util.List;
 
 import com.riozenc.quicktool.annotation.TransactionDAO;
 import com.riozenc.quicktool.annotation.TransactionService;
-import com.riozenc.quicktool.common.util.cryption.en.WebPasswordUtils;
 
 import sds.webapp.acc.dao.MerchantDAO;
 import sds.webapp.acc.domain.MerchantDomain;
-import sds.webapp.acc.domain.UserDomain;
 import sds.webapp.acc.service.MerchantService;
 
 @TransactionService
@@ -22,7 +20,6 @@ public class MerchantServiceImpl implements MerchantService {
 	public int insert(MerchantDomain t) {
 		// TODO Auto-generated method stub
 		
-		t.setPassword(WebPasswordUtils.encodePassword(t.getPassword()));
 		t.setCreateDate(new Date());
 		t.setStatus(0);
 		
@@ -38,9 +35,6 @@ public class MerchantServiceImpl implements MerchantService {
 	@Override
 	public int update(MerchantDomain t) {
 		// TODO Auto-generated method stub
-		if (t.getPassword() != null) {
-			t.setPassword(WebPasswordUtils.encodePassword(t.getPassword()));
-		}
 		return merchantDAO.update(t);
 	}
 

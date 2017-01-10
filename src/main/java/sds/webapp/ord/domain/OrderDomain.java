@@ -6,7 +6,7 @@ import com.riozenc.quicktool.annotation.TablePrimaryKey;
 import com.riozenc.quicktool.mybatis.MybatisEntity;
 import com.riozenc.quicktool.mybatis.persistence.Page;
 
-public class OrderDomain extends Page<OrderDomain> implements MybatisEntity{
+public class OrderDomain extends Page<OrderDomain> implements MybatisEntity {
 	@TablePrimaryKey
 	private Integer id;// `id` int(11) NOT NULL AUTO_INCREMENT,
 	private String orderId;// `order_id` varchar(255) DEFAULT NULL COMMENT
@@ -20,6 +20,8 @@ public class OrderDomain extends Page<OrderDomain> implements MybatisEntity{
 	private String respInfo;// `resp_info` varchar(200) DEFAULT NULL COMMENT
 							// '返回码描述',
 	private Double amount;// `amount` double(10,5) DEFAULT NULL COMMENT '交易金额',
+	private Date startDate;// 起始时间
+	private Date endDate;// 截至时间
 	private Date date;// `date` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP
 						// COMMENT '交易日期',
 	private String account;// `account` varchar(255) DEFAULT NULL COMMENT
@@ -86,6 +88,22 @@ public class OrderDomain extends Page<OrderDomain> implements MybatisEntity{
 
 	public void setAmount(Double amount) {
 		this.amount = amount;
+	}
+
+	public Date getStartDate() {
+		return startDate;
+	}
+
+	public void setStartDate(Date startDate) {
+		this.startDate = startDate;
+	}
+
+	public Date getEndDate() {
+		return endDate;
+	}
+
+	public void setEndDate(Date endDate) {
+		this.endDate = endDate;
 	}
 
 	public Date getDate() {
