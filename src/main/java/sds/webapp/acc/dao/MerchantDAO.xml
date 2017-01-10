@@ -4,7 +4,7 @@
 	<select id="findByKey" parameterType="MerchantDomain"
 		resultType="MerchantDomain" useCache="true">
 		select
-		ID,ACCOUNT,PASSWORD,PRIVATEKEY,CREATE_DATE,REAL_NAME,CMER,CMER_SORT,CHANNEL_CODE,BUSINESS_ID,CARD_NO,CERT_NO,PHONE,MOBILE,LOCATION,CERT_CORRECT,CERT_OPPOSITE,CERT_MEET,CARD_CORRECT,CARD_OPPOSITE,STATUS,OTHER,WX_RATE,ALI_RATE,APPCODE,PRECODE,USER_TYPE,BUS_PIC,BUS_NO,AGENT_ID
+		ID,ACCOUNT,PRIVATEKEY,CREATE_DATE,REAL_NAME,CMER,CMER_SORT,CHANNEL_CODE,BUSINESS_ID,CARD_NO,CERT_NO,PHONE,MOBILE,LOCATION,CERT_CORRECT,CERT_OPPOSITE,CERT_MEET,CARD_CORRECT,CARD_OPPOSITE,STATUS,OTHER,WX_RATE,ALI_RATE,APPCODE,PRECODE,USER_TYPE,BUS_PIC,BUS_NO,AGENT_ID
 		from fm_merchant
 		<where>
 			<if test="id !=null">
@@ -15,7 +15,7 @@
 	<select id="findByWhere" parameterType="MerchantDomain"
 		resultType="MerchantDomain" useCache="true">
 		select
-		ID,ACCOUNT,PASSWORD,PRIVATEKEY,CREATE_DATE,REAL_NAME,CMER,CMER_SORT,CHANNEL_CODE,BUSINESS_ID,CARD_NO,CERT_NO,PHONE,MOBILE,LOCATION,CERT_CORRECT,CERT_OPPOSITE,CERT_MEET,CARD_CORRECT,CARD_OPPOSITE,STATUS,OTHER,WX_RATE,ALI_RATE,APPCODE,PRECODE,USER_TYPE,BUS_PIC,BUS_NO,AGENT_ID
+		ID,ACCOUNT,PRIVATEKEY,CREATE_DATE,REAL_NAME,CMER,CMER_SORT,CHANNEL_CODE,BUSINESS_ID,CARD_NO,CERT_NO,PHONE,MOBILE,LOCATION,CERT_CORRECT,CERT_OPPOSITE,CERT_MEET,CARD_CORRECT,CARD_OPPOSITE,STATUS,OTHER,WX_RATE,ALI_RATE,APPCODE,PRECODE,USER_TYPE,BUS_PIC,BUS_NO,AGENT_ID
 		from fm_merchant
 		<where>
 			<if test="id !=null">
@@ -208,22 +208,34 @@
 			</if>
 		</set>
 		<where>
-			<if test="id !=null">
-				and ID = #{id}
-			</if>
+			
+				 ID = #{id}
+			
 		</where>
 	</update>
 	<delete id="delete" parameterType="MerchantDomain" flushCache="true">
 		delete from fm_merchant
 		<where>
-			<if test="id !=null">
-				and ID = #{id}
-			</if>
+			
+				ID = #{id}
+			
 		</where>
 	</delete>
 
 	<select id="getAllCheckedMerchant" resultType="MerchantDomain"
 		useCache="true">
 		SELECT * FROM fm_merchant where status = 1
+	</select>
+	
+	<select id="getUser" parameterType="UserDomain" resultType="UserDomain"
+		useCache="false" flushCache="true">
+		select
+		ID,ACCOUNT,PASSWORD,PRIVATEKEY,CREATE_DATE,REAL_NAME,CMER,CMER_SORT,CHANNEL_CODE,BUSINESS_ID,CARD_NO,CERT_NO,PHONE,MOBILE,LOCATION,CERT_CORRECT,CERT_OPPOSITE,CERT_MEET,CARD_CORRECT,CARD_OPPOSITE,STATUS,OTHER,WX_RATE,ALI_RATE,APPCODE,PRECODE,USER_TYPE,BUS_PIC,BUS_NO,AGENT_ID
+		from fm_merchant
+		<where>
+			<if test="account !=null">
+				and ACCOUNT = #{account}
+			</if>
+		</where>
 	</select>
 </mapper>

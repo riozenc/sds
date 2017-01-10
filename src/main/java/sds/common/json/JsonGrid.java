@@ -1,13 +1,15 @@
 package sds.common.json;
 
+import com.riozenc.quicktool.mybatis.persistence.Page;
+
 public class JsonGrid {
 	private Integer totalRow;
 	private Integer pageCurrent;
 	private Object list;
 
-	public JsonGrid(Integer totalRow, Integer pageCurrent, Object list) {
-		this.totalRow = totalRow;
-		this.pageCurrent = pageCurrent;
+	public JsonGrid(Page<?> page, Object list) {
+		this.totalRow = page.getTotalRow();
+		this.pageCurrent = page.getPageCurrent();
 		this.list = list;
 	}
 

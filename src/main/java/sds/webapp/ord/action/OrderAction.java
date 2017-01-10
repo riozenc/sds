@@ -26,6 +26,6 @@ public class OrderAction {
 
 		List<OrderDomain> list = orderService.findByWhere(orderDomain);
 
-		return JSONUtil.toJsonString(new JsonGrid(list.size(), 10, list));
+		return JSONUtil.toJsonString(new JsonGrid(orderDomain, list));
 	}
 }

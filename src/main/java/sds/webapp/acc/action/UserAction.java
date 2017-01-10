@@ -150,7 +150,7 @@ public class UserAction extends BaseAction {
 	public String findUserByWhere(UserDomain userDomain) {
 		List<UserDomain> list = userService.findByWhere(userDomain);
 
-		return JSONUtil.toJsonString(new JsonGrid(userDomain.getTotalRow(), userDomain.getPageCurrent(), list));
+		return JSONUtil.toJsonString(new JsonGrid(userDomain, list));
 	}
 
 }

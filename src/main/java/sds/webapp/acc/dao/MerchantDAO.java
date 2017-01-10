@@ -48,4 +48,8 @@ public class MerchantDAO extends AbstractTransactionDAOSupport implements BaseDA
 	public List<MerchantDomain> getAllCheckedMerchant() {
 		return getPersistanceManager().find(getNamespace() + ".getAllCheckedMerchant", null);
 	}
+
+	public MerchantDomain getUser(MerchantDomain merchantDomain) {
+		return getPersistanceManager().load(getNamespace() + ".getUser", merchantDomain);
+	}
 }

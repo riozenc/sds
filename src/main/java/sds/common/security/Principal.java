@@ -7,6 +7,7 @@ package sds.common.security;
 
 import java.util.Date;
 
+import sds.webapp.acc.domain.MerchantDomain;
 import sds.webapp.acc.domain.UserDomain;
 
 public class Principal {
@@ -23,9 +24,17 @@ public class Principal {
 	private Date updateDate;// 最后更新时间 UPDATE_DATE datetime
 
 	private UserDomain userDomain;
+	private MerchantDomain merchantDomain;
 
 	public Principal() {
 
+	}
+
+	public Principal(MerchantDomain merchantDomain) {
+		userDomain.setPassword("Want password?");
+		this.merchantDomain = merchantDomain;
+		this.userId = merchantDomain.getAccount();
+		this.userName = merchantDomain.getRealName();
 	}
 
 	public Principal(UserDomain userDomain) {
@@ -121,6 +130,14 @@ public class Principal {
 
 	public void setUserDomain(UserDomain userDomain) {
 		this.userDomain = userDomain;
+	}
+
+	public MerchantDomain getMerchantDomain() {
+		return merchantDomain;
+	}
+
+	public void setMerchantDomain(MerchantDomain merchantDomain) {
+		this.merchantDomain = merchantDomain;
 	}
 
 }

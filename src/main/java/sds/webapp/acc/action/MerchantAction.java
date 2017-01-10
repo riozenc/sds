@@ -14,7 +14,6 @@ import sds.common.json.JsonGrid;
 import sds.common.json.JsonResult;
 import sds.common.webapp.base.action.BaseAction;
 import sds.webapp.acc.domain.MerchantDomain;
-import sds.webapp.acc.domain.UserDomain;
 import sds.webapp.acc.service.MerchantService;
 
 @ControllerAdvice
@@ -80,7 +79,7 @@ public class MerchantAction extends BaseAction {
 	@RequestMapping(params = "type=findMerchantByWhere")
 	public String findMerchantByWhere(MerchantDomain merchantDomain) {
 		List<MerchantDomain> list = merchantService.findByWhere(merchantDomain);
-		return JSONUtil.toJsonString(new JsonGrid(list.size(), 10, list));
+		return JSONUtil.toJsonString(new JsonGrid(merchantDomain, list));
 	}
 
 	/**

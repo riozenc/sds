@@ -2,10 +2,13 @@ package sds.webapp.acc.domain;
 
 import java.util.Date;
 
+import org.apache.shiro.authc.UsernamePasswordToken;
+
 import com.riozenc.quicktool.annotation.TablePrimaryKey;
 import com.riozenc.quicktool.mybatis.MybatisEntity;
+import com.riozenc.quicktool.mybatis.persistence.Page;
 
-public class MerchantDomain implements MybatisEntity {
+public class MerchantDomain extends Page<MerchantDomain> implements MybatisEntity {
 	@TablePrimaryKey
 	private Integer id;// `id` int(11) NOT NULL AUTO_INCREMENT,
 	private String account;// `account` varchar(255) DEFAULT NULL COMMENT
@@ -56,6 +59,10 @@ public class MerchantDomain implements MybatisEntity {
 	private String busNo;// `bus_no` varchar(255) DEFAULT NULL COMMENT
 							// '营业执照注册号',
 	private Integer agentId;// `agent_id` int(11) DEFAULT NULL COMMENT '所属代理商',
+
+	public MerchantDomain(UsernamePasswordToken usernamePasswordToken) {
+		this.account = usernamePasswordToken.getUsername();// 手机号
+	}
 
 	public Integer getId() {
 		return id;

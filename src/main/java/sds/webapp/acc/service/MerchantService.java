@@ -9,5 +9,7 @@ public interface MerchantService extends BaseService<MerchantDomain> {
 	public int updateRate(MerchantDomain merchantDomain);
 
 	public List<MerchantDomain> getAllCheckedMerchant();
+	
+	public MerchantDomain getUser(MerchantDomain merchantDomain);
 
 }
