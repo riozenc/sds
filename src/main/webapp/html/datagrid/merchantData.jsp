@@ -9,7 +9,7 @@ $(function() {
 	    tableWidth:'99.5%',
 	    gridTitle : ' ',
 	    local:'remote',
-	    showToolbar: true,
+	    showToolbar: false,
 	    toolbarItem: 'del',
 	    dataUrl: 'merchant.do?type=findMerchantByWhere',
 	    columns: [

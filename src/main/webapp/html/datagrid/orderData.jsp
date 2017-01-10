@@ -9,7 +9,7 @@ $(function() {
 	    tableWidth:'99.5%',
 	    gridTitle : ' ',
 	    local: 'remote',
-	    showToolbar: true,
+	    showToolbar: false,
 	    toolbarItem: 'del',
 	    dataUrl:"order.do?type=findOrder",
 	    columns: [
@@ -17,7 +17,10 @@ $(function() {
 	             name: 'orderId',
 	             label: '订单号',
 	             align: 'center',
-	             width: 130
+	             width: 130,
+	             render: function(value) {
+		            	return '<a href="javascript:;"   onclick="dialog_profit(\''+value+'\')">'+value+'</a>';
+		            }
 	         },
 	        {
 	            name: 'account',
@@ -60,31 +63,23 @@ $(function() {
 	            	}
 	                
 	            }
-	        },
-	       
-	        {
-	            name: 'id',
-	            label: '操 作',
-	            align: 'center',
-	            render: function(value) {
-	            	return '<button type="button" class="btn-blue btn" data-icon="edit" onclick="dialog_user('+value+');">详情</button>';
-	            }
 	        }
 	    ],
 	    
 	    delUrl:'order.do?type=delete',
 	    delPK:'id',
-	    paging:{pageSize:5,selectPageSize:'5,10,20'},
-	    linenumberAll: true
+	    paging:{pageSize:5,selectPageSize:'10,20,30'},
+	    showLinenumber: false,
+	    inlineEditMult: false
 	})
 });
-function dialog_user(id) {
-	var ajaxdata={id:id} ;
-    var ajaxCallUrl="user.do?type=findUserByWhere";
+function dialog_profit(orderId){
+	
+	var ajaxdata={orderId:orderId} ;
 	$.ajax({
 		cache : false,
 		type : "POST",
-		url : ajaxCallUrl,
+		url : "profit.do?type=profit",
 		data : ajaxdata,
 		dataType : "json",
 		error : function(request) {
@@ -92,28 +87,33 @@ function dialog_user(id) {
 			return false;
 		},
 		success : function(data) {
-			BJUI.dialog({
-			    id:'userEdit',
-			    url:'html/form/userEdit.jsp',
-			    title:'详情',
-			    width:900,
-			    height:500,
-			    onLoad:function(){
-			    	$.each(data, function(key, obj) {
-			    		$("#"+key).val(obj);
-					});
-			    }
-			});
+			console.info(data);
+			if(data.totalRow>0){
+				BJUI.dialog({
+				    id:'dialogProfit',
+				    url:'html/form/profitInfo.jsp',
+				    title:'详情',
+				    width:900,
+				    height:450,
+				    onLoad:function(){
+				    	$.each(data.list[0], function(key, obj) {
+				    		$("#"+key).val(obj);
+						});
+				    }
+				});
+			}else{
+				alert("该订单不存在分润");
+			}
+			
 			return false;	
 		}
 	});
-    
 }
 </script>
 <div class="bjui-pageHeader" style="background-color:#fefefe; border-bottom:none;">
 <form data-toggle="ajaxsearch" data-options="{searchDatagrid:$.CurrentNavtab.find('#order_datagrid')}">
     <fieldset>
-        <legend style="font-weight:normal;">页头搜索：</legend>
+        <legend style="font-weight:normal;">搜索：</legend>
         <div style="margin:0; padding:1px 5px 5px;">
             <span>登录手机号：</span>
             <input type="text" name="account" class="form-control" size="15">
@@ -123,7 +123,7 @@ function dialog_user(id) {
             <input type="text" name="endDate" class="form-control" data-toggle="datepicker" placeholder="点击选择日期" >
                 
             <div class="btn-group">
-                <button type="submit" class="btn-green" data-icon="search">开始搜索！</button>
+                <button type="submit" class="btn-green" data-icon="search">开始搜索</button>
                 <button type="reset" class="btn-orange" data-icon="times">重置</button>
             </div>
         </div>
@@ -131,6 +131,6 @@ function dialog_user(id) {
 </form>
 </div>
 <div class="bjui-pageContent">
-<table id="order_datagrid" class="table table-bordered">
-</table>
+	<table id="order_datagrid" class="table table-bordered">
+	</table>
 </div>
