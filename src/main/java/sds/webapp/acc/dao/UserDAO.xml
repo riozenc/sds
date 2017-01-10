@@ -15,7 +15,9 @@
 	<select id="findByWhere" parameterType="UserDomain" resultType="UserDomain"
 		useCache="true">
 		select
-		ID,PARENT_ID,ACCOUNT,FULL_NAME,SIMPLE_NAME,AG_TYPE,AG_ADDRESS,REG_MONEY,REG_NAME,REG_ADDRESS,REG_DATE,REG_EXT,REG_NO,BUS_TERM,BUS_ANO,BUS_SNO,COST_WRATE,COST_KRATE,COST_ARATE,USER_WRATE,USER_ARATE,USER_KRATE,JS_ACTYPE,JS_CARD,JS_ADDRESS,JS_BANK,JS_BANKADD,JS_NAME,JS_LHNO,CREATE_ID,CREATE_DATE,REG_CARD,TJ_STATUS,TJ_RATE,TJ_LIMIT,STATUS
+		ID,(SELECT b.full_name FROM fm_user b where b.id = a.parent_id)
+		as parent_name,
+		PARENT_ID,ACCOUNT,FULL_NAME,SIMPLE_NAME,AG_TYPE,AG_ADDRESS,REG_MONEY,REG_NAME,REG_ADDRESS,REG_DATE,REG_EXT,REG_NO,BUS_TERM,BUS_ANO,BUS_SNO,COST_WRATE,COST_KRATE,COST_ARATE,USER_WRATE,USER_ARATE,USER_KRATE,JS_ACTYPE,JS_CARD,JS_ADDRESS,JS_BANK,JS_BANKADD,JS_NAME,JS_LHNO,CREATE_ID,CREATE_DATE,REG_CARD,TJ_STATUS,TJ_RATE,TJ_LIMIT,STATUS
 		from fm_user
 		<where>
 			<if test="id !=null">
@@ -263,7 +265,7 @@
 			</if>
 		</where>
 	</delete>
-	
+
 	<select id="getUser" parameterType="UserDomain" resultType="UserDomain"
 		useCache="false" flushCache="true">
 		select
@@ -317,8 +319,7 @@
 		</where>
 	</update>
 
-	<select id="getAllCheckedUser" resultType="UserDomain"
-		useCache="true">
+	<select id="getAllCheckedUser" resultType="UserDomain" useCache="true">
 		SELECT * FROM fm_user where status = 1
 	</select>
 </mapper>

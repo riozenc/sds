@@ -16,6 +16,8 @@ import com.riozenc.quicktool.mybatis.persistence.Page;
 public class UserDomain extends Page<UserDomain> implements MybatisEntity {
 	@TablePrimaryKey
 	private Integer id;
+
+	private String parentName;// 所属上级名称
 	private Integer parentId;// `parent_id` int(255) DEFAULT NULL COMMENT
 								// '所属上级代理商',
 	private String account;// `account` varchar(20) DEFAULT NULL COMMENT
@@ -93,6 +95,14 @@ public class UserDomain extends Page<UserDomain> implements MybatisEntity {
 
 	public void setId(Integer id) {
 		this.id = id;
+	}
+
+	public String getParentName() {
+		return parentName;
+	}
+
+	public void setParentName(String parentName) {
+		this.parentName = parentName;
 	}
 
 	public Integer getParentId() {

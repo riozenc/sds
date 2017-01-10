@@ -39,8 +39,11 @@
 			<if test="amount !=null">
 				and AMOUNT = #{amount}
 			</if>
-			<if test="date !=null">
-				and DATE = #{date}
+			<if test="startDate !=null">
+				and DATE &gt;=#{startDate}
+			</if>
+			<if test="endDate !=null">
+				and DATE &lt;= #{endDate}
 			</if>
 			<if test="account !=null">
 				and ACCOUNT = #{account}
@@ -109,17 +112,17 @@
 			</if>
 		</set>
 		<where>
-			
-				ID = #{id}
-			
+
+			ID = #{id}
+
 		</where>
 	</update>
 	<delete id="delete" parameterType="OrderDomain" flushCache="true">
 		delete from fm_order
 		<where>
-			
-				ID = #{id}
-			
+
+			ID = #{id}
+
 		</where>
 	</delete>
 </mapper>
