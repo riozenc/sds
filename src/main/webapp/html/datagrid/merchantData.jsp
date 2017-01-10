@@ -23,7 +23,7 @@ $(function() {
 	            name: 'password',
 	            label: '密码',
 	            align: 'center',
-	            width: 200
+	            width: 100
 	        },
 	        {
 	            name: 'realName',
@@ -75,14 +75,15 @@ $(function() {
 	            label: '操作',
 	            align: 'center',
 	            render: function(value) {
-	            	return value+'<button type="button" class="btn-blue btn" data-icon="edit" onclick="dialog_merchant('+value+');">详情</button>';
+	            	return '<button type="button" class="btn-blue btn" data-icon="edit" onclick="dialog_merchant('+value+');">详情</button>';
 	            }
 	        }
 	    ],
-	    paging:{pageSize:5,selectPageSize:'5,10,20'},
+	    paging:{pageSize:5,selectPageSize:'10,20,30'},
 	    delUrl:'merchant.do?type=delete',
 	    delPK:'id',
-	    linenumberAll: true
+	    showLinenumber: false,
+	    inlineEditMult: false
 	})
 });
 function dialog_merchant(id) {

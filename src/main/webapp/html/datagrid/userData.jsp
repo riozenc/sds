@@ -9,7 +9,7 @@ $(function() {
 	    tableWidth:'99.5%',
 	    gridTitle : ' ',
 	    local: 'remote',
-	    showToolbar: true,
+	    showToolbar: false,
 	    toolbarItem: 'del',
 	    dataUrl:"user.do?type=findUserByWhere",
 	    columns: [
@@ -79,8 +79,9 @@ $(function() {
 	    
 	    delUrl:'user.do?type=delete',
 	    delPK:'id',
-	    paging:{pageSize:5,selectPageSize:'5,10,20'},
-	    linenumberAll: true
+	    paging:{pageSize:5,selectPageSize:'10,20,30'},
+	    showLinenumber: false,
+	    inlineEditMult: false
 	})
 });
 function dialog_user(id) {
