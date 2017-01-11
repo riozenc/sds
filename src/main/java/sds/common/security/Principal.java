@@ -11,7 +11,7 @@ import sds.webapp.acc.domain.MerchantDomain;
 import sds.webapp.acc.domain.UserDomain;
 
 public class Principal {
-
+	private Integer id;//
 	private String userId; // 登录名
 	private String userName; // 姓名
 	private String phone;//
@@ -33,6 +33,7 @@ public class Principal {
 	public Principal(MerchantDomain merchantDomain) {
 		userDomain.setPassword("Want password?");
 		this.merchantDomain = merchantDomain;
+		this.id = merchantDomain.getId();
 		this.userId = merchantDomain.getAccount();
 		this.userName = merchantDomain.getRealName();
 	}
@@ -40,8 +41,17 @@ public class Principal {
 	public Principal(UserDomain userDomain) {
 		userDomain.setPassword("Want password?");
 		this.userDomain = userDomain;
+		this.id = userDomain.getId();
 		this.userId = userDomain.getAccount();
 		this.userName = userDomain.getFullName();
+	}
+
+	public Integer getId() {
+		return id;
+	}
+
+	public void setId(Integer id) {
+		this.id = id;
 	}
 
 	public String getUserId() {

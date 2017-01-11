@@ -15,6 +15,8 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.riozenc.quicktool.common.util.json.JSONUtil;
 
 import sds.common.json.JsonGrid;
+import sds.common.security.Principal;
+import sds.common.security.util.UserUtils;
 import sds.common.webapp.base.action.BaseAction;
 import sds.webapp.acc.domain.MerchantDomain;
 import sds.webapp.acc.domain.UserDomain;
@@ -54,6 +56,10 @@ public class ProfitAction extends BaseAction {
 	@RequestMapping(params = "type=getProfit")
 	public String getProfit(ProfitDomain profitDomain) {
 
+		Principal p = UserUtils.getPrincipal();
+		if (p.getId() != 1) {//管理员查看所有
+			profitDomain.setAgentId(p.getId());// 获取当前登录人的分润消息
+		}
 		List<ProfitDomain> list = profitService.findByWhere(profitDomain);
 
 		return JSONUtil.toJsonString(new JsonGrid(list.size(), 1, list));
