@@ -71,7 +71,24 @@ $(function() {
 	    paging:{pageSize:5,selectPageSize:'10,20,30'},
 	    showLinenumber: false,
 	    inlineEditMult: false
-	})
+	});
+	
+	$("#profit").bind("click",function(){
+		$.ajax({
+			cache : false,
+			type : "POST",
+			url : "profit.do?type=profit",
+			error : function(request) {
+				alert("刷新成功");
+				
+				return false;
+			},
+			success : function(data) {
+				
+			}
+		});
+	});
+	
 });
 function dialog_profit(orderId){
 	
@@ -79,7 +96,7 @@ function dialog_profit(orderId){
 	$.ajax({
 		cache : false,
 		type : "POST",
-		url : "profit.do?type=profit",
+		url : "profit.do?type=getProfit",
 		data : ajaxdata,
 		dataType : "json",
 		error : function(request) {
@@ -125,7 +142,9 @@ function dialog_profit(orderId){
             <div class="btn-group">
                 <button type="submit" class="btn-green" data-icon="search">开始搜索</button>
                 <button type="reset" class="btn-orange" data-icon="times">重置</button>
+                <button type="reset" class="btn btn-orange" id="profit" data-icon="refresh">分润计算</button>
             </div>
+           
         </div>
     </fieldset>
 </form>
