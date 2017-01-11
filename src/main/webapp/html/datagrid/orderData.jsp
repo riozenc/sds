@@ -91,7 +91,6 @@ $(function() {
 	
 });
 function dialog_profit(orderId){
-	
 	var ajaxdata={orderId:orderId} ;
 	$.ajax({
 		cache : false,
@@ -113,9 +112,18 @@ function dialog_profit(orderId){
 				    width:900,
 				    height:450,
 				    onLoad:function(){
-				    	$.each(data.list[0], function(key, obj) {
-				    		$("#"+key).val(obj);
+				    	var html_text ='<table class="table table-bordered table-hover table-striped  " data-height="150">'+
+						'<thead><th>订单ID</th><th>商户号</th><th>代理商名称</th><th>代理商所得分润</th></thead><tbody>';
+					
+				    	$.each(data.list, function(key, obj) {
+				    		console.info(obj.orderId);
+				    		html_text = html_text +'<tr><td>'+obj.orderId+'</td><td>'
+				    			+obj.account+'</td><td>'+obj.agentId+'</td><td>'+obj.agentProfit+'</td></tr>';
+				    		
 						});
+				    	html_text = html_text+'<tr><td>消费金额：</td><td>'+data.list[0].amount+'</td><td>分润总额：</td><td>'+data.list[0].totalProfit+'</td></tr></table>';
+				    	
+				    	$("#table_profitInfo").html(html_text);
 				    }
 				});
 			}else{
