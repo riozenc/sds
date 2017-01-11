@@ -4,7 +4,7 @@
 	<select id="findByKey" parameterType="ProfitDomain" resultType="ProfitDomain"
 		useCache="true">
 		select
-		ID,ORDER_ID,ACCOUNT,AMOUNT,TOTAL_PROFIT,AGENT_ID,AGENT_PROFIT,REFEREE_PROFIT,ORDER_DAY,JS_DAY,CREATE_DATE
+		ID,ORDER_ID,ACCOUNT,AMOUNT,TOTAL_PROFIT,AGENT_ID,AGENT_PROFIT,TJ_PROFIT,ORDER_DAY,JS_DAY,CREATE_DATE
 		from fm_profit
 		<where>
 			<if test="id !=null">
@@ -15,7 +15,7 @@
 	<select id="findByWhere" parameterType="ProfitDomain"
 		resultType="ProfitDomain" useCache="true">
 		select
-		ID,ORDER_ID,ACCOUNT,AMOUNT,TOTAL_PROFIT,AGENT_ID,AGENT_PROFIT,REFEREE_PROFIT,ORDER_DAY,JS_DAY,CREATE_DATE
+		ID,ORDER_ID,ACCOUNT,AMOUNT,TOTAL_PROFIT,AGENT_ID,AGENT_PROFIT,TJ_PROFIT,ORDER_DAY,JS_DAY,CREATE_DATE
 		from fm_profit
 		<where>
 			<if test="id !=null">
@@ -39,8 +39,8 @@
 			<if test="agentProfit !=null">
 				and AGENT_PROFIT = #{agentProfit}
 			</if>
-			<if test="refereeProfit !=null">
-				and REFEREE_PROFIT = #{refereeProfit}
+			<if test="tjProfit !=null">
+				and TJ_PROFIT = #{tjProfit}
 			</if>
 			<if test="orderDay !=null">
 				and ORDER_DAY = #{orderDay}
@@ -55,7 +55,7 @@
 	</select>
 	<insert id="insert" parameterType="ProfitDomain" flushCache="true">
 		insert into
-		fm_profit(ID,ORDER_ID,ACCOUNT,AMOUNT,TOTAL_PROFIT,AGENT_ID,AGENT_PROFIT,REFEREE_PROFIT,ORDER_DAY,JS_DAY,CREATE_DATE)
+		fm_profit(ID,ORDER_ID,ACCOUNT,AMOUNT,TOTAL_PROFIT,AGENT_ID,AGENT_PROFIT,TJ_PROFIT,ORDER_DAY,JS_DAY,CREATE_DATE)
 		values
 		(#{id},#{orderId},#{account},#{amount},#{totalProfit},#{agentId},#{agentProfit},#{refereeProfit},#{orderDay},#{jsDay},#{createDate})
 	</insert>
@@ -80,8 +80,8 @@
 			<if test="agentProfit !=null">
 				AGENT_PROFIT = #{agentProfit},
 			</if>
-			<if test="refereeProfit !=null">
-				REFEREE_PROFIT = #{refereeProfit},
+			<if test="tjProfit !=null">
+				TJ_PROFIT = #{tjProfit},
 			</if>
 			<if test="orderDay !=null">
 				ORDER_DAY = #{orderDay},

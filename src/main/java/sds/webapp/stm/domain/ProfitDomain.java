@@ -11,7 +11,7 @@ import com.riozenc.quicktool.mybatis.MybatisEntity;
  * @author riozenc
  *
  */
-public class ProfitDomain implements MybatisEntity{
+public class ProfitDomain implements MybatisEntity {
 	@TablePrimaryKey
 	private Integer id;// `id` int(11) NOT NULL AUTO_INCREMENT,
 	private String orderId;// '订单号',
@@ -22,7 +22,8 @@ public class ProfitDomain implements MybatisEntity{
 	private Integer agentId;// 代理商ID
 	private Double agentProfit;// 代理商利润
 	private boolean isReferee;// 推荐人功能是否开启
-	private Double refereeProfit;// '推荐人分润金额',
+	private Double tjProfit;// '推荐人分润金额',
+	private Integer tjId;// 推荐人ID
 	private Date orderDay;// '交易日期',
 	private Date jsDay;// '结算时间',
 	private Date createDate;// 创建日期
@@ -83,12 +84,20 @@ public class ProfitDomain implements MybatisEntity{
 		this.agentProfit = agentProfit;
 	}
 
-	public Double getRefereeProfit() {
-		return refereeProfit;
+	public Double getTjProfit() {
+		return tjProfit;
 	}
 
-	public void setRefereeProfit(Double refereeProfit) {
-		this.refereeProfit = refereeProfit;
+	public void setTjProfit(Double tjProfit) {
+		this.tjProfit = tjProfit;
+	}
+
+	public Integer getTjId() {
+		return tjId;
+	}
+
+	public void setTjId(Integer tjId) {
+		this.tjId = tjId;
 	}
 
 	public Date getOrderDay() {
