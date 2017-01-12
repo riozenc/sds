@@ -23,6 +23,18 @@ public class OrderAction extends BaseAction {
 	@Qualifier("orderServiceImpl")
 	private OrderService orderService;
 
+	// 正扫
+	public String pay(OrderDomain orderDomain) {
+		return null;
+	}
+
+	// 反扫
+	public String ScanPay(OrderDomain orderDomain, String authCode) {
+		// authCode 付款码
+
+		return null;
+	}
+
 	@ResponseBody
 	@RequestMapping(params = "type=findOrder")
 	public String findOrderByWhere(OrderDomain orderDomain) {

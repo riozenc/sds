@@ -150,9 +150,16 @@ public class MerchantAction extends BaseAction {
 		}
 	}
 
+	/**
+	 * 验卡
+	 * @param merchantDomain
+	 * @return
+	 */
 	@ResponseBody
 	@RequestMapping(params = "type=validCard")
 	public String validCard(MerchantDomain merchantDomain){
-		return null;
+		
+		
+		return JSONUtil.toJsonString(new JsonResult(JsonResult.SUCCESS, "验卡成功."));
 	}
 }
