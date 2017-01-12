@@ -19,12 +19,7 @@ $(function() {
 	             align: 'center',
 	             width: 130
 	         },
-	        {
-	            name: 'password',
-	            label: '密码',
-	            align: 'center',
-	            width: 100
-	        },
+	        
 	        {
 	            name: 'realName',
 	            label: '真实姓名',
