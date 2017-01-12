@@ -57,7 +57,7 @@
 		insert into
 		fm_profit(ID,ORDER_ID,ACCOUNT,AMOUNT,TOTAL_PROFIT,AGENT_ID,AGENT_PROFIT,TJ_PROFIT,ORDER_DAY,JS_DAY,CREATE_DATE)
 		values
-		(#{id},#{orderId},#{account},#{amount},#{totalProfit},#{agentId},#{agentProfit},#{refereeProfit},#{orderDay},#{jsDay},#{createDate})
+		(#{id},#{orderId},#{account},#{amount},#{totalProfit},#{agentId},#{agentProfit},#{tjProfit},#{orderDay},#{jsDay},#{createDate})
 	</insert>
 	<update id="update" parameterType="ProfitDomain" flushCache="true">
 		update fm_profit

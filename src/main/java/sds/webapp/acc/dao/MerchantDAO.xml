@@ -4,7 +4,7 @@
 	<select id="findByKey" parameterType="MerchantDomain"
 		resultType="MerchantDomain" useCache="true">
 		select
-		ID,ACCOUNT,PASSWORD,PRIVATEKEY,CREATE_DATE,REAL_NAME,CMER,CMER_SORT,CHANNEL_CODE,BUSINESS_ID,CARD_NO,CERT_NO,PHONE,MOBILE,LOCATION,CERT_CORRECT,CERT_OPPOSITE,CERT_MEET,CARD_CORRECT,CARD_OPPOSITE,STATUS,OTHER,WX_RATE,ALI_RATE,APP_CODE,PRE_CODE,USER_TYPE,BUS_PIC,BUS_NO,AGENT_ID
+		ID,ACCOUNT,PASSWORD,PRIVATEKEY,CREATE_DATE,REAL_NAME,CMER,CMER_SORT,CHANNEL_CODE,BUSINESS_ID,CARD_NO,CERT_NO,PHONE,MOBILE,LOCATION,CERT_CORRECT,CERT_OPPOSITE,CERT_MEET,CARD_CORRECT,CARD_OPPOSITE,STATUS,OTHER,WX_RATE,ALI_RATE,APP_CODE,TJ_ID,USER_TYPE,BUS_PIC,BUS_NO,AGENT_ID
 		from fm_merchant
 		<where>
 			<if test="id !=null">
@@ -15,7 +15,7 @@
 	<select id="findByWhere" parameterType="MerchantDomain"
 		resultType="MerchantDomain" useCache="true">
 		select
-		ID,ACCOUNT,PRIVATEKEY,CREATE_DATE,REAL_NAME,CMER,CMER_SORT,CHANNEL_CODE,BUSINESS_ID,CARD_NO,CERT_NO,PHONE,MOBILE,LOCATION,CERT_CORRECT,CERT_OPPOSITE,CERT_MEET,CARD_CORRECT,CARD_OPPOSITE,STATUS,OTHER,WX_RATE,ALI_RATE,APP_CODE,PRE_CODE,USER_TYPE,BUS_PIC,BUS_NO,AGENT_ID
+		ID,ACCOUNT,PRIVATEKEY,CREATE_DATE,REAL_NAME,CMER,CMER_SORT,CHANNEL_CODE,BUSINESS_ID,CARD_NO,CERT_NO,PHONE,MOBILE,LOCATION,CERT_CORRECT,CERT_OPPOSITE,CERT_MEET,CARD_CORRECT,CARD_OPPOSITE,STATUS,OTHER,WX_RATE,ALI_RATE,APP_CODE,TJ_ID,USER_TYPE,BUS_PIC,BUS_NO,AGENT_ID
 		from fm_merchant
 		<where>
 			<if test="id !=null">
@@ -93,8 +93,8 @@
 			<if test="appCode !=null">
 				and APP_CODE = #{appCode}
 			</if>
-			<if test="preCode !=null">
-				and PRE_CODE = #{preCode}
+			<if test="tjId !=null">
+				and TJ_ID = #{tjId}
 			</if>
 			<if test="userType !=null">
 				and USER_TYPE = #{userType}
@@ -112,9 +112,9 @@
 	</select>
 	<insert id="insert" parameterType="MerchantDomain" flushCache="true">
 		insert into
-		fm_merchant(ID,ACCOUNT,PASSWORD,PRIVATEKEY,CREATE_DATE,REAL_NAME,CMER,CMER_SORT,CHANNEL_CODE,BUSINESS_ID,CARD_NO,CERT_NO,PHONE,MOBILE,LOCATION,CERT_CORRECT,CERT_OPPOSITE,CERT_MEET,CARD_CORRECT,CARD_OPPOSITE,STATUS,OTHER,WX_RATE,ALI_RATE,APP_CODE,PRE_CODE,USER_TYPE,BUS_PIC,BUS_NO,AGENT_ID)
+		fm_merchant(ID,ACCOUNT,PASSWORD,PRIVATEKEY,CREATE_DATE,REAL_NAME,CMER,CMER_SORT,CHANNEL_CODE,BUSINESS_ID,CARD_NO,CERT_NO,PHONE,MOBILE,LOCATION,CERT_CORRECT,CERT_OPPOSITE,CERT_MEET,CARD_CORRECT,CARD_OPPOSITE,STATUS,OTHER,WX_RATE,ALI_RATE,APP_CODE,TJ_ID,USER_TYPE,BUS_PIC,BUS_NO,AGENT_ID)
 		values
-		(#{id},#{account},#{password},#{privatekey},#{createDate},#{realName},#{cmer},#{cmerSort},#{channelCode},#{businessId},#{cardNo},#{certNo},#{phone},#{mobile},#{location},#{certCorrect},#{certOpposite},#{certMeet},#{cardCorrect},#{cardOpposite},#{status},#{other},#{wxRate},#{aliRate},#{appCode},#{precode},#{userType},#{busPic},#{busNo},#{agentId})
+		(#{id},#{account},#{password},#{privatekey},#{createDate},#{realName},#{cmer},#{cmerSort},#{channelCode},#{businessId},#{cardNo},#{certNo},#{phone},#{mobile},#{location},#{certCorrect},#{certOpposite},#{certMeet},#{cardCorrect},#{cardOpposite},#{status},#{other},#{wxRate},#{aliRate},#{appCode},#{tjId},#{userType},#{busPic},#{busNo},#{agentId})
 	</insert>
 	<update id="update" parameterType="MerchantDomain" flushCache="true">
 		update fm_merchant
@@ -191,8 +191,8 @@
 			<if test="appCode !=null">
 				APP_CODE = #{appCode},
 			</if>
-			<if test="preCode !=null">
-				PRE_CODE = #{preCode},
+			<if test="tjId !=null">
+				TJ_ID = #{tjId},
 			</if>
 			<if test="userType !=null">
 				USER_TYPE = #{userType},
@@ -230,7 +230,7 @@
 	<select id="getUser" parameterType="UserDomain" resultType="UserDomain"
 		useCache="false" flushCache="true">
 		select
-		ID,ACCOUNT,PASSWORD,PRIVATEKEY,CREATE_DATE,REAL_NAME,CMER,CMER_SORT,CHANNEL_CODE,BUSINESS_ID,CARD_NO,CERT_NO,PHONE,MOBILE,LOCATION,CERT_CORRECT,CERT_OPPOSITE,CERT_MEET,CARD_CORRECT,CARD_OPPOSITE,STATUS,OTHER,WX_RATE,ALI_RATE,APP_CODE,PRE_CODE,USER_TYPE,BUS_PIC,BUS_NO,AGENT_ID
+		ID,ACCOUNT,PASSWORD,PRIVATEKEY,CREATE_DATE,REAL_NAME,CMER,CMER_SORT,CHANNEL_CODE,BUSINESS_ID,CARD_NO,CERT_NO,PHONE,MOBILE,LOCATION,CERT_CORRECT,CERT_OPPOSITE,CERT_MEET,CARD_CORRECT,CARD_OPPOSITE,STATUS,OTHER,WX_RATE,ALI_RATE,APP_CODE,TJ_ID,USER_TYPE,BUS_PIC,BUS_NO,AGENT_ID
 		from fm_merchant
 		<where>
 			<if test="account !=null">

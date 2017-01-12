@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.riozenc.quicktool.common.util.json.JSONUtil;
@@ -30,19 +31,58 @@ public class MerchantAction extends BaseAction {
 	private UserService userService;
 
 	/**
-	 * 新增商户
+	 * 注册商户
 	 * 
 	 * @param merchantDomain
 	 * @return
 	 */
 	@ResponseBody
-	@RequestMapping(params = "type=insert")
-	public String insert(MerchantDomain merchantDomain) {
+	@RequestMapping(params = "type=register", method = RequestMethod.POST)
+	public String registerMerchant(MerchantDomain merchantDomain) {
+		String account = merchantDomain.getAccount();// 手机号
+		String appCode = merchantDomain.getAppCode();// 邀请码
+
+		if (appCode.startsWith("EA")) {
+			// 代理商
+			account = appCode.substring(2);
+			UserDomain param = new UserDomain();
+			param.setAccount(account);
+			param = userService.findByKey(param);
+			merchantDomain.setAgentId(param.getId());// 建立代理商与商户关系
+		} else if (appCode.startsWith("UA")) {
+			// 商户
+			account = appCode.substring(2);
+			MerchantDomain param = new MerchantDomain();
+			param.setAccount(account);
+			param = merchantService.findByKey(param);
+			merchantDomain.setTjId(param.getId());// 建立商户与商户关系
+			merchantDomain.setAgentId(param.getAgentId());// 被推荐商户也属于推荐商户下的代理商
+		} else {
+			// 违法推荐码
+			return JSONUtil.toJsonString(new JsonResult(JsonResult.ERROR, "无效的推荐码."));
+		}
+
+		if (merchantService.findByKey(merchantDomain) == null) {
+			merchantDomain.setStatus(0);// 审核中
+			return insert(merchantDomain, "注册成功.", "注册失败.");
+		} else {
+			// 已经存在的手机号
+			return JSONUtil.toJsonString(new JsonResult(JsonResult.ERROR, "已经存在的手机号."));
+		}
+	}
+
+	/**
+	 * 新增商户
+	 * 
+	 * @param merchantDomain
+	 * @return
+	 */
+	public String insert(MerchantDomain merchantDomain, String success, String failed) {
 		int i = merchantService.insert(merchantDomain);
 		if (i > 0) {
-			return JSONUtil.toJsonString(new JsonResult(JsonResult.SUCCESS, "新增商户成功."));
+			return JSONUtil.toJsonString(new JsonResult(JsonResult.SUCCESS, success));
 		} else {
-			return JSONUtil.toJsonString(new JsonResult(JsonResult.ERROR, "新增商户失败"));
+			return JSONUtil.toJsonString(new JsonResult(JsonResult.ERROR, failed));
 		}
 	}
 
@@ -111,32 +151,8 @@ public class MerchantAction extends BaseAction {
 	}
 
 	@ResponseBody
-	@RequestMapping(params = "type=checkMerchant")
-	public String checkMerchant(MerchantDomain merchantDomain) {
-
-		String appCode = merchantDomain.getAppCode();// 推荐码
-		String account = null;
-		if (appCode.startsWith("EA")) {
-			// 代理商
-			account = appCode.substring(2);
-			UserDomain param = new UserDomain();
-			param.setAccount(account);
-			param = userService.findByKey(param);
-
-			merchantDomain.setAgentId(param.getId());// 建立代理商与商户关系
-
-		} else if (appCode.startsWith("UA")) {
-			// 商户
-			account = appCode.substring(2);
-			MerchantDomain param = new MerchantDomain();
-			param.setAccount(account);
-			param = merchantService.findByKey(param);
-
-		} else {
-			// 违法推荐码
-			return JSONUtil.toJsonString(new JsonResult(JsonResult.ERROR, "无效的推荐码."));
-		}
-
-		return JSONUtil.toJsonString(new JsonResult(JsonResult.SUCCESS, "审核商户成功."));
+	@RequestMapping(params = "type=validCard")
+	public String validCard(MerchantDomain merchantDomain){
+		return null;
 	}
 }
