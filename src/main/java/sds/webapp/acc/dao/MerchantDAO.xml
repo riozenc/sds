@@ -208,17 +208,17 @@
 			</if>
 		</set>
 		<where>
-			
-				 ID = #{id}
-			
+
+			ID = #{id}
+
 		</where>
 	</update>
 	<delete id="delete" parameterType="MerchantDomain" flushCache="true">
 		delete from fm_merchant
 		<where>
-			
-				ID = #{id}
-			
+
+			ID = #{id}
+
 		</where>
 	</delete>
 
@@ -226,7 +226,8 @@
 		useCache="true">
 		SELECT * FROM fm_merchant where status = 1
 	</select>
-	
+
+	<!-- 不使用缓存 -->
 	<select id="getUser" parameterType="UserDomain" resultType="UserDomain"
 		useCache="false" flushCache="true">
 		select
@@ -236,6 +237,17 @@
 			<if test="account !=null">
 				and ACCOUNT = #{account}
 			</if>
+		</where>
+	</select>
+
+
+
+	<select id="checkRate" parameterType="Integer" resultType="Map"
+		useCache="true">
+		SELECT a.id,a.wx_rate,a.ali_rate,b.cost_arate,b.cost_wrate FROM
+		fm_merchant a LEFT JOIN fm_user b ON a.agent_id = b.id
+		<where>
+			a.id =#{id}
 		</where>
 	</select>
 </mapper>

@@ -1,6 +1,7 @@
 package sds.webapp.acc.dao;
 
 import java.util.List;
+import java.util.Map;
 
 import com.riozenc.quicktool.annotation.TransactionDAO;
 import com.riozenc.quicktool.mybatis.dao.AbstractTransactionDAOSupport;
@@ -51,5 +52,9 @@ public class MerchantDAO extends AbstractTransactionDAOSupport implements BaseDA
 
 	public MerchantDomain getUser(MerchantDomain merchantDomain) {
 		return getPersistanceManager().load(getNamespace() + ".getUser", merchantDomain);
+	}
+	
+	public Map<String,Object> checkRate(Integer id){
+		return getPersistanceManager().load(getNamespace() + ".checkRate", id);
 	}
 }

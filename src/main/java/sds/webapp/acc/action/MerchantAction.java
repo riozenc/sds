@@ -12,6 +12,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.riozenc.quicktool.common.util.json.JSONUtil;
+
 import sds.common.json.JsonGrid;
 import sds.common.json.JsonResult;
 import sds.common.security.util.UserUtils;
@@ -21,14 +23,11 @@ import sds.webapp.acc.domain.UserDomain;
 import sds.webapp.acc.service.MerchantService;
 import sds.webapp.acc.service.UserService;
 import sds.webapp.acc.util.Base64;
-import sds.webapp.acc.util.LocalUtil;
 import sds.webapp.acc.util.Base64Utils;
 import sds.webapp.acc.util.Common;
-import sds.webapp.acc.util.RSAUtils;
+import sds.webapp.acc.util.LocalUtil;
 import sds.webapp.acc.util.MyURLConnection;
-
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.riozenc.quicktool.common.util.json.JSONUtil;
+import sds.webapp.acc.util.RSAUtils;
 
 @ControllerAdvice
 @RequestMapping("merchant")
@@ -72,6 +71,9 @@ public class MerchantAction extends BaseAction {
 			// 违法推荐码
 			return JSONUtil.toJsonString(new JsonResult(JsonResult.ERROR, "无效的推荐码."));
 		}
+		
+		
+		//远程注册
 
 		if (merchantService.findByKey(merchantDomain) == null) {
 			merchantDomain.setStatus(0);// 审核中
@@ -153,6 +155,9 @@ public class MerchantAction extends BaseAction {
 	@ResponseBody
 	@RequestMapping(params = "type=updateRate")
 	public String updateRate(MerchantDomain merchantDomain) {
+		
+		//远程同步费率
+		
 		int i = merchantService.updateRate(merchantDomain);
 		if (i > 0) {
 			return JSONUtil.toJsonString(new JsonResult(JsonResult.SUCCESS, "更新商户成功."));
@@ -161,71 +166,100 @@ public class MerchantAction extends BaseAction {
 		}
 	}
 
+	@ResponseBody
+	@RequestMapping(params = "type=checkMerchant")
+	public String checkMerchant(MerchantDomain merchantDomain) {
+
+		Map<String, Object> map = merchantService.checkRate(merchantDomain.getId());
+
+		Double cost_wrate = map.get("cost_wrate") == null ? 0 : (Double) map.get("cost_wrate");
+		Double cost_arate = map.get("cost_arate") == null ? 0 : (Double) map.get("cost_arate");
+		Double wx_rate = map.get("wx_rate") == null ? 0 : (Double) map.get("wx_rate");
+		Double ali_rate = map.get("ali_rate") == null ? 0 : (Double) map.get("ali_rate");
+
+		// 费率判断
+		if (wx_rate < cost_wrate) {
+			return "微信费率错误";
+		}
+		if (ali_rate < cost_arate) {
+			return "支付宝费率错误";
+		}
+
+		// 判断费率
+		merchantDomain.setStatus(3);// 3审核成功
+		merchantService.update(merchantDomain);
+
+		return JSONUtil.toJsonString(new JsonResult(JsonResult.SUCCESS, "审核商户成功."));
+	}
+
+	public static void main(String[] args) {
+		System.out.println(1 > 1);
+	}
+
 	/**
 	 * 验卡
+	 * 
 	 * @param merchantDomain
 	 * @return
 	 */
 	@ResponseBody
 	@RequestMapping(params = "type=validCard")
-	public String validCard(MerchantDomain merchantDomain){
-		if(merchantDomain.getUserType() == 2){ 
-			//企业商户
+	public String validCard(MerchantDomain merchantDomain) {
+		if (merchantDomain.getUserType() == 2) {
+			// 企业商户
 			String account = UserUtils.getPrincipal().getMerchantDomain().getAccount();
 			String PRIVATEKEY = UserUtils.getPrincipal().getMerchantDomain().getPrivatekey();
-			Map<String,String> map = new HashMap<String,String>();
-			map.put("orderCode","tb_verifyInfo");
+			Map<String, String> map = new HashMap<String, String>();
+			map.put("orderCode", "tb_verifyInfo");
 			map.put("account", account);
-			
-			Map<String,String> msgData = new HashMap<String,String>();
+
+			Map<String, String> msgData = new HashMap<String, String>();
 			msgData.put("real_name", Base64.encodeToString(merchantDomain.getRealName()));
 			msgData.put("cmer", Base64.encodeToString(merchantDomain.getCmer()));
 			msgData.put("cmer_sort", Base64.encodeToString(merchantDomain.getCmerSort()));
-			msgData.put("phone",merchantDomain.getPhone());
-			msgData.put("business_id",merchantDomain.getBusinessId());
-			msgData.put("channel_code","WXPAY");
-			msgData.put("card_type", "1" );
+			msgData.put("phone", merchantDomain.getPhone());
+			msgData.put("business_id", merchantDomain.getBusinessId());
+			msgData.put("channel_code", "WXPAY");
+			msgData.put("card_type", "1");
 			msgData.put("card_no", merchantDomain.getCardNo());
 			msgData.put("cert_type", "00");
-			msgData.put("cert_no",merchantDomain.getCertNo());
+			msgData.put("cert_no", merchantDomain.getCertNo());
 			msgData.put("mobile", merchantDomain.getMobile());
 			msgData.put("location", Base64.encodeToString(merchantDomain.getLocation()));
 			msgData.put("cert_correct", "");
 			msgData.put("cert_opposite", "");
-			msgData.put("cert_meet","");
+			msgData.put("cert_meet", "");
 			msgData.put("card_correct", "");
-			msgData.put("card_opposite","");
+			msgData.put("card_opposite", "");
 			String msgJson = JSONUtil.toJsonString(msgData);
-			//签名
-            byte[] sign = LocalUtil.sign(Base64.decode(PRIVATEKEY.getBytes()), msgJson);
-            map.put("msg",msgJson);
-            String mapJson = JSONUtil.toJsonString(map);
-            String data = Base64.encodeToString(mapJson);
+			// 签名
+			byte[] sign = LocalUtil.sign(Base64.decode(PRIVATEKEY.getBytes()), msgJson);
+			map.put("msg", msgJson);
+			String mapJson = JSONUtil.toJsonString(map);
+			String data = Base64.encodeToString(mapJson);
 
-            // 加密
-         	PublicKey publicKey;
+			// 加密
+			PublicKey publicKey;
 			try {
 				publicKey = RSAUtils.loadPublicKey(Common.PUBLICKKEY);
-				byte[] decryptByte1 = RSAUtils.encryptData(data.getBytes(),publicKey);
-				System.out.println("加密:"+ Base64Utils.encode(decryptByte1));
-				Map<String,String> mapGlobal = new HashMap<String,String>();
-				mapGlobal.put("signature",new String(sign));
+				byte[] decryptByte1 = RSAUtils.encryptData(data.getBytes(), publicKey);
+				System.out.println("加密:" + Base64Utils.encode(decryptByte1));
+				Map<String, String> mapGlobal = new HashMap<String, String>();
+				mapGlobal.put("signature", new String(sign));
 				mapGlobal.put("data", Base64Utils.encode(decryptByte1));
 				String request = JSONUtil.toJsonString(mapGlobal);
-				byte[] res = MyURLConnection.postBinResource(Common.URL,request,Common.CHARSET,30);
-		        String response = new String(res,"UTF-8");
-		       //需要解析返回json
-		        
-		        
-		        System.out.println("返回json"+response);
+				byte[] res = MyURLConnection.postBinResource(Common.URL, request, Common.CHARSET, 30);
+				String response = new String(res, "UTF-8");
+				// 需要解析返回json
+
+				System.out.println("返回json" + response);
 			} catch (Exception e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
-         	
-         	
+
 		}
 		return JSONUtil.toJsonString(new JsonResult(JsonResult.SUCCESS, "验卡成功."));
-		
+
 	}
 }

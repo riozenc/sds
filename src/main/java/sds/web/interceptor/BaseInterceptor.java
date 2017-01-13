@@ -17,9 +17,13 @@ import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
 
 import com.riozenc.quicktool.common.util.date.DateUtil;
+import com.riozenc.quicktool.common.util.json.JSONUtil;
 import com.riozenc.quicktool.common.util.log.ExceptionLogUtil;
 import com.riozenc.quicktool.common.util.log.LogUtil;
 import com.riozenc.quicktool.common.util.log.LogUtil.LOG_TYPE;
+import com.riozenc.quicktool.exception.LoginTimeOutException;
+
+import sds.common.json.JsonResult;
 
 public class BaseInterceptor extends HandlerInterceptorAdapter {
 
@@ -35,6 +39,14 @@ public class BaseInterceptor extends HandlerInterceptorAdapter {
 
 		if (null != exception) {
 			// 设置头信息,字符集UTF-8
+
+			//登录超时异常
+			if (exception instanceof LoginTimeOutException) {
+				httpServletResponse.setHeader("Content-type", "text/html;charset=UTF-8");
+				httpServletResponse.getWriter()
+						.println(JSONUtil.toJsonString(new JsonResult(JsonResult.ERROR, "请重新登录...")));
+				return;
+			}
 
 			httpServletResponse.setHeader("Content-type", "text/html;charset=UTF-8");
 			httpServletResponse.getWriter().println(ExceptionLogUtil.log(exception));
@@ -55,14 +67,16 @@ public class BaseInterceptor extends HandlerInterceptorAdapter {
 			Object object, ModelAndView modelAndView) throws Exception {
 		// TODO Auto-generated method stub
 		if (null != modelAndView) {
-//			// 设置头信息,字符集UTF-8
-//			httpServletResponse.setHeader("Content-type", "text/html;charset=UTF-8");
-//			httpServletResponse.getWriter().println(modelAndView.getModel().get("json"));
-//
-//			httpServletResponse.getWriter().close();
-//
-//			LogUtil.getLogger(LOG_TYPE.OTHER)
-//					.info("[" + httpServletRequest.getRemoteAddr() + "]" + modelAndView.getModel().get("json"));
+			// // 设置头信息,字符集UTF-8
+			// httpServletResponse.setHeader("Content-type",
+			// "text/html;charset=UTF-8");
+			// httpServletResponse.getWriter().println(modelAndView.getModel().get("json"));
+			//
+			// httpServletResponse.getWriter().close();
+			//
+			// LogUtil.getLogger(LOG_TYPE.OTHER)
+			// .info("[" + httpServletRequest.getRemoteAddr() + "]" +
+			// modelAndView.getModel().get("json"));
 		}
 		System.out.println("postHandler");
 	}
@@ -74,7 +88,7 @@ public class BaseInterceptor extends HandlerInterceptorAdapter {
 	public boolean preHandle(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse,
 			Object object) throws Exception {
 		// TODO Auto-generated method stub
-		
+
 		LogUtil.getLogger(LOG_TYPE.OTHER)
 				.info("[" + DateUtil.formatDateTime(new Date()) + "]{" + httpServletRequest.getRemoteAddr() + "} 执行"
 						+ getClassMethod(object) + "[" + httpServletRequest.getMethod() + "]");

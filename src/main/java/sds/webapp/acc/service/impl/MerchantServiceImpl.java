@@ -2,6 +2,7 @@ package sds.webapp.acc.service.impl;
 
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 import com.riozenc.quicktool.annotation.TransactionDAO;
 import com.riozenc.quicktool.annotation.TransactionService;
@@ -66,6 +67,13 @@ public class MerchantServiceImpl implements MerchantService {
 	public MerchantDomain getUser(MerchantDomain merchantDomain) {
 		// TODO Auto-generated method stub
 		return merchantDAO.getUser(merchantDomain);
+	}
+
+	@Override
+	public Map<String, Object> checkRate(int id) {
+		// TODO Auto-generated method stub
+		
+		return merchantDAO.checkRate(id);
 	}
 
 }

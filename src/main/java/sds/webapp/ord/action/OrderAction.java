@@ -34,6 +34,11 @@ public class OrderAction extends BaseAction {
 
 		return null;
 	}
+	
+	//1.6.5.	订单状态查询接口
+	public String checkOrder(){
+		return null;
+	}
 
 	@ResponseBody
 	@RequestMapping(params = "type=findOrder")
