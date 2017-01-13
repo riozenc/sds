@@ -114,7 +114,7 @@ function dialog_verify(id) {
 			return false;
 		},
 		success : function(data) {
-			console.info(data);
+			
 			BJUI.dialog({
 			    id:'merchantVerify',
 			    url:'html/form/merchantVerify.jsp',

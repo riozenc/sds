@@ -1,7 +1,6 @@
 [
     {"name":"代理商管理", "children":[
-        {"id":"base-button", "name":"添加代理商", "target":"navtab", "url":"html/form/userAdd.jsp"},
-        {"id":"base-input", "name":"代理商列表", "target":"navtab", "url":"html/datagrid/userData.jsp"}
-        
+        {"id":"userAdd", "name":"添加代理商", "target":"navtab", "url":"html/form/userAdd.jsp"},
+        {"id":"userData", "name":"代理商列表", "target":"navtab", "url":"html/datagrid/userData.jsp"}
     ]}
 ]

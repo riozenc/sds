@@ -2,7 +2,7 @@
     pageEncoding="UTF-8"%>
 <div class="bjui-pageContent">
     <div class="bs-example">
-        <form action="user.do?type=insert" id="j_custom_form" data-toggle="ajaxform">
+        <form id="j_userAdd_form" >
         <h4>基 本 信 息</h4>
         <div class="bjui-row col-2">
             <label class="row-label " >系统账号</label>
@@ -14,14 +14,8 @@
                 <input type="text" name="password" value="" data-rule="required">
             </div>
             <label class="row-label">所属上级代理商</label>
-            <div class="row-input">
-                <select data-toggle="selectpicker" name="parentId" id="parent_id" >
-                    <option value="0" selected>总部</option>
-                    <option value="1">一级代理商</option>
-                    <option value="2">嗨嗨代理商</option>
-                    <option value="3">啦啦代理商</option>
-                    <option value="4">么么代理商</option>
-                </select>
+            <div class="row-input" id="parentSel">
+               
             </div>
             <label class="row-label">企业全称</label>
             <div class="row-input">
@@ -210,6 +204,46 @@
 <div class="bjui-pageFooter">
     <ul>
         <li><button type="button" class="btn-close" data-icon="close">关闭</button></li>
-        <li><button type="submit" class="btn-default" data-icon="save">保存</button></li>
+        <li><button id="submitSave" class="btn-default" data-icon="save" >保存</button></li>
     </ul>
 </div>
+<script >
+
+$(function() {
+	
+	$("#submitSave").bind("click",function(){
+		BJUI.ajax('ajaxform', {
+		    url: 'user.do?type=insert',
+		    form: $('#j_userAdd_form'),
+		    validate: true,
+		    loadingmask: true,
+		    okCallback: function(json, options) {
+		        console.log('返回内容：\n'+ JSON.stringify(json));
+		        $("#submitSave").unbind("click");
+		    }
+		})
+	});
+	$.ajax({
+		cache : false,
+		type : "POST",
+		url : "user.do?type=findUserByWhere",
+		data : null,
+		dataType : "json",
+		error : function(request) {
+			alert("Connection error");
+			return false;
+		},
+		success : function(data) {
+		
+			var list =data.list;
+			var selector=$('<select data-toggle="selectpicker" name="parentId" ></select>');  
+			
+			for(var i=0;i< data.totalRow;i++){   
+			  selector.append('<option value="'+data.list[i].id+'">'+data.list[i].fullName+'</option>');  
+			}
+			$("#parentSel").append(selector);
+			return false;	
+		}
+	});
+})
+</script>

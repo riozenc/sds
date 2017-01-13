@@ -1,7 +1,21 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <script type="text/javascript">
-
+var selectorData=null; //存储下拉数据
+$.ajax({
+	cache : false,
+	type : "POST",
+	url : "user.do?type=findUserByWhere",
+	data : null,
+	dataType : "json",
+	error : function(request) {
+		alert("Connection error");
+		return false;
+	},
+	success : function(data) {
+		selectorData=data.list;
+	}
+});
 $(function() {
 		
 	$('#user_datagrid').datagrid({
@@ -12,6 +26,8 @@ $(function() {
 	    showToolbar: false,
 	    toolbarItem: 'del',
 	    dataUrl:"user.do?type=findUserByWhere",
+	    delUrl:'user.do?type=delete',
+	    delPK:'id',
 	    columns: [
 	         {
 	             name: 'account',
@@ -38,10 +54,13 @@ $(function() {
 	            width: 80
 	        },
 	        {
-	            name: 'parentId',
+	            name: 'parentName',
 	            label: '上级名称',
-	            align: 'center'
-	            
+	            align: 'center',
+	            width:125,
+	            	render: function(value,data) {
+	            		return '<a href="javascript:;"   onclick="dialog_user('+data.parentId+');">'+value+'</a>';
+	            	}
 	        },
 	        {
 	            name: 'status',
@@ -65,33 +84,31 @@ $(function() {
 	            name: 'createDate',
 	            label: '注册时间',
 	            align: 'center',
-	            width:105
+	            width:90
 	        },
 	        {
 	            name: 'id',
 	            label: '操 作',
 	            align: 'center',
+	            width:100,
 	            render: function(value) {
 	            	return '<button type="button" class="btn-blue btn" data-icon="edit" onclick="dialog_user('+value+');">详情</button>';
 	            }
 	        }
 	    ],
-	    
-	    delUrl:'user.do?type=delete',
-	    delPK:'id',
 	    paging:{pageSize:5,selectPageSize:'10,20,30'},
 	    showLinenumber: false,
 	    inlineEditMult: false
 	})
 });
+
 function dialog_user(id) {
-	var ajaxdata={id:id} ;
-    var ajaxCallUrl="user.do?type=findUserByWhere";
+    
 	$.ajax({
 		cache : false,
 		type : "POST",
-		url : ajaxCallUrl,
-		data : ajaxdata,
+		url : "user.do?type=findUserByWhere",
+		data : {id:id} ,
 		dataType : "json",
 		error : function(request) {
 			alert("Connection error");
@@ -105,12 +122,16 @@ function dialog_user(id) {
 			    width:900,
 			    height:500,
 			    onLoad:function(){
-			    	$.each(data, function(key, obj) {
+			    	var selector=$('<select id="parentId" name="parentId" ></select>');  
+					for(var i=0;i< selectorData.length;i++){   
+					  selector.append('<option value="'+selectorData[i].id+'">'+selectorData[i].fullName+'</option>');  
+					}
+					$("#parentSel").append(selector);
+			    	$.each(data.list[0], function(key, obj) {
 			    		$("#"+key).val(obj);
 					});
 			    }
 			});
-			return false;	
 		}
 	});
     

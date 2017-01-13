@@ -1,22 +1,10 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
-<script type="text/javascript">
-BJUI.ajax('ajaxform', {
-    url: 'user.do?type=update',
-    form: $('#j_custom_form'),
-    validate: true,
-    loadingmask: true,
-    okCallback: function(json, options) {
-    	BJUI.dialog('close', 'editUser'); //关闭
-    	BJUI.navtab('refresh', 'base-input'); //刷新
-       
-    }
-})
-</script>
+
 <div class="bjui-pageContent">
     <div class="bs-example">
-        <form action="user.do?type=update" id="j_custom_form" data-toggle="ajaxform" >
-        <h4>基 本 信 息</h4>
+        <form id="j_userEdit_form"  >
+        <h4>基本信息</h4>
         <div class="bjui-row col-2">
         	<label class="row-label " >ID</label>
             <div class="row-input required">
@@ -28,15 +16,8 @@ BJUI.ajax('ajaxform', {
             </div>
             
             <label class="row-label">所属上级代理商</label>
-            <div class="row-input">
-                <select  name="parentId" id="parentId">
-                    
-                    <option value="9">一级代理商</option>
-                    <option value="2">嗨嗨代理商</option>
-                    <option value="3">啦啦代理商</option>
-                    <option value="4">么么代理商</option>
-                    <option value="1" >总部</option>
-                </select>
+            <div class="row-input" id="parentSel">
+               
             </div>
             <label class="row-label">企业全称</label>
             <div class="row-input">
@@ -185,7 +166,7 @@ BJUI.ajax('ajaxform', {
                     <option value="中国邮政储蓄银行">中国邮政储蓄银行</option>
                         
                 </select>
-                <input type="text" value="" name="jsBankadd" id="jsBankadd"style="width:150px" data-rule="required">
+                <input type="text" value="" name="jsBankadd" id="jsBankadd" style="width:250px" data-rule="required">
             </div>
             <label class="row-label">开户名</label>
             <div class="row-input">
@@ -230,6 +211,24 @@ BJUI.ajax('ajaxform', {
 <div class="bjui-pageFooter">
     <ul>
         <li><button type="button" class="btn-close" data-icon="close">关闭</button></li>
-        <li><button type="submit" class="btn-default" data-icon="save">保存</button></li>
+        <li><button  class="btn-default" data-icon="save" id="submitSave" >保存</button></li>
     </ul>
 </div>
+<script type="text/javascript">
+
+$(function() {
+	
+	$("#submitSave").bind("click",function(){
+		BJUI.ajax('ajaxform', {
+		    url: 'user.do?type=update',
+		    form: $('#j_userEdit_form'),
+		    validate: true,
+		    loadingmask: true,
+		    okCallback: function(json, options) {
+		    	BJUI.dialog('close', 'userEdit'); //关闭
+		    	BJUI.navtab('refresh', 'userData'); //刷新
+		    }
+		})
+	});
+})
+</script>
