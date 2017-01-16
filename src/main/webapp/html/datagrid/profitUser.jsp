@@ -4,7 +4,7 @@
 
 $(function() {
 		
-	$('#order_datagrid').datagrid({
+	$('#profitUser_datagrid').datagrid({
 	    height: '100%',
 	    tableWidth:'99.5%',
 	    gridTitle : ' ',
@@ -160,6 +160,6 @@ function dialog_profit(orderId){
 </form>
 </div>
 <div class="bjui-pageContent">
-	<table id="order_datagrid" class="table table-bordered">
+	<table id="profitUser_datagrid" class="table table-bordered">
 	</table>
 </div>
