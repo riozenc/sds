@@ -26,7 +26,7 @@ import sds.webapp.stm.service.ProfitUserService;
 public class ProfitUserAction extends BaseAction {
 
 	@Autowired
-	@Qualifier("profitServiceImpl")
+	@Qualifier("profitUserServiceImpl")
 	private ProfitUserService profitUserService;
 
 	@ResponseBody

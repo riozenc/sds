@@ -224,7 +224,7 @@
 
 	<select id="getAllCheckedMerchant" resultType="MerchantDomain"
 		useCache="true">
-		SELECT * FROM fm_merchant where status = 1
+		SELECT * FROM fm_merchant where status = 3
 	</select>
 
 	<!-- 不使用缓存 -->
