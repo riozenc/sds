@@ -203,6 +203,10 @@
                     <option value="2">禁用</option>
                 </select>
             </div>
+            <label class="row-label">推广码</label>
+            <div class="row-input">
+                <input type="text" value="" readonly="readonly" name="appCode" id="appCode" data-rule="required">
+            </div>
         </div>
         </form>
     </div>

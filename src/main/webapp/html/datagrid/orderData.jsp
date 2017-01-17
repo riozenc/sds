@@ -32,7 +32,18 @@ $(function() {
 	            name: 'channelCode',
 	            label: '交易通道',
 	            align: 'center',
-	            width: 100
+	            width: 100,
+	            render: function(value) {
+	            	if(value == 1){
+	            		return "微信";
+	            	}else if(value == 2){
+	            		return "支付宝";
+	            	}else if(value == 3){
+	            		return "银联";
+	            	}else{
+	            		return value;
+	            	}
+	            }
 	        },
 	        {
 	            name: 'amount',

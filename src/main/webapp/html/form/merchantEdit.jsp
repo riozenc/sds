@@ -3,7 +3,7 @@
 <script type="text/javascript">
 function save(){
 	BJUI.ajax('ajaxform', {
-	    url: 'merchant.do?type=update',
+	    url: 'merchant.do?type=updateRate',
 	    form: $('#j_merchant_form'),
 	    validate: true,
 	    loadingmask: true,
@@ -32,23 +32,23 @@ function save(){
             
             <label class="row-label " >创建时间</label>
             <div class="row-input ">
-                <input type="text" name="createDate" id="createDate" value="" readonly="readonly" >
+                <input type="text" id="createDate" value="" readonly="readonly" >
             </div>
             <label class="row-label " >真实姓名</label>
             <div class="row-input ">
-                <input type="text" name="realName" id="realName" value="" readonly="readonly" >
+                <input type="text"  id="realName" value="" readonly="readonly" >
             </div>
             <label class="row-label " >商户名称</label>
             <div class="row-input ">
-                <input type="text" name="cmer" id="cmer" value="" readonly="readonly" >
+                <input type="text"  id="cmer" value="" readonly="readonly" >
             </div>
             <label class="row-label " >商户简称</label>
             <div class="row-input ">
-                <input type="text" name="cmerSort" id="cmerSort" value="" readonly="readonly" >
+                <input type="text"  id="cmerSort" value="" readonly="readonly" >
             </div>
             <label class="row-label " >行业代码</label>
             <div class="row-input ">
-                <input type="text" name="businessId" id="businessId" value=""  readonly="readonly">
+                <input type="text"  id="businessId" value=""  readonly="readonly">
             </div>
             <label class="row-label required" >银行卡号</label>
             <div class="row-input ">
@@ -60,15 +60,15 @@ function save(){
             </div>
             <label class="row-label " >电话码</label>
             <div class="row-input ">
-                <input type="text" name="phone" id="phone" value="" readonly="readonly" >
+                <input type="text"  id="phone" value="" readonly="readonly" >
             </div>
             <label class="row-label required" >手机号</label>
             <div class="row-input ">
-                <input type="text" name="mobile" id="mobile" value=""  readonly="readonly">
+                <input type="text" id="mobile" value=""  readonly="readonly">
             </div>
             <label class="row-label " >开户城市</label>
             <div class="row-input ">
-                <input type="text" name="location" id="location" value=""  readonly="readonly">
+                <input type="text" id="location" value=""   readonly="readonly" >
             </div>
             <label class="row-label " >支付宝费率</label>
             <div class="row-input ">
@@ -80,7 +80,7 @@ function save(){
             </div>
             <label class="row-label " >推广码</label>
             <div class="row-input ">
-                <input type="text" name="appcode" id="appcode" value=""  readonly="readonly">
+                <input type="text"  id="appCode" value=""  readonly="readonly">
             </div>
             
             <label class="row-label " >用户类型</label>
@@ -91,7 +91,6 @@ function save(){
             		
             	</select>
             </div>
-            
             
         </div>
         </form>

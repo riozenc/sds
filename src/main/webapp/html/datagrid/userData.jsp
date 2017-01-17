@@ -123,9 +123,12 @@ function dialog_user(id) {
 			    height:500,
 			    onLoad:function(){
 			    	var selector=$('<select id="parentId" name="parentId" ></select>');  
+			    	selector.append('<option value="0">管理员</option>');  
+					
 					for(var i=0;i< selectorData.length;i++){   
 					  selector.append('<option value="'+selectorData[i].id+'">'+selectorData[i].fullName+'</option>');  
 					}
+					console.info(selector);
 					$("#parentSel").append(selector);
 			    	$.each(data.list[0], function(key, obj) {
 			    		$("#"+key).val(obj);

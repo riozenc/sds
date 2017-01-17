@@ -6,15 +6,15 @@ $(function() {
 		
 	$('#profitUser_datagrid').datagrid({
 	    height: '100%',
-	    tableWidth:'99.5%',
+	    tableWidth:'99%',
 	    gridTitle : ' ',
 	    local: 'remote',
 	    showToolbar: false,
 	    toolbarItem: 'del',
-	    dataUrl:"order.do?type=findOrder",
+	    dataUrl:"profitMerchant.do?type=findProfitMerchantByWhere",
 	    columns: [
 	         {
-	             name: 'orderId',
+	             name: 'id',
 	             label: '订单号',
 	             align: 'center',
 	             width: 130,

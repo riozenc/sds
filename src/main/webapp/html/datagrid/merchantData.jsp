@@ -6,7 +6,7 @@ $(function() {
 
 	$('#merchant_datagrid').datagrid({
 	    height: '100%',
-	    tableWidth:'99.5%',
+	    tableWidth:'99%',
 	    gridTitle : ' ',
 	    local:'remote',
 	    showToolbar: false,
@@ -46,8 +46,23 @@ $(function() {
 	        {
 	            name: 'agentId',
 	            label: '上级名称',
-	            align: 'center'
-	            
+	            align: 'center',
+	            width: 120
+	        },
+	        {
+	            name: 'userType',
+	            label: '类型',
+	            align: 'center',
+	            width: 70,
+	            render: function(value) {
+	            	if(value == 1){
+	            		return "普通用户";
+	            	}else if(value == 2){
+	            		return "企业用户";
+	            	}else{
+	            		return value;
+	            	}
+	            }
 	        },
 	        {
 	            name: 'status',
@@ -73,7 +88,7 @@ $(function() {
 	            name: 'createDate',
 	            label: '注册时间',
 	            align: 'center',
-	            width:105,
+	            width:100,
 	            type:'date',
 	            pattern:'yyyy-MM-dd',
 	            render:function(value){return value?value.substr(0,20):value}
