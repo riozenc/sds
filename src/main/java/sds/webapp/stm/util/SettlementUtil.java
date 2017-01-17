@@ -53,17 +53,6 @@ public class SettlementUtil {
 		return list;
 	}
 
-	/**
-	 * 推荐人分润
-	 */
-	private static void tjStm(OrderDomain order, MerchantDomain merchantDomain, UserDomain agent) {
-		if (agent.getTjStatus() == 1) {
-			// 开启
-			
-			
-		}
-	}
-
 	// 处理商户跟代理商分润
 	private static ProfitDomain buildStmDomain(OrderDomain order, MerchantDomain merchantDomain, UserDomain agent) {
 
@@ -71,13 +60,23 @@ public class SettlementUtil {
 		profitDomain.setOrderId(order.getOrderId());
 		profitDomain.setAccount(order.getAccount());
 		profitDomain.setAmount(order.getAmount());
+		profitDomain.setMerchantProfit(
+				compute(order.getAmount(), 1 - getMerchantRate(merchantDomain, order.getChannelCode())));
 		profitDomain
-				.setMerchantProfit(order.getAmount() * (1 - getMerchantRate(merchantDomain, order.getChannelCode())));
-		profitDomain.setTotalProfit(order.getAmount() * (getMerchantRate(merchantDomain, order.getChannelCode())));
+				.setTotalProfit(compute(order.getAmount(), getMerchantRate(merchantDomain, order.getChannelCode())));
 
 		profitDomain.setAgentId(agent.getId());
-		profitDomain.setAgentProfit(order.getAmount() * (getMerchantRate(merchantDomain, order.getChannelCode())
-				- getAgentRate(agent, order.getChannelCode())));
+		profitDomain.setAgentProfit(compute(order.getAmount(),
+				getMerchantRate(merchantDomain, order.getChannelCode()) - getAgentRate(agent, order.getChannelCode())));
+
+		// 1:开启 0:关闭
+		if (agent.getTjStatus() == 1) {
+			profitDomain.setTjId(merchantDomain.getTjId());
+			profitDomain.setTjProfit(compute(profitDomain.getAgentProfit(), agent.getTjRate()));
+			profitDomain.setAgentProfit(profitDomain.getAgentProfit() - profitDomain.getTjProfit());
+
+		}
+
 		profitDomain.setOrderDay(order.getDate());
 		profitDomain.setCreateDate(new Date());
 
@@ -97,11 +96,12 @@ public class SettlementUtil {
 			profitDomain.setAccount(order.getAccount());
 			profitDomain.setAmount(order.getAmount());
 			profitDomain.setMerchantProfit(
-					order.getAmount() * (1 - getMerchantRate(merchantDomain, order.getChannelCode())));
-			profitDomain.setTotalProfit(order.getAmount() * (getMerchantRate(merchantDomain, order.getChannelCode())));
+					compute(order.getAmount(), 1 - getMerchantRate(merchantDomain, order.getChannelCode())));
+			profitDomain.setTotalProfit(
+					compute(order.getAmount(), getMerchantRate(merchantDomain, order.getChannelCode())));
 
 			profitDomain.setAgentId(agent.getParentId());
-			profitDomain.setAgentProfit(order.getAmount() * (getAgentRate(agent, order.getChannelCode())));
+			profitDomain.setAgentProfit(compute(order.getAmount(), getAgentRate(agent, order.getChannelCode())));
 			profitDomain.setOrderDay(order.getDate());
 			profitDomain.setCreateDate(new Date());
 			return profitDomain;
@@ -110,17 +110,38 @@ public class SettlementUtil {
 		profitDomain.setOrderId(order.getOrderId());
 		profitDomain.setAccount(order.getAccount());
 		profitDomain.setAmount(order.getAmount());
-		profitDomain
-				.setMerchantProfit(order.getAmount() * (1 - getMerchantRate(merchantDomain, order.getChannelCode())));
+		profitDomain.setMerchantProfit(
+				compute(order.getAmount(), 1 - getMerchantRate(merchantDomain, order.getChannelCode())));
 		profitDomain.setTotalProfit(order.getAmount() * (getMerchantRate(merchantDomain, order.getChannelCode())));
 
 		profitDomain.setAgentId(parent.getId());
-		profitDomain.setAgentProfit(order.getAmount()
-				* (getAgentRate(agent, order.getChannelCode()) - getAgentRate(parent, order.getChannelCode())));
+		profitDomain.setAgentProfit(compute(order.getAmount(),
+				getAgentRate(agent, order.getChannelCode()) - getAgentRate(parent, order.getChannelCode())));
 		profitDomain.setOrderDay(order.getDate());
 		profitDomain.setCreateDate(new Date());
 
 		return profitDomain;
+	}
+
+	/**
+	 * 计算方式
+	 * 
+	 * @param money
+	 * @param rate
+	 * @return
+	 */
+	private static Double compute(Double money, Double rate) {
+		return getDouble(money * rate, 2);
+	}
+
+	private static double getDouble(double a, int b) {
+		int x = 0;
+		int y = 1;
+		for (int i = 0; i < b; i++) {
+			y = y * 10;
+		}
+		x = (int) (a * y);
+		return (double) x / y;
 	}
 
 	/**

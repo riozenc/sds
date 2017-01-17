@@ -81,7 +81,7 @@ public class ProfitAction extends BaseAction {
 		// System.out.println(i);
 		return null;
 	}
-
+	
 	/**
 	 * 获取代理商商户关系
 	 * 
@@ -96,7 +96,16 @@ public class ProfitAction extends BaseAction {
 		}
 		// 获取审核过的商户
 		List<MerchantDomain> merchants = merchantService.getAllCheckedMerchant();
+		Map<Integer, MerchantDomain> merchantMap = new HashMap<Integer, MerchantDomain>();
+		
 		for (MerchantDomain temp : merchants) {
+			merchantMap.put(temp.getId(), temp);
+			
+			if(temp.getTjId()!=null){
+				
+				merchantMap.get(temp.getTjId());
+			}
+			
 			LinkedList<UserDomain> list = new LinkedList<>();
 			list.add(userMap.get(temp.getAgentId()));
 			while (true) {
