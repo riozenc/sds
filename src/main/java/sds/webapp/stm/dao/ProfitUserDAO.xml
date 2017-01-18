@@ -18,8 +18,8 @@
 		a.AGENT_ID,
 		b.ACCOUNT,
 		a.TOTAL_AMOUNT,
-		a,TOTAL_PROFIT,
-		a,DATE,
+		a.TOTAL_PROFIT,
+		a.DATE,
 		a.STATUS
 		FROM
 		fm_profit_user a

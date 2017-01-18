@@ -32,11 +32,11 @@
 			<if test="merchantId !=null">
 				and a.MERCHANT_ID = #{merchantId}
 			</if>
-			<if test="total_amount !=null">
-				and a.TOTAL_AMOUNT = #{total_amount}
+			<if test="totalAmount !=null">
+				and a.TOTAL_AMOUNT = #{totalAmount}
 			</if>
-			<if test="total_profit !=null">
-				and a.TOTAL_PROFIT = #{total_profit}
+			<if test="totalProfit !=null">
+				and a.TOTAL_PROFIT = #{totalProfit}
 			</if>
 
 			<if test="startDate !=null">
@@ -61,7 +61,7 @@
 		insert into
 		fm_profit_merchant(ID,MERCHANT_ID,TOTAL_AMOUNT,TOTAL_PROFIT,DATE,STATUS)
 		values
-		(#{id},#{merchantId},#{total_amount},#{total_profit},#{date},#{status})
+		(#{id},#{merchantId},#{totalAmount},#{totalProfit},#{date},#{status})
 	</insert>
 	<update id="update" parameterType="ProfitMerchantDomain"
 		flushCache="true">
@@ -70,11 +70,11 @@
 			<if test="merchantId !=null">
 				MERCHANT_ID = #{merchantId},
 			</if>
-			<if test="total_amount !=null">
-				TOTAL_AMOUNT = #{total_amount},
+			<if test="totalAmount !=null">
+				TOTAL_AMOUNT = #{totalAmount},
 			</if>
-			<if test="total_profit !=null">
-				TOTAL_PROFIT = #{total_profit},
+			<if test="totalProfit !=null">
+				TOTAL_PROFIT = #{totalProfit},
 			</if>
 			<if test="date !=null">
 				DATE = #{date},

@@ -44,7 +44,7 @@ PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
 
 
 	<plugins>
-		<plugin interceptor="com.riozenc.quicktool.mybatis.persistence.interceptor.PaginationInterceptor"></plugin>
+		<plugin interceptor="sds.common.mybatis.plus.PaginationInterceptor"></plugin>
 	</plugins>
 
 </configuration>
