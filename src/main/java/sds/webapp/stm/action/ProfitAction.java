@@ -57,7 +57,7 @@ public class ProfitAction extends BaseAction {
 	public String getProfit(ProfitDomain profitDomain) {
 
 		Principal p = UserUtils.getPrincipal();
-		if (p.getId() != 1) {//管理员查看所有
+		if (p.getId() != 1) {// 管理员查看所有
 			profitDomain.setAgentId(p.getId());// 获取当前登录人的分润消息
 		}
 		List<ProfitDomain> list = profitService.findByWhere(profitDomain);
@@ -68,9 +68,9 @@ public class ProfitAction extends BaseAction {
 	@RequestMapping(params = "type=profit")
 	public String profit() {
 		OrderDomain orderDomain = new OrderDomain();
-		orderDomain.setStatus(1);
-		// 获取指定时间的所有交易订单
-		List<OrderDomain> orderDomains = orderService.findByWhere(orderDomain);
+
+			// 获取指定时间的所有交易订单
+		List<OrderDomain> orderDomains = orderService.getAllCheckedOrder(orderDomain);
 		// 获取商户代理商关系
 		Map<String, MARDomain> marMap = getMAR();
 
@@ -81,7 +81,7 @@ public class ProfitAction extends BaseAction {
 		// System.out.println(i);
 		return null;
 	}
-	
+
 	/**
 	 * 获取代理商商户关系
 	 * 
@@ -97,15 +97,15 @@ public class ProfitAction extends BaseAction {
 		// 获取审核过的商户
 		List<MerchantDomain> merchants = merchantService.getAllCheckedMerchant();
 		Map<Integer, MerchantDomain> merchantMap = new HashMap<Integer, MerchantDomain>();
-		
+
 		for (MerchantDomain temp : merchants) {
 			merchantMap.put(temp.getId(), temp);
-			
-			if(temp.getTjId()!=null){
-				
+
+			if (temp.getTjId() != null) {
+
 				merchantMap.get(temp.getTjId());
 			}
-			
+
 			LinkedList<UserDomain> list = new LinkedList<>();
 			list.add(userMap.get(temp.getAgentId()));
 			while (true) {

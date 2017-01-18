@@ -41,4 +41,7 @@ public class OrderDAO extends AbstractTransactionDAOSupport implements BaseDAO<O
 		return getPersistanceManager().update(getNamespace() + ".update", orderDomain);
 	}
 
+	public List<OrderDomain> getAllCheckedOrder(OrderDomain orderDomain) {
+		return getPersistanceManager().find(getNamespace() + ".getAllCheckedOrder", orderDomain);
+	}
 }

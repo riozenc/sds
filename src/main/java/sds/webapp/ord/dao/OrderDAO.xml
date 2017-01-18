@@ -125,4 +125,55 @@
 
 		</where>
 	</delete>
+	
+	
+	
+	<select id="getAllCheckedOrder" parameterType="OrderDomain" resultType="OrderDomain"
+		useCache="true">
+		select
+		ID,ORDER_ID,ORDER_NO,CHANNEL_CODE,RESP_CODE,RESP_INFO,AMOUNT,DATE,ACCOUNT,CODE_URL,REMARK,RETURN_CODE,STATUS
+		from fm_order
+		<where>
+			<if test="id !=null">
+				and ID = #{id}
+			</if>
+			<if test="orderId !=null">
+				and ORDER_ID = #{orderId}
+			</if>
+			<if test="orderNo !=null">
+				and ORDER_NO = #{orderNo}
+			</if>
+			<if test="channelCode !=null">
+				and CHANNEL_CODE = #{channelCode}
+			</if>
+			<if test="respCode !=null">
+				and RESP_CODE = #{respCode}
+			</if>
+			<if test="respInfo !=null">
+				and RESP_INFO = #{respInfo}
+			</if>
+			<if test="amount !=null">
+				and AMOUNT = #{amount}
+			</if>
+			<if test="startDate !=null">
+				and DATE_FORMAT(DATE, '%Y-%m-%d') &gt;= DATE_FORMAT(#{startDate}, '%Y-%m-%d')
+			</if>
+			<if test="endDate !=null">
+				and DATE_FORMAT(DATE, '%Y-%m-%d') &lt;= DATE_FORMAT(#{endDate}, '%Y-%m-%d')
+			</if>
+			<if test="account !=null">
+				and ACCOUNT = #{account}
+			</if>
+			<if test="codeUrl !=null">
+				and CODE_URL = #{codeUrl}
+			</if>
+			<if test="remark !=null">
+				and REMARK = #{remark}
+			</if>
+			<if test="returnCode !=null">
+				and RETURN_CODE = #{returnCode}
+			</if>
+			and STATUS = 1
+		</where>
+	</select>
 </mapper>

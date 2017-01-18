@@ -45,4 +45,10 @@ public class OrderServiceImpl implements OrderService {
 		return orderDAO.findByWhere(t);
 	}
 
+	@Override
+	public List<OrderDomain> getAllCheckedOrder(OrderDomain orderDomain) {
+		// TODO Auto-generated method stub
+		return orderDAO.getAllCheckedOrder(orderDomain);
+	}
+
 }

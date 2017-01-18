@@ -69,12 +69,18 @@ public class SettlementUtil {
 		profitDomain.setAgentProfit(compute(order.getAmount(),
 				getMerchantRate(merchantDomain, order.getChannelCode()) - getAgentRate(agent, order.getChannelCode())));
 
+		profitDomain.setTjProfit(0d);// 赋默认值
 		// 1:开启 0:关闭
 		if (agent.getTjStatus() == 1) {
-			profitDomain.setTjId(merchantDomain.getTjId());
-			profitDomain.setTjProfit(compute(profitDomain.getAgentProfit(), agent.getTjRate()));
-			profitDomain.setAgentProfit(profitDomain.getAgentProfit() - profitDomain.getTjProfit());
-
+			if (order.getAmount() >= agent.getTjLimit()) {
+				if (merchantDomain.getTjId() == null) {
+					// 无推荐人
+				} else {
+					profitDomain.setTjId(merchantDomain.getTjId());
+					profitDomain.setTjProfit(compute(profitDomain.getAgentProfit(), agent.getTjRate()));
+					profitDomain.setAgentProfit(profitDomain.getAgentProfit() - profitDomain.getTjProfit());
+				}
+			}
 		}
 
 		profitDomain.setOrderDay(order.getDate());
@@ -88,6 +94,7 @@ public class SettlementUtil {
 			UserDomain parent) {
 
 		ProfitDomain profitDomain = new ProfitDomain();
+		profitDomain.setTjProfit(0d);// 赋默认值
 
 		if (parent == null) {
 			// 到了总代
@@ -117,6 +124,7 @@ public class SettlementUtil {
 		profitDomain.setAgentId(parent.getId());
 		profitDomain.setAgentProfit(compute(order.getAmount(),
 				getAgentRate(agent, order.getChannelCode()) - getAgentRate(parent, order.getChannelCode())));
+
 		profitDomain.setOrderDay(order.getDate());
 		profitDomain.setCreateDate(new Date());
 
@@ -157,7 +165,7 @@ public class SettlementUtil {
 					list.get(i).setAgentProfit(list.get(i).getTotalProfit() - sum);
 				}
 			}
-			sum += list.get(i).getAgentProfit();
+			sum += (list.get(i).getAgentProfit() + list.get(i).getTjProfit());
 		}
 	}
 
