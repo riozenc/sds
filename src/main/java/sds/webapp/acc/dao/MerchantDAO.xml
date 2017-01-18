@@ -241,6 +241,24 @@
 	</select>
 
 
+	<update id="updateRate" parameterType="MerchantDomain"
+		flushCache="true">
+		update fm_merchant
+		<set>
+			<if test="wxRate !=null">
+				wx_rate = #{wxRate},
+			</if>
+			<if test="aliRate !=null">
+				ali_rate = #{aliRate},
+			</if>
+		</set>
+		<where>
+			<if test="id !=null">
+				and ID = #{id}
+			</if>
+		</where>
+	</update>
+
 
 	<select id="checkRate" parameterType="Integer" resultType="Map"
 		useCache="true">
