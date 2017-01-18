@@ -186,7 +186,7 @@ public class MerchantAction extends BaseAction {
 		}
 
 		// 判断费率
-		merchantDomain.setStatus(3);// 3审核成功
+//		merchantDomain.setStatus(3);// 3审核成功
 		merchantService.update(merchantDomain);
 
 		return JSONUtil.toJsonString(new JsonResult(JsonResult.SUCCESS, "审核商户成功."));
