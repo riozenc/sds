@@ -2,6 +2,8 @@ package sds.webapp.stm.dao;
 
 import java.util.List;
 
+import org.apache.ibatis.session.ExecutorType;
+
 import com.riozenc.quicktool.annotation.TransactionDAO;
 import com.riozenc.quicktool.mybatis.dao.AbstractTransactionDAOSupport;
 import com.riozenc.quicktool.mybatis.dao.BaseDAO;
@@ -39,6 +41,10 @@ public class ProfitMerchantDAO extends AbstractTransactionDAOSupport implements 
 	public int update(ProfitMerchantDomain profitMerchantDomain) {
 		// TODO Auto-generated method stub
 		return getPersistanceManager().update(getNamespace() + ".update", profitMerchantDomain);
+	}
+	
+	public int insertBatch(List<ProfitMerchantDomain> list) {
+		return getPersistanceManager(ExecutorType.BATCH).insertList(getNamespace() + ".insert", list);
 	}
 
 }

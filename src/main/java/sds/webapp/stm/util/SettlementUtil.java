@@ -131,6 +131,17 @@ public class SettlementUtil {
 		return profitDomain;
 	}
 
+	public static Double sum(Double d1, Double d2) {
+		if (d1 == null) {
+			d1 = 0d;
+		}
+		if (d2 == null) {
+			d2 = 0d;
+		}
+
+		return d1 + d2;
+	}
+
 	/**
 	 * 计算方式
 	 * 

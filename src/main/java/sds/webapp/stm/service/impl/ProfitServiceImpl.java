@@ -51,4 +51,10 @@ public class ProfitServiceImpl implements ProfitService {
 		return profitDAO.insertBatch(list);
 	}
 
+	@Override
+	public List<ProfitDomain> getAllProfit(ProfitDomain profitDomain) {
+		// TODO Auto-generated method stub
+		return profitDAO.getAllProfit(profitDomain);
+	}
+
 }

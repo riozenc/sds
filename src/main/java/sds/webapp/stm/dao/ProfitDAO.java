@@ -47,4 +47,8 @@ public class ProfitDAO extends AbstractTransactionDAOSupport implements BaseDAO<
 		return getPersistanceManager(ExecutorType.BATCH).insertList(getNamespace() + ".insert", list);
 	}
 
+	public List<ProfitDomain> getAllProfit(ProfitDomain profitDomain) {
+		return getPersistanceManager().find(getNamespace() + ".getAllProfit", profitDomain);
+	}
+
 }

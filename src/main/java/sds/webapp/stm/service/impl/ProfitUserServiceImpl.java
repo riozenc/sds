@@ -45,4 +45,10 @@ public class ProfitUserServiceImpl implements ProfitUserService {
 		return profitUserDAO.findByWhere(t);
 	}
 
+	@Override
+	public int insertBatch(List<ProfitUserDomain> list) {
+		// TODO Auto-generated method stub
+		return profitUserDAO.insertBatch(list);
+	}
+
 }

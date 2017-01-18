@@ -1,6 +1,8 @@
 package sds.webapp.stm.action;
 
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
@@ -12,6 +14,7 @@ import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.riozenc.quicktool.common.util.date.DateUtil;
 import com.riozenc.quicktool.common.util.json.JSONUtil;
 
 import sds.common.json.JsonGrid;
@@ -26,7 +29,11 @@ import sds.webapp.ord.domain.OrderDomain;
 import sds.webapp.ord.service.OrderService;
 import sds.webapp.stm.domain.MARDomain;
 import sds.webapp.stm.domain.ProfitDomain;
+import sds.webapp.stm.domain.ProfitMerchantDomain;
+import sds.webapp.stm.domain.ProfitUserDomain;
+import sds.webapp.stm.service.ProfitMerchantService;
 import sds.webapp.stm.service.ProfitService;
+import sds.webapp.stm.service.ProfitUserService;
 import sds.webapp.stm.util.SettlementUtil;
 
 /**
@@ -52,6 +59,13 @@ public class ProfitAction extends BaseAction {
 	@Qualifier("userServiceImpl")
 	private UserService userService;
 
+	@Autowired
+	@Qualifier("profitUserServiceImpl")
+	private ProfitUserService profitUserService;//
+	@Autowired
+	@Qualifier("profitMerchantServiceImpl")
+	private ProfitMerchantService profitMerchantService;//
+
 	@ResponseBody
 	@RequestMapping(params = "type=getProfit")
 	public String getProfit(ProfitDomain profitDomain) {
@@ -61,15 +75,79 @@ public class ProfitAction extends BaseAction {
 			profitDomain.setAgentId(p.getId());// 获取当前登录人的分润消息
 		}
 		List<ProfitDomain> list = profitService.findByWhere(profitDomain);
-
 		return JSONUtil.toJsonString(new JsonGrid(list.size(), 1, list));
+	}
+
+	@ResponseBody
+	@RequestMapping(params = "type=profitCount")
+	public String profitCount(ProfitDomain profitDomain) {
+		if (profitDomain.getOrderDay() == null) {
+			profitDomain.setOrderDay(new Date());
+		}
+		List<ProfitDomain> list = profitService.getAllProfit(profitDomain);
+
+		// List<ProfitUserDomain> profitUserDomains = new
+		// ArrayList<ProfitUserDomain>();
+		// List<ProfitMerchantDomain> profitMerchantDomains = new
+		// ArrayList<ProfitMerchantDomain>();
+
+		Map<Integer, ProfitUserDomain> profitUserMap = new HashMap<Integer, ProfitUserDomain>();
+		Map<Integer, ProfitMerchantDomain> profitMerchantMap = new HashMap<Integer, ProfitMerchantDomain>();
+
+		list.stream().forEach((profit) -> {
+
+			ProfitUserDomain profitUserDomain = profitUserMap.get(profit.getAgentId());
+
+			if (profitUserDomain == null) {
+				profitUserDomain = new ProfitUserDomain();
+				profitUserDomain.setAgentId(profit.getAgentId());
+				profitUserMap.put(profit.getAgentId(), profitUserDomain);
+			}
+
+			profitUserDomain.setTotalAmount(SettlementUtil.sum(profitUserDomain.getTotalAmount(), profit.getAmount()));
+			profitUserDomain
+					.setTotalProfit(SettlementUtil.sum(profitUserDomain.getTotalProfit(), profit.getAgentProfit()));
+			profitUserDomain.setDate(profitDomain.getOrderDay());
+			profitUserDomain.setStatus(0);
+
+			if (profit.getTjId() != null) {
+				// 存在推荐人
+				ProfitMerchantDomain profitMerchantDomain = profitMerchantMap.get(profit.getTjId());
+				if (profitMerchantDomain == null) {
+					profitMerchantDomain = new ProfitMerchantDomain();
+					profitMerchantDomain.setMerchantId(profit.getTjId());
+					profitMerchantMap.put(profit.getTjId(), profitMerchantDomain);
+				}
+				profitMerchantDomain
+						.setTotalAmount(SettlementUtil.sum(profitMerchantDomain.getTotalAmount(), profit.getAmount()));
+				profitMerchantDomain.setTotalProfit(
+						SettlementUtil.sum(profitMerchantDomain.getTotalProfit(), profit.getTjProfit()));
+				profitMerchantDomain.setDate(profitDomain.getOrderDay());
+				profitMerchantDomain.setStatus(0);
+			}
+		});
+
+		List<ProfitUserDomain> profitUserDomains = new ArrayList<>(profitUserMap.values());
+		List<ProfitMerchantDomain> profitMerchantDomains = new ArrayList<>(profitMerchantMap.values());
+		if (profitUserDomains.size() > 0) {
+			profitUserService.insertBatch(profitUserDomains);
+		}
+		if (profitMerchantDomains.size() > 0) {
+			profitMerchantService.insertBatch(profitMerchantDomains);
+		}
+
+		return DateUtil.formatDate(profitDomain.getOrderDay());
+	}
+
+	public String profitMerchant() {
+		return null;
 	}
 
 	@RequestMapping(params = "type=profit")
 	public String profit() {
 		OrderDomain orderDomain = new OrderDomain();
 
-			// 获取指定时间的所有交易订单
+		// 获取指定时间的所有交易订单
 		List<OrderDomain> orderDomains = orderService.getAllCheckedOrder(orderDomain);
 		// 获取商户代理商关系
 		Map<String, MARDomain> marMap = getMAR();

@@ -45,4 +45,10 @@ public class ProfitMerchantServiceImpl implements ProfitMerchantService {
 		return profitMerchantDAO.findByWhere(t);
 	}
 
+	@Override
+	public int insertBatch(List<ProfitMerchantDomain> list) {
+		// TODO Auto-generated method stub
+		return profitMerchantDAO.insertBatch(list);
+	}
+
 }

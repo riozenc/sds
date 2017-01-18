@@ -55,9 +55,9 @@
 	</select>
 	<insert id="insert" parameterType="ProfitDomain" flushCache="true">
 		insert into
-		fm_profit(ID,ORDER_ID,ACCOUNT,AMOUNT,TOTAL_PROFIT,AGENT_ID,AGENT_PROFIT,TJ_PROFIT,ORDER_DAY,JS_DAY,CREATE_DATE)
+		fm_profit(ID,ORDER_ID,ACCOUNT,AMOUNT,MERCHANT_PROFIT,TOTAL_PROFIT,AGENT_ID,AGENT_PROFIT,TJ_PROFIT,ORDER_DAY,JS_DAY,CREATE_DATE)
 		values
-		(#{id},#{orderId},#{account},#{amount},#{totalProfit},#{agentId},#{agentProfit},#{tjProfit},#{orderDay},#{jsDay},#{createDate})
+		(#{id},#{orderId},#{account},#{amount},#{merchantProfit},#{totalProfit},#{agentId},#{agentProfit},#{tjProfit},#{orderDay},#{jsDay},#{createDate})
 	</insert>
 	<update id="update" parameterType="ProfitDomain" flushCache="true">
 		update fm_profit
@@ -94,17 +94,60 @@
 			</if>
 		</set>
 		<where>
-			
-				ID = #{id}
-			
+
+			ID = #{id}
+
 		</where>
 	</update>
 	<delete id="delete" parameterType="ProfitDomain" flushCache="true">
 		delete from fm_profit
 		<where>
-			
-				 ID = #{id}
-			
+
+			ID = #{id}
+
 		</where>
 	</delete>
+
+	<select id="getAllProfit" parameterType="ProfitDomain"
+		resultType="ProfitDomain" useCache="true">
+		select
+		ID,ORDER_ID,ACCOUNT,AMOUNT,TOTAL_PROFIT,AGENT_ID,AGENT_PROFIT,TJ_PROFIT,ORDER_DAY,JS_DAY,CREATE_DATE
+		from fm_profit
+		<where>
+			<if test="id !=null">
+				and ID = #{id}
+			</if>
+			<if test="orderId !=null">
+				and ORDER_ID = #{orderId}
+			</if>
+			<if test="account !=null">
+				and ACCOUNT = #{account}
+			</if>
+			<if test="amount !=null">
+				and AMOUNT = #{amount}
+			</if>
+			<if test="totalProfit !=null">
+				and TOTAL_PROFIT = #{totalProfit}
+			</if>
+			<if test="agentId !=null">
+				and AGENT_ID = #{agentId}
+			</if>
+			<if test="agentProfit !=null">
+				and AGENT_PROFIT = #{agentProfit}
+			</if>
+			<if test="tjProfit !=null">
+				and TJ_PROFIT = #{tjProfit}
+			</if>
+			<if test="orderDay !=null">
+				and DATE_FORMAT(ORDER_DAY, '%Y-%m-%d') =
+				DATE_FORMAT(#{orderDay}, '%Y-%m-%d')
+			</if>
+			<if test="jsDay !=null">
+				and JS_DAY = #{jsDay}
+			</if>
+			<if test="createDate !=null">
+				and CREATE_DATE = #{createDate}
+			</if>
+		</where>
+	</select>
 </mapper>

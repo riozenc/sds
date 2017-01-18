@@ -1,5 +1,6 @@
 package sds.webapp.stm.action;
 
+import java.util.Date;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,6 +34,10 @@ public class ProfitUserAction extends BaseAction {
 	@ResponseBody
 	@RequestMapping(params = "type=count")
 	public String count(ProfitUserDomain profitUserDomain) {
+		Date date = profitUserDomain.getDate();
+		
+		
+		
 		return null;
 	}
 
