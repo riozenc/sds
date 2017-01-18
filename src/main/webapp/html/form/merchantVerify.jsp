@@ -3,8 +3,9 @@
 <script type="text/javascript">
 function save(){
 	BJUI.ajax('ajaxform', {
-	    url: 'merchant.do?type=update',
-	    form: $('#j_merchant_form'),
+	    url: 'merchant.do?type=checkMerchant',
+	    // url: 'merchant.do?type=update',
+	    form: $('#j_merchantVerify_form'),
 	    validate: true,
 	    loadingmask: true,
 	    okCallback: function(json, options) {
@@ -18,7 +19,7 @@ function save(){
 </script>
 <div class="bjui-pageContent">
     <div class="bs-example">
-        <form  id="j_merchant_form" >
+        <form  id="j_merchantVerify_form" >
         
         <div class="bjui-row col-1">
             <label class="row-label " >ID</label>

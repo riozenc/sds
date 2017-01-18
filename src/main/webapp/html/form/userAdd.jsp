@@ -9,12 +9,16 @@
             <div class="row-input required">
                 <input type="text" name="account" value="" data-rule="required">
             </div>
+            <label class="row-label">推广码</label>
+            <div class="row-input">
+                <input type="text"  value="EA" name="appCode" data-rule="required">
+            </div>
             <label class="row-label " >系统密码</label>
             <div class="row-input required">
                 <input type="text" name="password" value="" data-rule="required">
             </div>
             <label class="row-label">所属上级代理商</label>
-            <div class="row-input" id="parentSel">
+            <div class="row-input" id="parentSelUserAdd">
                
             </div>
             <label class="row-label">企业全称</label>
@@ -207,7 +211,7 @@
         <li><button id="submitSave" class="btn-default" data-icon="save" >保存</button></li>
     </ul>
 </div>
-<script >
+<script type="text/javascript">
 
 $(function() {
 	
@@ -218,8 +222,9 @@ $(function() {
 		    validate: true,
 		    loadingmask: true,
 		    okCallback: function(json, options) {
-		        console.log('返回内容：\n'+ JSON.stringify(json));
+		       
 		        $("#submitSave").unbind("click");
+		        BJUI.navtab('refresh', 'userAdd');  //刷新
 		    }
 		})
 	});
@@ -241,8 +246,8 @@ $(function() {
 			for(var i=0;i< data.totalRow;i++){   
 			  selector.append('<option value="'+data.list[i].id+'">'+data.list[i].fullName+'</option>');  
 			}
-			$("#parentSel").append(selector);
-			return false;	
+			$("#parentSelUserAdd").append(selector);
+			
 		}
 	});
 })

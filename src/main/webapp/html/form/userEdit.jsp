@@ -205,7 +205,7 @@
             </div>
             <label class="row-label">推广码</label>
             <div class="row-input">
-                <input type="text" value="" readonly="readonly" name="appCode" id="appCode" data-rule="required">
+                <input type="text" value=""   name="appCode" id="appCode" >
             </div>
         </div>
         </form>
@@ -215,14 +215,14 @@
 <div class="bjui-pageFooter">
     <ul>
         <li><button type="button" class="btn-close" data-icon="close">关闭</button></li>
-        <li><button  class="btn-default" data-icon="save" id="submitSave" >保存</button></li>
+        <li><button  class="btn-default" data-icon="save" id="UserEditSave" >保存</button></li>
     </ul>
 </div>
 <script type="text/javascript">
 
 $(function() {
 	
-	$("#submitSave").bind("click",function(){
+	$("#UserEditSave").bind("click",function(){
 		BJUI.ajax('ajaxform', {
 		    url: 'user.do?type=update',
 		    form: $('#j_userEdit_form'),

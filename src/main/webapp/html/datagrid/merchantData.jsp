@@ -71,14 +71,16 @@ $(function() {
 	            width: 70,
 	            render: function(value) {
 	            	if(value == 0){
-	            		return "未审核";
+	            		return "未提交资料";
 	            	}else if(value == 1){
-	            		return "验卡通过";
+	            		return "资料待审核";
 	            	}else if(value == 2){
 	            		return "禁用";
 	            	}else if(value == 3){
 	            		return "审核成功";
-	            	}else{
+	            	}else if(value == 4){
+	            		return "审核失败";
+	            	}{
 	            		return value;
 	            	}
 	                
@@ -99,8 +101,10 @@ $(function() {
 	            align: 'center',
 	            width:120,
 	            render: function(value,data) {
-	            	if( value == 1 && data.wxRate>0 && data.aliRate>0){
+	            	if( (value == 1 && data.wxRate>0 && data.aliRate>0 )|| value == 4){
 	            		return '<button type="button" class="btn-red btn" data-icon="edit" onclick="dialog_verify('+data.id+');">审核</button>';
+	            	}else if( value == 0){
+	            		return '未认证';
 	            	}else{
 	            		return '<button type="button" class="btn-blue btn" data-icon="edit" onclick="dialog_merchant('+data.id+');">修改费率</button>';
 	            	}

@@ -4,21 +4,16 @@
 
 $(function() {
 		
-	$('#profitUser_datagrid').datagrid({
+	$('#profitMerchant_datagrid').datagrid({
 	    height: '100%',
 	    tableWidth:'99%',
 	    gridTitle : ' ',
 	    local: 'remote',
 	    showToolbar: false,
 	    toolbarItem: 'del',
-	    dataUrl:"profitUser.do?type=findProfitUserByWhere",
+	    dataUrl:"profitMerchant.do?type=findProfitMerchantByWhere",
 	    columns: [
-              {
-  	            name: 'id',
-  	            label: '代理商名称',
-  	            align: 'center',
-  	            width:100
-  	        },
+             
 	        {
 	            name: 'account',
 	            label: '登录手机号',
@@ -51,7 +46,7 @@ $(function() {
 	            render: function(value,data) {
 	            	if(value == 0){
 	            	
-	            		 return '<a href="javascript:;"   onclick="dialog_profit(\''+data.id+'\')">未提现</a>';
+	            		 return '<a href="javascript:;"   onclick="dialog_profitm(\''+data.id+'\')">未提现</a>';
 	            	}else if(value == 1){
 	            		return "已提现";
 	            	
@@ -69,12 +64,12 @@ $(function() {
 	});
 	
 });
-function dialog_profit(Id){
+function dialog_profitm(Id){
 	var ajaxdata={id:Id} ;
 	$.ajax({
 		cache : false,
 		type : "POST",
-		url : "profitUser.do?type=findProfitUserByWhere",
+		url : "profitMerchant.do?type=findProfitMerchantByWhere",
 		data : ajaxdata,
 		dataType : "json",
 		error : function(request) {
@@ -85,8 +80,8 @@ function dialog_profit(Id){
 		success : function(data) {
 			console.info(data);
 			BJUI.dialog({
-			    id:'profitUserEdit',
-			    url:'html/form/profitUserEdit.jsp',
+			    id:'profitMerchantEdit',
+			    url:'html/form/profitMerchantEdit.jsp',
 			    title:'详情',
 			    width:900,
 			    height:500,
@@ -126,6 +121,6 @@ function dialog_profit(Id){
 </form>
 </div>
 <div class="bjui-pageContent">
-	<table id="profitUser_datagrid" class="table table-bordered">
+	<table id="profitMerchant_datagrid" class="table table-bordered">
 	</table>
 </div>
