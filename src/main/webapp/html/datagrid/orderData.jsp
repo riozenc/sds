@@ -126,12 +126,12 @@ function dialog_profit(orderId){
 				    height:450,
 				    onLoad:function(){
 				    	var html_text ='<table class="table table-bordered table-hover table-striped  " data-height="150">'+
-						'<thead><th>订单ID</th><th>商户号</th><th>代理商名称</th><th>代理商所得分润</th></thead><tbody>';
+						'<thead><th>订单ID</th><th>商户号</th><th>代理商名称</th><th>代理商所得分润</th><th>推荐人</th><th>推荐人所得分润</th></thead><tbody>';
 					
 				    	$.each(data.list, function(key, obj) {
 				    		console.info(obj.orderId);
 				    		html_text = html_text +'<tr><td>'+obj.orderId+'</td><td>'
-				    			+obj.account+'</td><td>'+obj.agentId+'</td><td>'+obj.agentProfit+'</td></tr>';
+				    			+obj.account+'</td><td>'+obj.agentId+'</td><td>'+obj.agentProfit+'</td><td>'+obj.tjId+'</td><td>'+obj.tjProfit+'</td></tr>';
 				    		
 						});
 				    	html_text = html_text+'<tr><td>消费金额：</td><td>'+data.list[0].amount+'</td><td>分润总额：</td><td>'+data.list[0].totalProfit+'</td></tr></table>';

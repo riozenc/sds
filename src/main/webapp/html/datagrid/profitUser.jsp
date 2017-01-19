@@ -116,9 +116,8 @@ function dialog_profit(Id){
             <input type="text" name="endDate" class="form-control" data-toggle="datepicker" placeholder="点击选择日期" >
                 
             <div class="btn-group">
-                <button type="submit" class="btn-green" data-icon="search">开始搜索</button>
+                <button type="submit" class="btn btn-blue" data-icon="search">开始搜索</button>
                 <button type="reset" class="btn-orange" data-icon="times">重置</button>
-               
             </div>
            
         </div>
