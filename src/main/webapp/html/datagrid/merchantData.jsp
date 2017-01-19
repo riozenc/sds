@@ -80,7 +80,7 @@ $(function() {
 	            		return "审核成功";
 	            	}else if(value == 4){
 	            		return "审核失败";
-	            	}{
+	            	}else{
 	            		return value;
 	            	}
 	                
@@ -101,10 +101,12 @@ $(function() {
 	            align: 'center',
 	            width:120,
 	            render: function(value,data) {
-	            	if( (value == 1 && data.wxRate>0 && data.aliRate>0 )|| value == 4){
+	            	if( (value == 1 && data.wxRate>0 && data.aliRate>0 )){
 	            		return '<button type="button" class="btn-red btn" data-icon="edit" onclick="dialog_verify('+data.id+');">审核</button>';
 	            	}else if( value == 0){
 	            		return '未认证';
+	            	}else if( value == 2){
+	            		return '禁用状态';
 	            	}else{
 	            		return '<button type="button" class="btn-blue btn" data-icon="edit" onclick="dialog_merchant('+data.id+');">修改费率</button>';
 	            	}
