@@ -104,7 +104,7 @@ function dialog_profit(Id){
 }
 </script>
 <div class="bjui-pageHeader" style="background-color:#fefefe; border-bottom:none;">
-<form data-toggle="ajaxsearch" data-options="{searchDatagrid:$.CurrentNavtab.find('#order_datagrid')}">
+<form data-toggle="ajaxsearch" data-options="{searchDatagrid:$.CurrentNavtab.find('#profitUser_datagrid')}">
     <fieldset>
         <legend style="font-weight:normal;">搜索：</legend>
         <div style="margin:0; padding:1px 5px 5px;">
