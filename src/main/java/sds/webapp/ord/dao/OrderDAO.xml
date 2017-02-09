@@ -40,10 +40,12 @@
 				and AMOUNT = #{amount}
 			</if>
 			<if test="startDate !=null">
-				and DATE_FORMAT(DATE, '%Y-%m-%d') &gt;= DATE_FORMAT(#{startDate}, '%Y-%m-%d')
+				and DATE_FORMAT(DATE, '%Y-%m-%d') &gt;=
+				DATE_FORMAT(#{startDate}, '%Y-%m-%d')
 			</if>
 			<if test="endDate !=null">
-				and DATE_FORMAT(DATE, '%Y-%m-%d') &lt;= DATE_FORMAT(#{endDate}, '%Y-%m-%d')
+				and DATE_FORMAT(DATE, '%Y-%m-%d') &lt;=
+				DATE_FORMAT(#{endDate}, '%Y-%m-%d')
 			</if>
 			<if test="account !=null">
 				and ACCOUNT = #{account}
@@ -125,11 +127,11 @@
 
 		</where>
 	</delete>
-	
-	
-	
-	<select id="getAllCheckedOrder" parameterType="OrderDomain" resultType="OrderDomain"
-		useCache="true">
+
+
+
+	<select id="getAllCheckedOrder" parameterType="OrderDomain"
+		resultType="OrderDomain" useCache="true">
 		select
 		ID,ORDER_ID,ORDER_NO,CHANNEL_CODE,RESP_CODE,RESP_INFO,AMOUNT,DATE,ACCOUNT,CODE_URL,REMARK,RETURN_CODE,STATUS
 		from fm_order
@@ -156,10 +158,12 @@
 				and AMOUNT = #{amount}
 			</if>
 			<if test="startDate !=null">
-				and DATE_FORMAT(DATE, '%Y-%m-%d') &gt;= DATE_FORMAT(#{startDate}, '%Y-%m-%d')
+				and DATE_FORMAT(DATE, '%Y-%m-%d') &gt;=
+				DATE_FORMAT(#{startDate}, '%Y-%m-%d')
 			</if>
 			<if test="endDate !=null">
-				and DATE_FORMAT(DATE, '%Y-%m-%d') &lt;= DATE_FORMAT(#{endDate}, '%Y-%m-%d')
+				and DATE_FORMAT(DATE, '%Y-%m-%d') &lt;=
+				DATE_FORMAT(#{endDate}, '%Y-%m-%d')
 			</if>
 			<if test="account !=null">
 				and ACCOUNT = #{account}
@@ -176,4 +180,15 @@
 			and STATUS = 1
 		</where>
 	</select>
+
+	<update id="profitComplete" parameterType="OrderDomain"
+		flushCache="true">
+		update fm_order
+		<set>
+			STATUS = 3
+		</set>
+		<where>
+			ID = #{id}
+		</where>
+	</update>
 </mapper>

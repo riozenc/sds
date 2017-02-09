@@ -10,9 +10,15 @@ public interface MerchantService extends BaseService<MerchantDomain> {
 	public int updateRate(MerchantDomain merchantDomain);
 
 	public List<MerchantDomain> getAllCheckedMerchant();
-	
+
 	public MerchantDomain getUser(MerchantDomain merchantDomain);
+
+	public Map<String, Object> checkRate(int id);
 	
-	public Map<String,Object> checkRate(int id);
+	public int insertPoolRel(Integer merchantId, Integer poolId);
+
+	public int updatePoolRel(Integer merchantId, Integer poolId);
+	
+	public int updatePool(MerchantDomain merchantDomain);
 
 }

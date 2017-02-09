@@ -1,4 +1,4 @@
-package sds.webapp.acc.util;
+package sds.common.remote.util;
 
 import org.apache.commons.io.IOUtils;
 

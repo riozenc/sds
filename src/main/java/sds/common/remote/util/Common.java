@@ -1,7 +1,7 @@
 ﻿/**
  * 
  */
-package sds.webapp.acc.util;
+package sds.common.remote.util;
 
 import com.riozenc.quicktool.config.Global;
 
@@ -34,6 +34,6 @@ public class Common {
 	// 实时注册接口
 //	public static final String REGISTERURL="";
 	// 实时注册接口
-		public static final String REGISTERURL="http://mf.branding.chinavalleytech.com/ChannelConn/rlregister";
+	public static final String REGISTERURL="http://mf.branding.chinavalleytech.com/ChannelConn/rlregister";
 		
 }

@@ -24,9 +24,10 @@ public class ProfitDomain implements MybatisEntity {
 	private boolean isReferee;// 推荐人功能是否开启
 	private Double tjProfit;// '推荐人分润金额',
 	private Integer tjId;// 推荐人ID
-	private Date orderDay;// '交易日期',
-	private Date jsDay;// '结算时间',
+	private Date orderDate;// '交易日期',
+	private Date jsDate;// '结算时间',
 	private Date createDate;// 创建日期
+	private Integer status;// 状态：0失效，1有效，2统计完毕
 
 	public Integer getId() {
 		return id;
@@ -100,20 +101,20 @@ public class ProfitDomain implements MybatisEntity {
 		this.tjId = tjId;
 	}
 
-	public Date getOrderDay() {
-		return orderDay;
+	public Date getOrderDate() {
+		return orderDate;
 	}
 
-	public void setOrderDay(Date orderDay) {
-		this.orderDay = orderDay;
+	public void setOrderDate(Date orderDate) {
+		this.orderDate = orderDate;
 	}
 
-	public Date getJsDay() {
-		return jsDay;
+	public Date getJsDate() {
+		return jsDate;
 	}
 
-	public void setJsDay(Date jsDay) {
-		this.jsDay = jsDay;
+	public void setJsDate(Date jsDate) {
+		this.jsDate = jsDate;
 	}
 
 	public Date getCreateDate() {
@@ -138,6 +139,14 @@ public class ProfitDomain implements MybatisEntity {
 
 	public void setMerchantProfit(Double merchantProfit) {
 		this.merchantProfit = merchantProfit;
+	}
+
+	public Integer getStatus() {
+		return status;
+	}
+
+	public void setStatus(Integer status) {
+		this.status = status;
 	}
 
 }

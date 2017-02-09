@@ -1,4 +1,4 @@
-package sds.webapp.acc.util;
+package sds.common.remote.util;
 
 import javax.crypto.Cipher;
 import javax.crypto.spec.SecretKeySpec;

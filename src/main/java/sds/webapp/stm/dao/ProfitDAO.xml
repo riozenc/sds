@@ -4,7 +4,7 @@
 	<select id="findByKey" parameterType="ProfitDomain" resultType="ProfitDomain"
 		useCache="true">
 		select
-		ID,ORDER_ID,ACCOUNT,AMOUNT,TOTAL_PROFIT,AGENT_ID,AGENT_PROFIT,TJ_PROFIT,ORDER_DAY,JS_DAY,CREATE_DATE
+		ID,ORDER_ID,ACCOUNT,AMOUNT,TOTAL_PROFIT,AGENT_ID,AGENT_PROFIT,TJ_PROFIT,TJ_ID,ORDER_DATE,JS_DATE,CREATE_DATE
 		from fm_profit
 		<where>
 			<if test="id !=null">
@@ -15,7 +15,7 @@
 	<select id="findByWhere" parameterType="ProfitDomain"
 		resultType="ProfitDomain" useCache="true">
 		select
-		ID,ORDER_ID,ACCOUNT,AMOUNT,TOTAL_PROFIT,AGENT_ID,AGENT_PROFIT,TJ_PROFIT,ORDER_DAY,JS_DAY,CREATE_DATE
+		ID,ORDER_ID,ACCOUNT,AMOUNT,TOTAL_PROFIT,AGENT_ID,AGENT_PROFIT,TJ_PROFIT,TJ_ID,ORDER_DATE,JS_DATE,CREATE_DATE
 		from fm_profit
 		<where>
 			<if test="id !=null">
@@ -42,11 +42,14 @@
 			<if test="tjProfit !=null">
 				and TJ_PROFIT = #{tjProfit}
 			</if>
-			<if test="orderDay !=null">
-				and ORDER_DAY = #{orderDay}
+			<if test="tjId !=null">
+				and TJ_ID = #{tjId}
 			</if>
-			<if test="jsDay !=null">
-				and JS_DAY = #{jsDay}
+			<if test="orderDate !=null">
+				and ORDER_DATE = #{orderDate}
+			</if>
+			<if test="jsDate !=null">
+				and JS_DATE = #{jsDate}
 			</if>
 			<if test="createDate !=null">
 				and CREATE_DATE = #{createDate}
@@ -55,9 +58,9 @@
 	</select>
 	<insert id="insert" parameterType="ProfitDomain" flushCache="true">
 		insert into
-		fm_profit(ID,ORDER_ID,ACCOUNT,AMOUNT,MERCHANT_PROFIT,TOTAL_PROFIT,AGENT_ID,AGENT_PROFIT,TJ_PROFIT,ORDER_DAY,JS_DAY,CREATE_DATE)
+		fm_profit(ID,ORDER_ID,ACCOUNT,AMOUNT,MERCHANT_PROFIT,TOTAL_PROFIT,AGENT_ID,AGENT_PROFIT,TJ_PROFIT,TJ_ID,ORDER_DATE,JS_DATE,CREATE_DATE,STATUS)
 		values
-		(#{id},#{orderId},#{account},#{amount},#{merchantProfit},#{totalProfit},#{agentId},#{agentProfit},#{tjProfit},#{orderDay},#{jsDay},#{createDate})
+		(#{id},#{orderId},#{account},#{amount},#{merchantProfit},#{totalProfit},#{agentId},#{agentProfit},#{tjProfit},#{tjId},#{orderDate},#{jsDate},#{createDate},#{status})
 	</insert>
 	<update id="update" parameterType="ProfitDomain" flushCache="true">
 		update fm_profit
@@ -83,11 +86,14 @@
 			<if test="tjProfit !=null">
 				TJ_PROFIT = #{tjProfit},
 			</if>
-			<if test="orderDay !=null">
-				ORDER_DAY = #{orderDay},
+			<if test="tjId !=null">
+				TJ_ID = #{tjId},
 			</if>
-			<if test="jsDay !=null">
-				JS_DAY = #{jsDay},
+			<if test="orderDate !=null">
+				ORDER_DATE = #{orderDate},
+			</if>
+			<if test="jsDate !=null">
+				JS_DATE = #{jsDate},
 			</if>
 			<if test="createDate !=null">
 				CREATE_DATE = #{createDate},
@@ -111,7 +117,7 @@
 	<select id="getAllProfit" parameterType="ProfitDomain"
 		resultType="ProfitDomain" useCache="true">
 		select
-		ID,ORDER_ID,ACCOUNT,AMOUNT,TOTAL_PROFIT,AGENT_ID,AGENT_PROFIT,TJ_PROFIT,ORDER_DAY,JS_DAY,CREATE_DATE
+		ID,ORDER_ID,ACCOUNT,AMOUNT,TOTAL_PROFIT,AGENT_ID,AGENT_PROFIT,TJ_PROFIT,TJ_ID,ORDER_DATE,JS_DATE,CREATE_DATE
 		from fm_profit
 		<where>
 			<if test="id !=null">
@@ -138,16 +144,32 @@
 			<if test="tjProfit !=null">
 				and TJ_PROFIT = #{tjProfit}
 			</if>
-			<if test="orderDay !=null">
-				and DATE_FORMAT(ORDER_DAY, '%Y-%m-%d') =
-				DATE_FORMAT(#{orderDay}, '%Y-%m-%d')
+			<if test="tjId !=null">
+				and TJ_ID = #{tjId}
 			</if>
-			<if test="jsDay !=null">
-				and JS_DAY = #{jsDay}
+			<if test="orderDate !=null">
+				and DATE_FORMAT(ORDER_DATE, '%Y-%m-%d') =
+				DATE_FORMAT(#{orderDate}, '%Y-%m-%d')
+			</if>
+			<if test="jsDate !=null">
+				and JS_DATE = #{jsDate}
 			</if>
 			<if test="createDate !=null">
 				and CREATE_DATE = #{createDate}
 			</if>
+			and STATUS = 1
 		</where>
 	</select>
+
+
+	<update id="profitCountComplete" parameterType="ProfitDomain"
+		flushCache="true">
+		update fm_profit
+		<set>
+			status = 2
+		</set>
+		<where>
+			ID = #{id}
+		</where>
+	</update>
 </mapper>

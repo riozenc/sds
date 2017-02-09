@@ -83,9 +83,10 @@ public class SettlementUtil {
 			}
 		}
 
-		profitDomain.setOrderDay(order.getDate());
+		profitDomain.setOrderDate(order.getDate());
 		profitDomain.setCreateDate(new Date());
-
+		profitDomain.setStatus(1);
+		
 		return profitDomain;
 	};
 
@@ -109,8 +110,9 @@ public class SettlementUtil {
 
 			profitDomain.setAgentId(agent.getParentId());
 			profitDomain.setAgentProfit(compute(order.getAmount(), getAgentRate(agent, order.getChannelCode())));
-			profitDomain.setOrderDay(order.getDate());
+			profitDomain.setOrderDate(order.getDate());
 			profitDomain.setCreateDate(new Date());
+			profitDomain.setStatus(1);
 			return profitDomain;
 		}
 
@@ -119,15 +121,15 @@ public class SettlementUtil {
 		profitDomain.setAmount(order.getAmount());
 		profitDomain.setMerchantProfit(
 				compute(order.getAmount(), 1 - getMerchantRate(merchantDomain, order.getChannelCode())));
-		profitDomain.setTotalProfit(order.getAmount() * (getMerchantRate(merchantDomain, order.getChannelCode())));
+		profitDomain.setTotalProfit(compute(order.getAmount(), getMerchantRate(merchantDomain, order.getChannelCode())));
 
 		profitDomain.setAgentId(parent.getId());
 		profitDomain.setAgentProfit(compute(order.getAmount(),
 				getAgentRate(agent, order.getChannelCode()) - getAgentRate(parent, order.getChannelCode())));
 
-		profitDomain.setOrderDay(order.getDate());
+		profitDomain.setOrderDate(order.getDate());
 		profitDomain.setCreateDate(new Date());
-
+		profitDomain.setStatus(1);
 		return profitDomain;
 	}
 

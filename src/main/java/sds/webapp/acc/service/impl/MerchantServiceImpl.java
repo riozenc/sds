@@ -1,6 +1,7 @@
 package sds.webapp.acc.service.impl;
 
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -20,10 +21,10 @@ public class MerchantServiceImpl implements MerchantService {
 	@Override
 	public int insert(MerchantDomain t) {
 		// TODO Auto-generated method stub
-		
+
 		t.setCreateDate(new Date());
 		t.setStatus(0);
-		
+
 		return merchantDAO.insert(t);
 	}
 
@@ -62,7 +63,7 @@ public class MerchantServiceImpl implements MerchantService {
 		// TODO Auto-generated method stub
 		return merchantDAO.getAllCheckedMerchant();
 	}
-	
+
 	@Override
 	public MerchantDomain getUser(MerchantDomain merchantDomain) {
 		// TODO Auto-generated method stub
@@ -72,8 +73,33 @@ public class MerchantServiceImpl implements MerchantService {
 	@Override
 	public Map<String, Object> checkRate(int id) {
 		// TODO Auto-generated method stub
-		
+
 		return merchantDAO.checkRate(id);
+	}
+
+	@Override
+	public int updatePoolRel(Integer merchantId, Integer poolId) {
+		// TODO Auto-generated method stub
+		Map<String, Integer> map = new HashMap<>();
+		map.put("merchantId", merchantId);
+		map.put("poolId", poolId);
+		return merchantDAO.updatePoolRel(map);
+	}
+
+	@Override
+	public int insertPoolRel(Integer merchantId, Integer poolId) {
+		// TODO Auto-generated method stub
+		Map<String, Integer> map = new HashMap<>();
+		map.put("merchantId", merchantId);
+		map.put("poolId", poolId);
+		map.put("status", 1);
+		return merchantDAO.insertPoolRel(map);
+	}
+
+	@Override
+	public int updatePool(MerchantDomain merchantDomain) {
+		// TODO Auto-generated method stub
+		return merchantDAO.updatePool(merchantDomain);
 	}
 
 }

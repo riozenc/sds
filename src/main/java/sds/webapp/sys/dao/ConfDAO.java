@@ -3,13 +3,13 @@ package sds.webapp.sys.dao;
 import java.util.List;
 
 import com.riozenc.quicktool.annotation.TransactionDAO;
-import com.riozenc.quicktool.mybatis.dao.AbstractDAOSupport;
+import com.riozenc.quicktool.mybatis.dao.AbstractTransactionDAOSupport;
 import com.riozenc.quicktool.mybatis.dao.BaseDAO;
 
 import sds.webapp.sys.domain.ConfDomain;
 
 @TransactionDAO
-public class ConfDAO extends AbstractDAOSupport implements BaseDAO<ConfDomain> {
+public class ConfDAO extends AbstractTransactionDAOSupport implements BaseDAO<ConfDomain> {
 
 	@Override
 	public int delete(ConfDomain confDomain) {

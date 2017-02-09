@@ -53,8 +53,20 @@ public class MerchantDAO extends AbstractTransactionDAOSupport implements BaseDA
 	public MerchantDomain getUser(MerchantDomain merchantDomain) {
 		return getPersistanceManager().load(getNamespace() + ".getUser", merchantDomain);
 	}
-	
-	public Map<String,Object> checkRate(Integer id){
+
+	public Map<String, Object> checkRate(Integer id) {
 		return getPersistanceManager().load(getNamespace() + ".checkRate", id);
+	}
+
+	public int insertPoolRel(Map<String, Integer> map) {
+		return getPersistanceManager().insert(getNamespace() + ".insertPoolRel", map);
+	}
+
+	public int updatePoolRel(Map<String, Integer> map) {
+		return getPersistanceManager().update(getNamespace() + ".updatePoolRel", map);
+	}
+	
+	public int updatePool(MerchantDomain merchantDomain) {
+		return getPersistanceManager().update(getNamespace() + ".updatePool", merchantDomain);
 	}
 }

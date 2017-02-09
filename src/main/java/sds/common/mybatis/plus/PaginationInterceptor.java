@@ -39,7 +39,6 @@ public class PaginationInterceptor extends com.riozenc.quicktool.mybatis.persist
 				return true;
 			}
 		} catch (Exception exception) {
-			exception.printStackTrace();
 			return false;
 		}
 

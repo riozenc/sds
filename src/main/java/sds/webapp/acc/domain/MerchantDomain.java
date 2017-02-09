@@ -24,6 +24,7 @@ public class MerchantDomain extends Page<MerchantDomain> implements MybatisEntit
 							// '商户简称',
 	private Integer channelCode;// `channel_code` varchar(255) DEFAULT NULL
 								// COMMENT '支付通道，默认WXPAY',
+	private Integer level;// 等级
 	private String businessId;// `business_id` varchar(255) DEFAULT NULL COMMENT
 								// '行业代码',
 	private String cardNo;// `card_no` varchar(255) DEFAULT NULL COMMENT '卡号',
@@ -60,8 +61,8 @@ public class MerchantDomain extends Page<MerchantDomain> implements MybatisEntit
 
 	private Integer tjId;// 推荐人ID
 	private Integer agentId;// `agent_id` int(11) DEFAULT NULL COMMENT '所属代理商',
-	
-	private MerchantDomain tj;//对应的推荐人
+
+	private MerchantDomain tj;// 对应的推荐人
 
 	public MerchantDomain() {
 	}
@@ -140,6 +141,14 @@ public class MerchantDomain extends Page<MerchantDomain> implements MybatisEntit
 
 	public void setChannelCode(Integer channelCode) {
 		this.channelCode = channelCode;
+	}
+
+	public Integer getLevel() {
+		return level;
+	}
+
+	public void setLevel(Integer level) {
+		this.level = level;
 	}
 
 	public String getBusinessId() {

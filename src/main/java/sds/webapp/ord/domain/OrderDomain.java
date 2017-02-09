@@ -26,6 +26,7 @@ public class OrderDomain extends Page<OrderDomain> implements MybatisEntity {
 						// COMMENT '交易日期',
 	private String account;// `account` varchar(255) DEFAULT NULL COMMENT
 							// '商户账号',
+	private String proxyAccount;// 代理商户账号
 	private String codeUrl;// `code_url` varchar(255) DEFAULT NULL COMMENT
 							// '二维码支付地址',
 	private String remark;// `remark` varchar(255) DEFAULT NULL COMMENT '备注',
@@ -120,6 +121,14 @@ public class OrderDomain extends Page<OrderDomain> implements MybatisEntity {
 
 	public void setAccount(String account) {
 		this.account = account;
+	}
+
+	public String getProxyAccount() {
+		return proxyAccount;
+	}
+
+	public void setProxyAccount(String proxyAccount) {
+		this.proxyAccount = proxyAccount;
 	}
 
 	public String getCodeUrl() {

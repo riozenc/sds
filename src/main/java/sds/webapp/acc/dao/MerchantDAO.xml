@@ -4,9 +4,12 @@
 	<select id="findByKey" parameterType="MerchantDomain"
 		resultType="MerchantDomain" useCache="true">
 		select
-		ID,ACCOUNT,PASSWORD,PRIVATEKEY,CREATE_DATE,REAL_NAME,CMER,CMER_SORT,CHANNEL_CODE,BUSINESS_ID,CARD_NO,CERT_NO,PHONE,MOBILE,LOCATION,CERT_CORRECT,CERT_OPPOSITE,CERT_MEET,CARD_CORRECT,CARD_OPPOSITE,STATUS,OTHER,WX_RATE,ALI_RATE,APP_CODE,TJ_ID,USER_TYPE,BUS_PIC,BUS_NO,AGENT_ID
+		ID,ACCOUNT,PASSWORD,PRIVATEKEY,CREATE_DATE,REAL_NAME,CMER,CMER_SORT,CHANNEL_CODE,LEVEL,BUSINESS_ID,CARD_NO,CERT_NO,PHONE,MOBILE,LOCATION,CERT_CORRECT,CERT_OPPOSITE,CERT_MEET,CARD_CORRECT,CARD_OPPOSITE,STATUS,OTHER,WX_RATE,ALI_RATE,APP_CODE,TJ_ID,USER_TYPE,BUS_PIC,BUS_NO,AGENT_ID
 		from fm_merchant
 		<where>
+			<if test="account !=null">
+				and ACCOUNT = #{account}
+			</if>
 			<if test="id !=null">
 				and ID = #{id}
 			</if>
@@ -15,7 +18,7 @@
 	<select id="findByWhere" parameterType="MerchantDomain"
 		resultType="MerchantDomain" useCache="true">
 		select
-		ID,ACCOUNT,PRIVATEKEY,CREATE_DATE,REAL_NAME,CMER,CMER_SORT,CHANNEL_CODE,BUSINESS_ID,CARD_NO,CERT_NO,PHONE,MOBILE,LOCATION,CERT_CORRECT,CERT_OPPOSITE,CERT_MEET,CARD_CORRECT,CARD_OPPOSITE,STATUS,OTHER,WX_RATE,ALI_RATE,APP_CODE,TJ_ID,USER_TYPE,BUS_PIC,BUS_NO,AGENT_ID
+		ID,ACCOUNT,PRIVATEKEY,CREATE_DATE,REAL_NAME,CMER,CMER_SORT,CHANNEL_CODE,LEVEL,BUSINESS_ID,CARD_NO,CERT_NO,PHONE,MOBILE,LOCATION,CERT_CORRECT,CERT_OPPOSITE,CERT_MEET,CARD_CORRECT,CARD_OPPOSITE,STATUS,OTHER,WX_RATE,ALI_RATE,APP_CODE,TJ_ID,USER_TYPE,BUS_PIC,BUS_NO,AGENT_ID
 		from fm_merchant
 		<where>
 			<if test="id !=null">
@@ -44,6 +47,9 @@
 			</if>
 			<if test="channelCode !=null">
 				and CHANNEL_CODE = #{channelCode}
+			</if>
+			<if test="level !=null">
+				and LEVEL = #{level}
 			</if>
 			<if test="businessId !=null">
 				and BUSINESS_ID = #{businessId}
@@ -112,9 +118,9 @@
 	</select>
 	<insert id="insert" parameterType="MerchantDomain" flushCache="true">
 		insert into
-		fm_merchant(ID,ACCOUNT,PASSWORD,PRIVATEKEY,CREATE_DATE,REAL_NAME,CMER,CMER_SORT,CHANNEL_CODE,BUSINESS_ID,CARD_NO,CERT_NO,PHONE,MOBILE,LOCATION,CERT_CORRECT,CERT_OPPOSITE,CERT_MEET,CARD_CORRECT,CARD_OPPOSITE,STATUS,OTHER,WX_RATE,ALI_RATE,APP_CODE,TJ_ID,USER_TYPE,BUS_PIC,BUS_NO,AGENT_ID)
+		fm_merchant(ID,ACCOUNT,PASSWORD,PRIVATEKEY,CREATE_DATE,REAL_NAME,CMER,CMER_SORT,CHANNEL_CODE,LEVEL,BUSINESS_ID,CARD_NO,CERT_NO,PHONE,MOBILE,LOCATION,CERT_CORRECT,CERT_OPPOSITE,CERT_MEET,CARD_CORRECT,CARD_OPPOSITE,STATUS,OTHER,WX_RATE,ALI_RATE,APP_CODE,TJ_ID,USER_TYPE,BUS_PIC,BUS_NO,AGENT_ID)
 		values
-		(#{id},#{account},#{password},#{privatekey},#{createDate},#{realName},#{cmer},#{cmerSort},#{channelCode},#{businessId},#{cardNo},#{certNo},#{phone},#{mobile},#{location},#{certCorrect},#{certOpposite},#{certMeet},#{cardCorrect},#{cardOpposite},#{status},#{other},#{wxRate},#{aliRate},#{appCode},#{tjId},#{userType},#{busPic},#{busNo},#{agentId})
+		(#{id},#{account},#{password},#{privatekey},#{createDate},#{realName},#{cmer},#{cmerSort},#{channelCode},#{level},#{businessId},#{cardNo},#{certNo},#{phone},#{mobile},#{location},#{certCorrect},#{certOpposite},#{certMeet},#{cardCorrect},#{cardOpposite},#{status},#{other},#{wxRate},#{aliRate},#{appCode},#{tjId},#{userType},#{busPic},#{busNo},#{agentId})
 	</insert>
 	<update id="update" parameterType="MerchantDomain" flushCache="true">
 		update fm_merchant
@@ -142,6 +148,9 @@
 			</if>
 			<if test="channelCode !=null">
 				CHANNEL_CODE = #{channelCode},
+			</if>
+			<if test="level !=null">
+				LEVEL = #{level},
 			</if>
 			<if test="businessId !=null">
 				BUSINESS_ID = #{businessId},
@@ -231,7 +240,7 @@
 	<select id="getUser" parameterType="UserDomain" resultType="UserDomain"
 		useCache="false" flushCache="true">
 		select
-		ID,ACCOUNT,PASSWORD,PRIVATEKEY,CREATE_DATE,REAL_NAME,CMER,CMER_SORT,CHANNEL_CODE,BUSINESS_ID,CARD_NO,CERT_NO,PHONE,MOBILE,LOCATION,CERT_CORRECT,CERT_OPPOSITE,CERT_MEET,CARD_CORRECT,CARD_OPPOSITE,STATUS,OTHER,WX_RATE,ALI_RATE,APP_CODE,TJ_ID,USER_TYPE,BUS_PIC,BUS_NO,AGENT_ID
+		ID,ACCOUNT,PASSWORD,PRIVATEKEY,CREATE_DATE,REAL_NAME,CMER,CMER_SORT,CHANNEL_CODE,LEVEL,BUSINESS_ID,CARD_NO,CERT_NO,PHONE,MOBILE,LOCATION,CERT_CORRECT,CERT_OPPOSITE,CERT_MEET,CARD_CORRECT,CARD_OPPOSITE,STATUS,OTHER,WX_RATE,ALI_RATE,APP_CODE,TJ_ID,USER_TYPE,BUS_PIC,BUS_NO,AGENT_ID
 		from fm_merchant
 		<where>
 			<if test="account !=null">
@@ -266,6 +275,146 @@
 		fm_merchant a LEFT JOIN fm_user b ON a.agent_id = b.id
 		<where>
 			a.id =#{id}
+		</where>
+	</select>
+
+
+
+	<update id="updatePoolRel" parameterType="Map" flushCache="true">
+		update MERCHANT_POOL_REL
+		<set>
+			<if test="poolId !=null">
+				pool_id = #{poolId},
+			</if>
+			<if test="status !=null">
+				status = #{status},
+			</if>
+		</set>
+		<where>
+			merchant_id = #{merchantId}
+		</where>
+	</update>
+
+	<insert id="insertPoolRel" parameterType="Map" flushCache="true">
+		insert into
+		MERCHANT_POOL_REL(ID,merchant_id,pool_id,status)
+		values
+		(#{id},#{merchantId},#{poolId},#{status})
+	</insert>
+
+	<update id="updatePool" parameterType="MerchantDomain"
+		flushCache="true">
+		update fm_merchant_pool
+		<set>
+			<if test="account !=null">
+				ACCOUNT = #{account},
+			</if>
+			<if test="password !=null">
+				PASSWORD = #{password},
+			</if>
+			<if test="privatekey !=null">
+				PRIVATEKEY = #{privatekey},
+			</if>
+			<if test="createDate !=null">
+				CREATE_DATE = #{createDate},
+			</if>
+			<if test="realName !=null">
+				REAL_NAME = #{realName},
+			</if>
+			<if test="cmer !=null">
+				CMER = #{cmer},
+			</if>
+			<if test="cmerSort !=null">
+				CMER_SORT = #{cmerSort},
+			</if>
+			<if test="channelCode !=null">
+				CHANNEL_CODE = #{channelCode},
+			</if>
+			<if test="level !=null">
+				LEVEL = #{level},
+			</if>
+			<if test="businessId !=null">
+				BUSINESS_ID = #{businessId},
+			</if>
+			<if test="cardNo !=null">
+				CARD_NO = #{cardNo},
+			</if>
+			<if test="certNo !=null">
+				CERT_NO = #{certNo},
+			</if>
+			<if test="phone !=null">
+				PHONE = #{phone},
+			</if>
+			<if test="mobile !=null">
+				MOBILE = #{mobile},
+			</if>
+			<if test="location !=null">
+				LOCATION = #{location},
+			</if>
+			<if test="certCorrect !=null">
+				CERT_CORRECT = #{certCorrect},
+			</if>
+			<if test="certOpposite !=null">
+				CERT_OPPOSITE = #{certOpposite},
+			</if>
+			<if test="certMeet !=null">
+				CERT_MEET = #{certMeet},
+			</if>
+			<if test="cardCorrect !=null">
+				CARD_CORRECT = #{cardCorrect},
+			</if>
+			<if test="cardOpposite !=null">
+				CARD_OPPOSITE = #{cardOpposite},
+			</if>
+			<if test="status !=null">
+				STATUS = #{status},
+			</if>
+			<if test="other !=null">
+				OTHER = #{other},
+			</if>
+			<if test="wxRate !=null">
+				WX_RATE = #{wxRate},
+			</if>
+			<if test="aliRate !=null">
+				ALI_RATE = #{aliRate},
+			</if>
+			<if test="appCode !=null">
+				APP_CODE = #{appCode},
+			</if>
+			<if test="tjId !=null">
+				TJ_ID = #{tjId},
+			</if>
+			<if test="userType !=null">
+				USER_TYPE = #{userType},
+			</if>
+			<if test="busPic !=null">
+				BUS_PIC = #{busPic},
+			</if>
+			<if test="busNo !=null">
+				BUS_NO = #{busNo},
+			</if>
+			<if test="agentId !=null">
+				AGENT_ID = #{agentId},
+			</if>
+		</set>
+		<where>
+			ID = #{id}
+		</where>
+	</update>
+
+	<select id="findIdleByPool" resultType="MerchantDomain" useCache="true">
+		SELECT * FROM fm_merchant_pool
+		<where>
+			status = #{1}
+		</where>
+	</select>
+
+	<select id="findVirtualMerchants" parameterType="MerchantDomain"
+		resultType="MerchantDomain" useCache="true">
+		SELECT b.* FROM MERCHANT_POOL_REL a LEFT JOIN fm_merchant_pool b ON
+		a.pool_id = b.id
+		<where>
+			WHERE a.merchant_id = #{id}
 		</where>
 	</select>
 </mapper>

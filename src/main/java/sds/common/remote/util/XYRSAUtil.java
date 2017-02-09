@@ -1,4 +1,4 @@
-package sds.webapp.acc.util;
+package sds.common.remote.util;
 
 import java.io.BufferedReader;
 import java.io.FileReader;

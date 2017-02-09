@@ -2,6 +2,8 @@ package sds.webapp.ord.dao;
 
 import java.util.List;
 
+import org.apache.ibatis.session.ExecutorType;
+
 import com.riozenc.quicktool.annotation.TransactionDAO;
 import com.riozenc.quicktool.mybatis.dao.AbstractTransactionDAOSupport;
 import com.riozenc.quicktool.mybatis.dao.BaseDAO;
@@ -43,5 +45,9 @@ public class OrderDAO extends AbstractTransactionDAOSupport implements BaseDAO<O
 
 	public List<OrderDomain> getAllCheckedOrder(OrderDomain orderDomain) {
 		return getPersistanceManager().find(getNamespace() + ".getAllCheckedOrder", orderDomain);
+	}
+
+	public int profitComplete(List<OrderDomain> orderDomains) {
+		return getPersistanceManager(ExecutorType.BATCH).updateList(getNamespace() + ".profitComplete", orderDomains);
 	}
 }

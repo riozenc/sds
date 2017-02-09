@@ -1,7 +1,6 @@
 package sds.webapp.stm.action;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.LinkedList;
@@ -78,11 +77,17 @@ public class ProfitAction extends BaseAction {
 		return JSONUtil.toJsonString(new JsonGrid(list.size(), 1, list));
 	}
 
+	/**
+	 * 分润统计
+	 * 
+	 * @param profitDomain
+	 * @return
+	 */
 	@ResponseBody
 	@RequestMapping(params = "type=profitCount")
 	public String profitCount(ProfitDomain profitDomain) {
-		if (profitDomain.getOrderDay() == null) {
-			profitDomain.setOrderDay(new Date());
+		if (profitDomain.getOrderDate() == null) {
+			profitDomain.setOrderDate(new Date());
 		}
 		List<ProfitDomain> list = profitService.getAllProfit(profitDomain);
 
@@ -107,7 +112,7 @@ public class ProfitAction extends BaseAction {
 			profitUserDomain.setTotalAmount(SettlementUtil.sum(profitUserDomain.getTotalAmount(), profit.getAmount()));
 			profitUserDomain
 					.setTotalProfit(SettlementUtil.sum(profitUserDomain.getTotalProfit(), profit.getAgentProfit()));
-			profitUserDomain.setDate(profitDomain.getOrderDay());
+			profitUserDomain.setDate(profitDomain.getOrderDate());
 			profitUserDomain.setStatus(0);
 
 			if (profit.getTjId() != null) {
@@ -122,27 +127,24 @@ public class ProfitAction extends BaseAction {
 						.setTotalAmount(SettlementUtil.sum(profitMerchantDomain.getTotalAmount(), profit.getAmount()));
 				profitMerchantDomain.setTotalProfit(
 						SettlementUtil.sum(profitMerchantDomain.getTotalProfit(), profit.getTjProfit()));
-				profitMerchantDomain.setDate(profitDomain.getOrderDay());
+				profitMerchantDomain.setDate(profitDomain.getOrderDate());
 				profitMerchantDomain.setStatus(0);
 			}
 		});
 
 		List<ProfitUserDomain> profitUserDomains = new ArrayList<>(profitUserMap.values());
 		List<ProfitMerchantDomain> profitMerchantDomains = new ArrayList<>(profitMerchantMap.values());
-		if (profitUserDomains.size() > 0) {
-			profitUserService.insertBatch(profitUserDomains);
-		}
-		if (profitMerchantDomains.size() > 0) {
-			profitMerchantService.insertBatch(profitMerchantDomains);
-		}
 
-		return DateUtil.formatDate(profitDomain.getOrderDay());
+		profitService.profitCount(profitUserDomains, profitMerchantDomains, list);
+
+		return DateUtil.formatDate(profitDomain.getOrderDate());
 	}
 
-	public String profitMerchant() {
-		return null;
-	}
-
+	/**
+	 * 计算分润
+	 * 
+	 * @return
+	 */
 	@RequestMapping(params = "type=profit")
 	public String profit() {
 		OrderDomain orderDomain = new OrderDomain();
@@ -155,7 +157,7 @@ public class ProfitAction extends BaseAction {
 		List<ProfitDomain> list = call(orderDomains, marMap);
 
 		// 批量插入
-		int i = profitService.insertBatch(list);
+		int i = profitService.profit(list, orderDomains);
 		// System.out.println(i);
 		return null;
 	}
