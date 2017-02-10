@@ -14,11 +14,13 @@ public interface MerchantService extends BaseService<MerchantDomain> {
 	public MerchantDomain getUser(MerchantDomain merchantDomain);
 
 	public Map<String, Object> checkRate(int id);
-	
+
 	public int insertPoolRel(Integer merchantId, Integer poolId);
 
 	public int updatePoolRel(Integer merchantId, Integer poolId);
-	
+
 	public int updatePool(MerchantDomain merchantDomain);
+
+	public List<MerchantDomain> getVirtualMerchants(MerchantDomain merchantDomain);
 
 }

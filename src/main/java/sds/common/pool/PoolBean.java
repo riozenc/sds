@@ -5,17 +5,21 @@ import sds.webapp.acc.domain.MerchantDomain;
 public class PoolBean {
 
 	private MerchantPool merchantPool;
-	private MerchantDomain merchantDomain;
+	private MerchantDomain virtualMerchant;
+	private MerchantDomain realMerchant;
 	private boolean valid;
 	private boolean used;
+	private boolean binding;
 	private long createdTimestamp;
 	private long lastUsedTimestamp;
-	protected long borrowedTimestamp;
+
+	protected long borrowedTimestamp;// 借用时间
 
 	public PoolBean(MerchantDomain merchantDomain, MerchantPool merchantPool) {
-		this.merchantDomain = merchantDomain;
+		this.virtualMerchant = merchantDomain;
 		this.merchantPool = merchantPool;
 		this.valid = true;
+		this.binding = false;
 		this.createdTimestamp = System.currentTimeMillis();
 		this.lastUsedTimestamp = System.currentTimeMillis();
 	}
@@ -51,13 +55,26 @@ public class PoolBean {
 		return used;
 	}
 
+	public boolean isBinding() {
+		return binding && realMerchant != null;
+	}
+
+	/**
+	 * 判断有效性
+	 * 有效&&未占用&未绑定&状态未使用or待使用=treue
+	 * @return
+	 */
 	public boolean isValid() {
-		return valid && !used && merchantDomain != null && (merchantDomain.getStatus() == PoolState.NOT_USED
-				|| merchantDomain.getStatus() == PoolState.TO_USED);
+		return valid && !isOccupy() && !isBinding() && (virtualMerchant.getStatus() == PoolState.NOT_USED
+				|| virtualMerchant.getStatus() == PoolState.TO_USED);
 	}
 
 	public MerchantDomain getObject() {
-		return merchantDomain;
+		return virtualMerchant;
+	}
+
+	public MerchantDomain getRealObject() {
+		return realMerchant;
 	}
 
 	/**
@@ -68,16 +85,24 @@ public class PoolBean {
 	}
 
 	/**
-	 * 使用
+	 * 使用、绑定
 	 */
-	public void used() {
-		merchantPool.used(this);
+	public void binding(MerchantDomain merchantDomain) {
+		if (merchantDomain != null) {
+			this.realMerchant = merchantDomain;
+			binding = true;
+			virtualMerchant.setStatus(PoolState.USED);// 标记使用
+			merchantPool.use(this);
+		} else {
+			throw new NullPointerException("真实商户不能为空...");
+		}
 	}
 
 	/**
 	 * 失效
 	 */
 	public void disable() {
+		virtualMerchant.setStatus(PoolState.DISABLE);
 		merchantPool.disable(this);
 	}
 

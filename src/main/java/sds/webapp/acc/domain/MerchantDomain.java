@@ -4,6 +4,7 @@ import java.util.Date;
 
 import org.apache.shiro.authc.UsernamePasswordToken;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.riozenc.quicktool.annotation.TablePrimaryKey;
 import com.riozenc.quicktool.mybatis.MybatisEntity;
 import com.riozenc.quicktool.mybatis.persistence.Page;
@@ -62,6 +63,7 @@ public class MerchantDomain extends Page<MerchantDomain> implements MybatisEntit
 	private Integer tjId;// 推荐人ID
 	private Integer agentId;// `agent_id` int(11) DEFAULT NULL COMMENT '所属代理商',
 
+	@JsonIgnore
 	private MerchantDomain tj;// 对应的推荐人
 
 	public MerchantDomain() {

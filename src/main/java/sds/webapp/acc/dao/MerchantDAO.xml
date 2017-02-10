@@ -402,14 +402,15 @@
 		</where>
 	</update>
 
-	<select id="findIdleByPool" resultType="MerchantDomain" useCache="true">
+	<select id="findIdleByPool" resultType="MerchantDomain"
+		useCache="true">
 		SELECT * FROM fm_merchant_pool
 		<where>
 			status = #{1}
 		</where>
 	</select>
 
-	<select id="findVirtualMerchants" parameterType="MerchantDomain"
+	<select id="getVirtualMerchants" parameterType="MerchantDomain"
 		resultType="MerchantDomain" useCache="true">
 		SELECT b.* FROM MERCHANT_POOL_REL a LEFT JOIN fm_merchant_pool b ON
 		a.pool_id = b.id

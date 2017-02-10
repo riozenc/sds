@@ -39,12 +39,11 @@ public class MerchantAction extends BaseAction {
 	private UserService userService;
 
 	/**
-	 * 注册商户
+	 * 商户注册
 	 * 
 	 * @param merchantDomain
 	 * @return
 	 * @throws Exception
-	 * @throws InvalidAppCodeException
 	 */
 	@ResponseBody
 	// @RequestMapping(params = "type=register", method = RequestMethod.POST)
@@ -169,10 +168,30 @@ public class MerchantAction extends BaseAction {
 	@ResponseBody
 	@RequestMapping(params = "type=updateRate")
 	public String updateRate(MerchantDomain merchantDomain) throws Exception {
+		RemoteResult remoteResult = null;
+		if (merchantDomain.getUserType() != 2) {// 个人商户
+			try {
+				// ===根据等级进行分配虚拟账户
+				List<MerchantDomain> vlist = merchantService.getVirtualMerchants(merchantDomain);
+				if (vlist == null || vlist.size() == 0) {
+					return JSONUtil.toJsonString(new JsonResult(JsonResult.ERROR, "该账户无法进行正常交易,请联系客服."));
+				}
+				for (MerchantDomain v : vlist) {
+					v.setWxRate(merchantDomain.getWxRate());
+					v.setAliRate(merchantDomain.getAliRate());
+					remoteResult = RemoteUtils.process(v, REMOTE_TYPE.CHANGE_RATE);
+					if (!RemoteUtils.resultProcess(remoteResult)) {
+						return JSONUtil.toJsonString(new JsonResult(JsonResult.ERROR, remoteResult.getMsg()));
+					}
+				}
+			} catch (Exception e) {
+				return JSONUtil.toJsonString(new JsonResult(JsonResult.ERROR, e.getMessage()));
+			}
 
-		// 远程同步费率
-		RemoteResult remoteResult = RemoteUtils.process(merchantDomain, REMOTE_TYPE.CHANGE_RATE);
-
+		} else {// 真实商户
+			// 远程同步费率
+			remoteResult = RemoteUtils.process(merchantDomain, REMOTE_TYPE.CHANGE_RATE);
+		}
 		if (RemoteUtils.resultProcess(remoteResult)) {
 			int i = merchantService.updateRate(merchantDomain);
 			if (i > 0) {
@@ -183,7 +202,6 @@ public class MerchantAction extends BaseAction {
 		} else {
 			return JSONUtil.toJsonString(new JsonResult(JsonResult.ERROR, remoteResult.getMsg()));
 		}
-
 	}
 
 	/**
@@ -212,14 +230,18 @@ public class MerchantAction extends BaseAction {
 			return JSONUtil.toJsonString(new JsonResult(JsonResult.ERROR, "支付宝费率错误"));
 		}
 
-		// ===根据等级进行分配虚拟账户
-		ConfDomain confDomain = ConfAction.getConfig(ConfAction.MERCHANT_LEVEL_COUNT)
-				.get(merchantDomain.getLevel().toString());
-
-		//
-		for (int i = Integer.valueOf(confDomain.getValue()); i > 0; i--) {
-			PoolBean bean = MerchantPool.getInstance().getPoolBean();
-			merchantService.insertPoolRel(merchantDomain.getId(), bean.getObject().getId());
+		try {
+			if (merchantDomain.getUserType() != 2) {
+				// ===根据等级进行分配虚拟账户
+				ConfDomain confDomain = ConfAction.getConfig(ConfAction.MERCHANT_LEVEL_COUNT)
+						.get(merchantDomain.getLevel().toString());
+				for (int i = Integer.valueOf(confDomain.getValue()); i > 0; i--) {
+					PoolBean bean = MerchantPool.getInstance().getPoolBean();
+					bean.binding(merchantDomain);
+				}
+			}
+		} catch (Exception e) {
+			return JSONUtil.toJsonString(new JsonResult(JsonResult.ERROR, e.getMessage()));
 		}
 
 		// 判断费率
@@ -271,22 +293,15 @@ public class MerchantAction extends BaseAction {
 	public String validCard(MerchantDomain merchantDomain) throws Exception {
 		MerchantDomain temp = merchantService.findByKey(merchantDomain);
 
+		RemoteResult remoteResult = null;
 		if (temp.getUserType() == 2) {// 认证商户
-			// 验证本身
+			// 正常验卡
+			remoteResult = RemoteUtils.process(temp, REMOTE_TYPE.VALID_CARD);
 		} else {
-			// 个人商户
-			// 取池子的虚拟账户 赋给个人商户
-			PoolBean bean = MerchantPool.getInstance().getPoolBean();
-			MerchantDomain proxyMerchantDomain = bean.getObject();
-			// 替换结算卡
-			proxyMerchantDomain.setRealName(temp.getRealName());
-			proxyMerchantDomain.setMobile(temp.getMobile());
-			proxyMerchantDomain.setCardNo(temp.getCardNo());
-			proxyMerchantDomain.setCertNo(temp.getCertNo());
-			temp = proxyMerchantDomain;
+			// 特殊验卡
+			remoteResult = RemoteUtils.process(merchantDomain, REMOTE_TYPE.SPECIAL_VALID_CARD);
 		}
 
-		RemoteResult remoteResult = RemoteUtils.process(temp, REMOTE_TYPE.VALID_CARD);
 		if (RemoteUtils.resultProcess(remoteResult)) {
 			int i = merchantService.update(temp);
 			if (i > 0) {

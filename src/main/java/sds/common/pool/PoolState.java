@@ -6,6 +6,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.ibatis.session.RowBounds;
 import org.apache.ibatis.session.SqlSession;
 
 import com.riozenc.quicktool.common.util.date.DateUtil;
@@ -39,6 +40,8 @@ public class PoolState {
 	protected final List<PoolBean> activeBeans = new ArrayList<PoolBean>();// 使用中
 	protected final List<PoolBean> badBeans = new ArrayList<PoolBean>();// 失效
 	protected final Map<Integer, PoolBean> poolRelMap = new HashMap<Integer, PoolBean>();
+
+	private RowBounds rowBounds = new RowBounds(1, 1);// offset, limit
 
 	public PoolState(MerchantPool pool) {
 		this.pool = pool;
@@ -89,8 +92,10 @@ public class PoolState {
 		if (!activeBeans.isEmpty()) {
 			LogUtil.getLogger(LOG_TYPE.OTHER).info("* * * * 同步已使用数据(" + activeBeans.size() + ") * * * *");
 			for (PoolBean temp : activeBeans) {
-				temp.getObject().setStatus(USED);
 				merchantService.updatePool(temp.getObject());
+				if (merchantService.updatePoolRel(temp.getRealObject().getId(), temp.getObject().getId()) == 0) {
+					merchantService.insertPoolRel(temp.getRealObject().getId(), temp.getObject().getId());
+				}
 			}
 			activeBeans.clear();
 		}
@@ -98,7 +103,8 @@ public class PoolState {
 
 	private void synIdleBeans(MerchantService merchantService) throws Exception {
 		SqlSession sqlSession = SqlSessionManager.getSession();
-		List<MerchantDomain> list = sqlSession.selectList("sds.webapp.acc.dao.MerchantDAO.findIdleByPool", NOT_USED);
+		List<MerchantDomain> list = sqlSession.selectList("sds.webapp.acc.dao.MerchantDAO.findIdleByPool", NOT_USED,
+				this.rowBounds);
 		LogUtil.getLogger(LOG_TYPE.OTHER).info("* * * * 补充可用数据(" + list.size() + ") * * * *");
 		if (list == null || list.isEmpty()) {
 			error();
@@ -125,7 +131,6 @@ public class PoolState {
 		if (!badBeans.isEmpty()) {
 			LogUtil.getLogger(LOG_TYPE.OTHER).info("* * * * 同步失效数据(" + badBeans.size() + ") * * * *");
 			for (PoolBean temp : badBeans) {
-				temp.getObject().setStatus(DISABLE);
 				merchantService.updatePool(temp.getObject());
 			}
 			badBeans.clear();

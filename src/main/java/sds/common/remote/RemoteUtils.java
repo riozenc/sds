@@ -1,5 +1,7 @@
 package sds.common.remote;
 
+import sds.common.pool.MerchantPool;
+import sds.common.pool.PoolBean;
 import sds.common.remote.domain.DownloadKeyDomain;
 import sds.common.remote.domain.RegisterDomain;
 import sds.common.security.util.UserUtils;
@@ -10,7 +12,7 @@ import sds.webapp.sys.domain.ConfDomain;
 public class RemoteUtils {
 	public enum REMOTE_TYPE {
 
-		REGISTER, DOWNLOAD_KEY, VALID_CARD, CHANGE_RATE, V_VALID_CARD
+		REGISTER, DOWNLOAD_KEY, VALID_CARD, CHANGE_RATE, SPECIAL_VALID_CARD
 	}
 
 	public static RemoteResult process(MerchantDomain merchantDomain, REMOTE_TYPE remoteType) {
@@ -29,6 +31,8 @@ public class RemoteUtils {
 			case CHANGE_RATE:
 				remoteResult = RemoteHandler.changeRate(merchantDomain);
 				break;
+			case SPECIAL_VALID_CARD:
+				remoteResult = specialValidCard(merchantDomain);
 			}
 			return remoteResult;
 		} catch (Exception e) {
@@ -36,6 +40,27 @@ public class RemoteUtils {
 			return new RemoteResult("999999", e.getClass().getName());
 		}
 
+	}
+
+	/**
+	 * 虚拟账户验卡
+	 * 
+	 * @param merchantDomain
+	 * @return
+	 * @throws Exception
+	 */
+	private static RemoteResult specialValidCard(MerchantDomain merchantDomain) throws Exception {
+		PoolBean bean = MerchantPool.getInstance().getPoolBean();
+		MerchantDomain proxyMerchantDomain = bean.getObject();
+		// 替换结算卡
+		proxyMerchantDomain.setRealName(merchantDomain.getRealName());
+		proxyMerchantDomain.setMobile(merchantDomain.getMobile());
+		proxyMerchantDomain.setCardNo(merchantDomain.getCardNo());
+		proxyMerchantDomain.setCertNo(merchantDomain.getCertNo());
+		RemoteResult remoteResult = RemoteUtils.process(proxyMerchantDomain, REMOTE_TYPE.VALID_CARD);
+		// 回收bean
+		bean.recover();
+		return remoteResult;
 	}
 
 	public static RemoteResult pay(MerchantDomain merchantDomain, double amount, String info, int channelCode) {

@@ -36,7 +36,10 @@ public class TestAction {
 								+ "]" + Thread.currentThread().getName());
 
 						if (l == 888 || l == 1111) {
-							poolBean.used();// 占用
+							
+							MerchantDomain real = new MerchantDomain();
+							real.setId(l);
+							poolBean.binding(real);// 占用
 						} else {
 							poolBean.recover();
 						}
