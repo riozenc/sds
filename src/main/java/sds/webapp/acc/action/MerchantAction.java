@@ -157,6 +157,18 @@ public class MerchantAction extends BaseAction {
 		List<MerchantDomain> list = merchantService.findByWhere(merchantDomain);
 		return JSONUtil.toJsonString(new JsonGrid(merchantDomain, list));
 	}
+	
+	/**
+	 * 根据条件查询商户
+	 * 
+	 * @param merchantDomain
+	 * @return
+	 */
+	@ResponseBody
+	@RequestMapping(params = "type=findMerchantByKey")
+	public String findMerchantByKey(MerchantDomain merchantDomain) {
+		return JSONUtil.toJsonString(merchantService.findByKey(merchantDomain));
+	}
 
 	/**
 	 * 修改商户费率
@@ -169,12 +181,16 @@ public class MerchantAction extends BaseAction {
 	@RequestMapping(params = "type=updateRate")
 	public String updateRate(MerchantDomain merchantDomain) throws Exception {
 		RemoteResult remoteResult = null;
-		if (merchantDomain.getUserType() != 2) {// 个人商户
+		if (merchantDomain.getUserType() == 2) {
+			// 真实商户
+			// 远程同步费率
+			remoteResult = RemoteUtils.process(merchantDomain, REMOTE_TYPE.CHANGE_RATE);
+		} else {
+			// 个人商户
 			try {
-				// ===根据等级进行分配虚拟账户
 				List<MerchantDomain> vlist = merchantService.getVirtualMerchants(merchantDomain);
 				if (vlist == null || vlist.size() == 0) {
-					return JSONUtil.toJsonString(new JsonResult(JsonResult.ERROR, "该账户无法进行正常交易,请联系客服."));
+					return JSONUtil.toJsonString(new JsonResult(JsonResult.ERROR, "该账户无法进行正常使用,请联系客服."));
 				}
 				for (MerchantDomain v : vlist) {
 					v.setWxRate(merchantDomain.getWxRate());
@@ -188,9 +204,6 @@ public class MerchantAction extends BaseAction {
 				return JSONUtil.toJsonString(new JsonResult(JsonResult.ERROR, e.getMessage()));
 			}
 
-		} else {// 真实商户
-			// 远程同步费率
-			remoteResult = RemoteUtils.process(merchantDomain, REMOTE_TYPE.CHANGE_RATE);
 		}
 		if (RemoteUtils.resultProcess(remoteResult)) {
 			int i = merchantService.updateRate(merchantDomain);

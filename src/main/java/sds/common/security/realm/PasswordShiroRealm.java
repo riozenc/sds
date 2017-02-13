@@ -17,6 +17,8 @@ import org.apache.shiro.util.ByteSource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 
+import com.riozenc.quicktool.common.util.cryption.en.WebPasswordUtils;
+
 import sds.common.security.Principal;
 import sds.common.security.token.UsernamePasswordToken;
 import sds.webapp.acc.domain.MerchantDomain;
@@ -58,10 +60,11 @@ public class PasswordShiroRealm extends AuthorizingRealm {
 
 				MerchantDomain merchantDomain = merchantService.getUser(new MerchantDomain(token));
 				if (merchantDomain != null) {
-					String password = merchantDomain.getPassword().substring(16);
+					String password = WebPasswordUtils.encodePassword(merchantDomain.getPassword());
 					try {
-						byte[] salt = Hex.decodeHex(merchantDomain.getPassword().substring(0, 16).toCharArray());
-						return new SimpleAuthenticationInfo(new Principal(merchantDomain), password,
+						
+						byte[] salt = Hex.decodeHex(password.substring(0, 16).toCharArray());
+						return new SimpleAuthenticationInfo(new Principal(merchantDomain), password.substring(16),
 								ByteSource.Util.bytes(salt), getName());
 					} catch (DecoderException e) {
 						// TODO Auto-generated catch block

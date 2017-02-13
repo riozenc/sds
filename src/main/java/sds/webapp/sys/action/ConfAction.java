@@ -5,6 +5,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
+import javax.annotation.PostConstruct;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.web.bind.annotation.ControllerAdvice;
@@ -30,6 +32,7 @@ public class ConfAction {
 
 	public static Map<String, ConfDomain> getConfig(String type) throws Exception {
 		long time = System.currentTimeMillis();
+
 		while (!FLAG) {
 			if ((System.currentTimeMillis() - time) > 10 * 1000) {
 				// 等待10秒
@@ -37,6 +40,20 @@ public class ConfAction {
 			}
 		}
 		return MAP.get(type);
+	}
+
+	@PostConstruct
+	public void init() {
+		List<ConfDomain> list = confService.findByWhere(new ConfDomain());
+		for (ConfDomain temp : list) {
+			Map<String, ConfDomain> map = MAP.get(temp.getType());
+			if (map == null) {
+				map = new HashMap<String, ConfDomain>();
+				MAP.put(temp.getType(), map);
+			}
+			map.put(temp.getName(), temp);
+		}
+		FLAG = true;
 	}
 
 	// *************************

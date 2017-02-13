@@ -24,6 +24,9 @@ public class MainListener implements ServletContextListener {
 		LogUtil.setLogOutType(LOG_OUT_TYPE.SYSTEM);// 全部日志根据文件配置输出
 
 		DbFactory.initByFactory();
+		
+		//初始化conf
+		 
 		System.out.println("initialized");
 
 	}

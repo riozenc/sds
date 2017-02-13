@@ -31,7 +31,7 @@ public class Principal {
 	}
 
 	public Principal(MerchantDomain merchantDomain) {
-		userDomain.setPassword("Want password?");
+		merchantDomain.setPassword("Want password?");
 		this.merchantDomain = merchantDomain;
 		this.id = merchantDomain.getId();
 		this.userId = merchantDomain.getAccount();

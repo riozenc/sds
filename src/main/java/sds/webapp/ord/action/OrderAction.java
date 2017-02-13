@@ -48,7 +48,6 @@ public class OrderAction extends BaseAction {
 	public String pay(double amount, String info, int channelCode) throws Exception {
 		MerchantDomain merchantDomain = UserUtils.getPrincipal().getMerchantDomain();
 		
-
 		RemoteResult remoteResult = RemoteUtils.pay(merchantDomain, amount, info, channelCode);
 		if (RemoteUtils.resultProcess(remoteResult)) {
 			OrderDomain orderDomain = new OrderDomain();
