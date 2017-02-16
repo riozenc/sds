@@ -1,10 +1,13 @@
 package sds.common.remote;
 
+import java.io.IOException;
 import java.security.PrivateKey;
 import java.security.PublicKey;
 import java.util.HashMap;
 import java.util.Map;
 
+import com.fasterxml.jackson.core.JsonParseException;
+import com.fasterxml.jackson.databind.JsonMappingException;
 import com.riozenc.quicktool.common.util.json.JSONUtil;
 
 import sds.common.remote.domain.ChangeRateDomain;
@@ -31,8 +34,11 @@ public class RemoteHandler {
 	 * 
 	 * @param account
 	 * @param password暂时无用
+	 * @throws IOException 
+	 * @throws JsonMappingException 
+	 * @throws JsonParseException 
 	 */
-	static RemoteResult register(final RegisterDomain registerDomain) {
+	static RemoteResult register(final RegisterDomain registerDomain) throws JsonParseException, JsonMappingException, IOException {
 
 		String result = Regesitor.sendPost(Common.REGISTERURL,
 				"account=" + registerDomain.getAccount() + "&pass=" + registerDomain.getPass() + "&code="
@@ -65,18 +71,23 @@ public class RemoteHandler {
 			byte[] res = MyURLConnection.postBinResource(Common.URL, request, Common.CHARSET, 30);
 			String response = new String(res);
 
-			RemoteBlackResult remoteBlackResult = JSONUtil.readValue(response, RemoteBlackResult.class);
+			try {
+				RemoteBlackResult remoteBlackResult = JSONUtil.readValue(response, RemoteBlackResult.class);
 
-			int count = Integer.valueOf(remoteBlackResult.getCount());
-			String respData = remoteBlackResult.getData();
+				int count = Integer.valueOf(remoteBlackResult.getCount());
+				String respData = remoteBlackResult.getData();
 
-			String newString = new String(
-					DesUtil.des3Decrypt(SignUtil.hexStrToBytes(Common.KEY), SignUtil.hexStrToBytes(respData)));
+				String newString = new String(
+						DesUtil.des3Decrypt(SignUtil.hexStrToBytes(Common.KEY), SignUtil.hexStrToBytes(respData)));
 
-			respData = newString.substring(0, count);
+				respData = newString.substring(0, count);
 
-			RemoteResult remoteResult = JSONUtil.readValue(respData, RemoteResult.class);
-			return remoteResult;
+				RemoteResult remoteResult = JSONUtil.readValue(respData, RemoteResult.class);
+				return remoteResult;
+			} catch (Exception e) {
+				return JSONUtil.readValue(response, RemoteResult.class);
+			}
+
 		} catch (Exception e) {
 			e.printStackTrace();
 			return new RemoteResult("999999", e.getMessage() == null ? e.getClass().getName() : e.getMessage());
@@ -114,7 +125,8 @@ public class RemoteHandler {
 		verifyCardDomain.setCert_no(merchantDomain.getCertNo());// 证件号
 		verifyCardDomain.setMobile(merchantDomain.getMobile());// 手机号
 
-		return encryptionProcess(orderCode, merchantDomain.getAccount(), merchantDomain.getPrivatekey(), verifyCardDomain);
+		return encryptionProcess(orderCode, merchantDomain.getAccount(), merchantDomain.getPrivatekey(),
+				verifyCardDomain);
 
 	}
 
@@ -218,27 +230,32 @@ public class RemoteHandler {
 		byte[] res = MyURLConnection.postBinResource(Common.URL, request, Common.CHARSET, 30);
 		String response = new String(res, "UTF-8");
 
-		RemoteBlackResult remoteBlackResult = JSONUtil.readValue(response, RemoteBlackResult.class);
+		// 可能返回异常，直接返回RemoteResult
+		try {
+			RemoteBlackResult remoteBlackResult = JSONUtil.readValue(response, RemoteBlackResult.class);
 
-		String msg = remoteBlackResult.getData();
-		String signature = remoteBlackResult.getSignature();
+			String msg = remoteBlackResult.getData();
+			String signature = remoteBlackResult.getSignature();
+			PrivateKey key = RSAUtils.loadPrivateKey(privateKey);
 
-		PrivateKey key = RSAUtils.loadPrivateKey(privateKey);
+			byte[] decryptByte = RSAUtils.decryptData(Base64Utils.decode(msg), key);
+			String decryptStr = new String(decryptByte);
+			String datas = Base64.decodeToString(decryptStr);
+			RemoteResult msgResult = JSONUtil.readValue(datas, RemoteResult.class);
 
-		byte[] decryptByte = RSAUtils.decryptData(Base64Utils.decode(msg), key);
-		String decryptStr = new String(decryptByte);
-		String datas = Base64.decodeToString(decryptStr);
-
-		RemoteResult msgResult = JSONUtil.readValue(datas, RemoteResult.class);
-		String msgDatas = msgResult.getMsg();
-		// 验签
-		boolean vfy = LocalUtil.verifySignature(Base64.decode(Common.PUBLICKKEY.getBytes()), signature,
-				msgDatas.getBytes(Common.CHARSET));
-		if (vfy) {
-			RemoteResult remoteResult = JSONUtil.readValue(msgDatas, RemoteResult.class);
-			return remoteResult;
-		} else {
-			return new RemoteResult("999999", "异常数据.");
+			String msgDatas = msgResult.getMsg();
+			// 验签
+			boolean vfy = LocalUtil.verifySignature(Base64.decode(Common.PUBLICKKEY.getBytes()), signature,
+					msgDatas.getBytes(Common.CHARSET));
+			if (vfy) {
+				RemoteResult remoteResult = JSONUtil.readValue(msgDatas, RemoteResult.class);
+				return remoteResult;
+			} else {
+				return new RemoteResult("999999", "异常数据.");
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+			return JSONUtil.readValue(response, RemoteResult.class);
 		}
 
 	}

@@ -4,7 +4,7 @@ public class DownloadKeyDomain {
 	private String orderCode = "tb_DownLoadKey";
 	private String account;
 	private String password = "111111";
-	private String language = "Java";
+//	private String language = "Java";
 
 	public DownloadKeyDomain(String account) {
 		this.account = account;
@@ -26,8 +26,8 @@ public class DownloadKeyDomain {
 		return password;
 	}
 
-	public String getLanguage() {
-		return language;
-	}
+//	public String getLanguage() {
+//		return language;
+//	}
 
 }

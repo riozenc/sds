@@ -46,4 +46,18 @@ public class ProfitUserDAO extends AbstractTransactionDAOSupport implements Base
 	public int insertBatch(List<ProfitUserDomain> list) {
 		return getPersistanceManager(ExecutorType.BATCH).insertList(getNamespace() + ".insert", list);
 	}
+
+	public List<ProfitUserDomain> findProfitUserByWhere(ProfitUserDomain profitUserDomain) {
+		return getPersistanceManager().find(getNamespace() + ".findProfitUserByWhere", profitUserDomain);
+	}
+
+	// 获取下级分润
+	public List<ProfitUserDomain> findSubProfitUserByWhere(ProfitUserDomain profitUserDomain) {
+		return getPersistanceManager().find(getNamespace() + ".findSubProfitUserByWhere", profitUserDomain);
+	}
+
+	// 获取每一天分润
+	public List<ProfitUserDomain> findDateProfitUserByWhere(ProfitUserDomain profitUserDomain) {
+		return getPersistanceManager().find(getNamespace() + ".findDateProfitUserByWhere", profitUserDomain);
+	}
 }

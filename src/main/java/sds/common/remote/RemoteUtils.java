@@ -58,8 +58,12 @@ public class RemoteUtils {
 		proxyMerchantDomain.setCardNo(merchantDomain.getCardNo());
 		proxyMerchantDomain.setCertNo(merchantDomain.getCertNo());
 		RemoteResult remoteResult = RemoteUtils.process(proxyMerchantDomain, REMOTE_TYPE.VALID_CARD);
-		// 回收bean
-		bean.recover();
+		if (RemoteUtils.resultProcess(remoteResult)) {
+			bean.binding(merchantDomain);
+		} else {
+			// 回收bean
+			bean.recover();
+		}
 		return remoteResult;
 	}
 

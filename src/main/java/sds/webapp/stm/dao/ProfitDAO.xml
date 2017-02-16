@@ -14,45 +14,60 @@
 	</select>
 	<select id="findByWhere" parameterType="ProfitDomain"
 		resultType="ProfitDomain" useCache="true">
-		select
-		ID,ORDER_ID,ACCOUNT,AMOUNT,TOTAL_PROFIT,AGENT_ID,AGENT_PROFIT,TJ_PROFIT,TJ_ID,ORDER_DATE,JS_DATE,CREATE_DATE
-		from fm_profit
+		SELECT
+		a.ID,
+		a.ORDER_ID,
+		a.ACCOUNT,
+		a.AMOUNT,
+		a.TOTAL_PROFIT,
+		a.AGENT_ID,
+		b.full_name as AGENT_NAME,
+		a.AGENT_PROFIT,
+		a.TJ_PROFIT,
+		a.TJ_ID,
+		a.ORDER_DATE,
+		a.JS_DATE,
+		a.CREATE_DATE
+		FROM
+		fm_profit a LEFT JOIN fm_user
+		b
+		ON a.agent_id = b.id
 		<where>
 			<if test="id !=null">
-				and ID = #{id}
+				and a.ID = #{id}
 			</if>
 			<if test="orderId !=null">
-				and ORDER_ID = #{orderId}
+				and a.ORDER_ID = #{orderId}
 			</if>
 			<if test="account !=null">
-				and ACCOUNT = #{account}
+				and a.ACCOUNT = #{account}
 			</if>
 			<if test="amount !=null">
-				and AMOUNT = #{amount}
+				and a.AMOUNT = #{amount}
 			</if>
 			<if test="totalProfit !=null">
-				and TOTAL_PROFIT = #{totalProfit}
+				and a.TOTAL_PROFIT = #{totalProfit}
 			</if>
 			<if test="agentId !=null">
-				and AGENT_ID = #{agentId}
+				and a.AGENT_ID = #{agentId}
 			</if>
 			<if test="agentProfit !=null">
-				and AGENT_PROFIT = #{agentProfit}
+				and a.AGENT_PROFIT = #{agentProfit}
 			</if>
 			<if test="tjProfit !=null">
-				and TJ_PROFIT = #{tjProfit}
+				and a.TJ_PROFIT = #{tjProfit}
 			</if>
 			<if test="tjId !=null">
-				and TJ_ID = #{tjId}
+				and a.TJ_ID = #{tjId}
 			</if>
 			<if test="orderDate !=null">
-				and ORDER_DATE = #{orderDate}
+				and a.ORDER_DATE = #{orderDate}
 			</if>
 			<if test="jsDate !=null">
-				and JS_DATE = #{jsDate}
+				and a.JS_DATE = #{jsDate}
 			</if>
 			<if test="createDate !=null">
-				and CREATE_DATE = #{createDate}
+				and a.CREATE_DATE = #{createDate}
 			</if>
 		</where>
 	</select>

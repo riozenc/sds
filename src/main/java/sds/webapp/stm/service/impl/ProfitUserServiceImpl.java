@@ -51,4 +51,20 @@ public class ProfitUserServiceImpl implements ProfitUserService {
 		return profitUserDAO.insertBatch(list);
 	}
 
+	public List<ProfitUserDomain> findProfitUserByWhere(ProfitUserDomain profitUserDomain) {
+		return profitUserDAO.findProfitUserByWhere(profitUserDomain);
+	}
+
+	@Override
+	public List<ProfitUserDomain> findSubProfitUserByWhere(ProfitUserDomain profitUserDomain) {
+		// TODO Auto-generated method stub
+		return profitUserDAO.findSubProfitUserByWhere(profitUserDomain);
+	}
+
+	@Override
+	public List<ProfitUserDomain> findDateProfitUserByWhere(ProfitUserDomain profitUserDomain) {
+		// TODO Auto-generated method stub
+		return profitUserDAO.findDateProfitUserByWhere(profitUserDomain);
+	}
+
 }

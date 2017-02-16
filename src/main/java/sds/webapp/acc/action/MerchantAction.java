@@ -19,6 +19,7 @@ import sds.common.pool.PoolBean;
 import sds.common.remote.RemoteResult;
 import sds.common.remote.RemoteUtils;
 import sds.common.remote.RemoteUtils.REMOTE_TYPE;
+import sds.common.security.util.UserUtils;
 import sds.common.webapp.base.action.BaseAction;
 import sds.webapp.acc.domain.MerchantDomain;
 import sds.webapp.acc.domain.UserDomain;
@@ -157,7 +158,7 @@ public class MerchantAction extends BaseAction {
 		List<MerchantDomain> list = merchantService.findByWhere(merchantDomain);
 		return JSONUtil.toJsonString(new JsonGrid(merchantDomain, list));
 	}
-	
+
 	/**
 	 * 根据条件查询商户
 	 * 
@@ -275,9 +276,10 @@ public class MerchantAction extends BaseAction {
 	@RequestMapping(params = "type=downLoadKey")
 	public String downLoadKey(MerchantDomain merchantDomain) throws Exception {
 
-		MerchantDomain temp = merchantService.findByKey(merchantDomain);
+//		MerchantDomain temp = UserUtils.getPrincipal().getMerchantDomain();
+		 MerchantDomain temp = merchantService.findByKey(merchantDomain);
 		if (temp.getUserType() == 2) {// 认证商户
-			RemoteResult remoteResult = RemoteUtils.process(merchantDomain, REMOTE_TYPE.DOWNLOAD_KEY);
+			RemoteResult remoteResult = RemoteUtils.process(temp, REMOTE_TYPE.DOWNLOAD_KEY);
 			if (RemoteUtils.resultProcess(remoteResult)) {
 				temp.setPrivatekey(remoteResult.getPrivatekey());
 				int i = merchantService.update(temp);
@@ -304,12 +306,12 @@ public class MerchantAction extends BaseAction {
 	@ResponseBody
 	@RequestMapping(params = "type=validCard")
 	public String validCard(MerchantDomain merchantDomain) throws Exception {
-		MerchantDomain temp = merchantService.findByKey(merchantDomain);
-
+		MerchantDomain temp = UserUtils.getPrincipal().getMerchantDomain();
+		merchantDomain.setId(temp.getId());
 		RemoteResult remoteResult = null;
 		if (temp.getUserType() == 2) {// 认证商户
 			// 正常验卡
-			remoteResult = RemoteUtils.process(temp, REMOTE_TYPE.VALID_CARD);
+			remoteResult = RemoteUtils.process(merchantDomain, REMOTE_TYPE.VALID_CARD);
 		} else {
 			// 特殊验卡
 			remoteResult = RemoteUtils.process(merchantDomain, REMOTE_TYPE.SPECIAL_VALID_CARD);

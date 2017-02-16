@@ -89,4 +89,124 @@
 			and ID = #{id}
 		</where>
 	</delete>
+
+
+	<select id="findProfitUserByWhere" parameterType="ProfitUserDomain"
+		resultType="ProfitUserDomain" useCache="true">
+		SELECT
+		a.ID,
+		a.AGENT_ID,
+		b.full_name AS AGENT_NAME,
+		b.ACCOUNT,
+		sum(a.TOTAL_AMOUNT) as TOTAL_AMOUNT,
+		sum(a.TOTAL_PROFIT) as
+		TOTAL_PROFIT,
+		a. STATUS
+		FROM
+		fm_profit_user a
+		LEFT JOIN fm_user b ON
+		a.agent_id = b.id
+		<where>
+			<if test="id !=null">
+				and a.ID = #{id}
+			</if>
+			<if test="agentId !=null">
+				and a.AGENT_ID = #{agentId}
+			</if>
+			<if test="totalAmount !=null">
+				and a.TOTAL_AMOUNT = #{totalAmount}
+			</if>
+			<if test="totalProfit !=null">
+				and a.TOTAL_PROFIT = #{totalProfit}
+			</if>
+			<if test="startDate !=null">
+				and DATE_FORMAT(a.DATE, '%Y-%m-%d') &gt;=
+				DATE_FORMAT(#{startDate}, '%Y-%m-%d')
+			</if>
+			<if test="endDate !=null">
+				and DATE_FORMAT(a.DATE, '%Y-%m-%d') &lt;=
+				DATE_FORMAT(#{endDate}, '%Y-%m-%d')
+			</if>
+			<if test="status !=null">
+				and a.STATUS = #{status}
+			</if>
+			<if test="account !=null">
+				and b.ACCOUNT = #{account}
+			</if>
+		</where>
+		GROUP BY a.agent_id
+	</select>
+
+	<select id="findSubProfitUserByWhere" parameterType="ProfitUserDomain"
+		resultType="ProfitUserDomain" useCache="true">
+		SELECT
+		b.agent_id,
+		a.full_name AS AGENT_NAME,
+		a.account,
+		SUM(b.total_amount) as TOTAL_AMOUNT,
+		SUM(b.total_profit) as
+		TOTAL_PROFIT
+		FROM
+		fm_user a
+		RIGHT JOIN fm_profit_user b ON a.id =
+		b.agent_id
+		<where>
+			a.parent_id = #{id}
+			<if test="startDate !=null">
+				and DATE_FORMAT(b.DATE, '%Y-%m-%d') &gt;=
+				DATE_FORMAT(#{startDate}, '%Y-%m-%d')
+			</if>
+			<if test="endDate !=null">
+				and DATE_FORMAT(b.DATE, '%Y-%m-%d') &lt;=
+				DATE_FORMAT(#{endDate}, '%Y-%m-%d')
+			</if>
+		</where>
+		GROUP BY b.agent_id
+	</select>
+
+	<select id="findDateProfitUserByWhere" parameterType="ProfitUserDomain"
+		resultType="ProfitUserDomain" useCache="true">
+		SELECT
+		a.ID,
+		a.AGENT_ID,
+		b.full_name AS AGENT_NAME,
+		b.ACCOUNT,
+		sum(a.TOTAL_AMOUNT) as TOTAL_AMOUNT,
+		sum(a.TOTAL_PROFIT) as
+		TOTAL_PROFIT,
+		a. STATUS
+		FROM
+		fm_profit_user a
+		LEFT JOIN fm_user b ON
+		a.agent_id = b.id
+		<where>
+			<if test="id !=null">
+				and a.ID = #{id}
+			</if>
+			<if test="agentId !=null">
+				and a.AGENT_ID = #{agentId}
+			</if>
+			<if test="totalAmount !=null">
+				and a.TOTAL_AMOUNT = #{totalAmount}
+			</if>
+			<if test="totalProfit !=null">
+				and a.TOTAL_PROFIT = #{totalProfit}
+			</if>
+			<if test="startDate !=null">
+				and DATE_FORMAT(a.DATE, '%Y-%m-%d') &gt;=
+				DATE_FORMAT(#{startDate}, '%Y-%m-%d')
+			</if>
+			<if test="endDate !=null">
+				and DATE_FORMAT(a.DATE, '%Y-%m-%d') &lt;=
+				DATE_FORMAT(#{endDate}, '%Y-%m-%d')
+			</if>
+			<if test="status !=null">
+				and a.STATUS = #{status}
+			</if>
+			<if test="account !=null">
+				and b.ACCOUNT = #{account}
+			</if>
+		</where>
+		GROUP BY DATE_FORMAT(a.DATE, '%Y-%m-%d')
+	</select>
 </mapper>

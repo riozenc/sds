@@ -8,6 +8,9 @@ public class RemoteResult {
 	private String QRcodeURL;// 二维码支付地址
 	private String orderId;// 订单号
 
+	private boolean msgResult;// 垃圾属性，中谷系统垃圾
+	private String sendFlag;// 垃圾属性，中谷系统垃圾
+
 	public RemoteResult() {
 	}
 
@@ -62,6 +65,22 @@ public class RemoteResult {
 
 	public void setOrderId(String orderId) {
 		this.orderId = orderId;
+	}
+
+	public boolean isMsgResult() {
+		return msgResult;
+	}
+
+	public void setMsgResult(boolean msgResult) {
+		this.msgResult = msgResult;
+	}
+
+	public String getSendFlag() {
+		return sendFlag;
+	}
+
+	public void setSendFlag(String sendFlag) {
+		this.sendFlag = sendFlag;
 	}
 
 }
