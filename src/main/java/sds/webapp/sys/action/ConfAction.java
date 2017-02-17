@@ -22,6 +22,7 @@ public class ConfAction {
 
 	public static final String REMOTE_RESULT = "REMOTE_RESULT";// 远程结果编码
 	public static final String MERCHANT_LEVEL_COUNT = "MERCHANT_LEVEL_COUNT";// 商户等级数量
+	public static final String MCC = "MCC";// 经营类目
 
 	private static final Map<String, Map<String, ConfDomain>> MAP = new ConcurrentHashMap<String, Map<String, ConfDomain>>();
 	private static boolean FLAG = false;
