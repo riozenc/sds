@@ -21,6 +21,7 @@ public class ProfitDomain implements MybatisEntity {
 	private Double totalProfit;// '分润总额',
 	private Integer agentId;// 代理商ID
 	private String agentName;// 代理商全称
+	private String agentAccount;// 代理商电话
 	private Double agentProfit;// 代理商利润
 	private boolean isReferee;// 推荐人功能是否开启
 	private Double tjProfit;// '推荐人分润金额',
@@ -156,6 +157,14 @@ public class ProfitDomain implements MybatisEntity {
 
 	public void setAgentName(String agentName) {
 		this.agentName = agentName;
+	}
+
+	public String getAgentAccount() {
+		return agentAccount;
+	}
+
+	public void setAgentAccount(String agentAccount) {
+		this.agentAccount = agentAccount;
 	}
 
 }

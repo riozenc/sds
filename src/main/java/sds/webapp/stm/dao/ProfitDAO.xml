@@ -22,6 +22,7 @@
 		a.TOTAL_PROFIT,
 		a.AGENT_ID,
 		b.full_name as AGENT_NAME,
+		b.account AS AGENT_ACCOUNT,
 		a.AGENT_PROFIT,
 		a.TJ_PROFIT,
 		a.TJ_ID,
