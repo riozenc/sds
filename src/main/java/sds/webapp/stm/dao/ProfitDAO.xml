@@ -190,13 +190,21 @@
 		</where>
 	</update>
 
-	<select id="findProfitByUser" parameterType="UserDomain"
+	<select id="findProfitByUser" parameterType="ProfitUserDomain"
 		resultType="OrderDomain" useCache="true">
 		SELECT a.* FROM fm_profit a LEFT JOIN fm_merchant b ON a.account =
 		b.account
 		<where>
-			b.agent_id = #{id}
+			b.agent_id = #{agentId}
 			AND a.agent_id = b.agent_id
+			<if test="startDate !=null">
+				and DATE_FORMAT(a.orderDate, '%Y-%m-%d') &gt;=
+				DATE_FORMAT(#{startDate}, '%Y-%m-%d')
+			</if>
+			<if test="endDate !=null">
+				and DATE_FORMAT(a.orderDate, '%Y-%m-%d') &lt;=
+				DATE_FORMAT(#{endDate}, '%Y-%m-%d')
+			</if>
 		</where>
 	</select>
 </mapper>

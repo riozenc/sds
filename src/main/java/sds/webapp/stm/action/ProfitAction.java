@@ -170,10 +170,11 @@ public class ProfitAction extends BaseAction {
 	 */
 	@ResponseBody
 	@RequestMapping(params = "type=findProfitByUser")
-	public String findProfitByUser(UserDomain userDomain) {
-		List<ProfitDomain> list = profitService.findProfitByUser(userDomain);
+	public String findProfitByUser(ProfitUserDomain profitUserDomain) {
 
-		return JSONUtil.toJsonString(new JsonGrid(userDomain, list));
+		List<ProfitDomain> list = profitService.findProfitByUser(profitUserDomain);
+
+		return JSONUtil.toJsonString(new JsonGrid(profitUserDomain, list));
 	}
 
 	/**

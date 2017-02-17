@@ -3,7 +3,6 @@ package sds.webapp.stm.service;
 import java.util.List;
 
 import sds.common.webapp.base.service.BaseService;
-import sds.webapp.acc.domain.UserDomain;
 import sds.webapp.ord.domain.OrderDomain;
 import sds.webapp.stm.domain.ProfitDomain;
 import sds.webapp.stm.domain.ProfitMerchantDomain;
@@ -18,5 +17,5 @@ public interface ProfitService extends BaseService<ProfitDomain> {
 	public int profitCount(List<ProfitUserDomain> profitUserDomains, List<ProfitMerchantDomain> profitMerchantDomains,
 			List<ProfitDomain> profitDomains);
 	
-	public List<ProfitDomain> findProfitByUser(UserDomain userDomain);
+	public List<ProfitDomain> findProfitByUser(ProfitUserDomain profitUserDomain);
 }

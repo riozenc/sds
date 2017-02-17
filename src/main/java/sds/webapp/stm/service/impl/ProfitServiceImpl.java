@@ -82,9 +82,9 @@ public class ProfitServiceImpl implements ProfitService {
 	}
 
 	@Override
-	public List<ProfitDomain> findProfitByUser(UserDomain userDomain) {
+	public List<ProfitDomain> findProfitByUser(ProfitUserDomain profitUserDomain) {
 		// TODO Auto-generated method stub
-		return profitDAO.findProfitByUser(userDomain);
+		return profitDAO.findProfitByUser(profitUserDomain);
 	}
 
 }
