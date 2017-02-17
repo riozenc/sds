@@ -30,7 +30,8 @@
 		a.JS_DATE,
 		a.CREATE_DATE
 		FROM
-		fm_profit a LEFT JOIN fm_user
+		fm_profit
+		a LEFT JOIN fm_user
 		b
 		ON a.agent_id = b.id
 		<where>
@@ -188,4 +189,14 @@
 			ID = #{id}
 		</where>
 	</update>
+
+	<select id="findProfitByUser" parameterType="UserDomain"
+		resultType="OrderDomain" useCache="true">
+		SELECT a.* FROM fm_profit a LEFT JOIN fm_merchant b ON a.account =
+		b.account
+		<where>
+			b.agent_id = #{id}
+			AND a.agent_id = b.agent_id
+		</where>
+	</select>
 </mapper>

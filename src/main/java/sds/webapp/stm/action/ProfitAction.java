@@ -163,6 +163,20 @@ public class ProfitAction extends BaseAction {
 	}
 
 	/**
+	 * 根据商户查询分润
+	 * 
+	 * @param userDomain
+	 * @return
+	 */
+	@ResponseBody
+	@RequestMapping(params = "type=findProfitByUser")
+	public String findProfitByUser(UserDomain userDomain) {
+		List<ProfitDomain> list = profitService.findProfitByUser(userDomain);
+
+		return JSONUtil.toJsonString(new JsonGrid(userDomain, list));
+	}
+
+	/**
 	 * 获取代理商商户关系
 	 * 
 	 * @param merchantDomain

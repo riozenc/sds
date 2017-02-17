@@ -5,6 +5,7 @@ import java.util.List;
 import com.riozenc.quicktool.annotation.TransactionDAO;
 import com.riozenc.quicktool.annotation.TransactionService;
 
+import sds.webapp.acc.domain.UserDomain;
 import sds.webapp.ord.dao.OrderDAO;
 import sds.webapp.ord.domain.OrderDomain;
 import sds.webapp.stm.dao.ProfitDAO;
@@ -78,6 +79,12 @@ public class ProfitServiceImpl implements ProfitService {
 		profitUserDAO.insertBatch(profitUserDomains);
 		profitMerchantDAO.insertBatch(profitMerchantDomains);
 		return profitDAO.profitCountComplete(profitDomains);
+	}
+
+	@Override
+	public List<ProfitDomain> findProfitByUser(UserDomain userDomain) {
+		// TODO Auto-generated method stub
+		return profitDAO.findProfitByUser(userDomain);
 	}
 
 }

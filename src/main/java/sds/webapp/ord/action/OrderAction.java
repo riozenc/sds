@@ -18,6 +18,7 @@ import sds.common.remote.RemoteUtils;
 import sds.common.security.util.UserUtils;
 import sds.common.webapp.base.action.BaseAction;
 import sds.webapp.acc.domain.MerchantDomain;
+import sds.webapp.acc.domain.UserDomain;
 import sds.webapp.acc.service.MerchantService;
 import sds.webapp.ord.domain.OrderDomain;
 import sds.webapp.ord.service.OrderService;
@@ -47,7 +48,7 @@ public class OrderAction extends BaseAction {
 	@RequestMapping(params = "type=pay")
 	public String pay(double amount, String info, int channelCode) throws Exception {
 		MerchantDomain merchantDomain = UserUtils.getPrincipal().getMerchantDomain();
-		
+
 		RemoteResult remoteResult = RemoteUtils.pay(merchantDomain, amount, info, channelCode);
 		if (RemoteUtils.resultProcess(remoteResult)) {
 			OrderDomain orderDomain = new OrderDomain();
@@ -86,7 +87,7 @@ public class OrderAction extends BaseAction {
 	public String scanPay(double amount, int channelCode, String productName, String productDetail, String authCode)
 			throws Exception {
 		MerchantDomain merchantDomain = UserUtils.getPrincipal().getMerchantDomain();
-		
+
 		// authCode 付款码
 		RemoteResult remoteResult = RemoteUtils.scanPay(merchantDomain, amount, channelCode, productName, productDetail,
 				authCode);
