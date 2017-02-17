@@ -16,14 +16,14 @@ $(function() {
 	    postData:{startDate:dateNow,endDate:dateNow},
 	    columns: [
               {
-  	            name: 'id',
+  	            name: 'agentId',
   	            label: 'ID',
   	            align: 'center',
   	            width:50
   	        },
 	        {
 	            name: 'account',
-	            label: '登录手机号',
+	            label: '账号',
 	            align: 'center',
 	            width:100
 	        },
@@ -39,23 +39,9 @@ $(function() {
 	            align: 'center',
 	            width: 100
 	        },
+	        
 	        {
-	            name: 'status',
-	            label: '状态',
-	            align: 'center',
-	            width: 70,
-	            render: function(value,data) {
-	            	if(value == 0){
-	            		 return '<a href="javascript:;"   onclick="dialog_profit(\''+data.id+'\')">未提现</a>';
-	            	}else if(value == 1){
-	            		return "已提现";
-	            	}else{
-	            		return value;
-	            	}
-	            }
-	        },
-	        {
-	            name: 'id',
+	            name: 'account',
 	            label: '详情',
 	            align: 'center',
 	            width: 50,
@@ -70,43 +56,104 @@ $(function() {
 	});
 	
 });
-function dialog_profitInfo(id){
+function dialog_profitInfo(account){
 	var startDate=$("#startDate").val();
 	var endDate =$("#endDate").val();
-	$
 	
-}
-function dialog_profit(Id){
-	var ajaxdata={id:Id} ;
+	var ajaxdata={startDate:startDate,endDate:endDate,account:account};
 	$.ajax({
 		cache : false,
 		type : "POST",
-		url : "profitUser.do?type=findProfitUserByWhere",
+		url : "profitUser.do?type=findDateProfitUserByWhere",
 		data : ajaxdata,
 		dataType : "json",
 		error : function(request) {
 			console.info(request);
-			alert("请先登录");
+			alert("请重新登录");
 			return false;
 		},
-		success : function(data) {
-			console.info(data);
+		success : function(result) {
 			BJUI.dialog({
-			    id:'profitUserEdit',
-			    url:'html/form/profitUserEdit.jsp',
+			    id:'profitMyInfo',
+			    url:'html/form/profitMyInfo.jsp',
 			    title:'详情',
 			    width:900,
 			    height:500,
 			    onLoad:function(){
-			    	$.each(data.list[0], function(key, obj) {
-			    		$("#"+key).val(obj);
-					});
+			    	$('#profitMyInfo_datagrid').datagrid({
+			    	    height: '100%',
+			    	    tableWidth:'99%',
+			    	    gridTitle : ' ',
+			    	    local: 'local',
+			    	    showToolbar: false,
+			    	    data:result,			    	    
+			    	    columns: [
+			                {
+			      	            name: 'id',
+			      	            label: 'ID',
+			      	            align: 'center',
+			      	            width:50
+			      	        },
+			    	        {
+			    	            name: 'account',
+			    	            label: '账号',
+			    	            align: 'center',
+			    	            width:100
+			    	        },
+			    	        {
+			    	            name: 'date',
+			    	            label: '交易日期',
+			    	            align: 'center',
+			    	            width: 140
+			    	        },
+			    	        {
+			    	            name: 'totalAmount',
+			    	            label: '交易金额',
+			    	            align: 'center',
+			    	            width: 100
+			    	        },
+			    	        {
+			    	            name: 'totalProfit',
+			    	            label: '分润金额',
+			    	            align: 'center',
+			    	            width: 100
+			    	        },
+			    	        {
+			    	            name: 'status',
+			    	            label: '状态',
+			    	            align: 'center',
+			    	            width: 70,
+			    	            render: function(value,data) {
+			    	            	if(value == 0){
+			    	            		 return "未提现";
+			    	            	}else if(value == 1){
+			    	            		return "已提现";
+			    	            	}else{
+			    	            		return value;
+			    	            	}
+			    	            }
+			    	        },
+			    	        {
+			    	            name: 'id',
+			    	            label: '详情',
+			    	            align: 'center',
+			    	            width: 50,
+			    	            render:function(value,data){
+			    	            	return '<a href="javascript:;" >详情</a>';
+			    	            }
+			    	        }
+			    	    ],
+			    	    paging:{pageSize:10,selectPageSize:'20,30'},
+			    	    showLinenumber: false,
+			    	    inlineEditMult: false
+			    	});
 			    }
 			});
 			return false;	
 		}
 	});
 }
+
 </script>
 <div class="bjui-pageHeader" style="background-color:#fefefe; border-bottom:none;">
 
