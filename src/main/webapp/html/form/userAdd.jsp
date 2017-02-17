@@ -31,10 +31,10 @@
             </div>
             <label class="row-label">企业类型</label>
             <div class="row-input">
-            <select name="agType"  >
+            <select name="agType"  id="agType">
             	<option value="个体户" selected>个体户</option>
 				<option value="有限责任公司">有限责任公司</option>
-				<option value="企业非法人">企业非法人</option>
+				
 			</select>
                
             </div>
@@ -54,10 +54,7 @@
             <div class="row-input">
                 <input type="text" value="" name="regAddress" data-rule="required">
             </div>
-            <label class="row-label">注册资本</label>
-            <div class="row-input">
-                <input type="text" value="" name="regMoney" data-rule="required">
-            </div>
+            
             <label class="row-label">成立日期</label>
             <div class="row-input">
                  <input value="2016-10-01" name="regDate" data-toggle="datepicker" type="text">
@@ -66,22 +63,29 @@
             <div class="row-input">
                 <input type="text" value="" name="regExt" data-rule="required">
             </div>
+            <div id="agType_div">
             <label class="row-label">营业执照编号</label>
             <div class="row-input">
-                <input type="text" value="" name="regNo" data-rule="required">
+                <input type="text" value="" name="regNo" id="regNo" data-rule="required">
             </div>
             <label class="row-label">营业期限</label>
             <div class="row-input">
-                <input type="text" value="" name="busTerm" data-rule="required">
+                <input type="text" value="" name="busTerm" id="busTerm" data-rule="required">
+            </div>
+            <label class="row-label">注册资本</label>
+            <div class="row-input">
+                <input type="text" value="" name="regMoney" data-rule="required">
             </div>
             <label class="row-label">机构组织代码</label>
             <div class="row-input">
-                <input type="text" value="" name="busAno" data-rule="required">
+                <input type="text" value="" name="busAno" id="busAno" data-rule="required">
             </div>
             <label class="row-label">税务登记号</label>
             <div class="row-input">
-                <input type="text" value="" name="busSno" data-rule="required">
+                <input type="text" value="" name="busSno" id="busSno"  data-rule="required">
             </div>
+            </div>
+            <hr>
             <label class="row-label">微信成本费率</label>
             <div class="row-input">
                 <input type="text" value="" name="costWrate" data-rule="required">
@@ -90,10 +94,7 @@
             <div class="row-input">
                 <input type="text" value="" name="costArate" data-rule="required">
             </div>
-            <label class="row-label">快捷成本费率</label>
-            <div class="row-input">
-                <input type="text" value="" name="costKrate" data-rule="required">
-            </div>
+            
             <label class="row-label">商户微信费率</label>
             <div class="row-input">
                 <input type="text" value="" name="userWrate" data-rule="required">
@@ -102,10 +103,7 @@
             <div class="row-input">
                 <input type="text" value="" name="userArate" data-rule="required">
             </div>
-            <label class="row-label">商户快捷费率</label>
-            <div class="row-input">
-                <input type="text" value="" name="userKrate" data-rule="required">
-            </div>
+           
             <hr>
             <h4>结 算 账 户</h4>
             <label class="row-label">账户类型</label>
@@ -214,7 +212,16 @@
 <script type="text/javascript">
 
 $(function() {
-	
+	//公司需要显示营业执照编号等信息，个体户则不需要显示。
+	$("#agType_div").hide();
+	$("#agType").change(function(){
+		if($("#agType").val() == "个体户"){
+			$("#agType_div").hide();
+		}else{
+			$("#agType_div").show();
+		}
+	});
+	//提交
 	$("#submitSave").bind("click",function(){
 		BJUI.ajax('ajaxform', {
 		    url: 'user.do?type=insert',

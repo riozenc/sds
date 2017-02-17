@@ -24,7 +24,7 @@ $(function() {
 	         },
 	        {
 	            name: 'account',
-	            label: '登录手机号',
+	            label: '商户手机号',
 	            align: 'center',
 	            width:100
 	        },
@@ -69,6 +69,8 @@ $(function() {
 	            		return "成功";
 	            	}else if(value == 2){
 	            		return "失败";
+	            	}else if(value == 3){
+	            		return "分润完毕";
 	            	}else{
 	            		return value;
 	            	}
@@ -117,6 +119,10 @@ function dialog_profit(orderId){
 		},
 		success : function(data) {
 			console.info(data);
+			if(data.statusCode == 300){
+				alert(data.message);
+				return false;
+			}
 			if(data.totalRow>0){
 				BJUI.dialog({
 				    id:'dialogProfit',
@@ -126,15 +132,15 @@ function dialog_profit(orderId){
 				    height:450,
 				    onLoad:function(){
 				    	var html_text ='<table class="table table-bordered table-hover table-striped  " data-height="150">'+
-						'<thead><th>商户号</th><th>代理商名称</th><th>代理商所得分润</th><th>推荐人</th><th>推荐人所得分润</th></thead><tbody>';
+						'<thead><th>代理商手机号</th><th>代理商名称</th><th>代理商所得分润</th><th>推荐人</th><th>推荐人所得分润</th></thead><tbody>';
 					
 				    	$.each(data.list, function(key, obj) {
 				    		console.info(obj.orderId);
 				    		html_text = html_text +'<tr><td>'
-				    			+obj.account+'</td><td>'+obj.agentId+'</td><td>'+obj.agentProfit+'</td><td>'+obj.tjId+'</td><td>'+obj.tjProfit+'</td></tr>';
+				    			+''+'</td><td>'+obj.agentName+'</td><td>'+obj.agentProfit+'</td><td>'+obj.tjId+'</td><td>'+obj.tjProfit+'</td></tr>';
 				    		
 						});
-				    	html_text = html_text+'<tr></table><div class="bjui-row col-2"><label class="row-label">订单号：</label><div class="row-input">'+data.list[0].orderId+'</div><label class="row-label">消费金额：</label><div class="row-input">'+data.list[0].amount+'</div><label class="row-label">交易时间：</label><div class="row-input">'+data.list[0].orderDay+'</div><label class="row-label">分润总额：</label><div class="row-input">'+data.list[0].totalProfit
+				    	html_text = html_text+'<tr></table><div class="bjui-row col-2"><label class="row-label">商户号：</label><div class="row-input">'+data.list[0].account+'</div><label class="row-label">订单号：</label><div class="row-input">'+data.list[0].orderId+'</div><label class="row-label">消费金额：</label><div class="row-input">'+data.list[0].amount+'</div><label class="row-label">交易时间：</label><div class="row-input">'+data.list[0].orderDate+'</div><label class="row-label">分润总额：</label><div class="row-input">'+data.list[0].totalProfit
 				    		+'</div></div>';
 				    	
 				    	$("#table_profitInfo").html(html_text);

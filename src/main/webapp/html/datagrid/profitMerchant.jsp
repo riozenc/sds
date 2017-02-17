@@ -13,7 +13,6 @@ $(function() {
 	    toolbarItem: 'del',
 	    dataUrl:"profitMerchant.do?type=findProfitMerchantByWhere",
 	    columns: [
-             
 	        {
 	            name: 'account',
 	            label: '登录手机号',
