@@ -10,7 +10,6 @@ function save(){
 	    okCallback: function(json, options) {
 	    	BJUI.dialog('close', 'profitUserEdit');      //关闭
 	    	BJUI.navtab('refresh', 'profitUser');  //刷新
-	       
 	    }
 	})
 }
@@ -30,16 +29,11 @@ function save(){
                 <input type="text" name="account"  id="account" value="" readonly="readonly">
             </div>
             
-            <label class="row-label " >分润时间</label>
-            <div class="row-input ">
-                <input type="text" id="date" value="" readonly="readonly" >
-            </div>
-            
-            <label class="row-label " >交易总额</label>
+            <label class="row-label " >交易金额</label>
             <div class="row-input ">
                 <input type="text"  id="totalAmount" value="" readonly="readonly" >
             </div>
-            <label class="row-label " >分润总额</label>
+            <label class="row-label " >分润金额</label>
             <div class="row-input ">
                 <input type="text"  id="totalProfit" value="" readonly="readonly" >
             </div>

@@ -111,7 +111,7 @@ function dialog_user(id) {
 		data : {id:id} ,
 		dataType : "json",
 		error : function(request) {
-			alert("Connection error");
+			alert("Connection Error");
 			return false;
 		},
 		success : function(data) {

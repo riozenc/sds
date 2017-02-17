@@ -1,6 +1,8 @@
 [
     {"name":"分润管理", "children":[
         {"id":"profitUser", "name":"代理商分润查询", "target":"navtab", "url":"html/datagrid/profitUser.jsp"},
-        {"id":"profitMerchant", "name":"商户分润查询", "target":"navtab", "url":"html/datagrid/profitMerchant.jsp"}       
+        {"id":"profitMerchant", "name":"商户分润查询", "target":"navtab", "url":"html/datagrid/profitMerchant.jsp"},
+        {"id":"profitMy", "name":"我的分润", "target":"navtab", "url":"html/datagrid/profitMy.jsp"},
+        {"id":"profitSub", "name":"下级分润", "target":"navtab", "url":"html/datagrid/profitSub.jsp"}                     
     ]}
 ]
