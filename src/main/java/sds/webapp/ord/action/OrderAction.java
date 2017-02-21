@@ -21,6 +21,7 @@ import sds.webapp.acc.domain.MerchantDomain;
 import sds.webapp.acc.service.MerchantService;
 import sds.webapp.ord.domain.OrderDomain;
 import sds.webapp.ord.service.OrderService;
+import sds.webapp.stm.service.ProfitService;
 
 @ControllerAdvice
 @RequestMapping("order")
@@ -33,6 +34,10 @@ public class OrderAction extends BaseAction {
 	@Autowired
 	@Qualifier("merchantServiceImpl")
 	private MerchantService merchantService;
+
+	@Autowired
+	@Qualifier("profitServiceImpl")
+	private ProfitService profitService;
 
 	/**
 	 * 正扫支付
@@ -119,10 +124,10 @@ public class OrderAction extends BaseAction {
 	@RequestMapping(params = "type=codePay")
 	public String codePay() throws Exception {
 
-		// MerchantDomain merchantDomain =
-		// UserUtils.getPrincipal().getMerchantDomain();
-		MerchantDomain merchantDomain = new MerchantDomain();
-		merchantDomain.setId(40);
+		 MerchantDomain merchantDomain =
+		 UserUtils.getPrincipal().getMerchantDomain();
+//		MerchantDomain merchantDomain = new MerchantDomain();
+//		merchantDomain.setId(40);
 
 		MerchantDomain vm = merchantService.getVirtualMerchant(merchantDomain);
 
@@ -150,7 +155,9 @@ public class OrderAction extends BaseAction {
 	public void orderConfirmCallback(OrderDomain orderDomain, String WXOrderNo) {
 		System.out.println(WXOrderNo);
 		int i = orderService.update(orderDomain);
+		orderDomain = orderService.findByKey(orderDomain);
 
+		System.out.println(profitService.profit(orderDomain));
 		// 日志记录
 	}
 

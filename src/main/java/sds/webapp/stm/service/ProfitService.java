@@ -12,10 +12,12 @@ public interface ProfitService extends BaseService<ProfitDomain> {
 
 	public List<ProfitDomain> getAllProfit(ProfitDomain profitDomain);
 
+	public int profit(OrderDomain orderDomain);
+
 	public int profit(List<ProfitDomain> list, List<OrderDomain> orderDomains);
 
 	public int profitCount(List<ProfitUserDomain> profitUserDomains, List<ProfitMerchantDomain> profitMerchantDomains,
 			List<ProfitDomain> profitDomains);
-	
+
 	public List<ProfitDomain> findProfitByUser(ProfitUserDomain profitUserDomain);
 }
