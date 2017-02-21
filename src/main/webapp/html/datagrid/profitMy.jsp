@@ -119,21 +119,7 @@ function dialog_profitInfo(account){
 			    	            align: 'center',
 			    	            width: 100
 			    	        },
-			    	        {
-			    	            name: 'status',
-			    	            label: '状态',
-			    	            align: 'center',
-			    	            width: 70,
-			    	            render: function(value,data) {
-			    	            	if(value == 0){
-			    	            		 return "未提现";
-			    	            	}else if(value == 1){
-			    	            		return "已提现";
-			    	            	}else{
-			    	            		return value;
-			    	            	}
-			    	            }
-			    	        },
+			    	        
 			    	        {
 			    	            name: 'id',
 			    	            label: '详情',
@@ -161,7 +147,7 @@ function dialog_profitInfos(agentid,date){
 	$.ajax({
 		cache : false,
 		type : "POST",
-		url : "profitUser.do?type=findProfitUserByWhere",
+		url : "profitUser.do?type=findProfitByUser",
 		data : profitInfos_datas,
 		dataType : "json",
 		error : function(request) {
@@ -210,21 +196,6 @@ function dialog_profitInfos(agentid,date){
 			    	            label: '分润金额',
 			    	            align: 'center',
 			    	            width: 100
-			    	        },
-			    	        {
-			    	            name: 'status',
-			    	            label: '状态',
-			    	            align: 'center',
-			    	            width: 70,
-			    	            render: function(value,data) {
-			    	            	if(value == 0){
-			    	            		 return "未提现";
-			    	            	}else if(value == 1){
-			    	            		return "已提现";
-			    	            	}else{
-			    	            		return value;
-			    	            	}
-			    	            }
 			    	        }
 			    	    ],
 			    	    paging:{pageSize:10,selectPageSize:'20,30'},
