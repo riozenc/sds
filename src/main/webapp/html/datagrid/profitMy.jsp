@@ -147,7 +147,7 @@ function dialog_profitInfos(agentid,date){
 	$.ajax({
 		cache : false,
 		type : "POST",
-		url : "profitUser.do?type=findProfitByUser",
+		url : "profit.do?type=findProfitByUser",
 		data : profitInfos_datas,
 		dataType : "json",
 		error : function(request) {
@@ -160,7 +160,7 @@ function dialog_profitInfos(agentid,date){
 			BJUI.dialog({
 			    id:'profitMyInfos',
 			    url:'html/form/profitMyInfos.jsp',
-			    title:'详情',
+			    title:'再详情',
 			    width:900,
 			    height:500,
 			    onLoad:function(){
