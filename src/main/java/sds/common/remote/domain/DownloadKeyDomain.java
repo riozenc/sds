@@ -3,7 +3,7 @@ package sds.common.remote.domain;
 public class DownloadKeyDomain {
 	private String orderCode = "tb_DownLoadKey";
 	private String account;
-	private String password = "111111";
+	private String password = "123123";
 //	private String language = "Java";
 
 	public DownloadKeyDomain(String account) {

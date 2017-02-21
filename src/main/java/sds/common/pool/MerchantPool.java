@@ -23,6 +23,12 @@ public class MerchantPool {
 		return pool;
 	}
 
+	public PoolBean getPoolBean(String account) {
+		PoolBean poolBean = null;
+		poolBean = state.activeBeansMap.get(account);
+		return poolBean;
+	}
+
 	public PoolBean getPoolBean() throws Exception {
 		PoolBean poolBean = null;
 		while (poolBean == null) {
@@ -86,6 +92,7 @@ public class MerchantPool {
 			poolBean.occupy();// 占用标记
 			state.borrowBeans.remove(poolBean);
 			state.activeBeans.add(poolBean);
+			state.activeBeansMap.put(poolBean.getRealObject().getAccount(), poolBean);
 		}
 	}
 
@@ -119,6 +126,7 @@ public class MerchantPool {
 			state.idleBeans.remove(poolBean);
 			state.borrowBeans.remove(poolBean);// 移除借用列
 			state.activeBeans.remove(poolBean);
+			state.activeBeansMap.remove(poolBean);
 			state.badBeans.add(poolBean);
 			poolBean = null;
 		}

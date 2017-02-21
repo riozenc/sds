@@ -108,4 +108,10 @@ public class MerchantServiceImpl implements MerchantService {
 		return merchantDAO.getVirtualMerchants(merchantDomain);
 	}
 
+	@Override
+	public MerchantDomain getVirtualMerchant(MerchantDomain merchantDomain) {
+		// TODO Auto-generated method stub
+		return merchantDAO.getVirtualMerchant(merchantDomain);
+	}
+
 }

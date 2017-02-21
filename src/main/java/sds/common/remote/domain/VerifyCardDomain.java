@@ -1,25 +1,25 @@
 package sds.common.remote.domain;
 
 public class VerifyCardDomain {
-	private String real_name;// 户名 1..1 s..4 真实姓名 必填
-	private String cmer;// 商户名称 1..1 S..6-20 必填(地域+品牌+经营属性)
-	private String cmer_sort;// 商户简称 1.1 S.6-13 必填
-	private String phone;// 联系电话 1..1 s..50 联系电话 必填
-	private String business_id;// 商户经营类别 1.1 s.10
+	private String real_name="";// 户名 1..1 s..4 真实姓名 必填
+	private String cmer="";// 商户名称 1..1 S..6-20 必填(地域+品牌+经营属性)
+	private String cmer_sort="";// 商户简称 1.1 S.6-13 必填
+	private String phone="";// 联系电话 1..1 s..50 联系电话 必填
+	private String business_id="";// 商户经营类别 1.1 s.10
 								// 所属MCC(经营类目表)的ID(只需传对应的微信类目ID)必填
-	private String channel_code;// 支付通道 1.1 s.50 WXPAY：微信 ALIPAY：支付宝 UNIPAY:银联
+	private String channel_code="";// 支付通道 1.1 s.50 WXPAY：微信 ALIPAY：支付宝 UNIPAY:银联
 								// 必填
-	private String card_type;// 卡类型 1..1 s..1 参考demo默认值 必填
-	private String card_no;// 卡号 1..1 s..30 只允许个人卡号 必填
-	private String cert_type;// 证件类型 1..1 s..1 参考demo默认值 必填
-	private String cert_no;// 证件号 1..1 s..30 必填
-	private String mobile;// 开户时绑定手机号 1..1 s..11 必填
-	private String location;// 开户城市 1..1 s..10 必填
-	private String cert_correct;// 身份证正面图片 1..1 s..20 图片地址 非必填
-	private String cert_opposite;// 身份证背面图片 1..1 s..20 图片地址 非必填
-	private String cert_meet;// 手持身份证图片 1..1 s..20 图片地址 非必填
-	private String card_correct;// 银行卡正面图片 1..1 s..20 图片地址 非必填
-	private String card_opposite;// 银行卡背面图片 1..1 s..20 图片地址 非必填
+	private String card_type="";// 卡类型 1..1 s..1 参考demo默认值 必填
+	private String card_no="";// 卡号 1..1 s..30 只允许个人卡号 必填
+	private String cert_type="";// 证件类型 1..1 s..1 参考demo默认值 必填
+	private String cert_no="";// 证件号 1..1 s..30 必填
+	private String mobile="";// 开户时绑定手机号 1..1 s..11 必填
+	private String location="";// 开户城市 1..1 s..10 必填
+	private String cert_correct="";// 身份证正面图片 1..1 s..20 图片地址 非必填
+	private String cert_opposite="";// 身份证背面图片 1..1 s..20 图片地址 非必填
+	private String cert_meet="";// 手持身份证图片 1..1 s..20 图片地址 非必填
+	private String card_correct="";// 银行卡正面图片 1..1 s..20 图片地址 非必填
+	private String card_opposite="";// 银行卡背面图片 1..1 s..20 图片地址 非必填
 
 	public String getReal_name() {
 		return real_name;

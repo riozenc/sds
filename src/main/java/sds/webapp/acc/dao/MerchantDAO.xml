@@ -418,4 +418,13 @@
 			WHERE a.merchant_id = #{id}
 		</where>
 	</select>
+
+	<select id="getVirtualMerchant" parameterType="MerchantDomain"
+		resultType="MerchantDomain" useCache="true">
+		SELECT b.* FROM MERCHANT_POOL_REL a LEFT JOIN fm_merchant_pool b ON
+		a.pool_id = b.id
+		<where>
+			 a.merchant_id = #{id}
+		</where>
+	</select>
 </mapper>

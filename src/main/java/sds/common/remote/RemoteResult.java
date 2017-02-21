@@ -1,11 +1,18 @@
 package sds.common.remote;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 public class RemoteResult {
 	private String respCode;
 	private String respInfo;
 	private String msg;// 返回结果信息
 	private String privatekey;// 密钥
+	@JsonProperty("QRcodeURL")
 	private String QRcodeURL;// 二维码支付地址
+
+	@JsonProperty("QRCodeURL")
+	private String codePayUrl;// 二维码支付地址
+
 	private String orderId;// 订单号
 
 	private boolean msgResult;// 垃圾属性，中谷系统垃圾
@@ -17,6 +24,22 @@ public class RemoteResult {
 	public RemoteResult(String respCode, String respInfo) {
 		this.respCode = respCode;
 		this.respInfo = respInfo;
+	}
+
+	public String getCodePayUrl() {
+		return codePayUrl;
+	}
+
+	public void setCodePayUrl(String codePayUrl) {
+		this.codePayUrl = codePayUrl;
+	}
+
+	public String getQRcodeURL() {
+		return QRcodeURL;
+	}
+
+	public void setQRcodeURL(String QRcodeURL) {
+		this.QRcodeURL = QRcodeURL;
 	}
 
 	public String getRespCode() {
@@ -49,14 +72,6 @@ public class RemoteResult {
 
 	public void setMsg(String msg) {
 		this.msg = msg;
-	}
-
-	public String getQRcodeURL() {
-		return QRcodeURL;
-	}
-
-	public void setQRcodeURL(String qRcodeURL) {
-		QRcodeURL = qRcodeURL;
 	}
 
 	public String getOrderId() {

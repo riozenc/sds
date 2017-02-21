@@ -198,11 +198,11 @@
 			b.agent_id = #{agentId}
 			AND a.agent_id = b.agent_id
 			<if test="startDate !=null">
-				and DATE_FORMAT(a.orderDate, '%Y-%m-%d') &gt;=
+				and DATE_FORMAT(a.order_date, '%Y-%m-%d') &gt;=
 				DATE_FORMAT(#{startDate}, '%Y-%m-%d')
 			</if>
 			<if test="endDate !=null">
-				and DATE_FORMAT(a.orderDate, '%Y-%m-%d') &lt;=
+				and DATE_FORMAT(a.order_date, '%Y-%m-%d') &lt;=
 				DATE_FORMAT(#{endDate}, '%Y-%m-%d')
 			</if>
 		</where>

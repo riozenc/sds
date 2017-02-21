@@ -38,6 +38,7 @@ public class PoolState {
 	protected final List<PoolBean> idleBeans = new ArrayList<PoolBean>();// 未使用
 	protected final List<PoolBean> borrowBeans = new ArrayList<PoolBean>();// 借用中
 	protected final List<PoolBean> activeBeans = new ArrayList<PoolBean>();// 使用中
+	protected final Map<String, PoolBean> activeBeansMap = new HashMap<String, PoolBean>();// 使用中
 	protected final List<PoolBean> badBeans = new ArrayList<PoolBean>();// 失效
 	protected final Map<Integer, PoolBean> poolRelMap = new HashMap<Integer, PoolBean>();
 
@@ -98,6 +99,7 @@ public class PoolState {
 				}
 			}
 			activeBeans.clear();
+			activeBeansMap.clear();
 		}
 	}
 

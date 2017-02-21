@@ -25,8 +25,6 @@ import sds.webapp.acc.domain.MerchantDomain;
 import sds.webapp.acc.domain.UserDomain;
 import sds.webapp.acc.service.MerchantService;
 import sds.webapp.acc.service.UserService;
-import sds.webapp.sys.action.ConfAction;
-import sds.webapp.sys.domain.ConfDomain;
 
 @ControllerAdvice
 @RequestMapping("merchant")
@@ -45,6 +43,7 @@ public class MerchantAction extends BaseAction {
 	 * @param merchantDomain
 	 * @return
 	 * @throws Exception
+	 * @info 所有注册均跟账户池中的虚拟账户关联，只需注册到本系统就可以
 	 */
 	@ResponseBody
 	// @RequestMapping(params = "type=register", method = RequestMethod.POST)
@@ -75,17 +74,6 @@ public class MerchantAction extends BaseAction {
 			}
 		} catch (NullPointerException e) {
 			throw new InvalidAppCodeException("[" + appCode + "]无效的邀请码...");
-		}
-
-		// 远程注册
-		if (merchantDomain.getUserType() == 2) {// 认证商户
-			RemoteResult remoteResult = RemoteUtils.process(merchantDomain, REMOTE_TYPE.REGISTER);
-			if (RemoteUtils.resultProcess(remoteResult)) {
-			} else {
-				return JSONUtil.toJsonString(new JsonResult(JsonResult.ERROR, "注册失败[" + remoteResult.getMsg() + "]."));
-			}
-		} else {
-			// 个人商户不注册，验卡时直接从账号池中获取
 		}
 
 		if (merchantService.findByKey(merchantDomain) == null) {
@@ -155,6 +143,8 @@ public class MerchantAction extends BaseAction {
 	@ResponseBody
 	@RequestMapping(params = "type=findMerchantByWhere")
 	public String findMerchantByWhere(MerchantDomain merchantDomain) {
+		UserDomain userDomain = UserUtils.getPrincipal().getUserDomain();
+		merchantDomain.setAppCode("EA" + userDomain.getAccount());
 		List<MerchantDomain> list = merchantService.findByWhere(merchantDomain);
 		return JSONUtil.toJsonString(new JsonGrid(merchantDomain, list));
 	}
@@ -181,31 +171,31 @@ public class MerchantAction extends BaseAction {
 	@ResponseBody
 	@RequestMapping(params = "type=updateRate")
 	public String updateRate(MerchantDomain merchantDomain) throws Exception {
-		RemoteResult remoteResult = null;
-		if (merchantDomain.getUserType() == 2) {
-			// 真实商户
-			// 远程同步费率
-			remoteResult = RemoteUtils.process(merchantDomain, REMOTE_TYPE.CHANGE_RATE);
-		} else {
-			// 个人商户
-			try {
-				List<MerchantDomain> vlist = merchantService.getVirtualMerchants(merchantDomain);
-				if (vlist == null || vlist.size() == 0) {
-					return JSONUtil.toJsonString(new JsonResult(JsonResult.ERROR, "该账户无法进行正常使用,请联系客服."));
-				}
-				for (MerchantDomain v : vlist) {
-					v.setWxRate(merchantDomain.getWxRate());
-					v.setAliRate(merchantDomain.getAliRate());
-					remoteResult = RemoteUtils.process(v, REMOTE_TYPE.CHANGE_RATE);
-					if (!RemoteUtils.resultProcess(remoteResult)) {
-						return JSONUtil.toJsonString(new JsonResult(JsonResult.ERROR, remoteResult.getMsg()));
-					}
-				}
-			} catch (Exception e) {
-				return JSONUtil.toJsonString(new JsonResult(JsonResult.ERROR, e.getMessage()));
-			}
 
+		Map<String, Object> map = merchantService.checkRate(merchantDomain.getId());
+		// 代理商成本费率
+		Double cost_wrate = map.get("cost_wrate") == null ? 0 : (Double) map.get("cost_wrate");
+		Double cost_arate = map.get("cost_arate") == null ? 0 : (Double) map.get("cost_arate");
+		// 商户费率
+		Double wx_rate = map.get("wx_rate") == null ? 0 : (Double) map.get("wx_rate");
+		Double ali_rate = map.get("ali_rate") == null ? 0 : (Double) map.get("ali_rate");
+
+		// 费率判断
+		if (wx_rate < cost_wrate) {
+			return JSONUtil.toJsonString(new JsonResult(JsonResult.ERROR, "微信费率错误"));
 		}
+		if (ali_rate < cost_arate) {
+			return JSONUtil.toJsonString(new JsonResult(JsonResult.ERROR, "支付宝费率错误"));
+		}
+
+		MerchantDomain temp = merchantService.getVirtualMerchant(merchantDomain);
+		if (temp == null) {
+			throw new Exception("该账户无法进行正常使用,请检查系统.");
+		}
+
+		temp.setWxRate(merchantDomain.getWxRate());
+		temp.setAliRate(merchantDomain.getAliRate());
+		RemoteResult remoteResult = RemoteUtils.process(temp, REMOTE_TYPE.CHANGE_RATE);
 		if (RemoteUtils.resultProcess(remoteResult)) {
 			int i = merchantService.updateRate(merchantDomain);
 			if (i > 0) {
@@ -228,33 +218,55 @@ public class MerchantAction extends BaseAction {
 	@ResponseBody
 	@RequestMapping(params = "type=checkMerchant")
 	public String checkMerchant(MerchantDomain merchantDomain) throws Exception {
+		UserDomain userDomain = UserUtils.getPrincipal().getUserDomain();
 
-		Map<String, Object> map = merchantService.checkRate(merchantDomain.getId());
-
-		Double cost_wrate = map.get("cost_wrate") == null ? 0 : (Double) map.get("cost_wrate");
-		Double cost_arate = map.get("cost_arate") == null ? 0 : (Double) map.get("cost_arate");
-		Double wx_rate = map.get("wx_rate") == null ? 0 : (Double) map.get("wx_rate");
-		Double ali_rate = map.get("ali_rate") == null ? 0 : (Double) map.get("ali_rate");
-
-		// 费率判断
-		if (wx_rate < cost_wrate) {
-			return JSONUtil.toJsonString(new JsonResult(JsonResult.ERROR, "微信费率错误"));
-		}
-		if (ali_rate < cost_arate) {
-			return JSONUtil.toJsonString(new JsonResult(JsonResult.ERROR, "支付宝费率错误"));
-		}
-
+		merchantDomain = merchantService.findByKey(merchantDomain);
+		PoolBean bean = null;
 		try {
-			if (merchantDomain.getUserType() != 2) {
-				// ===根据等级进行分配虚拟账户
-				ConfDomain confDomain = ConfAction.getConfig(ConfAction.MERCHANT_LEVEL_COUNT)
-						.get(merchantDomain.getLevel().toString());
-				for (int i = Integer.valueOf(confDomain.getValue()); i > 0; i--) {
-					PoolBean bean = MerchantPool.getInstance().getPoolBean();
-					bean.binding(merchantDomain);
+			// 真实商户绑定虚拟账户
+			bean = MerchantPool.getInstance().getPoolBean();
+			// 为分配的虚拟账号进行验卡
+			RemoteResult remoteResult = RemoteUtils.validCard(merchantDomain, bean.getObject());
+			if (RemoteUtils.resultProcess(remoteResult)) {
+				bean.binding(merchantDomain);// 绑定处理
+				merchantService.updatePool(bean.getObject());
+				if (merchantService.updatePoolRel(bean.getRealObject().getId(), bean.getObject().getId()) == 0) {
+					merchantService.insertPoolRel(bean.getRealObject().getId(), bean.getObject().getId());
 				}
+				System.out.println("绑定成功.");
+			} else {
+				return JSONUtil.toJsonString(new JsonResult(JsonResult.ERROR, remoteResult.getMsg()));
 			}
+
+			// 同步费率
+			bean.getObject().setWxRate(userDomain.getUserArate());
+			bean.getObject().setAliRate(userDomain.getUserArate());
+			remoteResult = RemoteUtils.process(bean.getObject(), REMOTE_TYPE.CHANGE_RATE);
+			if (RemoteUtils.resultProcess(remoteResult)) {
+				merchantDomain.setWxRate(userDomain.getUserArate());
+				merchantDomain.setAliRate(userDomain.getUserWrate());
+				System.out.println("费率同步成功.");
+			} else {
+				return JSONUtil.toJsonString(new JsonResult(JsonResult.ERROR, remoteResult.getMsg()));
+			}
+
+			// if (merchantDomain.getUserType() != 2) {
+			// // ===根据等级进行分配虚拟账户
+			// ConfDomain confDomain =
+			// ConfAction.getConfig(ConfAction.MERCHANT_LEVEL_COUNT)
+			// .get(merchantDomain.getLevel().toString());
+			// for (int i = Integer.valueOf(confDomain.getValue()); i > 0; i--)
+			// {
+			// PoolBean bean = MerchantPool.getInstance().getPoolBean();
+			// bean.binding(merchantDomain);
+			// }
+			// } else {
+			// PoolBean bean = MerchantPool.getInstance().getPoolBean();
+			// bean.binding(merchantDomain);
+			// }
 		} catch (Exception e) {
+			bean.recover();
+			e.printStackTrace();
 			return JSONUtil.toJsonString(new JsonResult(JsonResult.ERROR, e.getMessage()));
 		}
 
@@ -271,13 +283,14 @@ public class MerchantAction extends BaseAction {
 	 * @param merchantDomain
 	 * @return
 	 * @throws Exception
+	 * @info 批量注册时已经下载好密钥，此功能暂时无用
 	 */
 	@ResponseBody
 	@RequestMapping(params = "type=downLoadKey")
 	public String downLoadKey(MerchantDomain merchantDomain) throws Exception {
 
-//		MerchantDomain temp = UserUtils.getPrincipal().getMerchantDomain();
-		 MerchantDomain temp = merchantService.findByKey(merchantDomain);
+		// MerchantDomain temp = UserUtils.getPrincipal().getMerchantDomain();
+		MerchantDomain temp = merchantService.findByKey(merchantDomain);
 		if (temp.getUserType() == 2) {// 认证商户
 			RemoteResult remoteResult = RemoteUtils.process(temp, REMOTE_TYPE.DOWNLOAD_KEY);
 			if (RemoteUtils.resultProcess(remoteResult)) {
@@ -302,30 +315,29 @@ public class MerchantAction extends BaseAction {
 	 * @param merchantDomain
 	 * @return
 	 * @throws Exception
+	 * @info 区分
 	 */
 	@ResponseBody
 	@RequestMapping(params = "type=validCard")
 	public String validCard(MerchantDomain merchantDomain) throws Exception {
 		MerchantDomain temp = UserUtils.getPrincipal().getMerchantDomain();
 		merchantDomain.setId(temp.getId());
-		RemoteResult remoteResult = null;
-		if (temp.getUserType() == 2) {// 认证商户
-			// 正常验卡
-			remoteResult = RemoteUtils.process(merchantDomain, REMOTE_TYPE.VALID_CARD);
-		} else {
-			// 特殊验卡
-			remoteResult = RemoteUtils.process(merchantDomain, REMOTE_TYPE.SPECIAL_VALID_CARD);
-		}
+
+		PoolBean bean = MerchantPool.getInstance().getPoolBean();
+		RemoteResult remoteResult = RemoteUtils.validCard(merchantDomain, bean.getObject());
+		bean.recover();// 回收
 
 		if (RemoteUtils.resultProcess(remoteResult)) {
-			int i = merchantService.update(temp);
+			merchantDomain.setStatus(1);// 提交验卡信息待审核
+			int i = merchantService.update(merchantDomain);
 			if (i > 0) {
 				return JSONUtil.toJsonString(new JsonResult(JsonResult.SUCCESS, "验卡成功."));
 			} else {
 				return JSONUtil.toJsonString(new JsonResult(JsonResult.ERROR, "更新验卡数据失败."));
 			}
 		} else {
-			return JSONUtil.toJsonString(new JsonResult(JsonResult.ERROR, remoteResult.getMsg()));
+			return JSONUtil.toJsonString(
+					new JsonResult(JsonResult.ERROR, remoteResult.getMsg() + "[" + remoteResult.getRespInfo() + "]"));
 		}
 	}
 }

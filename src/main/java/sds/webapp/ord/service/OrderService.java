@@ -8,4 +8,6 @@ import sds.webapp.ord.domain.OrderDomain;
 public interface OrderService extends BaseService<OrderDomain> {
 
 	public List<OrderDomain> getAllCheckedOrder(OrderDomain orderDomain);
+	
+	public List<OrderDomain> getAllUnCheckOrder(OrderDomain orderDomain);
 }

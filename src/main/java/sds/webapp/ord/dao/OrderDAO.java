@@ -50,4 +50,8 @@ public class OrderDAO extends AbstractTransactionDAOSupport implements BaseDAO<O
 	public int profitComplete(List<OrderDomain> orderDomains) {
 		return getPersistanceManager(ExecutorType.BATCH).updateList(getNamespace() + ".profitComplete", orderDomains);
 	}
+
+	public List<OrderDomain> getAllUnCheckOrder(OrderDomain orderDomain) {
+		return getPersistanceManager().find(getNamespace() + ".getAllUnCheckOrder", orderDomain);
+	}
 }

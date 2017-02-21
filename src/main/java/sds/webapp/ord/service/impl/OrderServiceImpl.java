@@ -51,4 +51,10 @@ public class OrderServiceImpl implements OrderService {
 		return orderDAO.getAllCheckedOrder(orderDomain);
 	}
 
+	@Override
+	public List<OrderDomain> getAllUnCheckOrder(OrderDomain orderDomain) {
+		// TODO Auto-generated method stub
+		return orderDAO.getAllUnCheckOrder(orderDomain);
+	}
+
 }

@@ -9,6 +9,7 @@ import java.util.Map;
 import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.riozenc.quicktool.common.util.json.JSONUtil;
+import com.riozenc.quicktool.config.Global;
 
 import sds.common.remote.domain.ChangeRateDomain;
 import sds.common.remote.domain.DownloadKeyDomain;
@@ -34,11 +35,12 @@ public class RemoteHandler {
 	 * 
 	 * @param account
 	 * @param password暂时无用
-	 * @throws IOException 
-	 * @throws JsonMappingException 
-	 * @throws JsonParseException 
+	 * @throws IOException
+	 * @throws JsonMappingException
+	 * @throws JsonParseException
 	 */
-	static RemoteResult register(final RegisterDomain registerDomain) throws JsonParseException, JsonMappingException, IOException {
+	static RemoteResult register(final RegisterDomain registerDomain)
+			throws JsonParseException, JsonMappingException, IOException {
 
 		String result = Regesitor.sendPost(Common.REGISTERURL,
 				"account=" + registerDomain.getAccount() + "&pass=" + registerDomain.getPass() + "&code="
@@ -101,18 +103,19 @@ public class RemoteHandler {
 	 * @return
 	 * @throws Exception
 	 */
-	static RemoteResult validCard(final MerchantDomain merchantDomain) throws Exception {
+	public static RemoteResult validCard(final MerchantDomain merchantDomain) throws Exception {
 		String orderCode = "tb_verifyInfo";
 
 		VerifyCardDomain verifyCardDomain = new VerifyCardDomain();
-		verifyCardDomain.setCmer(merchantDomain.getCmer());
-		verifyCardDomain.setCmer_sort(merchantDomain.getCmerSort());
-		verifyCardDomain.setPhone(merchantDomain.getPhone());
+		verifyCardDomain.setCmer(Base64.encodeToString(merchantDomain.getCmer()));
+		verifyCardDomain.setCmer_sort(Base64.encodeToString(merchantDomain.getCmerSort()));
+		verifyCardDomain.setPhone(merchantDomain.getPhone() == null ? "" : merchantDomain.getPhone());
 		verifyCardDomain.setBusiness_id(merchantDomain.getBusinessId());
 		verifyCardDomain.setChannel_code("WXPAY");
 		verifyCardDomain.setCard_type("1");
 		verifyCardDomain.setCert_type("00");
-		verifyCardDomain.setLocation(merchantDomain.getLocation());// 开户城市
+		verifyCardDomain.setLocation(
+				Base64.encodeToString(merchantDomain.getLocation() == null ? "" : merchantDomain.getLocation()));// 开户城市
 		verifyCardDomain.setCert_correct("");
 		verifyCardDomain.setCert_opposite("");
 		verifyCardDomain.setCert_meet("");
@@ -120,13 +123,13 @@ public class RemoteHandler {
 		verifyCardDomain.setCard_opposite("");
 
 		// 结算卡四要素
-		verifyCardDomain.setReal_name(merchantDomain.getRealName());
+		verifyCardDomain.setReal_name(Base64.encodeToString(merchantDomain.getRealName()));
 		verifyCardDomain.setCard_no(merchantDomain.getCardNo());
 		verifyCardDomain.setCert_no(merchantDomain.getCertNo());// 证件号
 		verifyCardDomain.setMobile(merchantDomain.getMobile());// 手机号
 
 		return encryptionProcess(orderCode, merchantDomain.getAccount(), merchantDomain.getPrivatekey(),
-				verifyCardDomain);
+				verifyCardDomain, false);
 
 	}
 
@@ -141,7 +144,7 @@ public class RemoteHandler {
 		ChangeRateDomain changeRateDomain = new ChangeRateDomain();
 		changeRateDomain.setWx_rate(formatDouble(merchantDomain.getWxRate()));
 		changeRateDomain.setAli_rate(formatDouble(merchantDomain.getAliRate()));
-		return encryptionProcess(orderCode, merchantDomain.getAccount(), privateKey, changeRateDomain);
+		return encryptionProcess(orderCode, merchantDomain.getAccount(), privateKey, changeRateDomain, true);
 	}
 
 	/**
@@ -154,7 +157,7 @@ public class RemoteHandler {
 	static RemoteResult orderConfirm(String account, String privateKey, String orderId) throws Exception {
 		OrderConfirmDomain orderConfirmDomain = new OrderConfirmDomain();
 		orderConfirmDomain.setOrderId(orderId);
-		return encryptionProcess("tb_OrderConfirm", account, privateKey, orderConfirmDomain);
+		return encryptionProcess("tb_OrderConfirm", account, privateKey, orderConfirmDomain, false);
 	}
 
 	/**
@@ -167,15 +170,15 @@ public class RemoteHandler {
 	 * @return
 	 * @throws Exception
 	 */
-	static RemoteResult pay(String account, String privateKey, double amount, int channelCode, String info)
+	static RemoteResult pay(String account, String privateKey, int amount, int channelCode, String info)
 			throws Exception {
 
 		PayDomain payDomain = new PayDomain();
-		payDomain.setAmount(formatDouble(amount));
+		payDomain.setAmount(Integer.toString(amount));
 		payDomain.setChannel_code(chooseChannel(channelCode));
 		payDomain.setInfo(info);
 
-		return encryptionProcess("tb_WeixinPay", account, privateKey, payDomain);
+		return encryptionProcess("tb_WeixinPay", account, privateKey, payDomain, true);
 	}
 
 	/**
@@ -190,27 +193,101 @@ public class RemoteHandler {
 	 * @return
 	 * @throws Exception
 	 */
-	public static RemoteResult scanPay(String account, String privateKey, double amount, int channelCode,
+	public static RemoteResult scanPay(String account, String privateKey, int amount, int channelCode,
 			String productName, String productDetail, String authCode) throws Exception {
 
 		ScanPayDomain scanPayDomain = new ScanPayDomain();
-		scanPayDomain.setTran_amount(formatDouble(amount));
+		scanPayDomain.setTran_amount(Integer.toString(amount));
 		scanPayDomain.setChannel_code(chooseChannel(channelCode));
 		scanPayDomain.setProduct_name(productName);
 		scanPayDomain.setProduct_detail(productDetail);
 		scanPayDomain.setAuth_code(authCode);
-		return encryptionProcess("tb_wxscanpay", account, privateKey, scanPayDomain);
+		return encryptionProcess("tb_wxscanpay", account, privateKey, scanPayDomain, true);
 	}
 
-	public static RemoteResult encryptionProcess(String orderCode, String account, String privateKey, Object params)
-			throws Exception {
+	/**
+	 * 一码付
+	 * 
+	 * @param account
+	 * @return
+	 * @throws Exception
+	 */
+	public static RemoteResult getACodePay(String account, String privateKey) throws Exception {
+		String orderCode = "tb_GetACodePay";
+
+		Map<String, String> jsonMap = new HashMap<>();
+		jsonMap.put("orderCode", orderCode);
+		jsonMap.put("account", account);// 手机号
+		jsonMap.put("password", "123123");
+
+		Map<String, String> msgMap = new HashMap<>();
+		msgMap.put("cbzid", Global.getConfig("CBZID"));
+
+		String msgJson = JSONUtil.toJsonString(msgMap);
+
+		// 签名
+		byte[] sign = LocalUtil.sign(Base64.decode(privateKey.getBytes()), msgJson);
+
+		jsonMap.put("msg", JSONUtil.toJsonString(msgMap));
+		String data = Base64.encodeToString(JSONUtil.toJsonString(jsonMap));
+		// 加密
+		PublicKey publicKey = RSAUtils.loadPublicKey(Common.PUBLICKKEY);
+		byte[] decryptByte1 = RSAUtils.encryptData(data.getBytes(), publicKey);
+
+		Map<String, String> dataMap = new HashMap<>();
+		dataMap.put("signature", new String(sign));
+		dataMap.put("data", Base64Utils.encode(decryptByte1));
+		dataMap.put("pass", "1");
+
+		String request = JSONUtil.toJsonString(dataMap);
+
+		byte[] res = MyURLConnection.postBinResource(Common.URL, request, Common.CHARSET, 30);
+		String response = new String(res, "UTF-8");
+
+		// 可能返回异常，直接返回RemoteResult
+		try {
+			RemoteBlackResult remoteBlackResult = JSONUtil.readValue(response, RemoteBlackResult.class);
+
+			String msg = remoteBlackResult.getData();
+			String signature = remoteBlackResult.getSignature();
+			PrivateKey key = RSAUtils.loadPrivateKey(privateKey);
+
+			byte[] decryptByte = RSAUtils.decryptData(Base64Utils.decode(msg), key);
+			String decryptStr = new String(decryptByte);
+			String datas = Base64.decodeToString(decryptStr);
+			RemoteResult msgResult = JSONUtil.readValue(datas, RemoteResult.class);
+
+			String msgDatas = msgResult.getMsg();
+			// 验签
+			boolean vfy = LocalUtil.verifySignature(Base64.decode(Common.PUBLICKKEY.getBytes()), signature,
+					msgDatas.getBytes(Common.CHARSET));
+			if (vfy) {
+				RemoteResult remoteResult = JSONUtil.readValue(msgDatas, RemoteResult.class);
+				return remoteResult;
+			} else {
+				return new RemoteResult("999999", "异常数据.");
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+			return JSONUtil.readValue(response, RemoteResult.class);
+		}
+	}
+
+	public static RemoteResult encryptionProcess(String orderCode, String account, String privateKey, Object params,
+			boolean isEncode) throws Exception {
 
 		Map<String, String> jsonMap = new HashMap<>();
 		jsonMap.put("orderCode", orderCode);
 		jsonMap.put("account", account);// 手机号
 
-		String paramsJson = Base64.encodeToString(JSONUtil.toJsonString(params));
-		// String paramsJson = JSONUtil.toJsonString(paramsMap);
+		String paramsJson = null;
+
+		if (isEncode) {
+			paramsJson = Base64.encodeToString(JSONUtil.toJsonString(params));// 与验卡不同
+		} else {
+			paramsJson = JSONUtil.toJsonString(params);
+		}
+
 		byte[] sign = LocalUtil.sign(Base64.decode(privateKey.getBytes()), paramsJson);
 		if (sign == null) {
 			throw new Exception("签名失败.");

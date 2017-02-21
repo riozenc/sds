@@ -23,4 +23,6 @@ public interface MerchantService extends BaseService<MerchantDomain> {
 
 	public List<MerchantDomain> getVirtualMerchants(MerchantDomain merchantDomain);
 
+	public MerchantDomain getVirtualMerchant(MerchantDomain merchantDomain);
+
 }

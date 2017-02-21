@@ -85,8 +85,8 @@ public class LoginAction {
 	@RequestMapping(value = "/logout")
 	public String logout(String username, String password) {
 		Subject subject = SecurityUtils.getSubject();
+		subject.logout();
 		SecurityUtils.getSecurityManager().logout(subject);
-
 		return null;
 	}
 

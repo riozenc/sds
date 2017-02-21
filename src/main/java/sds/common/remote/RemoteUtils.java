@@ -4,35 +4,34 @@ import sds.common.pool.MerchantPool;
 import sds.common.pool.PoolBean;
 import sds.common.remote.domain.DownloadKeyDomain;
 import sds.common.remote.domain.RegisterDomain;
-import sds.common.security.util.UserUtils;
 import sds.webapp.acc.domain.MerchantDomain;
 import sds.webapp.sys.action.ConfAction;
 import sds.webapp.sys.domain.ConfDomain;
 
 public class RemoteUtils {
 	public enum REMOTE_TYPE {
-
-		REGISTER, DOWNLOAD_KEY, VALID_CARD, CHANGE_RATE, SPECIAL_VALID_CARD
+		REGISTER, DOWNLOAD_KEY, CHANGE_RATE, SPECIAL_VALID_CARD, GET_A_CODE_PAY
 	}
 
 	public static RemoteResult process(MerchantDomain merchantDomain, REMOTE_TYPE remoteType) {
 		RemoteResult remoteResult = null;
 		try {
 			switch (remoteType) {
-			case REGISTER:
+			case REGISTER:// 注册
 				remoteResult = RemoteHandler.register(new RegisterDomain(merchantDomain.getAccount()));
 				break;
-			case DOWNLOAD_KEY:
+			case DOWNLOAD_KEY:// 下载密钥
 				remoteResult = RemoteHandler.downLoadKey(new DownloadKeyDomain(merchantDomain.getAccount()));
 				break;
-			case VALID_CARD:
-				remoteResult = RemoteHandler.validCard(merchantDomain);
+			case CHANGE_RATE:// 修改费率
+				remoteResult = changeRate(merchantDomain);
 				break;
-			case CHANGE_RATE:
-				remoteResult = RemoteHandler.changeRate(merchantDomain);
-				break;
-			case SPECIAL_VALID_CARD:
+			case SPECIAL_VALID_CARD:// 虚拟验卡
 				remoteResult = specialValidCard(merchantDomain);
+				break;
+			case GET_A_CODE_PAY:// 获取一码付
+				remoteResult = getACodePay(merchantDomain);
+				break;
 			}
 			return remoteResult;
 		} catch (Exception e) {
@@ -40,6 +39,36 @@ public class RemoteUtils {
 			return new RemoteResult("999999", e.getClass().getName());
 		}
 
+	}
+
+	/**
+	 * 验卡
+	 * 
+	 * @param merchantDomain
+	 * @return
+	 * @throws Exception
+	 * @info 关联虚拟账号
+	 */
+	public static RemoteResult validCard(MerchantDomain merchantDomain, MerchantDomain proxyMerchantDomain)
+			throws Exception {
+
+		proxyMerchantDomain.setRealName(merchantDomain.getRealName());
+		proxyMerchantDomain.setCmer(merchantDomain.getCmer());
+		proxyMerchantDomain.setCmerSort(merchantDomain.getCmerSort());
+		proxyMerchantDomain.setPhone(merchantDomain.getPhone());
+		proxyMerchantDomain.setBusinessId(merchantDomain.getBusinessId());
+		proxyMerchantDomain.setChannelCode(merchantDomain.getChannelCode());
+		proxyMerchantDomain.setCardNo(merchantDomain.getCardNo());
+		proxyMerchantDomain.setCertNo(merchantDomain.getCertNo());
+		proxyMerchantDomain.setMobile(merchantDomain.getMobile());
+		proxyMerchantDomain.setLocation(merchantDomain.getLocation());
+		proxyMerchantDomain.setCertCorrect(merchantDomain.getCertCorrect());
+		proxyMerchantDomain.setCertOpposite(merchantDomain.getCertOpposite());
+		proxyMerchantDomain.setCertMeet(merchantDomain.getCertMeet());
+		proxyMerchantDomain.setCardCorrect(merchantDomain.getCardCorrect());
+		proxyMerchantDomain.setCardOpposite(merchantDomain.getCardOpposite());
+
+		return RemoteHandler.validCard(proxyMerchantDomain);
 	}
 
 	/**
@@ -57,7 +86,7 @@ public class RemoteUtils {
 		proxyMerchantDomain.setMobile(merchantDomain.getMobile());
 		proxyMerchantDomain.setCardNo(merchantDomain.getCardNo());
 		proxyMerchantDomain.setCertNo(merchantDomain.getCertNo());
-		RemoteResult remoteResult = RemoteUtils.process(proxyMerchantDomain, REMOTE_TYPE.VALID_CARD);
+		RemoteResult remoteResult = RemoteHandler.validCard(proxyMerchantDomain);
 		if (RemoteUtils.resultProcess(remoteResult)) {
 			bean.binding(merchantDomain);
 		} else {
@@ -67,9 +96,18 @@ public class RemoteUtils {
 		return remoteResult;
 	}
 
-	public static RemoteResult pay(MerchantDomain merchantDomain, double amount, String info, int channelCode) {
+	/**
+	 * 
+	 * @param merchantDomain
+	 * @return
+	 * @throws Exception
+	 */
+	private static RemoteResult changeRate(MerchantDomain merchantDomain) throws Exception {
+		return RemoteHandler.changeRate(merchantDomain);
+	}
 
-		checkPrivateKey(merchantDomain.getPrivatekey());
+	public static RemoteResult pay(MerchantDomain merchantDomain, int amount, String info, int channelCode) {
+
 		try {
 			return RemoteHandler.pay(merchantDomain.getAccount(), merchantDomain.getPrivatekey(), amount, channelCode,
 					info);
@@ -80,9 +118,9 @@ public class RemoteUtils {
 		}
 	}
 
-	public static RemoteResult scanPay(MerchantDomain merchantDomain, double amount, int channelCode,
-			String productName, String productDetail, String authCode) {
-		checkPrivateKey(merchantDomain.getPrivatekey());
+	public static RemoteResult scanPay(MerchantDomain merchantDomain, int amount, int channelCode, String productName,
+			String productDetail, String authCode) {
+
 		try {
 			return RemoteHandler.scanPay(merchantDomain.getAccount(), merchantDomain.getPrivatekey(), amount,
 					channelCode, productName, productDetail, authCode);
@@ -93,9 +131,7 @@ public class RemoteUtils {
 		}
 	}
 
-	public static RemoteResult orderConfirm(String orderId) {
-		MerchantDomain merchantDomain = UserUtils.getPrincipal().getMerchantDomain();
-		checkPrivateKey(merchantDomain.getPrivatekey());
+	public static RemoteResult orderConfirm(MerchantDomain merchantDomain, String orderId) {
 		try {
 			return RemoteHandler.orderConfirm(merchantDomain.getAccount(), merchantDomain.getPrivatekey(), orderId);
 		} catch (Exception e) {
@@ -105,14 +141,21 @@ public class RemoteUtils {
 		}
 	}
 
-	// public static MerchantDomain checkMerchant(MerchantDomain merchantDomain)
-	// {
-	// if (merchantDomain.getUserType() != 2) {// 非认证商户（个人商户）
-	// merchantDomain = MerchantPool.getInstance().getPoolBean().getObject();//
-	// 全部随机
-	// }
-	// return merchantDomain;
-	// }
+	/**
+	 * 一码付（柜台码）
+	 * 
+	 * @param merchantDomain
+	 * @return
+	 */
+	public static RemoteResult getACodePay(MerchantDomain merchantDomain) {
+		try {
+			return RemoteHandler.getACodePay(merchantDomain.getAccount(), merchantDomain.getPrivatekey());
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			return new RemoteResult("999999", e.getClass().getName());
+		}
+	}
 
 	public static boolean resultProcess(RemoteResult remoteResult) throws Exception {
 		ConfDomain confDomain = ConfAction.getConfig(ConfAction.REMOTE_RESULT).get(remoteResult.getRespCode());
@@ -178,12 +221,6 @@ public class RemoteUtils {
 		// 000000 SUCCESS 成功
 
 		return false;
-	}
-
-	private static void checkPrivateKey(String privateKey) {
-		if (privateKey == null) {
-			throw new RuntimeException("请先下载密钥...");
-		}
 	}
 
 }

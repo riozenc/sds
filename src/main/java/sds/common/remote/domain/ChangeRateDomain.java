@@ -3,7 +3,7 @@ package sds.common.remote.domain;
 import com.riozenc.quicktool.config.Global;
 
 public class ChangeRateDomain {
-	private String password = "111111";// 密码 1..1 s..11 必填
+	private String password = "123123";// 密码 1..1 s..11 必填
 	private String wx_rate;// 微信签约费率 1..1 s..5 必填[例如：0.005]千分比
 	private String ali_rate;// 支付宝签约费率 1..1 s..5 同微信费率(两者必填一个或2个都填)
 	private String cbzid = Global.getConfig("CBZID");// 下发商户标识 1..1 s..11 必填

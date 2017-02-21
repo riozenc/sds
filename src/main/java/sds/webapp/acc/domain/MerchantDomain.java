@@ -64,6 +64,8 @@ public class MerchantDomain extends Page<MerchantDomain> implements MybatisEntit
 	private Integer agentId;// `agent_id` int(11) DEFAULT NULL COMMENT '所属代理商',
 
 	@JsonIgnore
+	private String virtualAccount;
+	@JsonIgnore
 	private MerchantDomain tj;// 对应的推荐人
 
 	public MerchantDomain() {
@@ -319,6 +321,14 @@ public class MerchantDomain extends Page<MerchantDomain> implements MybatisEntit
 
 	public void setAgentId(Integer agentId) {
 		this.agentId = agentId;
+	}
+
+	public String getVirtualAccount() {
+		return virtualAccount;
+	}
+
+	public void setVirtualAccount(String virtualAccount) {
+		this.virtualAccount = virtualAccount;
 	}
 
 }

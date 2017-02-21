@@ -17,6 +17,8 @@ import com.riozenc.quicktool.common.util.date.DateUtil;
 import com.riozenc.quicktool.common.util.json.JSONUtil;
 
 import sds.common.json.JsonGrid;
+import sds.common.remote.RemoteResult;
+import sds.common.remote.RemoteUtils;
 import sds.common.security.Principal;
 import sds.common.security.util.UserUtils;
 import sds.common.webapp.base.action.BaseAction;
@@ -65,14 +67,32 @@ public class ProfitAction extends BaseAction {
 	@Qualifier("profitMerchantServiceImpl")
 	private ProfitMerchantService profitMerchantService;//
 
+	/**
+	 * 获取分润明细
+	 * 
+	 * @param profitDomain
+	 * @return
+	 */
 	@ResponseBody
 	@RequestMapping(params = "type=getProfit")
 	public String getProfit(ProfitDomain profitDomain) {
-
 		Principal p = UserUtils.getPrincipal();
 		if (p.getId() != 1) {// 管理员查看所有
 			profitDomain.setAgentId(p.getId());// 获取当前登录人的分润消息
 		}
+		List<ProfitDomain> list = profitService.findByWhere(profitDomain);
+		return JSONUtil.toJsonString(new JsonGrid(list.size(), 1, list));
+	}
+
+	/**
+	 * 获取商户的佣金明细
+	 * 
+	 * @param profitDomain
+	 * @return
+	 */
+	@ResponseBody
+	@RequestMapping(params = "type=getProfitMerchant")
+	public String getProfitMerchant(ProfitDomain profitDomain) {
 		List<ProfitDomain> list = profitService.findByWhere(profitDomain);
 		return JSONUtil.toJsonString(new JsonGrid(list.size(), 1, list));
 	}
@@ -144,16 +164,35 @@ public class ProfitAction extends BaseAction {
 	 * 计算分润
 	 * 
 	 * @return
+	 * @throws Exception
 	 */
 	@RequestMapping(params = "type=profit")
-	public String profit() {
-		OrderDomain orderDomain = new OrderDomain();
+	public String profit() throws Exception {
 
+		MerchantDomain merchantDomain = new MerchantDomain();
+		merchantDomain.setStatus(2);// 已经使用的
+		List<MerchantDomain> vms = merchantService.getVirtualMerchants(merchantDomain);
+		Map<String, MerchantDomain> vmMap = new HashMap<String, MerchantDomain>();
+		for (MerchantDomain temp : vms) {
+			vmMap.put(temp.getAccount(), temp);
+		}
+
+		// 获取所有订单，逐一查询订单状态
+		List<OrderDomain> unCheckorders = orderService.getAllUnCheckOrder(null);
+		List<OrderDomain> checkedOrders = new ArrayList<OrderDomain>();
+
+		RemoteResult remoteResult = null;
+		for (OrderDomain temp : unCheckorders) {
+			remoteResult = RemoteUtils.orderConfirm(vmMap.get(temp.getProxyAccount()), temp.getOrderId());
+			if (RemoteUtils.resultProcess(remoteResult)) {
+				checkedOrders.add(temp);// ************
+			}
+		}
+		OrderDomain orderDomain = new OrderDomain();
 		// 获取指定时间的所有交易订单
 		List<OrderDomain> orderDomains = orderService.getAllCheckedOrder(orderDomain);
 		// 获取商户代理商关系
 		Map<String, MARDomain> marMap = getMAR();
-
 		List<ProfitDomain> list = call(orderDomains, marMap);
 
 		// 批量插入

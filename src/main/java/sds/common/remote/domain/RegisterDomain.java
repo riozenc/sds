@@ -11,7 +11,7 @@ import com.riozenc.quicktool.config.Global;
 public class RegisterDomain {
 
 	private String account;// 手机号码 必填
-	private String pass = "111111";// >=6位(英文/数字) 必填
+	private String pass = "123123";// >=6位(英文/数字) 必填
 	private String code = Global.getConfig("CODE");// 按照下放信息填写 必填
 	private String cbzid = Global.getConfig("CBZID");// 按照下放信息填写 必填
 

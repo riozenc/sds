@@ -18,7 +18,6 @@ import sds.common.remote.RemoteUtils;
 import sds.common.security.util.UserUtils;
 import sds.common.webapp.base.action.BaseAction;
 import sds.webapp.acc.domain.MerchantDomain;
-import sds.webapp.acc.domain.UserDomain;
 import sds.webapp.acc.service.MerchantService;
 import sds.webapp.ord.domain.OrderDomain;
 import sds.webapp.ord.service.OrderService;
@@ -46,17 +45,19 @@ public class OrderAction extends BaseAction {
 	 */
 	@ResponseBody
 	@RequestMapping(params = "type=pay")
-	public String pay(double amount, String info, int channelCode) throws Exception {
+	public String pay(int amount, String info, int channelCode) throws Exception {
 		MerchantDomain merchantDomain = UserUtils.getPrincipal().getMerchantDomain();
+		MerchantDomain vm = merchantService.getVirtualMerchant(merchantDomain);
 
-		RemoteResult remoteResult = RemoteUtils.pay(merchantDomain, amount, info, channelCode);
+		RemoteResult remoteResult = RemoteUtils.pay(vm, amount, info, channelCode);
 		if (RemoteUtils.resultProcess(remoteResult)) {
 			OrderDomain orderDomain = new OrderDomain();
 			orderDomain.setOrderId(remoteResult.getOrderId());
 			orderDomain.setChannelCode(channelCode);
-			orderDomain.setAmount(amount / 100);
+			orderDomain.setAmount((double) amount / 100);
 			orderDomain.setDate(new Date());
 			orderDomain.setAccount(UserUtils.getPrincipal().getUserId());
+			orderDomain.setProxyAccount(vm.getAccount());
 			// orderDomain.setProxyAccount(
 			// orderDomain.getAccount().equals(merchantDomain.getAccount()) ?
 			// null : merchantDomain.getAccount());
@@ -68,7 +69,7 @@ public class OrderAction extends BaseAction {
 		} else {
 			return JSONUtil.toJsonString(new JsonResult(JsonResult.ERROR, remoteResult.getMsg()));
 		}
-		return JSONUtil.toJsonString(new JsonResult(JsonResult.SUCCESS, "支付成功."));
+		return JSONUtil.toJsonString(new JsonResult(JsonResult.SUCCESS, remoteResult.getQRcodeURL()));
 	}
 
 	/**
@@ -84,18 +85,17 @@ public class OrderAction extends BaseAction {
 	 */
 	@ResponseBody
 	@RequestMapping(params = "type=scanPay")
-	public String scanPay(double amount, int channelCode, String productName, String productDetail, String authCode)
+	public String scanPay(int amount, int channelCode, String productName, String productDetail, String authCode)
 			throws Exception {
 		MerchantDomain merchantDomain = UserUtils.getPrincipal().getMerchantDomain();
-
+		MerchantDomain vm = merchantService.getVirtualMerchant(merchantDomain);
 		// authCode 付款码
-		RemoteResult remoteResult = RemoteUtils.scanPay(merchantDomain, amount, channelCode, productName, productDetail,
-				authCode);
+		RemoteResult remoteResult = RemoteUtils.scanPay(vm, amount, channelCode, productName, productDetail, authCode);
 		if (RemoteUtils.resultProcess(remoteResult)) {
 			OrderDomain orderDomain = new OrderDomain();
 			orderDomain.setOrderId(remoteResult.getOrderId());
 			orderDomain.setChannelCode(channelCode);
-			orderDomain.setAmount(amount / 100);
+			orderDomain.setAmount((double) amount / 100);
 			orderDomain.setDate(new Date());
 			orderDomain.setAccount(UserUtils.getPrincipal().getUserId());
 			orderDomain.setProxyAccount(merchantDomain.getAccount());
@@ -110,6 +110,51 @@ public class OrderAction extends BaseAction {
 	}
 
 	/**
+	 * 一码付（柜台码）
+	 * 
+	 * @return
+	 * @throws Exception
+	 */
+	@ResponseBody
+	@RequestMapping(params = "type=codePay")
+	public String codePay() throws Exception {
+
+		// MerchantDomain merchantDomain =
+		// UserUtils.getPrincipal().getMerchantDomain();
+		MerchantDomain merchantDomain = new MerchantDomain();
+		merchantDomain.setId(40);
+
+		MerchantDomain vm = merchantService.getVirtualMerchant(merchantDomain);
+
+		RemoteResult remoteResult = RemoteUtils.getACodePay(vm);
+
+		if (RemoteUtils.resultProcess(remoteResult)) {
+			return JSONUtil.toJsonString(new JsonResult(JsonResult.SUCCESS, remoteResult.getCodePayUrl()));
+		} else {
+			return JSONUtil.toJsonString(
+					new JsonResult(JsonResult.ERROR, remoteResult.getMsg() + "[" + remoteResult.getRespInfo() + "]"));
+		}
+	}
+
+	/**
+	 * 订单支付成功后回调
+	 * 
+	 * @param orderId
+	 * @param respCode
+	 * @param respInfo
+	 * @param amount
+	 * @param WXOrderNo
+	 */
+	@ResponseBody
+	@RequestMapping(params = "type=orderConfirmCallback")
+	public void orderConfirmCallback(OrderDomain orderDomain, String WXOrderNo) {
+		System.out.println(WXOrderNo);
+		int i = orderService.update(orderDomain);
+
+		// 日志记录
+	}
+
+	/**
 	 * 订单状态查询
 	 * 
 	 * @param orderDomain
@@ -119,8 +164,10 @@ public class OrderAction extends BaseAction {
 	@ResponseBody
 	@RequestMapping(params = "type=orderConfirm")
 	public String orderConfirm(OrderDomain orderDomain) throws Exception {
+		MerchantDomain merchantDomain = UserUtils.getPrincipal().getMerchantDomain();
+		MerchantDomain vm = merchantService.getVirtualMerchant(merchantDomain);
 
-		RemoteResult remoteResult = RemoteUtils.orderConfirm(orderDomain.getOrderId());
+		RemoteResult remoteResult = RemoteUtils.orderConfirm(vm, orderDomain.getOrderId());
 		if (RemoteUtils.resultProcess(remoteResult)) {
 			// 更新
 			orderDomain.setStatus(1);
