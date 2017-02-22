@@ -5,14 +5,14 @@
 $(function() {
 	var myDate = new Date();
 	var dateNow = myDate.getFullYear()+"-"+ (myDate.getMonth()+1)+"-"+myDate.getDate();
-	$('#profitMy_datagrid').datagrid({
+	$('#profitSub_datagrid').datagrid({
 	    height: '100%',
 	    tableWidth:'99%',
 	    gridTitle : ' ',
 	    local: 'remote',
 	    showToolbar: false,
 	    toolbarItem: 'del',
-	    dataUrl:'profitUser.do?type=myProfitUser',
+	    dataUrl:'profitUser.do?type=subProfitUser',
 	    postData:{startDate:dateNow,endDate:dateNow},
 	    columns: [
               {
@@ -46,7 +46,7 @@ $(function() {
 	            align: 'center',
 	            width: 50,
 	            render:function(value,data){
-	            	return '<a href="javascript:;"   onclick="dialog_profitInfo(\''+value+'\')">详情</a>';
+	            	return '<a href="javascript:;"   onclick="dialog_profitSubInfo(\''+value+'\')">详情</a>';
 	            }
 	        }
 	    ],
@@ -56,7 +56,8 @@ $(function() {
 	});
 	
 });
-function dialog_profitInfo(account){
+//详情
+function dialog_profitSubInfo(account){
 	var startDate=$("#startDate").val();
 	var endDate =$("#endDate").val();
 	
@@ -74,13 +75,13 @@ function dialog_profitInfo(account){
 		},
 		success : function(result) {
 			BJUI.dialog({
-			    id:'profitMyInfo',
-			    url:'html/form/profitMyInfo.jsp',
+			    id:'profitSubInfo',
+			    url:'html/form/profitSubInfo.jsp',
 			    title:'详情',
 			    width:900,
 			    height:500,
 			    onLoad:function(){
-			    	$('#profitMyInfo_datagrid').datagrid({
+			    	$('#profitSubInfo_datagrid').datagrid({
 			    	    height: '100%',
 			    	    tableWidth:'99%',
 			    	    gridTitle : ' ',
@@ -118,28 +119,14 @@ function dialog_profitInfo(account){
 			    	            align: 'center',
 			    	            width: 100
 			    	        },
-			    	        {
-			    	            name: 'status',
-			    	            label: '状态',
-			    	            align: 'center',
-			    	            width: 70,
-			    	            render: function(value,data) {
-			    	            	if(value == 0){
-			    	            		 return "未提现";
-			    	            	}else if(value == 1){
-			    	            		return "已提现";
-			    	            	}else{
-			    	            		return value;
-			    	            	}
-			    	            }
-			    	        },
+			    	        
 			    	        {
 			    	            name: 'id',
 			    	            label: '详情',
 			    	            align: 'center',
 			    	            width: 50,
 			    	            render:function(value,data){
-			    	            	return '<a href="javascript:;" >详情</a>';
+			    	            	return '<a href="javascript:;" onclick="dialog_profitSubInfos('+data.agentId+',\''+data.date+'\')">详情</a>';
 			    	            }
 			    	        }
 			    	    ],
@@ -153,11 +140,78 @@ function dialog_profitInfo(account){
 		}
 	});
 }
-
+//再详情
+function dialog_profitSubInfos(agentid,date){
+	
+	var profitInfos_datas={agentId:agentid,orderDate:date};
+	$.ajax({
+		cache : false,
+		type : "POST",
+		url : "profit.do?type=getProfit",
+		data : profitInfos_datas,
+		dataType : "json",
+		error : function(request) {
+			console.info(request);
+			alert("请重新登录");
+			return false;
+		},
+		success : function(result) {
+			console.info(result);
+			BJUI.dialog({
+			    id:'profitSubInfos',
+			    url:'html/form/profitSubInfos.jsp',
+			    title:'再详情',
+			    width:900,
+			    height:500,
+			    onLoad:function(){
+			    	$('#profitSubInfos_datagrid').datagrid({
+			    	    height: '100%',
+			    	    tableWidth:'99%',
+			    	    gridTitle : ' ',
+			    	    local: 'local',
+			    	    showToolbar: false,
+			    	    data:result,			    	    
+			    	    columns: [
+			                {
+			      	            name: 'id',
+			      	            label: 'ID',
+			      	            align: 'center',
+			      	            width:50
+			      	        },
+			    	        {
+			    	            name: 'account',
+			    	            label: '账号',
+			    	            align: 'center',
+			    	            width:100
+			    	        },
+			    	       
+			    	        {
+			    	            name: 'totalAmount',
+			    	            label: '交易金额',
+			    	            align: 'center',
+			    	            width: 100
+			    	        },
+			    	        {
+			    	            name: 'totalProfit',
+			    	            label: '分润金额',
+			    	            align: 'center',
+			    	            width: 100
+			    	        }
+			    	    ],
+			    	    paging:{pageSize:10,selectPageSize:'20,30'},
+			    	    showLinenumber: false,
+			    	    inlineEditMult: false
+			    	});
+			    }
+			});
+			return false;	
+		}
+	});
+}
 </script>
 <div class="bjui-pageHeader" style="background-color:#fefefe; border-bottom:none;">
 
-	<form data-toggle="ajaxsearch" data-options="{searchDatagrid:$.CurrentNavtab.find('#profitMy_datagrid')}">
+	<form data-toggle="ajaxsearch" data-options="{searchDatagrid:$.CurrentNavtab.find('#profitSub_datagrid')}">
 	    <fieldset>
 	        <legend style="font-weight:normal;">搜索：</legend>
 	        <div style="margin:0; padding:1px 5px 5px;">
@@ -175,6 +229,6 @@ function dialog_profitInfo(account){
 	</form>
 </div>
 <div class="bjui-pageContent">
-	<table id="profitMy_datagrid" class="table table-bordered">
+	<table id="profitSub_datagrid" class="table table-bordered">
 	</table>
 </div>
