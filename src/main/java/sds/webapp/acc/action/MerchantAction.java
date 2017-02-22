@@ -158,6 +158,7 @@ public class MerchantAction extends BaseAction {
 	@ResponseBody
 	@RequestMapping(params = "type=findMerchantByKey")
 	public String findMerchantByKey(MerchantDomain merchantDomain) {
+		UserUtils.getPrincipal();//用于测试自动登录
 		return JSONUtil.toJsonString(merchantService.findByKey(merchantDomain));
 	}
 

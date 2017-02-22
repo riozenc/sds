@@ -74,10 +74,6 @@ public class ProfitAction extends BaseAction {
 	@ResponseBody
 	@RequestMapping(params = "type=getProfit")
 	public String getProfit(ProfitDomain profitDomain) {
-		Principal p = UserUtils.getPrincipal();
-		if (p.getId() != 1) {// 管理员查看所有
-			profitDomain.setAgentId(p.getId());// 获取当前登录人的分润消息
-		}
 		List<ProfitDomain> list = profitService.findByWhere(profitDomain);
 		return JSONUtil.toJsonString(new JsonGrid(list.size(), 1, list));
 	}
@@ -182,7 +178,7 @@ public class ProfitAction extends BaseAction {
 	}
 
 	/**
-	 * 根据商户查询分润
+	 * 根据商户查询分润//有问题
 	 * 
 	 * @param userDomain
 	 * @return
