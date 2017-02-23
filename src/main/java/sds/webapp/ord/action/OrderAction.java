@@ -10,6 +10,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.riozenc.quicktool.common.util.json.JSONUtil;
+import com.riozenc.quicktool.common.util.log.LogUtil;
+import com.riozenc.quicktool.common.util.log.LogUtil.LOG_TYPE;
 
 import sds.common.json.JsonGrid;
 import sds.common.json.JsonResult;
@@ -124,10 +126,9 @@ public class OrderAction extends BaseAction {
 	@RequestMapping(params = "type=codePay")
 	public String codePay() throws Exception {
 
-		 MerchantDomain merchantDomain =
-		 UserUtils.getPrincipal().getMerchantDomain();
-//		MerchantDomain merchantDomain = new MerchantDomain();
-//		merchantDomain.setId(40);
+		MerchantDomain merchantDomain = UserUtils.getPrincipal().getMerchantDomain();
+		// MerchantDomain merchantDomain = new MerchantDomain();
+		// merchantDomain.setId(40);
 
 		MerchantDomain vm = merchantService.getVirtualMerchant(merchantDomain);
 
@@ -149,16 +150,36 @@ public class OrderAction extends BaseAction {
 	 * @param respInfo
 	 * @param amount
 	 * @param WXOrderNo
+	 * @throws Exception
 	 */
 	@ResponseBody
 	@RequestMapping(params = "type=orderConfirmCallback")
 	public void orderConfirmCallback(OrderDomain orderDomain, String WXOrderNo) {
-		System.out.println(WXOrderNo);
-		int i = orderService.update(orderDomain);
-		orderDomain = orderService.findByKey(orderDomain);
+
+		try {
+			Thread.sleep(2 * 1000L);
+			MerchantDomain merchantDomain = UserUtils.getPrincipal().getMerchantDomain();
+			MerchantDomain vm = merchantService.getVirtualMerchant(merchantDomain);
+
+			RemoteResult remoteResult = RemoteUtils.orderConfirm(vm, orderDomain.getOrderId());
+			if (RemoteUtils.resultProcess(remoteResult)) {
+				// 更新
+				orderDomain.setStatus(1);
+			} else {
+				orderDomain.setStatus(2);
+			}
+			orderDomain.setOrderNo(WXOrderNo);
+			orderDomain.setRespCode(remoteResult.getRespCode());
+			orderDomain.setRespInfo(remoteResult.getRespInfo());
+			orderService.update(orderDomain);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 
 		System.out.println(profitService.profit(orderDomain));
 		// 日志记录
+		LogUtil.getLogger(LOG_TYPE.OTHER).info(orderDomain.getOrderId() + "交易成功[" + WXOrderNo + "]");
 	}
 
 	/**

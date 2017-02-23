@@ -20,13 +20,13 @@ public class MainListener implements ServletContextListener {
 	public void contextInitialized(ServletContextEvent sce) {
 
 		// 日志方式
-		// LogUtil.setLogOutType(LOG_OUT_TYPE.FILE);// 全部日志根据文件配置输出
-		LogUtil.setLogOutType(LOG_OUT_TYPE.SYSTEM);// 全部日志根据文件配置输出
+		LogUtil.setLogOutType(LOG_OUT_TYPE.FILE);// 全部日志根据文件配置输出
+		// LogUtil.setLogOutType(LOG_OUT_TYPE.SYSTEM);// 全部日志根据文件配置输出
 
 		DbFactory.initByFactory();
-		
-		//初始化conf
-		 
+
+		// 初始化conf
+
 		System.out.println("initialized");
 
 	}

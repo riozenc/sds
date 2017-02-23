@@ -22,9 +22,16 @@
 			<if test="amount !=null">
 				and AMOUNT = #{amount}
 			</if>
-			<if test="date !=null">
-				and DATE = #{date}
+
+			<if test="startDate !=null">
+				and DATE_FORMAT(DATE, '%Y-%m-%d') &gt;=
+				DATE_FORMAT(#{startDate}, '%Y-%m-%d')
 			</if>
+			<if test="endDate !=null">
+				and DATE_FORMAT(DATE, '%Y-%m-%d') &lt;=
+				DATE_FORMAT(#{endDate}, '%Y-%m-%d')
+			</if>
+
 			<if test="operator !=null">
 				and OPERATOR = #{operator}
 			</if>
@@ -35,8 +42,10 @@
 	</select>
 	<insert id="insert" parameterType="WithdrawalsDomain"
 		flushCache="true">
-		insert into fm_withdrawals(ID,MERCHANT_ID,AMOUNT,DATE,OPERATOR,STATUS)
-		values (#{id},#{merchantId},#{amount},#{date},#{operator},#{status})
+		insert into
+		fm_withdrawals(ID,MERCHANT_ID,AMOUNT,DATE,OPERATOR,STATUS)
+		values
+		(#{id},#{merchantId},#{amount},#{date},#{operator},#{status})
 	</insert>
 	<update id="update" parameterType="WithdrawalsDomain"
 		flushCache="true">
@@ -60,7 +69,6 @@
 		</set>
 		<where>
 			and ID = #{id}
-
 		</where>
 	</update>
 	<delete id="delete" parameterType="WithdrawalsDomain"

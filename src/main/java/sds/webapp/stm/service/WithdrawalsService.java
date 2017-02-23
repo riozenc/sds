@@ -10,4 +10,5 @@ import sds.webapp.stm.domain.WithdrawalsDomain;
 
 public interface WithdrawalsService extends BaseService<WithdrawalsDomain> {
 
+	public int agree(WithdrawalsDomain withdrawalsDomain);
 }

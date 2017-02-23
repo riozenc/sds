@@ -42,7 +42,7 @@ public class PoolState {
 	protected final List<PoolBean> badBeans = new ArrayList<PoolBean>();// 失效
 	protected final Map<Integer, PoolBean> poolRelMap = new HashMap<Integer, PoolBean>();
 
-	private RowBounds rowBounds = new RowBounds(1, 1);// offset, limit
+	private RowBounds rowBounds = new RowBounds(1, 10);// offset, limit
 
 	public PoolState(MerchantPool pool) {
 		this.pool = pool;

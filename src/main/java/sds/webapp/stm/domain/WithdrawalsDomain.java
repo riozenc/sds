@@ -9,6 +9,7 @@ import java.util.Date;
 
 import com.riozenc.quicktool.annotation.TablePrimaryKey;
 import com.riozenc.quicktool.mybatis.MybatisEntity;
+import com.riozenc.quicktool.mybatis.persistence.Page;
 
 /**
  * 提现
@@ -16,8 +17,8 @@ import com.riozenc.quicktool.mybatis.MybatisEntity;
  * @author riozenc
  *
  */
-public class WithdrawalsDomain implements MybatisEntity{
-	
+public class WithdrawalsDomain extends Page<WithdrawalsDomain> implements MybatisEntity {
+
 	@TablePrimaryKey
 	private Integer id;
 	private Integer merchantId;

@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.riozenc.quicktool.common.util.json.JSONUtil;
@@ -20,6 +21,8 @@ import sds.common.remote.RemoteResult;
 import sds.common.remote.RemoteUtils;
 import sds.common.remote.RemoteUtils.REMOTE_TYPE;
 import sds.common.security.util.UserUtils;
+import sds.common.sms.HttpSender;
+import sds.common.sms.SmsCache;
 import sds.common.webapp.base.action.BaseAction;
 import sds.webapp.acc.domain.MerchantDomain;
 import sds.webapp.acc.domain.UserDomain;
@@ -38,6 +41,17 @@ public class MerchantAction extends BaseAction {
 	private UserService userService;
 
 	/**
+	 * 获取验证码
+	 * 
+	 * @return
+	 */
+	@ResponseBody
+	@RequestMapping(params = "type=getVerificationCode")
+	public String getVerificationCode(String account) {
+		return HttpSender.send(account);
+	}
+
+	/**
 	 * 商户注册
 	 * 
 	 * @param merchantDomain
@@ -46,12 +60,15 @@ public class MerchantAction extends BaseAction {
 	 * @info 所有注册均跟账户池中的虚拟账户关联，只需注册到本系统就可以
 	 */
 	@ResponseBody
-	// @RequestMapping(params = "type=register", method = RequestMethod.POST)
-	@RequestMapping(params = "type=register")
-	public String registerMerchant(MerchantDomain merchantDomain) throws Exception {
+	@RequestMapping(params = "type=register", method = RequestMethod.POST)
+	public String registerMerchant(MerchantDomain merchantDomain, String code) throws Exception {
 		String tjAccount = null;
 		String appCode = merchantDomain.getAppCode();// 邀请码
 
+		String vc = SmsCache.get(merchantDomain.getAccount());
+		if (vc == null || !vc.equals(code)) {
+			return JSONUtil.toJsonString(new JsonResult(JsonResult.ERROR, "验证码错误."));
+		}
 		try {
 			if (appCode.startsWith("EA")) {
 				// 代理商
@@ -158,7 +175,7 @@ public class MerchantAction extends BaseAction {
 	@ResponseBody
 	@RequestMapping(params = "type=findMerchantByKey")
 	public String findMerchantByKey(MerchantDomain merchantDomain) {
-		UserUtils.getPrincipal();//用于测试自动登录
+		UserUtils.getPrincipal();// 用于测试自动登录
 		return JSONUtil.toJsonString(merchantService.findByKey(merchantDomain));
 	}
 

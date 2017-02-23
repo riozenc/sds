@@ -13,6 +13,8 @@ import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.riozenc.quicktool.common.util.json.JSONUtil;
+
 import sds.webapp.sys.domain.ConfDomain;
 import sds.webapp.sys.service.ConfService;
 
@@ -30,6 +32,20 @@ public class ConfAction {
 	@Autowired
 	@Qualifier("confServiceImpl")
 	private ConfService confService;
+
+	@ResponseBody
+	@RequestMapping(params = "type=getConfig")
+	public String getConfigByJson(String name) throws Exception {
+		long time = System.currentTimeMillis();
+
+		while (!FLAG) {
+			if ((System.currentTimeMillis() - time) > 10 * 1000) {
+				// 等待10秒
+				throw new Exception("获取参数超时.");
+			}
+		}
+		return JSONUtil.toJsonString(MAP.get(name));
+	}
 
 	public static Map<String, ConfDomain> getConfig(String type) throws Exception {
 		long time = System.currentTimeMillis();
