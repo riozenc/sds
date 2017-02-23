@@ -143,11 +143,11 @@ function dialog_profitInfo(account){
 //再详情
 function dialog_profitInfos(agentid,date){
 	
-	var profitInfos_datas={agentId:agentid,startDate:date,endDate:date};
+	var profitInfos_datas={agentId:agentid,orderDate:date};
 	$.ajax({
 		cache : false,
 		type : "POST",
-		url : "profit.do?type=findProfitByUser",
+		url : "profit.do?type=getProfit",
 		data : profitInfos_datas,
 		dataType : "json",
 		error : function(request) {
