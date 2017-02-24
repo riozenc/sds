@@ -6,6 +6,7 @@
  */
 package sds.web.interceptor;
 
+import java.io.PrintWriter;
 import java.lang.reflect.Method;
 import java.util.Date;
 
@@ -43,19 +44,17 @@ public class BaseInterceptor extends HandlerInterceptorAdapter {
 			httpServletResponse.setHeader("Content-type", "text/html;charset=UTF-8");
 			// 登录超时异常
 			if (exception instanceof LoginTimeOutException) {
+				httpServletResponse.getWriter().println(JSONUtil.toJsonString(new JsonResult(202, "请重新登录...")));
+			} else if (exception instanceof InvalidAppCodeException) {
 				httpServletResponse.getWriter()
-						.println(JSONUtil.toJsonString(new JsonResult(JsonResult.ERROR, "请重新登录...")));
-			}else if(exception instanceof InvalidAppCodeException){
-				httpServletResponse.getWriter()
-				.println(JSONUtil.toJsonString(new JsonResult(JsonResult.ERROR, exception.getMessage())));
-			}else{
+						.println(JSONUtil.toJsonString(new JsonResult(JsonResult.ERROR, exception.getMessage())));
+			} else {
 				httpServletResponse.getWriter().println(exception.getMessage());
 			}
 
-			
-			
-//			httpServletResponse.setHeader("Content-type", "text/html;charset=UTF-8");
-//			httpServletResponse.getWriter().println(ExceptionLogUtil.log(exception));
+			// httpServletResponse.setHeader("Content-type",
+			// "text/html;charset=UTF-8");
+			// httpServletResponse.getWriter().println(ExceptionLogUtil.log(exception));
 			httpServletResponse.getWriter().close();
 
 			LogUtil.getLogger(LOG_TYPE.ERROR)
@@ -72,6 +71,7 @@ public class BaseInterceptor extends HandlerInterceptorAdapter {
 	public void postHandle(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse,
 			Object object, ModelAndView modelAndView) throws Exception {
 		// TODO Auto-generated method stub
+
 		if (null != modelAndView) {
 			// // 设置头信息,字符集UTF-8
 			// httpServletResponse.setHeader("Content-type",

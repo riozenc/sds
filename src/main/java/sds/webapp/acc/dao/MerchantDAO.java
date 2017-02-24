@@ -77,4 +77,8 @@ public class MerchantDAO extends AbstractTransactionDAOSupport implements BaseDA
 	public MerchantDomain getVirtualMerchant(MerchantDomain merchantDomain) {
 		return getPersistanceManager().load(getNamespace() + ".getVirtualMerchant", merchantDomain);
 	}
+
+	public List<MerchantDomain> findMerchantByUser(String account) {
+		return getPersistanceManager().find(getNamespace()+".findMerchantByUser", account);
+	}
 }

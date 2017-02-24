@@ -424,7 +424,19 @@
 		SELECT b.* FROM MERCHANT_POOL_REL a LEFT JOIN fm_merchant_pool b ON
 		a.pool_id = b.id
 		<where>
-			 a.merchant_id = #{id}
+			a.merchant_id = #{id}
 		</where>
+	</select>
+
+	<select id="findMerchantByUser" resultType="MerchantDomain"
+		useCache="true">
+		SELECT
+		a.*
+		FROM
+		fm_merchant a LEFT JOIN fm_user b ON b.id =
+		a.agent_id
+		WHERE
+		b.parent_id = (SELECT id from fm_user WHERE account =
+		#{1})
 	</select>
 </mapper>

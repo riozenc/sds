@@ -12,6 +12,7 @@ import com.riozenc.quicktool.common.util.json.JSONUtil;
 
 import sds.common.json.JsonGrid;
 import sds.common.json.JsonResult;
+import sds.common.security.util.UserUtils;
 import sds.common.webapp.base.action.BaseAction;
 import sds.webapp.stm.domain.ProfitMerchantDomain;
 import sds.webapp.stm.service.ProfitMerchantService;
@@ -31,11 +32,20 @@ public class ProfitMerchantAction extends BaseAction {
 	@Qualifier("profitMerchantServiceImpl")
 	private ProfitMerchantService profitMerchantService;
 
+	/**
+	 * 获取收益额 status=1 收款 status=2取现
+	 * 
+	 * @param profitMerchantDomain
+	 * @return
+	 */
 	@ResponseBody
 	@RequestMapping(params = "type=count")
-	public String count(ProfitMerchantDomain profitMerchantDomain) {
+	public String count() {
+		ProfitMerchantDomain profitMerchantDomain = new ProfitMerchantDomain();
+		profitMerchantDomain.setMerchantId(UserUtils.getPrincipal().getMerchantDomain().getId());
 
-		return null;
+		String count = profitMerchantService.getMerchantTotalProfit(profitMerchantDomain);
+		return count;
 	}
 
 	@ResponseBody

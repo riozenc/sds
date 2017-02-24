@@ -48,7 +48,7 @@ public class MerchantAction extends BaseAction {
 	@ResponseBody
 	@RequestMapping(params = "type=getVerificationCode")
 	public String getVerificationCode(String account) {
-		return HttpSender.send(account);
+		return JSONUtil.toJsonString(HttpSender.send(account));
 	}
 
 	/**
@@ -161,8 +161,7 @@ public class MerchantAction extends BaseAction {
 	@RequestMapping(params = "type=findMerchantByWhere")
 	public String findMerchantByWhere(MerchantDomain merchantDomain) {
 		UserDomain userDomain = UserUtils.getPrincipal().getUserDomain();
-		merchantDomain.setAppCode("EA" + userDomain.getAccount());
-		List<MerchantDomain> list = merchantService.findByWhere(merchantDomain);
+		List<MerchantDomain> list = merchantService.findMerchantByUser(userDomain.getAccount());
 		return JSONUtil.toJsonString(new JsonGrid(merchantDomain, list));
 	}
 

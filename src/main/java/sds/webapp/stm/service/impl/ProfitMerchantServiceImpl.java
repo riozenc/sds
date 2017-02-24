@@ -51,4 +51,10 @@ public class ProfitMerchantServiceImpl implements ProfitMerchantService {
 		return profitMerchantDAO.insertBatch(list);
 	}
 
+	@Override
+	public String getMerchantTotalProfit(ProfitMerchantDomain profitMerchantDomain) {
+		// TODO Auto-generated method stub
+		return profitMerchantDAO.getMerchantTotalProfit(profitMerchantDomain);
+	}
+
 }

@@ -42,9 +42,13 @@ public class ProfitMerchantDAO extends AbstractTransactionDAOSupport implements 
 		// TODO Auto-generated method stub
 		return getPersistanceManager().update(getNamespace() + ".update", profitMerchantDomain);
 	}
-	
+
 	public int insertBatch(List<ProfitMerchantDomain> list) {
 		return getPersistanceManager(ExecutorType.BATCH).insertList(getNamespace() + ".insert", list);
+	}
+
+	public String getMerchantTotalProfit(ProfitMerchantDomain profitMerchantDomain) {
+		return getPersistanceManager().load(getNamespace() + ".getMerchantTotalProfit", profitMerchantDomain);
 	}
 
 }

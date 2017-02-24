@@ -21,6 +21,8 @@ public interface MerchantService extends BaseService<MerchantDomain> {
 
 	public int updatePool(MerchantDomain merchantDomain);
 
+	public List<MerchantDomain> findMerchantByUser(String account);
+
 	public List<MerchantDomain> getVirtualMerchants(MerchantDomain merchantDomain);
 
 	public MerchantDomain getVirtualMerchant(MerchantDomain merchantDomain);

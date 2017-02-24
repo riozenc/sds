@@ -76,7 +76,7 @@ public class OrderAction extends BaseAction {
 		} else {
 			return JSONUtil.toJsonString(new JsonResult(JsonResult.ERROR, remoteResult.getMsg()));
 		}
-		return JSONUtil.toJsonString(new JsonResult(JsonResult.SUCCESS, remoteResult.getQRcodeURL()));
+		return JSONUtil.toJsonString(new JsonResult(JsonResult.SUCCESS, JSONUtil.toJsonString(remoteResult)));
 	}
 
 	/**

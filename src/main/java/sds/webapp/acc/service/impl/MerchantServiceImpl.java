@@ -114,4 +114,10 @@ public class MerchantServiceImpl implements MerchantService {
 		return merchantDAO.getVirtualMerchant(merchantDomain);
 	}
 
+	@Override
+	public List<MerchantDomain> findMerchantByUser(String account) {
+		// TODO Auto-generated method stub
+		return merchantDAO.findMerchantByUser(account);
+	}
+
 }
