@@ -5,6 +5,7 @@ import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.context.annotation.Scope;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -31,6 +32,7 @@ import sds.webapp.acc.service.UserService;
 
 @ControllerAdvice
 @RequestMapping("merchant")
+@Scope("prototype")
 public class MerchantAction extends BaseAction {
 
 	@Autowired
@@ -49,6 +51,20 @@ public class MerchantAction extends BaseAction {
 	@RequestMapping(params = "type=getVerificationCode")
 	public String getVerificationCode(String account) {
 		return JSONUtil.toJsonString(HttpSender.send(account));
+	}
+
+	@ResponseBody
+	@RequestMapping(params = "type=resetPassword")
+	public String resetPassword(String account, String password, String code) {
+		String vc = SmsCache.get(account);
+		if (vc == null || !vc.equals(code)) {
+			return JSONUtil.toJsonString(new JsonResult(JsonResult.ERROR, "验证码错误."));
+		}
+		MerchantDomain merchantDomain = new MerchantDomain();
+		merchantDomain.setAccount(account);
+		merchantDomain.setPassword(password);
+
+		return update(merchantDomain);
 	}
 
 	/**
@@ -228,6 +244,8 @@ public class MerchantAction extends BaseAction {
 	/**
 	 * 审核商户
 	 * 
+	 * params:id
+	 * 
 	 * @param merchantDomain
 	 * @return
 	 * @throws Exception
@@ -237,28 +255,15 @@ public class MerchantAction extends BaseAction {
 	public String checkMerchant(MerchantDomain merchantDomain) throws Exception {
 		UserDomain userDomain = UserUtils.getPrincipal().getUserDomain();
 
-		merchantDomain = merchantService.findByKey(merchantDomain);
-		PoolBean bean = null;
+		// merchantDomain = merchantService.findByKey(merchantDomain);
+
 		try {
-			// 真实商户绑定虚拟账户
-			bean = MerchantPool.getInstance().getPoolBean();
-			// 为分配的虚拟账号进行验卡
-			RemoteResult remoteResult = RemoteUtils.validCard(merchantDomain, bean.getObject());
-			if (RemoteUtils.resultProcess(remoteResult)) {
-				bean.binding(merchantDomain);// 绑定处理
-				merchantService.updatePool(bean.getObject());
-				if (merchantService.updatePoolRel(bean.getRealObject().getId(), bean.getObject().getId()) == 0) {
-					merchantService.insertPoolRel(bean.getRealObject().getId(), bean.getObject().getId());
-				}
-				System.out.println("绑定成功.");
-			} else {
-				return JSONUtil.toJsonString(new JsonResult(JsonResult.ERROR, remoteResult.getMsg()));
-			}
+			MerchantDomain vm = merchantService.getVirtualMerchant(merchantDomain);
 
 			// 同步费率
-			bean.getObject().setWxRate(userDomain.getUserArate());
-			bean.getObject().setAliRate(userDomain.getUserArate());
-			remoteResult = RemoteUtils.process(bean.getObject(), REMOTE_TYPE.CHANGE_RATE);
+			vm.setWxRate(userDomain.getUserArate());
+			vm.setAliRate(userDomain.getUserArate());
+			RemoteResult remoteResult = RemoteUtils.process(vm, REMOTE_TYPE.CHANGE_RATE);
 			if (RemoteUtils.resultProcess(remoteResult)) {
 				merchantDomain.setWxRate(userDomain.getUserArate());
 				merchantDomain.setAliRate(userDomain.getUserWrate());
@@ -282,7 +287,6 @@ public class MerchantAction extends BaseAction {
 			// bean.binding(merchantDomain);
 			// }
 		} catch (Exception e) {
-			bean.recover();
 			e.printStackTrace();
 			return JSONUtil.toJsonString(new JsonResult(JsonResult.ERROR, e.getMessage()));
 		}
@@ -339,22 +343,53 @@ public class MerchantAction extends BaseAction {
 	public String validCard(MerchantDomain merchantDomain) throws Exception {
 		MerchantDomain temp = UserUtils.getPrincipal().getMerchantDomain();
 		merchantDomain.setId(temp.getId());
+		merchantDomain.setStatus(1);
 
-		PoolBean bean = MerchantPool.getInstance().getPoolBean();
-		RemoteResult remoteResult = RemoteUtils.validCard(merchantDomain, bean.getObject());
-		bean.recover();// 回收
+		// merchantDomain.setId(3);
 
-		if (RemoteUtils.resultProcess(remoteResult)) {
-			merchantDomain.setStatus(1);// 提交验卡信息待审核
-			int i = merchantService.update(merchantDomain);
-			if (i > 0) {
+		// 真实商户绑定虚拟账户
+		PoolBean bean = null;
+		RemoteResult remoteResult = null;
+		try {
+			bean = MerchantPool.getInstance().getPoolBean();
+
+			// 为分配的虚拟账号进行验卡
+			remoteResult = RemoteUtils.validCard(merchantDomain, bean.getObject());
+			if (RemoteUtils.resultProcess(remoteResult)) {
+				// 绑定成功
+				bean.binding(merchantDomain);// 绑定处理
+				// if
+				// (merchantService.updatePoolRel(bean.getRealObject().getId(),
+				// bean.getObject().getId()) == 0) {
+				// merchantService.insertPoolRel(bean.getRealObject().getId(),
+				// bean.getObject().getId());
+				// }
+				// merchantService.update(merchantDomain);
+				// merchantService.updatePool(bean.getObject());
+				// int i = merchantService.updateRV(bean.getRealObject(),
+				// bean.getObject());
+
+				merchantService.validCard(merchantDomain, bean.getObject());
+
 				return JSONUtil.toJsonString(new JsonResult(JsonResult.SUCCESS, "验卡成功."));
+				// if (i > 0) {
+				// } else {
+				// return JSONUtil.toJsonString(new JsonResult(JsonResult.ERROR,
+				// "更新验卡数据失败."));
+				// }
 			} else {
-				return JSONUtil.toJsonString(new JsonResult(JsonResult.ERROR, "更新验卡数据失败."));
+				// 绑定失败
+				bean.recover();
+				return JSONUtil.toJsonString(new JsonResult(JsonResult.ERROR,
+						remoteResult.getMsg() + "[" + remoteResult.getRespInfo() + "]"));
 			}
-		} else {
-			return JSONUtil.toJsonString(
-					new JsonResult(JsonResult.ERROR, remoteResult.getMsg() + "[" + remoteResult.getRespInfo() + "]"));
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			if (bean != null) {
+				bean.recover();
+			}
+			e.printStackTrace();
+			return JSONUtil.toJsonString(new JsonResult(JsonResult.ERROR, "更新验卡数据失败(" + e + ")."));
 		}
 	}
 }

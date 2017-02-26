@@ -88,9 +88,17 @@ public class ProfitServiceImpl implements ProfitService {
 	public int profitCount(List<ProfitUserDomain> profitUserDomains, List<ProfitMerchantDomain> profitMerchantDomains,
 			List<ProfitDomain> profitDomains) {
 		// TODO Auto-generated method stub
-		profitUserDAO.insertBatch(profitUserDomains);
-		profitMerchantDAO.insertBatch(profitMerchantDomains);
-		return profitDAO.profitCountComplete(profitDomains);
+		int sum=0;
+		if(!profitUserDomains.isEmpty()){			
+			sum+=profitUserDAO.insertBatch(profitUserDomains);
+		}
+		if(!profitMerchantDomains.isEmpty()){			
+			sum+=profitMerchantDAO.insertBatch(profitMerchantDomains);
+		}
+		if(!profitDomains.isEmpty()){
+			sum+=profitDAO.profitCountComplete(profitDomains);
+		}
+		return sum;
 	}
 
 	@Override

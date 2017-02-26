@@ -77,6 +77,34 @@ public class MerchantServiceImpl implements MerchantService {
 		return merchantDAO.checkRate(id);
 	}
 
+	/**
+	 * 融入validCard方法中，暂时未使用
+	 */
+	@Override
+	public int updateRV(MerchantDomain real, MerchantDomain virtual) {
+		// TODO Auto-generated method stub
+		merchantDAO.update(real);
+		return merchantDAO.updatePool(virtual);
+	}
+
+	@Override
+	public List<MerchantDomain> getVirtualMerchants(MerchantDomain merchantDomain) {
+		// TODO Auto-generated method stub
+		return merchantDAO.getVirtualMerchants(merchantDomain);
+	}
+
+	@Override
+	public MerchantDomain getVirtualMerchant(MerchantDomain merchantDomain) {
+		// TODO Auto-generated method stub
+		return merchantDAO.getVirtualMerchant(merchantDomain);
+	}
+
+	@Override
+	public List<MerchantDomain> findMerchantByUser(String account) {
+		// TODO Auto-generated method stub
+		return merchantDAO.findMerchantByUser(account);
+	}
+
 	@Override
 	public int updatePoolRel(Integer merchantId, Integer poolId) {
 		// TODO Auto-generated method stub
@@ -102,22 +130,17 @@ public class MerchantServiceImpl implements MerchantService {
 		return merchantDAO.updatePool(merchantDomain);
 	}
 
-	@Override
-	public List<MerchantDomain> getVirtualMerchants(MerchantDomain merchantDomain) {
-		// TODO Auto-generated method stub
-		return merchantDAO.getVirtualMerchants(merchantDomain);
-	}
+	public void validCard(MerchantDomain real, MerchantDomain virtual) {
+		merchantDAO.relievePoolRel(real.getId());
 
-	@Override
-	public MerchantDomain getVirtualMerchant(MerchantDomain merchantDomain) {
-		// TODO Auto-generated method stub
-		return merchantDAO.getVirtualMerchant(merchantDomain);
-	}
+		Map<String, Integer> map = new HashMap<>();
+		map.put("merchantId", real.getId());
+		map.put("poolId", virtual.getId());
+		map.put("status", 1);
+		merchantDAO.insertPoolRel(map);
 
-	@Override
-	public List<MerchantDomain> findMerchantByUser(String account) {
-		// TODO Auto-generated method stub
-		return merchantDAO.findMerchantByUser(account);
+		merchantDAO.update(real);
+		merchantDAO.updatePool(virtual);
 	}
 
 }

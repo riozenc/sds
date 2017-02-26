@@ -93,10 +93,12 @@ public class PoolState {
 		if (!activeBeans.isEmpty()) {
 			LogUtil.getLogger(LOG_TYPE.OTHER).info("* * * * 同步已使用数据(" + activeBeans.size() + ") * * * *");
 			for (PoolBean temp : activeBeans) {
-				merchantService.updatePool(temp.getObject());
-				if (merchantService.updatePoolRel(temp.getRealObject().getId(), temp.getObject().getId()) == 0) {
-					merchantService.insertPoolRel(temp.getRealObject().getId(), temp.getObject().getId());
-				}
+//				merchantService.validCard(temp.getRealObject(), temp.getObject());绑卡
+				
+//				merchantService.updatePool(temp.getObject());
+//				if (merchantService.updatePoolRel(temp.getRealObject().getId(), temp.getObject().getId()) == 0) {
+//					merchantService.insertPoolRel(temp.getRealObject().getId(), temp.getObject().getId());
+//				}
 			}
 			activeBeans.clear();
 			activeBeansMap.clear();

@@ -9,6 +9,7 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.context.annotation.Scope;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -30,6 +31,7 @@ import sds.webapp.acc.service.UserService;
  */
 @ControllerAdvice
 @RequestMapping("user")
+@Scope("prototype")
 public class UserAction extends BaseAction {
 
 	@Autowired

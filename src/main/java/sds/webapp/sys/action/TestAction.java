@@ -3,6 +3,7 @@ package sds.webapp.sys.action;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
+import org.springframework.context.annotation.Scope;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -13,6 +14,7 @@ import sds.webapp.acc.domain.MerchantDomain;
 
 @ControllerAdvice
 @RequestMapping("test")
+@Scope("prototype")
 public class TestAction {
 
 	@RequestMapping(params = "type=test")

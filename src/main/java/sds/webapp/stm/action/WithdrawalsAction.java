@@ -9,6 +9,7 @@ import java.util.Date;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.context.annotation.Scope;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -31,6 +32,7 @@ import sds.webapp.stm.service.WithdrawalsService;
  */
 @ControllerAdvice
 @RequestMapping("withdrawals")
+@Scope("prototype")
 public class WithdrawalsAction extends BaseAction {
 
 	@Autowired

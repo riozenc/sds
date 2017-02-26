@@ -53,7 +53,7 @@ public class ConfAction {
 		while (!FLAG) {
 			if ((System.currentTimeMillis() - time) > 10 * 1000) {
 				// 等待10秒
-				throw new Exception("获取参数超时.");
+				throw new Exception("获取参数超时("+type+").");
 			}
 		}
 		return MAP.get(type);

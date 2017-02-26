@@ -104,8 +104,7 @@ public class RemoteHandler {
 	 * @throws Exception
 	 */
 	public static RemoteResult validCard(final MerchantDomain merchantDomain) throws Exception {
-		String orderCode = "tb_verifyInfo";
-
+		System.out.println(JSONUtil.toJsonString(merchantDomain));
 		VerifyCardDomain verifyCardDomain = new VerifyCardDomain();
 		verifyCardDomain.setCmer(Base64.encodeToString(merchantDomain.getCmer()));
 		verifyCardDomain.setCmer_sort(Base64.encodeToString(merchantDomain.getCmerSort()));
@@ -128,7 +127,8 @@ public class RemoteHandler {
 		verifyCardDomain.setCert_no(merchantDomain.getCertNo());// 证件号
 		verifyCardDomain.setMobile(merchantDomain.getMobile());// 手机号
 
-		return encryptionProcess(orderCode, merchantDomain.getAccount(), merchantDomain.getPrivatekey(),
+		System.out.println(JSONUtil.toJsonString(verifyCardDomain));
+		return encryptionProcess("tb_verifyInfo", merchantDomain.getAccount(), merchantDomain.getPrivatekey(),
 				verifyCardDomain, false);
 
 	}
@@ -138,13 +138,12 @@ public class RemoteHandler {
 	 */
 	static RemoteResult changeRate(MerchantDomain merchantDomain) throws Exception {
 
-		String orderCode = "xy_ChangeRate";
 		String privateKey = merchantDomain.getPrivatekey();
 
 		ChangeRateDomain changeRateDomain = new ChangeRateDomain();
 		changeRateDomain.setWx_rate(formatDouble(merchantDomain.getWxRate()));
 		changeRateDomain.setAli_rate(formatDouble(merchantDomain.getAliRate()));
-		return encryptionProcess(orderCode, merchantDomain.getAccount(), privateKey, changeRateDomain, true);
+		return encryptionProcess("xy_ChangeRate", merchantDomain.getAccount(), privateKey, changeRateDomain, true);
 	}
 
 	/**
@@ -213,10 +212,9 @@ public class RemoteHandler {
 	 * @throws Exception
 	 */
 	public static RemoteResult getACodePay(String account, String privateKey) throws Exception {
-		String orderCode = "tb_GetACodePay";
 
 		Map<String, String> jsonMap = new HashMap<>();
-		jsonMap.put("orderCode", orderCode);
+		jsonMap.put("orderCode", "tb_GetACodePay");
 		jsonMap.put("account", account);// 手机号
 		jsonMap.put("password", "123123");
 

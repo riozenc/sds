@@ -9,6 +9,7 @@ import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.context.annotation.Scope;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -43,6 +44,7 @@ import sds.webapp.stm.util.SettlementUtil;
  */
 @ControllerAdvice
 @RequestMapping("profit")
+@Scope("prototype")
 public class ProfitAction extends BaseAction {
 
 	@Autowired

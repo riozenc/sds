@@ -10,6 +10,9 @@
 			<if test="id !=null">
 				and ID = #{id}
 			</if>
+			<if test="orderId !=null">
+				and ORDER_ID = #{orderId}
+			</if>
 		</where>
 	</select>
 	<select id="findByWhere" parameterType="OrderDomain" resultType="OrderDomain"
@@ -66,9 +69,9 @@
 	</select>
 	<insert id="insert" parameterType="OrderDomain" flushCache="true">
 		insert into
-		fm_order(ID,ORDER_ID,ORDER_NO,CHANNEL_CODE,RESP_CODE,RESP_INFO,AMOUNT,DATE,ACCOUNT,CODE_URL,REMARK,RETURN_CODE,STATUS)
+		fm_order(ID,ORDER_ID,ORDER_NO,CHANNEL_CODE,RESP_CODE,RESP_INFO,AMOUNT,DATE,ACCOUNT,PROXY_ACCOUNT,CODE_URL,REMARK,RETURN_CODE,STATUS)
 		values
-		(#{id},#{orderId},#{orderNo},#{channelCode},#{respCode},#{respInfo},#{amount},#{date},#{account},#{codeUrl},#{remark},#{returnCode},#{status})
+		(#{id},#{orderId},#{orderNo},#{channelCode},#{respCode},#{respInfo},#{amount},#{date},#{account},#{proxyAccount},#{codeUrl},#{remark},#{returnCode},#{status})
 	</insert>
 	<update id="update" parameterType="OrderDomain" flushCache="true">
 		update fm_order

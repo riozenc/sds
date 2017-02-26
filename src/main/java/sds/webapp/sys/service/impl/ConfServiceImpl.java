@@ -5,6 +5,7 @@ import java.util.List;
 import com.riozenc.quicktool.annotation.TransactionDAO;
 import com.riozenc.quicktool.annotation.TransactionService;
 
+import sds.webapp.acc.dao.UserDAO;
 import sds.webapp.sys.dao.ConfDAO;
 import sds.webapp.sys.domain.ConfDomain;
 import sds.webapp.sys.service.ConfService;
@@ -14,6 +15,9 @@ public class ConfServiceImpl implements ConfService {
 
 	@TransactionDAO
 	private ConfDAO confDAO;
+	
+	@TransactionDAO
+	private UserDAO userDAO;
 
 	@Override
 	public int insert(ConfDomain t) {

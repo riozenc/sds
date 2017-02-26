@@ -5,6 +5,7 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.context.annotation.Scope;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -27,6 +28,7 @@ import sds.webapp.stm.service.ProfitService;
 
 @ControllerAdvice
 @RequestMapping("order")
+@Scope("prototype")
 public class OrderAction extends BaseAction {
 
 	@Autowired
@@ -65,10 +67,6 @@ public class OrderAction extends BaseAction {
 			orderDomain.setDate(new Date());
 			orderDomain.setAccount(UserUtils.getPrincipal().getUserId());
 			orderDomain.setProxyAccount(vm.getAccount());
-			// orderDomain.setProxyAccount(
-			// orderDomain.getAccount().equals(merchantDomain.getAccount()) ?
-			// null : merchantDomain.getAccount());
-			orderDomain.setProxyAccount(merchantDomain.getAccount());
 			orderDomain.setCodeUrl(remoteResult.getQRcodeURL());
 			orderDomain.setRemark(info);
 			orderDomain.setStatus(0);// 0：未查询
@@ -156,15 +154,20 @@ public class OrderAction extends BaseAction {
 	@RequestMapping(params = "type=orderConfirmCallback")
 	public void orderConfirmCallback(OrderDomain orderDomain, String WXOrderNo) {
 
+		OrderDomain order = orderService.findByKey(orderDomain);
 		try {
-			Thread.sleep(2 * 1000L);
-			MerchantDomain merchantDomain = UserUtils.getPrincipal().getMerchantDomain();
+			// Thread.sleep(2 * 1000L);
+			MerchantDomain merchantDomain = new MerchantDomain();
+			merchantDomain.setAccount(order.getAccount());
+			merchantDomain = merchantService.findByKey(merchantDomain);
+
 			MerchantDomain vm = merchantService.getVirtualMerchant(merchantDomain);
 
 			RemoteResult remoteResult = RemoteUtils.orderConfirm(vm, orderDomain.getOrderId());
 			if (RemoteUtils.resultProcess(remoteResult)) {
 				// 更新
 				orderDomain.setStatus(1);
+				// profitService.profit(order);
 			} else {
 				orderDomain.setStatus(2);
 			}
@@ -177,9 +180,12 @@ public class OrderAction extends BaseAction {
 			e.printStackTrace();
 		}
 
-		System.out.println(profitService.profit(orderDomain));
-		// 日志记录
-		LogUtil.getLogger(LOG_TYPE.OTHER).info(orderDomain.getOrderId() + "交易成功[" + WXOrderNo + "]");
+		int i = profitService.profit(order);// TEST
+		if (i > 0) {
+			LogUtil.getLogger(LOG_TYPE.OTHER).info(orderDomain.getOrderId() + "交易成功[" + WXOrderNo + "]");
+		} else {
+			LogUtil.getLogger(LOG_TYPE.OTHER).info(orderDomain.getOrderId() + "分润失败[" + WXOrderNo + "]");
+		}
 	}
 
 	/**
@@ -196,16 +202,22 @@ public class OrderAction extends BaseAction {
 		MerchantDomain vm = merchantService.getVirtualMerchant(merchantDomain);
 
 		RemoteResult remoteResult = RemoteUtils.orderConfirm(vm, orderDomain.getOrderId());
+		String msg = "";
+		int code = 0;
 		if (RemoteUtils.resultProcess(remoteResult)) {
 			// 更新
 			orderDomain.setStatus(1);
+			msg = msg + "交易成功";
+			code = 200;
 		} else {
 			orderDomain.setStatus(2);
+			msg = msg + remoteResult.getRespInfo();
+			code = 300;
 		}
 		orderDomain.setRespCode(remoteResult.getRespCode());
 		orderDomain.setRespInfo(remoteResult.getRespInfo());
 		orderService.update(orderDomain);
-		return JSONUtil.toJsonString(new JsonResult(JsonResult.SUCCESS, "查询成功."));
+		return JSONUtil.toJsonString(new JsonResult(code, msg));
 	}
 
 	@ResponseBody

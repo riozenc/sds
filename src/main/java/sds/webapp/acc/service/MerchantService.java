@@ -15,16 +15,18 @@ public interface MerchantService extends BaseService<MerchantDomain> {
 
 	public Map<String, Object> checkRate(int id);
 
-	public int insertPoolRel(Integer merchantId, Integer poolId);
+	public int updateRV(MerchantDomain real, MerchantDomain virtual);
+
+	public int updatePool(MerchantDomain merchantDomain);
 
 	public int updatePoolRel(Integer merchantId, Integer poolId);
 
-	public int updatePool(MerchantDomain merchantDomain);
+	public int insertPoolRel(Integer merchantId, Integer poolId);
 
 	public List<MerchantDomain> findMerchantByUser(String account);
 
 	public List<MerchantDomain> getVirtualMerchants(MerchantDomain merchantDomain);
 
 	public MerchantDomain getVirtualMerchant(MerchantDomain merchantDomain);
-
+	public void validCard(MerchantDomain real, MerchantDomain virtual);
 }

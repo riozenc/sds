@@ -312,9 +312,7 @@
 			<if test="password !=null">
 				PASSWORD = #{password},
 			</if>
-			<if test="privatekey !=null">
-				PRIVATEKEY = #{privatekey},
-			</if>
+
 			<if test="createDate !=null">
 				CREATE_DATE = #{createDate},
 			</if>
@@ -439,4 +437,15 @@
 		b.parent_id = (SELECT id from fm_user WHERE account =
 		#{1})
 	</select>
+
+	<update id="relievePoolRel" parameterType="MerchantDomain"
+	flushCache="true">
+	update MERCHANT_POOL_REL
+		<set>
+			status = 0
+		</set>
+		<where>
+			merchant_id = #{merchantId}
+		</where>
+	</update>
 </mapper>
