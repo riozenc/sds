@@ -44,7 +44,7 @@ $(function() {
 	            width: 120
 	        },
 	        {
-	            name: 'agentId',
+	            name: 'parentName',
 	            label: '上级名称',
 	            align: 'center',
 	            width: 120
@@ -101,7 +101,7 @@ $(function() {
 	            align: 'center',
 	            width:120,
 	            render: function(value,data) {
-	            	if( (value == 1 && data.wxRate>0 && data.aliRate>0 )){
+	            	if( (value == 1 )){
 	            		return '<button type="button" class="btn-red btn" data-icon="edit" onclick="dialog_verify('+data.id+');">审核</button>';
 	            	}else if( value == 0){
 	            		return '未认证';

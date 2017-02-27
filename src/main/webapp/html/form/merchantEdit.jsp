@@ -3,7 +3,7 @@
 <script type="text/javascript">
 function save(){
 	BJUI.ajax('ajaxform', {
-	    url: 'merchant.do?type=update',
+	    url: 'merchant.do?type=updateRate',
 	    form: $('#j_merchantEdit_form'),
 	    validate: true,
 	    loadingmask: true,

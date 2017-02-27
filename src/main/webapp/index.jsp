@@ -132,6 +132,25 @@ function bjui_index_exchange() {
     $('#bjui-navbar').find('> div').attr('class', bjui_index_container)
     $('#bjui-body-box').find('> div').attr('class', bjui_index_container)
 }
+
+//退出登录
+function outLogin(){
+	$.ajax({
+		cache : false,
+		type : "POST",
+		url : "loginAction/logout",
+		dataType : "json",
+		error : function(request) {
+			alert("Connection error");
+			return false;
+		},
+		success : function(data) {
+			window.location.href="login.jsp";
+			return false;	
+		}
+	});
+}
+
 </script>
 <!-- highlight && ZeroClipboard -->
 <link href="assets/prettify.css" rel="stylesheet">
@@ -159,7 +178,7 @@ function bjui_index_exchange() {
                     <li><a href="#">账号：BJUI</a></li>
                     <li><a href="#">角色：管理员</a></li>
                     <li><a href="changepassword.html" data-toggle="dialog" data-id="sys_user_changepass" data-mask="true" data-width="400" data-height="300">修改密码</a></li>
-                    <li><a href="login.jsp" style="font-weight:bold;">&nbsp;<i class="fa fa-power-off"></i> 注销登陆</a></li>
+                    <li><a href="javascript:;"  onclick="outLogin()" style="font-weight:bold;">&nbsp;<i class="fa fa-power-off"></i> 注销登陆</a></li>
                     <li class="dropdown"><a href="#" class="dropdown-toggle bjui-fonts-tit" data-toggle="dropdown" title="更改字号"><i class="fa fa-font"></i> 大</a>
                         <ul class="dropdown-menu" role="menu" id="bjui-fonts">
                             <li><a href="javascript:;" class="bjui-font-a" data-toggle="fonts"><i class="fa fa-font"></i> 特大</a></li>

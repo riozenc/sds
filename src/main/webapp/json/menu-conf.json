@@ -1,6 +1,7 @@
 [
     {"name":"系统设置", "children":[
-        {"id":"profitCount", "name":"分润统计", "target":"navtab", "url":"html/datagrid/profitCount.jsp"}
+        {"id":"profitCount", "name":"分润统计", "target":"navtab", "url":"html/datagrid/profitCount.jsp"},
+        {"id":"profitMyself", "name":"成本费率", "target":"navtab", "url":"html/datagrid/profitMyself.jsp"}
        
     ]}
 ]
