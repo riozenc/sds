@@ -429,7 +429,7 @@
 	<select id="findMerchantByUser" parameterType="MerchantDomain" resultType="MerchantDomain"
 		useCache="true">
 		SELECT
-		a.*
+		a.*,(SELECT c.full_name FROM fm_user c where c.id=a.agent_id) as parent_name
 		FROM
 		fm_merchant a LEFT JOIN ( SELECT id,parent_id,
 		@pathnodes:= IF( parent_id =-1,',0', CONCAT(

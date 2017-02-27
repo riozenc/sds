@@ -240,7 +240,7 @@
 		</where>
 	</update>
 
-	<select id="getTotalAmountByOrder" parameterType="OrderDomain">
+	<select id="getTotalAmountByOrder" parameterType="OrderDomain"  resultType="String">
 		SELECT sum(amount) as amount FROM fm_order
 		<where>
 			<if test="account !=null">
