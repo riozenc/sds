@@ -44,7 +44,7 @@ public class LoginAction {
 				return loginFail("IncorrectCredentialsException", httpServletRequest, httpServletResponse);
 			}
 
-			return JSONUtil.toJsonString(new JsonResult(JsonResult.SUCCESS, "登录成功,欢迎" + principal.getUserName()==null?"": principal.getUserName() + "!"));
+			return JSONUtil.toJsonString(new JsonResult(JsonResult.SUCCESS, principal.getUserName()));
 
 		} else {
 			// 失败

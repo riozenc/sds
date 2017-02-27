@@ -128,6 +128,13 @@ public class UserAction extends BaseAction {
 		}
 	}
 
+	@ResponseBody
+	@RequestMapping(params = "type=findUserByKey")
+	public String findMeInfo() {
+		UserDomain userDomain = UserUtils.getPrincipal().getUserDomain();
+		return JSONUtil.toJsonString(userService.findByKey(userDomain));
+	}
+
 	/**
 	 * 查询指定代理商信息
 	 * 
