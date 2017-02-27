@@ -26,6 +26,9 @@ public class WithdrawalsDomain extends Page<WithdrawalsDomain> implements Mybati
 	private Date date;
 	private String operator;
 	private Integer status;
+	
+	private Date startDate;
+	private Date endDate;
 
 	public Integer getId() {
 		return id;
@@ -75,4 +78,21 @@ public class WithdrawalsDomain extends Page<WithdrawalsDomain> implements Mybati
 		this.status = status;
 	}
 
+	public Date getStartDate() {
+		return startDate;
+	}
+
+	public void setStartDate(Date startDate) {
+		this.startDate = startDate;
+	}
+
+	public Date getEndDate() {
+		return endDate;
+	}
+
+	public void setEndDate(Date endDate) {
+		this.endDate = endDate;
+	}
+
+	
 }
