@@ -83,4 +83,10 @@ public class UserServiceImpl implements UserService {
 		return userDAO.getAllCheckedUser();
 	}
 
+	@Override
+	public List<UserDomain> findSubUserList(UserDomain userDomain) {
+		// TODO Auto-generated method stub
+		return userDAO.findSubUserList(userDomain);
+	}
+
 }

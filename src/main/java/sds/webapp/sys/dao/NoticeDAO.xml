@@ -3,7 +3,7 @@
 <mapper namespace="sds.webapp.sys.dao.NoticeDAO">
 	<select id="findByKey" parameterType="NoticeDomain" resultType="NoticeDomain"
 		useCache="true">
-		select ID,MESSAGE,DATE,OPERATOR,REMARK,STATUS from fm_notice
+		select ID,TITLE,MESSAGE,DATE,OPERATOR,REMARK,STATUS from fm_notice
 		<where>
 			and ID = #{id}
 
@@ -11,10 +11,13 @@
 	</select>
 	<select id="findByWhere" parameterType="NoticeDomain"
 		resultType="NoticeDomain" useCache="true">
-		select ID,MESSAGE,DATE,OPERATOR,REMARK,STATUS from fm_notice
+		select ID,TITLE,MESSAGE,DATE,OPERATOR,REMARK,STATUS from fm_notice
 		<where>
 			<if test="id !=null">
 				and ID = #{id}
+			</if>
+			<if test="title !=null">
+				and TITLE = #{title}
 			</if>
 			<if test="message !=null">
 				and MESSAGE = #{message}
@@ -34,12 +37,16 @@
 		</where>
 	</select>
 	<insert id="insert" parameterType="NoticeDomain" flushCache="true">
-		insert into fm_notice(ID,MESSAGE,DATE,OPERATOR,REMARK,STATUS) values
-		(#{id},#{message},#{date},#{operator},#{remark},#{status})
+		insert into fm_notice(ID,TITLE,MESSAGE,DATE,OPERATOR,REMARK,STATUS)
+		values
+		(#{id},#{title},#{message},#{date},#{operator},#{remark},#{status})
 	</insert>
 	<update id="update" parameterType="NoticeDomain" flushCache="true">
 		update fm_notice
 		<set>
+			<if test="title !=null">
+				TITLE = #{title},
+			</if>
 			<if test="message !=null">
 				MESSAGE = #{message},
 			</if>

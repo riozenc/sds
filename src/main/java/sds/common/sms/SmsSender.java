@@ -1,4 +1,9 @@
-﻿package sds.common.sms;
+/**
+ * Title:SmsSender.java
+ * Author:riozenc
+ * Datetime:2017年2月27日 下午2:29:50
+**/
+package sds.common.sms;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -15,46 +20,23 @@ import org.apache.http.impl.client.HttpClients;
 import org.apache.http.message.BasicNameValuePair;
 import org.apache.http.util.EntityUtils;
 
-/**
- * 
- * @param url
- *            应用地址，类似于http://ip:port/msg/
- * @param un
- *            账号
- * @param pw
- *            密码
- * @param phone
- *            手机号码，多个号码使用","分割
- * @param msg
- *            短信内容
- * @param rd
- *            是否需要状态报告，需要1，不需要0
- * @return 返回值定义参见HTTP协议文档
- * @throws Exception
- */
-public class HttpSender {
+public class SmsSender {
+
+	private final static String url = "http://sms.253.com/msg/send";
+	private final static String un = "N5030495";
+	private final static String pw = "8424888bB";
+	private final static String msg = "【253云通讯】您好，你的验证码是";
 
 	public static String send(String account) {
-		String url = "http://sms.253.com/msg/send";// 应用地址
-		String un = "N5030495";// 账号
-		String pw = "8424888bB";// 密码
-		String phone = account;// 手机号码，多个号码使用","分割
-		String code = getRandom();
-		String msg = "【253云通讯】您好，你的验证码是" + code;// 短信内容
-		String rd = "1";// 是否需要状态报告，需要1，不需要0
-		String ex = null;// 扩展码
-
 		try {
-			String returnString = HttpSender.batchSend(url, un, pw, phone, msg, rd, ex);
+			String code = getRandom();
+			String returnString = SmsSender.batchSend(url, un, pw, account, msg, "1", null);
 			SmsCache.put(account, code);
 			return returnString;
-			// TODO 处理返回值,参见HTTP协议文档
 		} catch (Exception e) {
-			// TODO 处理异常
 			e.printStackTrace();
 			return null;
 		}
-
 	}
 
 	public static String batchSend(String url, String un, String pw, String phone, String msg, String rd, String ex)
@@ -81,7 +63,7 @@ public class HttpSender {
 			CloseableHttpResponse response = httpClient.execute(httpGet);
 			// 得到响应体
 			HttpEntity entity = response.getEntity();
-			String jsonStr = EntityUtils.toString(entity);// , "utf-8");
+			String jsonStr = EntityUtils.toString(entity, Consts.UTF_8);
 			if (response.getStatusLine().getStatusCode() == HttpStatus.SC_OK) {
 				return jsonStr;
 			} else {
@@ -93,11 +75,6 @@ public class HttpSender {
 	}
 
 	private static String getRandom() {
-		return Integer.toString((int)((Math.random() * 9 + 1) * 100000));
+		return Integer.toString((int) ((Math.random() * 9 + 1) * 100000));
 	}
-	
-	public static void main(String[] args) {
-		System.out.println(getRandom());
-	}
-
 }

@@ -18,4 +18,6 @@ public interface UserService extends BaseService<UserDomain> {
 	public int updateRate(UserDomain userDomain);
 	
 	public List<UserDomain> getAllCheckedUser();
+	
+	public List<UserDomain> findSubUserList(UserDomain userDomain);
 }

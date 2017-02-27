@@ -240,6 +240,25 @@
 		</where>
 	</update>
 
+	<select id="getTotalAmountByOrder" parameterType="OrderDomain">
+		SELECT sum(amount) as amount FROM fm_order
+		<where>
+			<if test="account !=null">
+				and ACCOUNT = #{account}
+			</if>
+			<if test="channelCode !=null">
+				and CHANNEL_CODE = #{channelCode}
+			</if>
+			<if test="startDate !=null">
+				and DATE_FORMAT(DATE, '%Y-%m-%d') &gt;=
+				DATE_FORMAT(#{startDate}, '%Y-%m-%d')
+			</if>
+			<if test="endDate !=null">
+				and DATE_FORMAT(DATE, '%Y-%m-%d') &lt;=
+				DATE_FORMAT(#{endDate}, '%Y-%m-%d')
+			</if>
+		</where>
+	</select>
 
 
 </mapper>

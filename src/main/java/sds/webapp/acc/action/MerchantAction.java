@@ -22,8 +22,8 @@ import sds.common.remote.RemoteResult;
 import sds.common.remote.RemoteUtils;
 import sds.common.remote.RemoteUtils.REMOTE_TYPE;
 import sds.common.security.util.UserUtils;
-import sds.common.sms.HttpSender;
 import sds.common.sms.SmsCache;
+import sds.common.sms.SmsSender;
 import sds.common.webapp.base.action.BaseAction;
 import sds.webapp.acc.domain.MerchantDomain;
 import sds.webapp.acc.domain.UserDomain;
@@ -50,7 +50,7 @@ public class MerchantAction extends BaseAction {
 	@ResponseBody
 	@RequestMapping(params = "type=getVerificationCode")
 	public String getVerificationCode(String account) {
-		return JSONUtil.toJsonString(HttpSender.send(account));
+		return JSONUtil.toJsonString(SmsSender.send(account));
 	}
 
 	@ResponseBody
@@ -176,8 +176,10 @@ public class MerchantAction extends BaseAction {
 	@ResponseBody
 	@RequestMapping(params = "type=findMerchantByWhere")
 	public String findMerchantByWhere(MerchantDomain merchantDomain) {
-		UserDomain userDomain = UserUtils.getPrincipal().getUserDomain();
-		List<MerchantDomain> list = merchantService.findMerchantByUser(userDomain.getAccount());
+		
+		//此ID为userID
+		merchantDomain.setId(UserUtils.getPrincipal().getUserDomain().getId());
+		List<MerchantDomain> list = merchantService.findMerchantByUser(merchantDomain);
 		return JSONUtil.toJsonString(new JsonGrid(merchantDomain, list));
 	}
 

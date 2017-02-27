@@ -23,7 +23,7 @@ public interface MerchantService extends BaseService<MerchantDomain> {
 
 	public int insertPoolRel(Integer merchantId, Integer poolId);
 
-	public List<MerchantDomain> findMerchantByUser(String account);
+	public List<MerchantDomain> findMerchantByUser(MerchantDomain merchantDomain);
 
 	public List<MerchantDomain> getVirtualMerchants(MerchantDomain merchantDomain);
 

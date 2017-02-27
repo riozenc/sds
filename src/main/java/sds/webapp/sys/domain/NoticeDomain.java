@@ -22,6 +22,7 @@ import sds.webapp.ord.domain.OrderDomain;
 public class NoticeDomain extends Page<OrderDomain> implements MybatisEntity {
 	@TablePrimaryKey
 	private Integer id;// `ID` int(11) NOT NULL,
+	private String title;// 消息标题
 	private String message;// `MESSAGE` varchar(255) DEFAULT NULL,
 	private Date date;// `DATE` datetime DEFAULT NULL,
 	private String operator;// `OPERATOR` varchar(255) DEFAULT NULL,
@@ -74,6 +75,14 @@ public class NoticeDomain extends Page<OrderDomain> implements MybatisEntity {
 
 	public void setStatus(Integer status) {
 		this.status = status;
+	}
+
+	public String getTitle() {
+		return title;
+	}
+
+	public void setTitle(String title) {
+		this.title = title;
 	}
 
 }

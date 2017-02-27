@@ -57,4 +57,10 @@ public class OrderServiceImpl implements OrderService {
 		return orderDAO.getAllUnCheckOrder(orderDomain);
 	}
 
+	@Override
+	public String getTotalAmountByOrder(OrderDomain orderDomain) {
+		// TODO Auto-generated method stub
+		return orderDAO.getTotalAmountByOrder(orderDomain);
+	}
+
 }

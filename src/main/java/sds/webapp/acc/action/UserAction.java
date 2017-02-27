@@ -150,8 +150,8 @@ public class UserAction extends BaseAction {
 	@ResponseBody
 	@RequestMapping(params = "type=findUserByWhere")
 	public String findUserByWhere(UserDomain userDomain) {
-		List<UserDomain> list = userService.findByWhere(userDomain);
-
+		userDomain.setId(UserUtils.getPrincipal().getUserDomain().getId());
+		List<UserDomain> list = userService.findSubUserList(userDomain);
 		return JSONUtil.toJsonString(new JsonGrid(userDomain, list));
 	}
 

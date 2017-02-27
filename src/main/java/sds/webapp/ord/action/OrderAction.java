@@ -220,6 +220,12 @@ public class OrderAction extends BaseAction {
 		return JSONUtil.toJsonString(new JsonResult(code, msg));
 	}
 
+	/**
+	 * 获取订单
+	 * 
+	 * @param orderDomain
+	 * @return
+	 */
 	@ResponseBody
 	@RequestMapping(params = "type=findOrder")
 	public String findOrderByWhere(OrderDomain orderDomain) {
@@ -228,4 +234,15 @@ public class OrderAction extends BaseAction {
 
 		return JSONUtil.toJsonString(new JsonGrid(orderDomain, list));
 	}
+
+	// 总收款
+	@ResponseBody
+	@RequestMapping(params = "type=getTotalAmountByOrder")
+	public String getTotalAmountByOrder(OrderDomain orderDomain) {
+		MerchantDomain merchantDomain = UserUtils.getPrincipal().getMerchantDomain();
+		orderDomain.setAccount(merchantDomain.getAccount());
+		return orderService.getTotalAmountByOrder(orderDomain);
+	}
+	// 当日收款
+	// 当月收款
 }

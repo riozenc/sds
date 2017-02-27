@@ -100,9 +100,9 @@ public class MerchantServiceImpl implements MerchantService {
 	}
 
 	@Override
-	public List<MerchantDomain> findMerchantByUser(String account) {
+	public List<MerchantDomain> findMerchantByUser(MerchantDomain merchantDomain) {
 		// TODO Auto-generated method stub
-		return merchantDAO.findMerchantByUser(account);
+		return merchantDAO.findMerchantByUser(merchantDomain);
 	}
 
 	@Override

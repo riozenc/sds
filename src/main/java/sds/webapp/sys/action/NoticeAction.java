@@ -14,7 +14,6 @@ import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.riozenc.quicktool.common.util.json.JSONGrid;
 import com.riozenc.quicktool.common.util.json.JSONUtil;
 
 import sds.common.json.JsonGrid;
@@ -23,7 +22,7 @@ import sds.webapp.sys.domain.NoticeDomain;
 import sds.webapp.sys.service.NoticeService;
 
 @ControllerAdvice
-@RequestMapping("noticeAction")
+@RequestMapping("notice")
 @Scope("prototype")
 public class NoticeAction {
 

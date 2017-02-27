@@ -70,4 +70,6 @@ public class ProfitMerchantAction extends BaseAction {
 		return JSONUtil.toJsonString(new JsonGrid(profitMerchantDomain, list));
 	}
 
+	
+
 }

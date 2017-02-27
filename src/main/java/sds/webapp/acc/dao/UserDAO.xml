@@ -331,4 +331,29 @@
 	<select id="getAllCheckedUser" resultType="UserDomain" useCache="true">
 		SELECT * FROM fm_user where status = 1
 	</select>
+
+	<select id="findSubUserList" resultType="UserDomain" useCache="true">
+		SELECT a.*,(SELECT b.full_name FROM fm_user b where b.id = a.parent_id) as parent_name FROM fm_user a LEFT JOIN (SELECT id,parent_id
+		, @pathnodes:= IF( parent_id =-1,',0', CONCAT(
+		CONCAT_WS(',',IF(LOCATE( CONCAT('|',parent_id,':'),@pathall) > 0 ,
+		SUBSTRING_INDEX( SUBSTRING_INDEX(@pathall,CONCAT('|',parent_id,':'),-1),'|',1)
+		,@pathnodes),parent_id),',',id))paths
+		,@pathall:=CONCAT(@pathall,'|',id,':', @pathnodes ,'|') pathall
+		FROM fm_user,(SELECT @le:=0,@pathlevel:='', @pathall:='',@pathnodes:='')
+		vv) b ON a.id = b.id
+		<where>
+			b.paths like '%${id}%'
+
+			<if test="account !=null">
+				and a.ACCOUNT = #{account}
+			</if>
+			<if test="fullName !=null">
+				and a.FULL_NAME = #{fullName}
+			</if>
+			<if test="simpleName !=null">
+				and a.SIMPLE_NAME = #{simpleName}
+			</if>
+		</where>
+	</select>
+
 </mapper>
