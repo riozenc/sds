@@ -183,7 +183,7 @@ public class OrderAction extends BaseAction {
 				LogUtil.getLogger(LOG_TYPE.OTHER).info(
 						orderDomain.getOrderId() + "（回调查询）暂未交易[" + WXOrderNo + "]" + DateUtil.formatDate(new Date()));
 			}
-
+			orderDomain.setAccount(null);
 			orderDomain.setOrderNo(WXOrderNo);
 			orderDomain.setRespCode(remoteResult.getRespCode());
 			orderDomain.setRespInfo(remoteResult.getRespInfo());
