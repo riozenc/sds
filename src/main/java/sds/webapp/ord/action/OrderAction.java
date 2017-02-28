@@ -1,5 +1,7 @@
 package sds.webapp.ord.action;
 
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.Date;
 import java.util.List;
 
@@ -168,6 +170,11 @@ public class OrderAction extends BaseAction {
 			if (RemoteUtils.resultProcess(remoteResult)) {
 				// 更新
 				orderDomain.setStatus(1);
+
+				BigDecimal amount = new BigDecimal(Double.toString(orderDomain.getAmount()));
+
+				orderDomain.setAmount(amount.divide(new BigDecimal(100), 2, RoundingMode.DOWN).doubleValue());
+
 				profitService.profit(order);
 				LogUtil.getLogger(LOG_TYPE.OTHER).info(
 						orderDomain.getOrderId() + "（回调查询）交易成功[" + WXOrderNo + "]" + DateUtil.formatDate(new Date()));
@@ -176,6 +183,7 @@ public class OrderAction extends BaseAction {
 				LogUtil.getLogger(LOG_TYPE.OTHER).info(
 						orderDomain.getOrderId() + "（回调查询）暂未交易[" + WXOrderNo + "]" + DateUtil.formatDate(new Date()));
 			}
+
 			orderDomain.setOrderNo(WXOrderNo);
 			orderDomain.setRespCode(remoteResult.getRespCode());
 			orderDomain.setRespInfo(remoteResult.getRespInfo());
