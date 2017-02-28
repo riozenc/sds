@@ -127,7 +127,7 @@ function dialog_verify(id) {
 	$.ajax({
 		cache : false,
 		type : "POST",
-		url : "merchant.do?type=findMerchantByWhere",
+		url : "merchant.do?type=findMerchantByKey",
 		data : ajaxdata,
 		dataType : "json",
 		error : function(request) {
@@ -139,11 +139,11 @@ function dialog_verify(id) {
 			BJUI.dialog({
 			    id:'merchantVerify',
 			    url:'html/form/merchantVerify.jsp',
-			    title:'详情',
+			    title:'审核',
 			    width:900,
 			    height:450,
 			    onLoad:function(){
-			    	$.each(data.list[0], function(key, obj) {
+			    	$.each(data, function(key, obj) {
 			    		$("#"+key).val(obj);
 					});
 			    }
@@ -158,7 +158,7 @@ function dialog_merchant(id) {
 	$.ajax({
 		cache : false,
 		type : "POST",
-		url : "merchant.do?type=findMerchantByWhere",
+		url : "merchant.do?type=findMerchantByKey",
 		data : ajaxdata,
 		dataType : "json",
 		error : function(request) {
@@ -174,7 +174,7 @@ function dialog_merchant(id) {
 			    width:1000,
 			    height:500,
 			    onLoad:function(){
-			    	$.each(data.list[0], function(key, obj) {
+			    	$.each(data, function(key, obj) {
 			    		$("#"+key).val(obj);
 					});
 			    }
