@@ -12,6 +12,8 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.riozenc.quicktool.common.util.json.JSONUtil;
+import com.riozenc.quicktool.common.util.log.LogUtil;
+import com.riozenc.quicktool.common.util.log.LogUtil.LOG_TYPE;
 
 import sds.common.exception.InvalidAppCodeException;
 import sds.common.json.JsonGrid;
@@ -270,7 +272,7 @@ public class MerchantAction extends BaseAction {
 			if (RemoteUtils.resultProcess(remoteResult)) {
 				merchantDomain.setWxRate(userDomain.getUserArate());
 				merchantDomain.setAliRate(userDomain.getUserWrate());
-				System.out.println("费率同步成功.");
+				LogUtil.getLogger(LOG_TYPE.OTHER).info(merchantDomain.getAccount()+"["+vm.getAccount()+"]"+"费率同步成功("+userDomain.getUserArate()+","+userDomain.getUserWrate()+").");
 			} else {
 				return JSONUtil.toJsonString(new JsonResult(JsonResult.ERROR, remoteResult.getMsg()));
 			}
