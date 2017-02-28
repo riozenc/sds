@@ -1,6 +1,8 @@
 package sds.webapp.stm.action;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -35,7 +37,7 @@ public class ProfitMerchantAction extends BaseAction {
 	private ProfitMerchantService profitMerchantService;
 
 	/**
-	 * 获取收益额 status=1 收款 status=2取现
+	 * 获取收益额 status=0 收款 status=1取现
 	 * 
 	 * @param profitMerchantDomain
 	 * @return
@@ -46,8 +48,16 @@ public class ProfitMerchantAction extends BaseAction {
 		ProfitMerchantDomain profitMerchantDomain = new ProfitMerchantDomain();
 		profitMerchantDomain.setMerchantId(UserUtils.getPrincipal().getMerchantDomain().getId());
 
-		String count = profitMerchantService.getMerchantTotalProfit(profitMerchantDomain);
-		return count;
+		String profit = profitMerchantService.getMerchantTotalProfit(profitMerchantDomain);
+
+		profitMerchantDomain.setStatus(0);
+		String total = profitMerchantService.getMerchantTotalProfit(profitMerchantDomain);
+
+		Map<String, String> map = new HashMap<String, String>();
+		map.put("total", total == null ? "0" : total);
+		map.put("profit", profit == null ? "0" : profit);
+
+		return JSONUtil.toJsonString(new JsonResult(JsonResult.SUCCESS, map));
 	}
 
 	@ResponseBody
@@ -69,7 +79,5 @@ public class ProfitMerchantAction extends BaseAction {
 
 		return JSONUtil.toJsonString(new JsonGrid(profitMerchantDomain, list));
 	}
-
-	
 
 }

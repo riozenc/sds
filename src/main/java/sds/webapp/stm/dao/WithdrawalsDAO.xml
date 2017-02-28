@@ -11,7 +11,14 @@
 	</select>
 	<select id="findByWhere" parameterType="WithdrawalsDomain"
 		resultType="WithdrawalsDomain" useCache="true">
-		select ID,MERCHANT_ID,AMOUNT,DATE,OPERATOR,STATUS from fm_withdrawals
+		select ID,MERCHANT_ID,AMOUNT,DATE,OPERATOR,STATUS,(
+		SELECT
+		account
+		FROM
+		fm_merchant
+		WHERE
+		id = fm_withdrawals.merchant_id
+		) AS account from fm_withdrawals
 		<where>
 			<if test="id !=null">
 				and ID = #{id}

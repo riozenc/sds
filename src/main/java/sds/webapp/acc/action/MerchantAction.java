@@ -63,6 +63,7 @@ public class MerchantAction extends BaseAction {
 		MerchantDomain merchantDomain = new MerchantDomain();
 		merchantDomain.setAccount(account);
 		merchantDomain.setPassword(password);
+		
 
 		return update(merchantDomain);
 	}

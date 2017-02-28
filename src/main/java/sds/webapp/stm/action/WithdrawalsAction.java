@@ -76,6 +76,7 @@ public class WithdrawalsAction extends BaseAction {
 	/**
 	 * 
 	 * @param withdrawalsDomain
+	 * id,merchantId,amount
 	 * @return
 	 */
 	@ResponseBody
@@ -84,8 +85,8 @@ public class WithdrawalsAction extends BaseAction {
 		// 确认之后录入一笔
 		withdrawalsDomain.setStatus(1);
 		int i = withdrawalsService.agree(withdrawalsDomain);
-		if (i > 0) {
-			return JSONUtil.toJsonString(new JsonResult(JsonResult.ERROR, "操作成功."));
+		if (i > 1) {
+			return JSONUtil.toJsonString(new JsonResult(JsonResult.SUCCESS, "操作成功."));
 		} else {
 			return JSONUtil.toJsonString(new JsonResult(JsonResult.ERROR, "操作失败."));
 		}
@@ -98,7 +99,7 @@ public class WithdrawalsAction extends BaseAction {
 		withdrawalsDomain.setStatus(2);
 		int i = withdrawalsService.update(withdrawalsDomain);
 		if (i > 0) {
-			return JSONUtil.toJsonString(new JsonResult(JsonResult.ERROR, "更新成功."));
+			return JSONUtil.toJsonString(new JsonResult(JsonResult.SUCCESS, "更新成功."));
 		} else {
 			return JSONUtil.toJsonString(new JsonResult(JsonResult.ERROR, "更新失败."));
 		}

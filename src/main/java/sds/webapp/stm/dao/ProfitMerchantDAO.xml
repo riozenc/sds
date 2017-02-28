@@ -100,7 +100,7 @@
 		resultType="String" useCache="true">
 		SELECT SUM(total_profit) FROM fm_profit_merchant
 		<where>
-			a.MERCHANT_ID = #{merchantId}
+			MERCHANT_ID = #{merchantId}
 
 			<if test="status !=null">
 				and STATUS = #{status}

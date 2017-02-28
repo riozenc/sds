@@ -125,9 +125,7 @@
 	<update id="update" parameterType="MerchantDomain" flushCache="true">
 		update fm_merchant
 		<set>
-			<if test="account !=null">
-				ACCOUNT = #{account},
-			</if>
+
 			<if test="password !=null">
 				PASSWORD = #{password},
 			</if>
@@ -218,7 +216,7 @@
 		</set>
 		<where>
 
-			ID = #{id}
+			ID = #{id} or ACCOUNT = #{account}
 
 		</where>
 	</update>

@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.riozenc.quicktool.common.util.date.DateUtil;
 import com.riozenc.quicktool.common.util.json.JSONUtil;
 import com.riozenc.quicktool.common.util.log.LogUtil;
 import com.riozenc.quicktool.common.util.log.LogUtil.LOG_TYPE;
@@ -156,7 +157,7 @@ public class OrderAction extends BaseAction {
 
 		OrderDomain order = orderService.findByKey(orderDomain);
 		try {
-			// Thread.sleep(2 * 1000L);
+			Thread.sleep(2 * 1000L);
 			MerchantDomain merchantDomain = new MerchantDomain();
 			merchantDomain.setAccount(order.getAccount());
 			merchantDomain = merchantService.findByKey(merchantDomain);
@@ -167,9 +168,13 @@ public class OrderAction extends BaseAction {
 			if (RemoteUtils.resultProcess(remoteResult)) {
 				// 更新
 				orderDomain.setStatus(1);
-				// profitService.profit(order);
+				profitService.profit(order);
+				LogUtil.getLogger(LOG_TYPE.OTHER).info(
+						orderDomain.getOrderId() + "（回调查询）交易成功[" + WXOrderNo + "]" + DateUtil.formatDate(new Date()));
 			} else {
 				orderDomain.setStatus(2);
+				LogUtil.getLogger(LOG_TYPE.OTHER).info(
+						orderDomain.getOrderId() + "（回调查询）暂未交易[" + WXOrderNo + "]" + DateUtil.formatDate(new Date()));
 			}
 			orderDomain.setOrderNo(WXOrderNo);
 			orderDomain.setRespCode(remoteResult.getRespCode());
@@ -180,12 +185,14 @@ public class OrderAction extends BaseAction {
 			e.printStackTrace();
 		}
 
-		int i = profitService.profit(order);// TEST
-		if (i > 0) {
-			LogUtil.getLogger(LOG_TYPE.OTHER).info(orderDomain.getOrderId() + "交易成功[" + WXOrderNo + "]");
-		} else {
-			LogUtil.getLogger(LOG_TYPE.OTHER).info(orderDomain.getOrderId() + "分润失败[" + WXOrderNo + "]");
-		}
+		// int i = profitService.profit(order);// TEST
+		// if (i > 0) {
+		// LogUtil.getLogger(LOG_TYPE.OTHER).info(orderDomain.getOrderId() +
+		// "交易成功[" + WXOrderNo + "]");
+		// } else {
+		// LogUtil.getLogger(LOG_TYPE.OTHER).info(orderDomain.getOrderId() +
+		// "分润失败[" + WXOrderNo + "]");
+		// }
 	}
 
 	/**
@@ -209,10 +216,14 @@ public class OrderAction extends BaseAction {
 			orderDomain.setStatus(1);
 			msg = msg + "交易成功";
 			code = 200;
+			LogUtil.getLogger(LOG_TYPE.OTHER)
+					.info(orderDomain.getOrderId() + "（主动查询）交易成功[" + "]" + DateUtil.formatDate(new Date()));
 		} else {
 			orderDomain.setStatus(2);
 			msg = msg + remoteResult.getRespInfo();
 			code = 300;
+			LogUtil.getLogger(LOG_TYPE.OTHER)
+					.info(orderDomain.getOrderId() + "（主动查询）交易成功[" + "]" + DateUtil.formatDate(new Date()));
 		}
 		orderDomain.setRespCode(remoteResult.getRespCode());
 		orderDomain.setRespInfo(remoteResult.getRespInfo());
@@ -241,7 +252,9 @@ public class OrderAction extends BaseAction {
 	public String getTotalAmountByOrder(OrderDomain orderDomain) {
 		MerchantDomain merchantDomain = UserUtils.getPrincipal().getMerchantDomain();
 		orderDomain.setAccount(merchantDomain.getAccount());
-		return orderService.getTotalAmountByOrder(orderDomain);
+		return JSONUtil
+				.toJsonString(new JsonResult(JsonResult.SUCCESS, orderService.getTotalAmountByOrder(orderDomain)));
+
 	}
 	// 当日收款
 	// 当月收款
