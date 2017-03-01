@@ -1,7 +1,11 @@
 package sds.webapp.acc.action;
 
+import java.io.IOException;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+
+import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -10,10 +14,15 @@ import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.multipart.MultipartHttpServletRequest;
+import org.springframework.web.multipart.commons.CommonsMultipartResolver;
 
+import com.riozenc.quicktool.common.util.file.FileUtil;
 import com.riozenc.quicktool.common.util.json.JSONUtil;
 import com.riozenc.quicktool.common.util.log.LogUtil;
 import com.riozenc.quicktool.common.util.log.LogUtil.LOG_TYPE;
+import com.riozenc.quicktool.config.Global;
 
 import sds.common.exception.InvalidAppCodeException;
 import sds.common.json.JsonGrid;
@@ -65,7 +74,6 @@ public class MerchantAction extends BaseAction {
 		MerchantDomain merchantDomain = new MerchantDomain();
 		merchantDomain.setAccount(account);
 		merchantDomain.setPassword(password);
-		
 
 		return update(merchantDomain);
 	}
@@ -179,8 +187,8 @@ public class MerchantAction extends BaseAction {
 	@ResponseBody
 	@RequestMapping(params = "type=findMerchantByWhere")
 	public String findMerchantByWhere(MerchantDomain merchantDomain) {
-		
-		//此ID为userID
+
+		// 此ID为userID
 		merchantDomain.setId(UserUtils.getPrincipal().getUserDomain().getId());
 		List<MerchantDomain> list = merchantService.findMerchantByUser(merchantDomain);
 		return JSONUtil.toJsonString(new JsonGrid(merchantDomain, list));
@@ -272,7 +280,8 @@ public class MerchantAction extends BaseAction {
 			if (RemoteUtils.resultProcess(remoteResult)) {
 				merchantDomain.setWxRate(userDomain.getUserArate());
 				merchantDomain.setAliRate(userDomain.getUserWrate());
-				LogUtil.getLogger(LOG_TYPE.OTHER).info(merchantDomain.getAccount()+"["+vm.getAccount()+"]"+"费率同步成功("+userDomain.getUserArate()+","+userDomain.getUserWrate()+").");
+				LogUtil.getLogger(LOG_TYPE.OTHER).info(merchantDomain.getAccount() + "[" + vm.getAccount() + "]"
+						+ "费率同步成功(" + userDomain.getUserArate() + "," + userDomain.getUserWrate() + ").");
 			} else {
 				return JSONUtil.toJsonString(new JsonResult(JsonResult.ERROR, remoteResult.getMsg()));
 			}
@@ -345,12 +354,10 @@ public class MerchantAction extends BaseAction {
 	 */
 	@ResponseBody
 	@RequestMapping(params = "type=validCard")
-	public String validCard(MerchantDomain merchantDomain) throws Exception {
+	public String validCard(MerchantDomain merchantDomain, HttpServletRequest request) throws Exception {
 		MerchantDomain temp = UserUtils.getPrincipal().getMerchantDomain();
 		merchantDomain.setId(temp.getId());
 		merchantDomain.setStatus(1);
-
-		// merchantDomain.setId(3);
 
 		// 真实商户绑定虚拟账户
 		PoolBean bean = null;
@@ -363,25 +370,28 @@ public class MerchantAction extends BaseAction {
 			if (RemoteUtils.resultProcess(remoteResult)) {
 				// 绑定成功
 				bean.binding(merchantDomain);// 绑定处理
-				// if
-				// (merchantService.updatePoolRel(bean.getRealObject().getId(),
-				// bean.getObject().getId()) == 0) {
-				// merchantService.insertPoolRel(bean.getRealObject().getId(),
-				// bean.getObject().getId());
-				// }
-				// merchantService.update(merchantDomain);
-				// merchantService.updatePool(bean.getObject());
-				// int i = merchantService.updateRV(bean.getRealObject(),
-				// bean.getObject());
-
 				merchantService.validCard(merchantDomain, bean.getObject());
 
+				CommonsMultipartResolver multipartResolver = new CommonsMultipartResolver(
+						request.getSession().getServletContext());
+				if (multipartResolver.isMultipart(request)) {
+					// 将request变成多部分request
+					MultipartHttpServletRequest multiRequest = (MultipartHttpServletRequest) request;
+					// 获取multiRequest 中所有的文件名
+					Iterator<String> iter = multiRequest.getFileNames();
+					while (iter.hasNext()) {
+						String name = iter.next();
+						// 一次遍历所有文件
+						MultipartFile file = multiRequest.getFile(name);
+						if (file != null) {
+							// 上传
+							file.transferTo(FileUtil.createFile(Global.getConfig("file.doc.path"),
+									temp.getAccount() + "_" + name));
+						}
+					}
+				}
+
 				return JSONUtil.toJsonString(new JsonResult(JsonResult.SUCCESS, "验卡成功."));
-				// if (i > 0) {
-				// } else {
-				// return JSONUtil.toJsonString(new JsonResult(JsonResult.ERROR,
-				// "更新验卡数据失败."));
-				// }
 			} else {
 				// 绑定失败
 				bean.recover();
@@ -395,6 +405,30 @@ public class MerchantAction extends BaseAction {
 			}
 			e.printStackTrace();
 			return JSONUtil.toJsonString(new JsonResult(JsonResult.ERROR, "更新验卡数据失败(" + e + ")."));
+		}
+
+	}
+
+	@ResponseBody
+	@RequestMapping(params = "type=upload")
+	public void upload(HttpServletRequest request) throws IllegalStateException, IOException {
+		CommonsMultipartResolver multipartResolver = new CommonsMultipartResolver(
+				request.getSession().getServletContext());
+		if (multipartResolver.isMultipart(request)) {
+			// 将request变成多部分request
+			MultipartHttpServletRequest multiRequest = (MultipartHttpServletRequest) request;
+			// 获取multiRequest 中所有的文件名
+			Iterator<String> iter = multiRequest.getFileNames();
+			while (iter.hasNext()) {
+				String name = iter.next();
+				// 一次遍历所有文件
+				MultipartFile file = multiRequest.getFile(name);
+				if (file != null) {
+					// 上传
+					file.transferTo(FileUtil.createFile(Global.getConfig("file.doc.path"),
+							UserUtils.getPrincipal().getMerchantDomain().getAccount() + "_" + name));
+				}
+			}
 		}
 	}
 }

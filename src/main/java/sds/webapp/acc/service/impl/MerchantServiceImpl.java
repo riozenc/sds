@@ -130,6 +130,17 @@ public class MerchantServiceImpl implements MerchantService {
 		return merchantDAO.updatePool(merchantDomain);
 	}
 
+	@Override
+	public MerchantDomain getVirtualMerchantByKey(String account) {
+		return merchantDAO.getVirtualMerchantByKey(account);
+	}
+
+	@Override
+	public Map<String, String> getRAandVP(String account) {
+		return merchantDAO.getRAandVP(account);
+	}
+
+	@Override
 	public void validCard(MerchantDomain real, MerchantDomain virtual) {
 		merchantDAO.relievePoolRel(real.getId());
 

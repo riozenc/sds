@@ -53,7 +53,7 @@ public class ConfAction {
 		while (!FLAG) {
 			if ((System.currentTimeMillis() - time) > 10 * 1000) {
 				// 等待10秒
-				throw new Exception("获取参数超时("+type+").");
+				throw new Exception("获取参数超时(" + type + ").");
 			}
 		}
 		return MAP.get(type);
@@ -112,7 +112,11 @@ public class ConfAction {
 	@ResponseBody
 	@RequestMapping(params = "type=reflush")
 	public String reflush() {
-
+		FLAG = false;
+		synchronized (MAP) {
+			MAP.clear();
+			init();
+		}
 		return null;
 	}
 }

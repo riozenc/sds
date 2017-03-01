@@ -112,7 +112,9 @@ public class ProfitServiceImpl implements ProfitService {
 		// TODO Auto-generated method stub
 		Map<String, MARDomain> marMap = getMAR();
 		List<ProfitDomain> list = SettlementUtil.createProfit(marMap.get(orderDomain.getAccount()), orderDomain);
-		return profitDAO.insertBatch(list);
+		profitDAO.insertBatch(list);
+		orderDomain.setStatus(3);//分润完毕
+		return orderDAO.update(orderDomain);
 	}
 
 	/**
