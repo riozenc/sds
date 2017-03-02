@@ -9,7 +9,7 @@ function agree(){
 	    loadingmask: true,
 	    okCallback: function(json, options) {
 	    	console.info(options);
-	       
+	    	BJUI.dialog('close', 'withdrawalsEdit');      //关闭
 	    }
 	})
 }
@@ -21,7 +21,7 @@ function reject(){
 	    loadingmask: true,
 	    okCallback: function(json, options) {
 	    	console.info(options);
-	       
+	    	BJUI.dialog('close', 'withdrawalsEdit');      //关闭
 	    }
 	})
 }
