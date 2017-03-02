@@ -60,8 +60,8 @@ public class PoolBean {
 	}
 
 	/**
-	 * 判断有效性
-	 * 有效&&未占用&未绑定&状态未使用or待使用=treue
+	 * 判断有效性 有效&&未占用&未绑定&状态未使用or待使用=treue
+	 * 
 	 * @return
 	 */
 	public boolean isValid() {

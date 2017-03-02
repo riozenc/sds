@@ -5,9 +5,9 @@ public class JsonResult {
 	public static final int ERROR = 300;
 
 	private Integer statusCode;
-	private String message;
+	private Object message;
 
-	public JsonResult(Integer statusCode, String message) {
+	public JsonResult(Integer statusCode, Object message) {
 		this.statusCode = statusCode;
 		this.message = message;
 	}
@@ -20,11 +20,11 @@ public class JsonResult {
 		this.statusCode = statusCode;
 	}
 
-	public String getMessage() {
+	public Object getMessage() {
 		return message;
 	}
 
-	public void setMessage(String message) {
+	public void setMessage(Object message) {
 		this.message = message;
 	}
 

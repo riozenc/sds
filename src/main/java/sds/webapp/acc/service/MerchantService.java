@@ -28,5 +28,11 @@ public interface MerchantService extends BaseService<MerchantDomain> {
 	public List<MerchantDomain> getVirtualMerchants(MerchantDomain merchantDomain);
 
 	public MerchantDomain getVirtualMerchant(MerchantDomain merchantDomain);
+
 	public void validCard(MerchantDomain real, MerchantDomain virtual);
+
+	public MerchantDomain getVirtualMerchantByKey(String account);
+
+	// 订单回调使用
+	public Map<String, String> getRAandVP(String account);
 }

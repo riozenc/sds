@@ -12,6 +12,9 @@ import com.riozenc.quicktool.common.util.log.LogUtil;
 import com.riozenc.quicktool.common.util.log.LogUtil.LOG_OUT_TYPE;
 import com.riozenc.quicktool.mybatis.db.DbFactory;
 
+import sds.common.timmer.ProfitCountTimerTask;
+import sds.common.timmer.TimmerUtils;
+
 public class MainListener implements ServletContextListener {
 	/**
 	 * 启动
@@ -25,6 +28,11 @@ public class MainListener implements ServletContextListener {
 
 		DbFactory.initByFactory();
 
+		
+		//启动定时任务
+		TimmerUtils.run(new ProfitCountTimerTask());
+		
+		
 		// 初始化conf
 
 		System.out.println("initialized");

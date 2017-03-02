@@ -30,7 +30,7 @@ public class SmsSender {
 	public static String send(String account) {
 		try {
 			String code = getRandom();
-			String returnString = SmsSender.batchSend(url, un, pw, account, msg, "1", null);
+			String returnString = SmsSender.batchSend(url, un, pw, account, msg+code, "1", null);
 			SmsCache.put(account, code);
 			return returnString;
 		} catch (Exception e) {

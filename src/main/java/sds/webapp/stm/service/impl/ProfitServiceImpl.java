@@ -88,15 +88,15 @@ public class ProfitServiceImpl implements ProfitService {
 	public int profitCount(List<ProfitUserDomain> profitUserDomains, List<ProfitMerchantDomain> profitMerchantDomains,
 			List<ProfitDomain> profitDomains) {
 		// TODO Auto-generated method stub
-		int sum=0;
-		if(!profitUserDomains.isEmpty()){			
-			sum+=profitUserDAO.insertBatch(profitUserDomains);
+		int sum = 0;
+		if (!profitUserDomains.isEmpty()) {
+			sum += profitUserDAO.insertBatch(profitUserDomains);
 		}
-		if(!profitMerchantDomains.isEmpty()){			
-			sum+=profitMerchantDAO.insertBatch(profitMerchantDomains);
+		if (!profitMerchantDomains.isEmpty()) {
+			sum += profitMerchantDAO.insertBatch(profitMerchantDomains);
 		}
-		if(!profitDomains.isEmpty()){
-			sum+=profitDAO.profitCountComplete(profitDomains);
+		if (!profitDomains.isEmpty()) {
+			sum += profitDAO.profitCountComplete(profitDomains);
 		}
 		return sum;
 	}
@@ -111,8 +111,10 @@ public class ProfitServiceImpl implements ProfitService {
 	public int profit(OrderDomain orderDomain) {
 		// TODO Auto-generated method stub
 		Map<String, MARDomain> marMap = getMAR();
-		List<ProfitDomain> list = call(orderDomain, marMap);
-		return profitDAO.insertBatch(list);
+		List<ProfitDomain> list = SettlementUtil.createProfit(marMap.get(orderDomain.getAccount()), orderDomain);
+		profitDAO.insertBatch(list);
+		orderDomain.setStatus(3);//分润完毕
+		return orderDAO.update(orderDomain);
 	}
 
 	/**
@@ -148,11 +150,6 @@ public class ProfitServiceImpl implements ProfitService {
 			marMap.put(temp.getAccount(), marDomain);
 		}
 		return marMap;
-	}
-
-	private List<ProfitDomain> call(OrderDomain orderDomain, Map<String, MARDomain> marMap) {
-		List<ProfitDomain> list = SettlementUtil.createProfit(marMap.get(orderDomain.getAccount()), orderDomain);
-		return list;
 	}
 
 }

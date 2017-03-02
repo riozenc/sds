@@ -125,9 +125,7 @@
 	<update id="update" parameterType="MerchantDomain" flushCache="true">
 		update fm_merchant
 		<set>
-			<if test="account !=null">
-				ACCOUNT = #{account},
-			</if>
+
 			<if test="password !=null">
 				PASSWORD = #{password},
 			</if>
@@ -218,7 +216,7 @@
 		</set>
 		<where>
 
-			ID = #{id}
+			ID = #{id} or ACCOUNT = #{account}
 
 		</where>
 	</update>
@@ -417,6 +415,14 @@
 		</where>
 	</select>
 
+	<select id="getVirtualMerchantByKey" resultType="MerchantDomain"
+		useCache="true">
+		SELECT * FROM fm_merchant_pool
+		<where>
+			account= #{1}
+		</where>
+	</select>
+
 	<select id="getVirtualMerchant" parameterType="MerchantDomain"
 		resultType="MerchantDomain" useCache="true">
 		SELECT b.* FROM MERCHANT_POOL_REL a LEFT JOIN fm_merchant_pool b ON
@@ -426,10 +432,26 @@
 		</where>
 	</select>
 
-	<select id="findMerchantByUser" parameterType="MerchantDomain" resultType="MerchantDomain"
-		useCache="true">
+	<select id="getRAandVP" resultType="Map" useCache="true">
 		SELECT
-		a.*,(SELECT c.full_name FROM fm_user c where c.id=a.agent_id) as parent_name
+		c.account,b.privatekey
+		FROM
+		merchant_pool_rel a
+		LEFT JOIN
+		fm_merchant_pool b ON a.pool_id = b.id
+		LEFT JOIN fm_merchant c ON c.id
+		= a.merchant_id
+
+		<where>
+			b.account = #{1}
+		</where>
+	</select>
+
+	<select id="findMerchantByUser" parameterType="MerchantDomain"
+		resultType="MerchantDomain" useCache="true">
+		SELECT
+		a.*,(SELECT c.full_name FROM fm_user c where c.id=a.agent_id) as
+		parent_name
 		FROM
 		fm_merchant a LEFT JOIN ( SELECT id,parent_id,
 		@pathnodes:= IF( parent_id =-1,',0', CONCAT(
@@ -532,8 +554,8 @@
 			<if test="agentId !=null">
 				and AGENT_ID = #{agentId}
 			</if>
-			
-			
+
+
 		</where>
 	</select>
 

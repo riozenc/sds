@@ -1,5 +1,7 @@
 package sds.webapp.stm.util;
 
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.LinkedList;
@@ -86,7 +88,7 @@ public class SettlementUtil {
 		profitDomain.setOrderDate(order.getDate());
 		profitDomain.setCreateDate(new Date());
 		profitDomain.setStatus(1);
-		
+
 		return profitDomain;
 	};
 
@@ -121,7 +123,8 @@ public class SettlementUtil {
 		profitDomain.setAmount(order.getAmount());
 		profitDomain.setMerchantProfit(
 				compute(order.getAmount(), 1 - getMerchantRate(merchantDomain, order.getChannelCode())));
-		profitDomain.setTotalProfit(compute(order.getAmount(), getMerchantRate(merchantDomain, order.getChannelCode())));
+		profitDomain
+				.setTotalProfit(compute(order.getAmount(), getMerchantRate(merchantDomain, order.getChannelCode())));
 
 		profitDomain.setAgentId(parent.getId());
 		profitDomain.setAgentProfit(compute(order.getAmount(),
@@ -156,14 +159,20 @@ public class SettlementUtil {
 	}
 
 	private static double getDouble(double a, int b) {
-		int x = 0;
-		int y = 1;
-		for (int i = 0; i < b; i++) {
-			y = y * 10;
-		}
-		x = (int) (a * y);
-		return (double) x / y;
+		BigDecimal aa = new BigDecimal(Double.toString(a));
+		BigDecimal c = new BigDecimal(1);
+		return aa.divide(c, b, RoundingMode.DOWN).doubleValue();
 	}
+
+	// private static double getDouble(double a, int b) {
+	// int x = 0;
+	// int y = 1;
+	// for (int i = 0; i < b; i++) {
+	// y = y * 10;
+	// }
+	// x = (int) (a * y);
+	// return (double) x / y;
+	// }
 
 	/**
 	 * 校验最后结果

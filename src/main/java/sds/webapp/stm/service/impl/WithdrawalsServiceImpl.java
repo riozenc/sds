@@ -65,9 +65,9 @@ public class WithdrawalsServiceImpl implements WithdrawalsService {
 		profitMerchantDomain.setTotalProfit(-withdrawalsDomain.getAmount());
 		profitMerchantDomain.setDate(new Date());
 		profitMerchantDomain.setStatus(1);
-		profitMerchantDAO.insert(profitMerchantDomain);
+		
 		withdrawalsDomain.setStatus(1);// 成功
-		withdrawalsDAO.update(withdrawalsDomain);
-		return 0;
+		return withdrawalsDAO.update(withdrawalsDomain)+profitMerchantDAO.insert(profitMerchantDomain);
+		
 	}
 }
