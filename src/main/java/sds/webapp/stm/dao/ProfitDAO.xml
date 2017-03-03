@@ -18,11 +18,13 @@
 		a.ID,
 		a.ORDER_ID,
 		a.ACCOUNT,
+		c.cmer as MERCHANT_NAME,
 		a.AMOUNT,
 		a.TOTAL_PROFIT,
 		a.AGENT_ID,
 		b.full_name as AGENT_NAME,
-		b.account AS AGENT_ACCOUNT,
+		b.account AS
+		AGENT_ACCOUNT,
 		a.AGENT_PROFIT,
 		a.TJ_PROFIT,
 		a.TJ_ID,
@@ -33,7 +35,9 @@
 		fm_profit
 		a LEFT JOIN fm_user
 		b
-		ON a.agent_id = b.id
+		ON a.agent_id
+		= b.id
+		LEFT JOIN fm_merchant c ON c.account = a.account
 		<where>
 			<if test="id !=null">
 				and a.ID = #{id}

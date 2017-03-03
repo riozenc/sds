@@ -20,8 +20,7 @@ public class ProfitDomain implements MybatisEntity {
 	private Double merchantProfit;// 商户利润
 	private Double totalProfit;// '分润总额',
 	private Integer agentId;// 代理商ID
-	private String agentName;// 代理商全称
-	private String agentAccount;// 代理商电话
+
 	private Double agentProfit;// 代理商利润
 	private boolean isReferee;// 推荐人功能是否开启
 	private Double tjProfit;// '推荐人分润金额',
@@ -30,6 +29,10 @@ public class ProfitDomain implements MybatisEntity {
 	private Date jsDate;// '结算时间',
 	private Date createDate;// 创建日期
 	private Integer status;// 状态：0失效，1有效，2统计完毕
+
+	private String merchantName;// 商户名称
+	private String agentName;// 代理商全称
+	private String agentAccount;// 代理商电话
 
 	public Integer getId() {
 		return id;
@@ -165,6 +168,14 @@ public class ProfitDomain implements MybatisEntity {
 
 	public void setAgentAccount(String agentAccount) {
 		this.agentAccount = agentAccount;
+	}
+
+	public String getMerchantName() {
+		return merchantName;
+	}
+
+	public void setMerchantName(String merchantName) {
+		this.merchantName = merchantName;
 	}
 
 }

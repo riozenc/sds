@@ -257,6 +257,7 @@
 				and DATE_FORMAT(DATE, '%Y-%m-%d') &lt;=
 				DATE_FORMAT(#{endDate}, '%Y-%m-%d')
 			</if>
+			and resp_code='000000'
 		</where>
 	</select>
 

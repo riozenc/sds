@@ -10,6 +10,7 @@ import javax.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Scope;
+import org.springframework.util.Base64Utils;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -430,5 +431,21 @@ public class MerchantAction extends BaseAction {
 				}
 			}
 		}
+	}
+
+	/**
+	 * base64 转图片
+	 * 
+	 * @param base64Data
+	 * @param request
+	 * @throws IllegalStateException
+	 * @throws IOException
+	 */
+	@ResponseBody
+	@RequestMapping(params = "type=base64Upload")
+	public void base64Upload(String base64Data, HttpServletRequest request) throws IllegalStateException, IOException {
+		System.out.println(base64Data);
+		byte[] bs = Base64Utils.decodeFromString(base64Data);
+		System.out.println(new String(bs));
 	}
 }
