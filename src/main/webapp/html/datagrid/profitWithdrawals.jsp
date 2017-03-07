@@ -39,7 +39,7 @@ $(function() {
 	            width: 70,
 	            render: function(value,data) {
 	            	if(value == 0){
-	            		 return '<a href="javascript:;"   onclick="dialog_withdrawals(\''+data.id+'\',\''+data.merchantId+'\',\''+data.amount+'\')">审核</a>';
+	            		 return '<a href="javascript:;"   onclick="dialog_withdrawals(\''+data.id+'\',\''+data.merchantId+'\',\''+data.amount+'\',\''+data.account+'\')">审核</a>';
 	            	}else if(value == 1){
 	            		return "已提现";
 	            	}else if(value ==2){
@@ -56,7 +56,7 @@ $(function() {
 	});
 	
 });
-function dialog_withdrawals(Id,merchantId,Amount){
+function dialog_withdrawals(Id,merchantId,Amount,Account){
 	//var ajaxdata={id:Id,merchantId:merchantId,amount:Amount} ;
 	BJUI.dialog({
 	    id:'withdrawalsEdit',
@@ -68,7 +68,7 @@ function dialog_withdrawals(Id,merchantId,Amount){
 	    	$("#withdrawals_ID").val(Id);
 	    	$("#withdrawals_merchantId").val(merchantId);
 	    	$("#withdrawals_Amount").val(Amount);
-	    	
+	    	$("#withdrawals_Account").val(Account);
 	    }
 	});
 	
