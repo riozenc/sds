@@ -138,10 +138,11 @@ function outLogin(){
 	$.ajax({
 		cache : false,
 		type : "POST",
-		url : "loginAction/logout",
+		url : "<%=request.getContextPath()+"/" %>loginAction/logout.do",
 		dataType : "json",
 		error : function(request) {
-			alert("Connection error");
+			console.info(request);
+			window.location.href="login.jsp";
 			return false;
 		},
 		success : function(data) {
