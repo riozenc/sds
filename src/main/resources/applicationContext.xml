@@ -53,10 +53,10 @@
 
 
 	<!-- 上传文件配置 -->
-	<!-- <bean id="multipartResolver" -->
-	<!-- class="org.springframework.web.multipart.commons.CommonsMultipartResolver"> -->
-	<!-- <property name="maxUploadSize" value="200000" /> -->
-	<!-- </bean> -->
+	<bean id="multipartResolver"
+		class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
+		<property name="maxUploadSize" value="200000" />
+	</bean>
 
 
 	<!-- 视图解释类 -->
