@@ -10,6 +10,7 @@ function agree(){
 	    okCallback: function(json, options) {
 	    	console.info(options);
 	    	BJUI.dialog('close', 'withdrawalsEdit');      //关闭
+	    	BJUI.navtab('refresh', 'withdrawals_datagrid');  //刷新
 	    }
 	})
 }
@@ -22,6 +23,7 @@ function reject(){
 	    okCallback: function(json, options) {
 	    	console.info(options);
 	    	BJUI.dialog('close', 'withdrawalsEdit');      //关闭
+	    	BJUI.navtab('refresh', 'withdrawals_datagrid');  //刷新
 	    }
 	})
 }
