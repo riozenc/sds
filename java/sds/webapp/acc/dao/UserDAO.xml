@@ -1,0 +1,359 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="sds.webapp.acc.dao.UserDAO">
+	<select id="findByKey" parameterType="UserDomain" resultType="UserDomain"
+		useCache="true">
+		select
+		ID,PARENT_ID,ACCOUNT,FULL_NAME,SIMPLE_NAME,AG_TYPE,AG_ADDRESS,REG_MONEY,REG_NAME,REG_ADDRESS,REG_DATE,REG_EXT,REG_NO,BUS_TERM,BUS_ANO,BUS_SNO,COST_WRATE,COST_KRATE,COST_ARATE,USER_WRATE,USER_ARATE,USER_KRATE,JS_ACTYPE,JS_CARD,JS_ADDRESS,JS_BANK,JS_BANKADD,JS_NAME,JS_LHNO,CREATE_ID,CREATE_DATE,REG_CARD,APP_CODE,TJ_STATUS,TJ_RATE,TJ_LIMIT,STATUS
+		from fm_user
+		<where>
+			<if test="account !=null">
+				and ACCOUNT = #{account}
+			</if>
+			<if test="id !=null">
+				and ID = #{id}
+			</if>
+		</where>
+	</select>
+	<select id="findByWhere" parameterType="UserDomain" resultType="UserDomain"
+		useCache="true">
+		select
+		ID,(SELECT b.full_name FROM fm_user b where b.id = a.parent_id)
+		as parent_name,
+		PARENT_ID,ACCOUNT,FULL_NAME,SIMPLE_NAME,AG_TYPE,AG_ADDRESS,REG_MONEY,REG_NAME,REG_ADDRESS,REG_DATE,REG_EXT,REG_NO,BUS_TERM,BUS_ANO,BUS_SNO,COST_WRATE,COST_KRATE,COST_ARATE,USER_WRATE,USER_ARATE,USER_KRATE,JS_ACTYPE,JS_CARD,JS_ADDRESS,JS_BANK,JS_BANKADD,JS_NAME,JS_LHNO,CREATE_ID,CREATE_DATE,REG_CARD,APP_CODE,TJ_STATUS,TJ_RATE,TJ_LIMIT,STATUS
+		from fm_user a
+		<where>
+			<if test="id !=null">
+				and ID = #{id}
+			</if>
+			<if test="parentId !=null">
+				and PARENT_ID = #{parentId}
+			</if>
+			<if test="account !=null">
+				and ACCOUNT = #{account}
+			</if>
+			<if test="password !=null">
+				and PASSWORD = #{password}
+			</if>
+			<if test="fullName !=null">
+				and FULL_NAME = #{fullName}
+			</if>
+			<if test="simpleName !=null">
+				and SIMPLE_NAME = #{simpleName}
+			</if>
+			<if test="agType !=null">
+				and AG_TYPE = #{agType}
+			</if>
+			<if test="agAddress !=null">
+				and AG_ADDRESS = #{agAddress}
+			</if>
+			<if test="regMoney !=null">
+				and REG_MONEY = #{regMoney}
+			</if>
+			<if test="regName !=null">
+				and REG_NAME = #{regName}
+			</if>
+			<if test="regAddress !=null">
+				and REG_ADDRESS = #{regAddress}
+			</if>
+			<if test="regDate !=null">
+				and REG_DATE = #{regDate}
+			</if>
+			<if test="regExt !=null">
+				and REG_EXT = #{regExt}
+			</if>
+			<if test="regNo !=null">
+				and REG_NO = #{regNo}
+			</if>
+			<if test="busTerm !=null">
+				and BUS_TERM = #{busTerm}
+			</if>
+			<if test="busAno !=null">
+				and BUS_ANO = #{busAno}
+			</if>
+			<if test="busSno !=null">
+				and BUS_SNO = #{busSno}
+			</if>
+			<if test="costWrate !=null">
+				and COST_WRATE = #{costWrate}
+			</if>
+			<if test="costKrate !=null">
+				and COST_KRATE = #{costKrate}
+			</if>
+			<if test="costArate !=null">
+				and COST_ARATE = #{costArate}
+			</if>
+			<if test="userWrate !=null">
+				and USER_WRATE = #{userWrate}
+			</if>
+			<if test="userArate !=null">
+				and USER_ARATE = #{userArate}
+			</if>
+			<if test="userKrate !=null">
+				and USER_KRATE = #{userKrate}
+			</if>
+			<if test="jsActype !=null">
+				and JS_ACTYPE = #{jsActype}
+			</if>
+			<if test="jsCard !=null">
+				and JS_CARD = #{jsCard}
+			</if>
+			<if test="jsAddress !=null">
+				and JS_ADDRESS = #{jsAddress}
+			</if>
+			<if test="jsBank !=null">
+				and JS_BANK = #{jsBank}
+			</if>
+			<if test="jsBankadd !=null">
+				and JS_BANKADD = #{jsBankadd}
+			</if>
+			<if test="jsName !=null">
+				and JS_NAME = #{jsName}
+			</if>
+			<if test="jsLhno !=null">
+				and JS_LHNO = #{jsLhno}
+			</if>
+			<if test="createId !=null">
+				and CREATE_ID = #{createId}
+			</if>
+			<if test="createDate !=null">
+				and CREATE_DATE = #{createDate}
+			</if>
+			<if test="regCard !=null">
+				and REG_CARD = #{regCard}
+			</if>
+			<if test="appCode !=null">
+				and APP_CODE = #{appCode}
+			</if>
+			<if test="tjStatus !=null">
+				and TJ_STATUS = #{tjStatus}
+			</if>
+			<if test="tjRate !=null">
+				and TJ_RATE = #{tjRate}
+			</if>
+			<if test="tjLimit !=null">
+				and TJ_LIMIT = #{tjLimit}
+			</if>
+			<if test="status !=null">
+				and STATUS = #{status}
+			</if>
+		</where>
+	</select>
+	<insert id="insert" parameterType="UserDomain" flushCache="true">
+		insert into
+		fm_user(ID,PARENT_ID,ACCOUNT,PASSWORD,FULL_NAME,SIMPLE_NAME,AG_TYPE,AG_ADDRESS,REG_MONEY,REG_NAME,REG_ADDRESS,REG_DATE,REG_EXT,REG_NO,BUS_TERM,BUS_ANO,BUS_SNO,COST_WRATE,COST_KRATE,COST_ARATE,USER_WRATE,USER_ARATE,USER_KRATE,JS_ACTYPE,JS_CARD,JS_ADDRESS,JS_BANK,JS_BANKADD,JS_NAME,JS_LHNO,CREATE_ID,CREATE_DATE,REG_CARD,APP_CODE,TJ_STATUS,TJ_RATE,TJ_LIMIT,STATUS)
+		values
+		(#{id},#{parentId},#{account},#{password},#{fullName},#{simpleName},#{agType},#{agAddress},#{regMoney},#{regName},#{regAddress},#{regDate},#{regExt},#{regNo},#{busTerm},#{busAno},#{busSno},#{costWrate},#{costKrate},#{costArate},#{userWrate},#{userArate},#{userKrate},#{jsActype},#{jsCard},#{jsAddress},#{jsBank},#{jsBankadd},#{jsName},#{jsLhno},#{createId},#{createDate},#{regCard},#{appCode},#{tjStatus},#{tjRate},#{tjLimit},#{status})
+	</insert>
+	<update id="update" parameterType="UserDomain" flushCache="true">
+		update fm_user
+		<set>
+			<if test="parentId !=null">
+				PARENT_ID = #{parentId},
+			</if>
+			<if test="account !=null">
+				ACCOUNT = #{account},
+			</if>
+			<if test="password !=null">
+				PASSWORD = #{password},
+			</if>
+			<if test="fullName !=null">
+				FULL_NAME = #{fullName},
+			</if>
+			<if test="simpleName !=null">
+				SIMPLE_NAME = #{simpleName},
+			</if>
+			<if test="agType !=null">
+				AG_TYPE = #{agType},
+			</if>
+			<if test="agAddress !=null">
+				AG_ADDRESS = #{agAddress},
+			</if>
+			<if test="regMoney !=null">
+				REG_MONEY = #{regMoney},
+			</if>
+			<if test="regName !=null">
+				REG_NAME = #{regName},
+			</if>
+			<if test="regAddress !=null">
+				REG_ADDRESS = #{regAddress},
+			</if>
+			<if test="regDate !=null">
+				REG_DATE = #{regDate},
+			</if>
+			<if test="regExt !=null">
+				REG_EXT = #{regExt},
+			</if>
+			<if test="regNo !=null">
+				REG_NO = #{regNo},
+			</if>
+			<if test="busTerm !=null">
+				BUS_TERM = #{busTerm},
+			</if>
+			<if test="busAno !=null">
+				BUS_ANO = #{busAno},
+			</if>
+			<if test="busSno !=null">
+				BUS_SNO = #{busSno},
+			</if>
+			<if test="costWrate !=null">
+				COST_WRATE = #{costWrate},
+			</if>
+			<if test="costKrate !=null">
+				COST_KRATE = #{costKrate},
+			</if>
+			<if test="costArate !=null">
+				COST_ARATE = #{costArate},
+			</if>
+			<if test="userWrate !=null">
+				USER_WRATE = #{userWrate},
+			</if>
+			<if test="userArate !=null">
+				USER_ARATE = #{userArate},
+			</if>
+			<if test="userKrate !=null">
+				USER_KRATE = #{userKrate},
+			</if>
+			<if test="jsActype !=null">
+				JS_ACTYPE = #{jsActype},
+			</if>
+			<if test="jsCard !=null">
+				JS_CARD = #{jsCard},
+			</if>
+			<if test="jsAddress !=null">
+				JS_ADDRESS = #{jsAddress},
+			</if>
+			<if test="jsBank !=null">
+				JS_BANK = #{jsBank},
+			</if>
+			<if test="jsBankadd !=null">
+				JS_BANKADD = #{jsBankadd},
+			</if>
+			<if test="jsName !=null">
+				JS_NAME = #{jsName},
+			</if>
+			<if test="jsLhno !=null">
+				JS_LHNO = #{jsLhno},
+			</if>
+			<if test="createId !=null">
+				CREATE_ID = #{createId},
+			</if>
+			<if test="createDate !=null">
+				CREATE_DATE = #{createDate},
+			</if>
+			<if test="regCard !=null">
+				REG_CARD = #{regCard},
+			</if>
+			<if test="appCode !=null">
+				APP_CODE = #{appCode},
+			</if>
+			<if test="tjStatus !=null">
+				TJ_STATUS = #{tjStatus},
+			</if>
+			<if test="tjRate !=null">
+				TJ_RATE = #{tjRate},
+			</if>
+			<if test="tjLimit !=null">
+				TJ_LIMIT = #{tjLimit},
+			</if>
+			<if test="status !=null">
+				STATUS = #{status},
+			</if>
+		</set>
+		<where>
+			<if test="id !=null">
+				and ID = #{id}
+			</if>
+		</where>
+	</update>
+	<delete id="delete" parameterType="UserDomain" flushCache="true">
+		delete from fm_user
+		<where>
+			<if test="id !=null">
+				and ID = #{id}
+			</if>
+		</where>
+	</delete>
+
+	<select id="getUser" parameterType="UserDomain" resultType="UserDomain"
+		useCache="false" flushCache="true">
+		select
+		ID,PARENT_ID,ACCOUNT,PASSWORD,FULL_NAME,SIMPLE_NAME,AG_TYPE,AG_ADDRESS,REG_MONEY,REG_NAME,REG_ADDRESS,REG_DATE,REG_EXT,REG_NO,BUS_TERM,BUS_ANO,BUS_SNO,COST_WRATE,COST_KRATE,COST_ARATE,USER_WRATE,USER_ARATE,USER_KRATE,JS_ACTYPE,JS_CARD,JS_ADDRESS,JS_BANK,JS_BANKADD,JS_NAME,JS_LHNO,CREATE_ID,CREATE_DATE,REG_CARD,APP_CODE,TJ_STATUS,TJ_RATE,TJ_LIMIT,STATUS
+		from fm_user
+		<where>
+			<if test="account !=null">
+				and ACCOUNT = #{account}
+			</if>
+		</where>
+	</select>
+
+	<update id="checkUser" parameterType="UserDomain" flushCache="true">
+		update fm_user
+		<set>
+			STATUS = #{status}
+		</set>
+		<where>
+			<if test="id !=null">
+				and ID = #{id}
+			</if>
+		</where>
+	</update>
+
+	<update id="updateRate" parameterType="UserDomain" flushCache="true">
+		update fm_user
+		<set>
+			<if test="costWrate !=null">
+				COST_WRATE = #{costWrate},
+			</if>
+			<if test="costKrate !=null">
+				COST_KRATE = #{costKrate},
+			</if>
+			<if test="costArate !=null">
+				COST_ARATE = #{costArate},
+			</if>
+			<if test="userWrate !=null">
+				USER_WRATE = #{userWrate},
+			</if>
+			<if test="userArate !=null">
+				USER_ARATE = #{userArate},
+			</if>
+			<if test="userKrate !=null">
+				USER_KRATE = #{userKrate},
+			</if>
+		</set>
+		<where>
+			<if test="id !=null">
+				and ID = #{id}
+			</if>
+		</where>
+	</update>
+
+	<select id="getAllCheckedUser" resultType="UserDomain" useCache="true">
+		SELECT * FROM fm_user where status = 1
+	</select>
+
+	<select id="findSubUserList" resultType="UserDomain" useCache="true">
+		SELECT a.*,(SELECT b.full_name FROM fm_user b where b.id = a.parent_id) as parent_name FROM fm_user a LEFT JOIN (SELECT id,parent_id
+		, @pathnodes:= IF( parent_id =-1,',0', CONCAT(
+		CONCAT_WS(',',IF(LOCATE( CONCAT('|',parent_id,':'),@pathall) > 0 ,
+		SUBSTRING_INDEX( SUBSTRING_INDEX(@pathall,CONCAT('|',parent_id,':'),-1),'|',1)
+		,@pathnodes),parent_id),',',id))paths
+		,@pathall:=CONCAT(@pathall,'|',id,':', @pathnodes ,'|') pathall
+		FROM fm_user,(SELECT @le:=0,@pathlevel:='', @pathall:='',@pathnodes:='')
+		vv) b ON a.id = b.id
+		<where>
+			b.paths like '%${id}%'
+
+			<if test="account !=null">
+				and a.ACCOUNT = #{account}
+			</if>
+			<if test="fullName !=null">
+				and a.FULL_NAME = #{fullName}
+			</if>
+			<if test="simpleName !=null">
+				and a.SIMPLE_NAME = #{simpleName}
+			</if>
+		</where>
+	</select>
+
+</mapper>

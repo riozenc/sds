@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="sds.webapp.stm.dao.ProfitMerchantDAO">
+	<select id="findByKey" parameterType="ProfitMerchantDomain"
+		resultType="ProfitMerchantDomain" useCache="true">
+		select ID,MERCHANT_ID,TOTAL_AMOUNT,TOTAL_PROFIT,DATE,STATUS from
+		fm_profit_merchant
+		<where>
+			<if test="id !=null">
+				and ID = #{id}
+			</if>
+		</where>
+	</select>
+	<select id="findByWhere" parameterType="ProfitMerchantDomain"
+		resultType="ProfitMerchantDomain" useCache="true">
+		SELECT
+		a.ID,
+		a.MERCHANT_ID,
+		b.ACCOUNT,
+		a.TOTAL_AMOUNT,
+		a.TOTAL_PROFIT,
+		a.DATE,
+		a.STATUS
+		FROM
+		fm_profit_merchant a
+		LEFT JOIN fm_merchant b ON
+		a.merchant_id = b.id
+		<where>
+			<if test="id !=null">
+				and a.ID = #{id}
+			</if>
+			<if test="merchantId !=null">
+				and a.MERCHANT_ID = #{merchantId}
+			</if>
+			<if test="totalAmount !=null">
+				and a.TOTAL_AMOUNT = #{totalAmount}
+			</if>
+			<if test="totalProfit !=null">
+				and a.TOTAL_PROFIT = #{totalProfit}
+			</if>
+
+			<if test="startDate !=null">
+				and DATE_FORMAT(a.DATE, '%Y-%m-%d') &gt;=
+				DATE_FORMAT(#{startDate}, '%Y-%m-%d')
+			</if>
+			<if test="endDate !=null">
+				and DATE_FORMAT(a.DATE, '%Y-%m-%d') &lt;=
+				DATE_FORMAT(#{endDate}, '%Y-%m-%d')
+			</if>
+
+			<if test="status !=null">
+				and a.STATUS = #{status}
+			</if>
+			<if test="account !=null">
+				and b.ACCOUNT = #{account}
+			</if>
+		</where>
+	</select>
+	<insert id="insert" parameterType="ProfitMerchantDomain"
+		flushCache="true">
+		insert into
+		fm_profit_merchant(ID,MERCHANT_ID,TOTAL_AMOUNT,TOTAL_PROFIT,DATE,STATUS)
+		values
+		(#{id},#{merchantId},#{totalAmount},#{totalProfit},#{date},#{status})
+	</insert>
+	<update id="update" parameterType="ProfitMerchantDomain"
+		flushCache="true">
+		update fm_profit_merchant
+		<set>
+			<if test="merchantId !=null">
+				MERCHANT_ID = #{merchantId},
+			</if>
+			<if test="totalAmount !=null">
+				TOTAL_AMOUNT = #{totalAmount},
+			</if>
+			<if test="totalProfit !=null">
+				TOTAL_PROFIT = #{totalProfit},
+			</if>
+			<if test="date !=null">
+				DATE = #{date},
+			</if>
+			<if test="status !=null">
+				STATUS = #{status},
+			</if>
+		</set>
+		<where>
+			and ID = #{id}
+		</where>
+	</update>
+	<delete id="delete" parameterType="ProfitMerchantDomain"
+		flushCache="true">
+		delete from fm_profit_merchant
+		<where>
+			and ID = #{id}
+		</where>
+	</delete>
+
+
+	<select id="getMerchantTotalProfit" parameterType="ProfitMerchantDomain"
+		resultType="String" useCache="true">
+		SELECT SUM(total_profit) FROM fm_profit_merchant
+		<where>
+			MERCHANT_ID = #{merchantId}
+
+			<if test="status !=null">
+				and STATUS = #{status}
+			</if>
+
+		</where>
+	</select>
+</mapper>
