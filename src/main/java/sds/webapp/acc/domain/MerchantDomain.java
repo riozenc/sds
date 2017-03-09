@@ -65,6 +65,8 @@ public class MerchantDomain extends Page<MerchantDomain> implements MybatisEntit
 	private String busNo;// `bus_no` varchar(255) DEFAULT NULL COMMENT
 							// '营业执照注册号',
 
+	private String bank;// 银行卡所属银行
+
 	private Integer tjId;// 推荐人ID
 	private Integer agentId;// `agent_id` int(11) DEFAULT NULL COMMENT '所属代理商',
 	private String parentName;// 上级名称
@@ -359,6 +361,14 @@ public class MerchantDomain extends Page<MerchantDomain> implements MybatisEntit
 
 	public void setDoorPic(String doorPic) {
 		this.doorPic = doorPic;
+	}
+
+	public String getBank() {
+		return bank;
+	}
+
+	public void setBank(String bank) {
+		this.bank = bank;
 	}
 
 }

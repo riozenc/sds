@@ -78,7 +78,7 @@ public class RemoteUtils {
 	public static RemoteResult replaceCard(MerchantDomain merchantDomain, MerchantDomain proxyMerchantDomain)
 			throws Exception {
 
-		proxyMerchantDomain.setRealName(merchantDomain.getRealName());
+//		proxyMerchantDomain.setRealName(merchantDomain.getRealName());
 		proxyMerchantDomain.setCardNo(merchantDomain.getCardNo());
 		proxyMerchantDomain.setCertNo(merchantDomain.getCertNo());
 		proxyMerchantDomain.setMobile(merchantDomain.getMobile());

@@ -21,6 +21,7 @@ import com.riozenc.quicktool.common.util.json.JSONUtil;
 
 import sds.common.excel.ExcelUtils;
 import sds.common.json.JsonGrid;
+import sds.common.security.util.UserUtils;
 import sds.common.webapp.base.action.BaseAction;
 import sds.webapp.acc.domain.MerchantDomain;
 import sds.webapp.acc.domain.UserDomain;
@@ -243,14 +244,37 @@ public class ProfitAction extends BaseAction {
 
 	@ResponseBody
 	@RequestMapping(params = "type=exportExcel")
-	public String exportExcel(ProfitDomain profitDomain, HttpServletResponse httpServletResponse) throws IOException {
+	public String exportExcel(ProfitUserDomain profitUserDomain, HttpServletResponse httpServletResponse)
+			throws IOException {
 
-		List<ProfitDomain> list = profitService.getAllProfit(profitDomain);
-		Map<String, List> map = getProfitCountMap(list);
+		// ProfitUserDomain profitUserDomain = new ProfitUserDomain();
+		profitUserDomain.setAgentId(UserUtils.getPrincipal().getUserDomain().getId());
 
-		List<ProfitUserDomain> profitUserDomains = map.get("user");
+		List<ProfitDomain> list = profitService.findSubProfitByUser(profitUserDomain);
 
-		ExcelUtils.export(httpServletResponse);
+		List<ProfitUserDomain> profitUserDomains = SettlementUtil.computeProfitByUser(list);
+
+		for (ProfitUserDomain temp : profitUserDomains) {
+
+			UserDomain userDomain = new UserDomain();
+			userDomain.setAccount(temp.getAccount());
+			userDomain = userService.findByKey(userDomain);
+
+			// 法人姓名
+			temp.setRegName(userDomain.getRegName());
+			// 结算卡
+			temp.setJsCard(userDomain.getJsCard());
+
+			temp.setJsAddress(userDomain.getJsAddress());
+
+			temp.setJsBank(userDomain.getJsBank());
+			temp.setJsBankadd(userDomain.getJsBankadd());
+			temp.setJsName(userDomain.getJsName());
+			temp.setJsLhno(userDomain.getJsLhno());
+
+		}
+
+		ExcelUtils.export(profitUserDomains, httpServletResponse);
 
 		return null;
 	}

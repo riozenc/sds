@@ -21,6 +21,15 @@ public class ProfitUserDomain extends Page<ProfitUserDomain> implements MybatisE
 	private Date endDate;// 分润时间区间
 
 	private String account;// 手机号
+	//excel用
+	private String regName;//法人姓名
+	private String jsCard;//
+	private String jsAddress;//
+	private String jsBank;
+	private String jsBankadd;
+	private String jsName;
+	private String jsLhno;
+	
 
 	public Integer getId() {
 		return id;
@@ -92,6 +101,62 @@ public class ProfitUserDomain extends Page<ProfitUserDomain> implements MybatisE
 
 	public void setAccount(String account) {
 		this.account = account;
+	}
+
+	public String getRegName() {
+		return regName;
+	}
+
+	public void setRegName(String regName) {
+		this.regName = regName;
+	}
+
+	public String getJsCard() {
+		return jsCard;
+	}
+
+	public void setJsCard(String jsCard) {
+		this.jsCard = jsCard;
+	}
+
+	public String getJsAddress() {
+		return jsAddress;
+	}
+
+	public void setJsAddress(String jsAddress) {
+		this.jsAddress = jsAddress;
+	}
+
+	public String getJsBank() {
+		return jsBank;
+	}
+
+	public void setJsBank(String jsBank) {
+		this.jsBank = jsBank;
+	}
+
+	public String getJsBankadd() {
+		return jsBankadd;
+	}
+
+	public void setJsBankadd(String jsBankadd) {
+		this.jsBankadd = jsBankadd;
+	}
+
+	public String getJsName() {
+		return jsName;
+	}
+
+	public void setJsName(String jsName) {
+		this.jsName = jsName;
+	}
+
+	public String getJsLhno() {
+		return jsLhno;
+	}
+
+	public void setJsLhno(String jsLhno) {
+		this.jsLhno = jsLhno;
 	}
 
 }

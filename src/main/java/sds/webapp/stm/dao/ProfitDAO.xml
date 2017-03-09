@@ -240,7 +240,7 @@
 			FROM
 			fm_user,(SELECT @le:=0,@pathlevel:='', @pathall:='',@pathnodes:='')
 			vv) b ON a.id = b.id
-			where b.paths like '%,${id},%')
+			where b.paths like '%,${agentId}%')
 			<if test="startDate !=null">
 				and DATE_FORMAT(t1.order_date, '%Y-%m-%d') &gt;=
 				DATE_FORMAT(#{startDate}, '%Y-%m-%d')

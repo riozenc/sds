@@ -7,48 +7,54 @@ package sds.common.excel;
 
 import java.io.IOException;
 import java.io.OutputStream;
+import java.util.Date;
+import java.util.List;
 
 import javax.servlet.http.HttpServletResponse;
 
-import org.apache.poi.hssf.usermodel.HSSFCell;
 import org.apache.poi.hssf.usermodel.HSSFRow;
 import org.apache.poi.hssf.usermodel.HSSFSheet;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 
+import com.riozenc.quicktool.common.util.date.DateUtil;
+
+import sds.webapp.stm.domain.ProfitUserDomain;
+
 public class ExcelUtils {
 
-	public static void export(HttpServletResponse httpServletResponse) throws IOException {
+	private static final String[] COLUMN_NAME = { "#", "收款人姓名", "收款人帐号", "开户行", "支行", "联行号", "通道", "支付金额" };
+
+	public static void export(List<ProfitUserDomain> list, HttpServletResponse httpServletResponse) throws IOException {
 		// 创建HSSFWorkbook对象(excel的文档对象)
 		HSSFWorkbook wb = new HSSFWorkbook();
 		// 建立新的sheet对象（excel的表单）
-		HSSFSheet sheet = wb.createSheet("成绩表");
+		HSSFSheet sheet = wb.createSheet("sheet");
 		// 在sheet里创建第一行，参数为行索引(excel的行)，可以是0～65535之间的任何一个
 		HSSFRow row1 = sheet.createRow(0);
-		// 创建单元格（excel的单元格，参数为列索引，可以是0～255之间的任何一个
-		HSSFCell cell = row1.createCell(0);
-		// 设置单元格内容
-		cell.setCellValue("学员考试成绩一览表");
+		for (int i = 0; i < COLUMN_NAME.length; i++) {
+			row1.createCell(i).setCellValue(COLUMN_NAME[i]);
+		}
 
-		// 在sheet里创建第二行
-		HSSFRow row2 = sheet.createRow(1);
-		// 创建单元格并设置单元格内容
-		row2.createCell(0).setCellValue("姓名");
-		row2.createCell(1).setCellValue("班级");
-		row2.createCell(2).setCellValue("笔试成绩");
-		row2.createCell(3).setCellValue("机试成绩");
-		// 在sheet里创建第三行
-		HSSFRow row3 = sheet.createRow(2);
-		row3.createCell(0).setCellValue("李明");
-		row3.createCell(1).setCellValue("As178");
-		row3.createCell(2).setCellValue(87);
-		row3.createCell(3).setCellValue(78);
-		// .....省略部分代码
+		for (int i = 0; i < list.size(); i++) {
+			HSSFRow temp = sheet.createRow(i + 1);
 
+			temp.createCell(0).setCellValue(i + 1);
+			temp.createCell(1).setCellValue(list.get(i).getJsName());// 姓名
+			temp.createCell(2).setCellValue(list.get(i).getJsCard());
+			temp.createCell(3).setCellValue(list.get(i).getJsBank());
+			temp.createCell(4).setCellValue(list.get(i).getJsBankadd());
+			temp.createCell(5).setCellValue(list.get(i).getJsLhno());
+			temp.createCell(6).setCellValue("");
+			temp.createCell(7).setCellValue(list.get(i).getTotalProfit());
+
+		}
+		String fileName = "清算文件" + "_" + DateUtil.formatDate(new Date());
 		// wb.write(stream);
 		// 输出Excel文件
 		OutputStream output = httpServletResponse.getOutputStream();
 		httpServletResponse.reset();
-		httpServletResponse.setHeader("Content-disposition", "attachment;filename=details.xls");
+		httpServletResponse.setHeader("Content-disposition",
+				"attachment;filename=\"" + new String(fileName.getBytes("gb2312"), "ISO8859-1") + ".xls");
 		httpServletResponse.setContentType("application/msexcel");
 		wb.write(output);
 		output.close();

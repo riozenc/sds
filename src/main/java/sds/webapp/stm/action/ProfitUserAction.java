@@ -90,7 +90,7 @@ public class ProfitUserAction extends BaseAction {
 	@RequestMapping(params = "type=subProfitUser")
 	public String subProfitUser(ProfitUserDomain profitUserDomain) {
 		// parent_id
-		profitUserDomain.setId(UserUtils.getPrincipal().getUserDomain().getId());
+		profitUserDomain.setAgentId(UserUtils.getPrincipal().getUserDomain().getId());
 		List<ProfitDomain> list = profitService.findSubProfitByUser(profitUserDomain);
 		List<ProfitUserDomain> profitUserDomains = SettlementUtil.computeProfitByUser(list);
 		return JSONUtil.toJsonString(new JsonGrid(profitUserDomain, profitUserDomains));
