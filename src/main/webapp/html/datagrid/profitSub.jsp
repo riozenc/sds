@@ -89,12 +89,7 @@ function dialog_profitSubInfo(account){
 			    	    showToolbar: false,
 			    	    data:result,			    	    
 			    	    columns: [
-			                {
-			      	            name: 'id',
-			      	            label: 'ID',
-			      	            align: 'center',
-			      	            width:50
-			      	        },
+			               
 			    	        {
 			    	            name: 'account',
 			    	            label: '账号',
@@ -186,7 +181,7 @@ function dialog_profitSubInfos(agentid,date){
 			    	        },
 			    	       
 			    	        {
-			    	            name: 'totalAmount',
+			    	            name: 'amount',
 			    	            label: '交易金额',
 			    	            align: 'center',
 			    	            width: 100
@@ -194,6 +189,12 @@ function dialog_profitSubInfos(agentid,date){
 			    	        {
 			    	            name: 'totalProfit',
 			    	            label: '分润金额',
+			    	            align: 'center',
+			    	            width: 100
+			    	        },
+			    	        {
+			    	            name: 'orderDate',
+			    	            label: '交易时间',
 			    	            align: 'center',
 			    	            width: 100
 			    	        }
