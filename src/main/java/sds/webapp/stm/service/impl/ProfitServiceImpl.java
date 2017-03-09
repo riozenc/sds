@@ -1,5 +1,6 @@
 package sds.webapp.stm.service.impl;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
@@ -112,8 +113,9 @@ public class ProfitServiceImpl implements ProfitService {
 		// TODO Auto-generated method stub
 		Map<String, MARDomain> marMap = getMAR();
 		List<ProfitDomain> list = SettlementUtil.createProfit(marMap.get(orderDomain.getAccount()), orderDomain);
+		SettlementUtil.realtimeComputationBalance(list);// 计算余额
 		profitDAO.insertBatch(list);
-		orderDomain.setStatus(3);//分润完毕
+		orderDomain.setStatus(3);// 分润完毕
 		return orderDAO.update(orderDomain);
 	}
 
@@ -150,6 +152,43 @@ public class ProfitServiceImpl implements ProfitService {
 			marMap.put(temp.getAccount(), marDomain);
 		}
 		return marMap;
+	}
+
+	@Override
+	public int test() {
+		// TODO Auto-generated method stub
+		profitDAO.findByWhere(null);
+		profitUserDAO.findByWhere(null);
+		profitMerchantDAO.findByWhere(null);
+		orderDAO.findByWhere(null);
+		userDAO.findByWhere(null);
+		merchantDAO.findByWhere(null);
+
+		List<ProfitDomain> list = new ArrayList<ProfitDomain>();
+
+		ProfitDomain profitDomain1 = new ProfitDomain();
+		profitDomain1.setAccount("110");
+		profitDomain1.setOrderId("111");
+		ProfitDomain profitDomain2 = new ProfitDomain();
+		profitDomain2.setAccount("220");
+		profitDomain2.setOrderId("222");
+		list.add(profitDomain1);
+		list.add(profitDomain2);
+
+		profitDAO.insertBatch(list);
+		return 0;
+	}
+
+	@Override
+	public List<ProfitDomain> findSubProfitByUser(ProfitUserDomain profitUserDomain) {
+		// TODO Auto-generated method stub
+		return profitDAO.findSubProfitByUser(profitUserDomain);
+	}
+
+	@Override
+	public List<ProfitUserDomain> findDateProfitUserByWhere(ProfitUserDomain profitUserDomain) {
+		// TODO Auto-generated method stub
+		return profitDAO.findDateProfitUserByWhere(profitUserDomain);
 	}
 
 }

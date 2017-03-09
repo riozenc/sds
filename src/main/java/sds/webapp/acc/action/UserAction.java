@@ -31,7 +31,6 @@ import sds.webapp.acc.service.UserService;
  */
 @ControllerAdvice
 @RequestMapping("user")
-@Scope("prototype")
 public class UserAction extends BaseAction {
 
 	@Autowired

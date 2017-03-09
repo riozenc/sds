@@ -8,7 +8,6 @@ import com.riozenc.quicktool.annotation.TransactionDAO;
 import com.riozenc.quicktool.mybatis.dao.AbstractTransactionDAOSupport;
 import com.riozenc.quicktool.mybatis.dao.BaseDAO;
 
-import sds.webapp.acc.domain.UserDomain;
 import sds.webapp.stm.domain.ProfitDomain;
 import sds.webapp.stm.domain.ProfitUserDomain;
 
@@ -59,5 +58,13 @@ public class ProfitDAO extends AbstractTransactionDAOSupport implements BaseDAO<
 
 	public List<ProfitDomain> findProfitByUser(ProfitUserDomain profitUserDomain) {
 		return getPersistanceManager().find(getNamespace() + ".findProfitByUser", profitUserDomain);
+	}
+
+	public List<ProfitDomain> findSubProfitByUser(ProfitUserDomain profitUserDomain) {
+		return getPersistanceManager().find(getNamespace() + ".findSubProfitByUser", profitUserDomain);
+	}
+
+	public List<ProfitUserDomain> findDateProfitUserByWhere(ProfitUserDomain profitUserDomain) {
+		return getPersistanceManager().find(getNamespace() + ".findDateProfitUserByWhere", profitUserDomain);
 	}
 }

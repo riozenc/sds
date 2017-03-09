@@ -35,7 +35,7 @@ import sds.webapp.stm.service.ProfitService;
 
 @ControllerAdvice
 @RequestMapping("order")
-@Scope("prototype")
+
 public class OrderAction extends BaseAction {
 
 	@Autowired

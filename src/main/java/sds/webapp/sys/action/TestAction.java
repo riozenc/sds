@@ -1,64 +1,44 @@
 package sds.webapp.sys.action;
 
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
+import java.util.Date;
 
-import org.springframework.context.annotation.Scope;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import sds.common.pool.MerchantPool;
-import sds.common.pool.PoolBean;
-import sds.webapp.acc.domain.MerchantDomain;
+import sds.webapp.ord.domain.OrderDomain;
+import sds.webapp.stm.service.ProfitService;
 
 @ControllerAdvice
 @RequestMapping("test")
-@Scope("prototype")
 public class TestAction {
+
+	@Autowired
+	@Qualifier("profitServiceImpl")
+	private ProfitService profitService;
 
 	@RequestMapping(params = "type=test")
 	public String test() {
-		MerchantPool.getInstance();
 
-		ExecutorService executorService = Executors.newFixedThreadPool(20);
-		for (int i = 0; i < 1600; i++) {
-			int l = i;
-			executorService.execute(new Runnable() {
-				@Override
-				public void run() {
-					// TODO Auto-generated method stub
-					MerchantPool merchantPool = MerchantPool.getInstance();
-					PoolBean poolBean;
-					try {
-						poolBean = merchantPool.getPoolBean();
-						MerchantDomain merchantDomain = poolBean.getObject();
+		OrderDomain orderDomain = new OrderDomain();
+		orderDomain.setOrderId("XX0110992007268636");
+		orderDomain.setChannelCode(1);
+		orderDomain.setRespInfo("000000");
+		orderDomain.setRespCode("SUCCESS");
+		orderDomain.setAmount(20000d);
+		orderDomain.setDate(new Date());
+		orderDomain.setAccount("18660509556");
+		orderDomain.setProxyAccount("19900000016");
+		orderDomain.setRemark("测试");
+		orderDomain.setStatus(1);
+		profitService.profit(orderDomain);
+		
+		System.out.println("------------------");
+		profitService.test();
+		profitService.test();
 
-						System.out.println(merchantDomain.hashCode() + "(" + merchantDomain.getId() + ")" + "[" + l
-								+ "]" + Thread.currentThread().getName());
-
-						if (l == 888 || l == 1111) {
-							
-							MerchantDomain real = new MerchantDomain();
-							real.setId(l);
-							poolBean.binding(real);// 占用
-						} else {
-							poolBean.recover();
-						}
-
-						if (l % 10 == 0) {
-							MerchantPool.getInstance().readPoolState();
-						}
-
-					} catch (Exception e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
-					}
-				}
-			});
-		}
-
-		executorService.shutdown();
 		return null;
 	}
 

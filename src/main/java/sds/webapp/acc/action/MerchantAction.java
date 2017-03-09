@@ -1,5 +1,6 @@
 package sds.webapp.acc.action;
 
+import java.io.File;
 import java.io.IOException;
 import java.util.Iterator;
 import java.util.List;
@@ -9,8 +10,6 @@ import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.context.annotation.Scope;
-import org.springframework.util.Base64Utils;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -44,7 +43,7 @@ import sds.webapp.acc.service.UserService;
 
 @ControllerAdvice
 @RequestMapping("merchant")
-@Scope("prototype")
+
 public class MerchantAction extends BaseAction {
 
 	@Autowired
@@ -55,22 +54,49 @@ public class MerchantAction extends BaseAction {
 	private UserService userService;
 
 	/**
-	 * 获取验证码
+	 * 获取注册验证码
 	 * 
+	 * @return
+	 */
+	@ResponseBody
+	@RequestMapping(params = "type=getRegisterVerificationCode")
+	public String getRegisterVerificationCode(String account) {
+
+		return JSONUtil.toJsonString(SmsSender.send(account));
+	}
+
+	/**
+	 * 获取验证用户的的验证码
+	 * 
+	 * @param account
 	 * @return
 	 */
 	@ResponseBody
 	@RequestMapping(params = "type=getVerificationCode")
 	public String getVerificationCode(String account) {
+		MerchantDomain merchantDomain = new MerchantDomain();
+		merchantDomain.setAccount(account);
+		merchantDomain = merchantService.findByKey(merchantDomain);
+		if (merchantDomain == null) {
+			return JSONUtil.toJsonString(new JsonResult(JsonResult.ERROR, "不是有效的账户."));
+		}
 		return JSONUtil.toJsonString(SmsSender.send(account));
 	}
 
+	/**
+	 * 重置密码
+	 * 
+	 * @param account
+	 * @param password
+	 * @param code
+	 * @return
+	 */
 	@ResponseBody
 	@RequestMapping(params = "type=resetPassword")
 	public String resetPassword(String account, String password, String code) {
 		String vc = SmsCache.get(account);
 		if (vc == null || !vc.equals(code)) {
-			return JSONUtil.toJsonString(new JsonResult(JsonResult.ERROR, "验证码错误."));
+			return JSONUtil.toJsonString(new JsonResult(JsonResult.ERROR, "无效的验证码."));
 		}
 		MerchantDomain merchantDomain = new MerchantDomain();
 		merchantDomain.setAccount(account);
@@ -95,7 +121,7 @@ public class MerchantAction extends BaseAction {
 
 		String vc = SmsCache.get(merchantDomain.getAccount());
 		if (vc == null || !vc.equals(code)) {
-			return JSONUtil.toJsonString(new JsonResult(JsonResult.ERROR, "验证码错误."));
+			return JSONUtil.toJsonString(new JsonResult(JsonResult.ERROR, "无效的验证码."));
 		}
 		try {
 			if (appCode.startsWith("EA")) {
@@ -123,25 +149,15 @@ public class MerchantAction extends BaseAction {
 
 		if (merchantService.findByKey(merchantDomain) == null) {
 			merchantDomain.setStatus(0);// 审核中
-			return insert(merchantDomain, "注册成功.", "注册失败.");
+			int i = merchantService.register(merchantDomain);
+			if (i > 0) {
+				return JSONUtil.toJsonString(new JsonResult(JsonResult.SUCCESS, "注册成功."));
+			} else {
+				return JSONUtil.toJsonString(new JsonResult(JsonResult.ERROR, "注册失败."));
+			}
 		} else {
 			// 已经存在的手机号
 			return JSONUtil.toJsonString(new JsonResult(JsonResult.ERROR, "已经存在的手机号."));
-		}
-	}
-
-	/**
-	 * 新增商户
-	 * 
-	 * @param merchantDomain
-	 * @return
-	 */
-	public String insert(MerchantDomain merchantDomain, String success, String failed) {
-		int i = merchantService.insert(merchantDomain);
-		if (i > 0) {
-			return JSONUtil.toJsonString(new JsonResult(JsonResult.SUCCESS, success));
-		} else {
-			return JSONUtil.toJsonString(new JsonResult(JsonResult.ERROR, failed));
 		}
 	}
 
@@ -373,25 +389,6 @@ public class MerchantAction extends BaseAction {
 				bean.binding(merchantDomain);// 绑定处理
 				merchantService.validCard(merchantDomain, bean.getObject());
 
-				CommonsMultipartResolver multipartResolver = new CommonsMultipartResolver(
-						request.getSession().getServletContext());
-				if (multipartResolver.isMultipart(request)) {
-					// 将request变成多部分request
-					MultipartHttpServletRequest multiRequest = (MultipartHttpServletRequest) request;
-					// 获取multiRequest 中所有的文件名
-					Iterator<String> iter = multiRequest.getFileNames();
-					while (iter.hasNext()) {
-						String name = iter.next();
-						// 一次遍历所有文件
-						MultipartFile file = multiRequest.getFile(name);
-						if (file != null) {
-							// 上传
-							file.transferTo(FileUtil.createFile(Global.getConfig("file.doc.path"),
-									temp.getAccount() + "_" + name));
-						}
-					}
-				}
-
 				return JSONUtil.toJsonString(new JsonResult(JsonResult.SUCCESS, "验卡成功."));
 			} else {
 				// 绑定失败
@@ -410,6 +407,44 @@ public class MerchantAction extends BaseAction {
 
 	}
 
+	/**
+	 * 更换结算卡
+	 * 
+	 * @param merchantDomain
+	 * @return
+	 */
+	@ResponseBody
+	@RequestMapping(params = "type=replaceCard")
+	public String replaceCard(MerchantDomain merchantDomain) {
+		merchantDomain.setId(UserUtils.getPrincipal().getMerchantDomain().getId());
+		MerchantDomain vm = merchantService.getVirtualMerchant(merchantDomain);
+		RemoteResult remoteResult = null;
+		try {
+			// 替换结算卡
+			remoteResult = RemoteUtils.replaceCard(merchantDomain, vm);
+			if (RemoteUtils.resultProcess(remoteResult)) {
+				// 替换成功
+				merchantService.validCard(merchantDomain, vm);
+				return JSONUtil.toJsonString(new JsonResult(JsonResult.SUCCESS, "替换成功."));
+			} else {
+				// 绑定失败
+				return JSONUtil.toJsonString(new JsonResult(JsonResult.ERROR,
+						remoteResult.getMsg() + "[" + remoteResult.getRespInfo() + "]"));
+			}
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			return JSONUtil.toJsonString(new JsonResult(JsonResult.ERROR, "更新验卡数据失败(" + e + ")."));
+		}
+	}
+
+	/**
+	 * 文件上传
+	 * 
+	 * @param request
+	 * @throws IllegalStateException
+	 * @throws IOException
+	 */
 	@ResponseBody
 	@RequestMapping(params = "type=upload")
 	public void upload(HttpServletRequest request) throws IllegalStateException, IOException {
@@ -438,14 +473,25 @@ public class MerchantAction extends BaseAction {
 	 * 
 	 * @param base64Data
 	 * @param request
-	 * @throws IllegalStateException
-	 * @throws IOException
+	 * @throws Exception
 	 */
 	@ResponseBody
 	@RequestMapping(params = "type=base64Upload")
-	public void base64Upload(String base64Data, HttpServletRequest request) throws IllegalStateException, IOException {
-		System.out.println(base64Data);
-		byte[] bs = Base64Utils.decodeFromString(base64Data);
-		System.out.println(new String(bs));
+	public String base64Upload(String base64Data, String name, HttpServletRequest request) {
+		String account = UserUtils.getPrincipal().getMerchantDomain().getAccount();
+		String path = Global.getConfig("file.doc.path") + File.separator + account;
+		String fileName = UserUtils.getPrincipal().getMerchantDomain().getAccount() + "_" + name;
+		try {
+
+			File file = FileUtil.uploadPictureByBase64(base64Data, path, fileName);
+			System.out.println(file.getPath());
+			System.out.println(file.getAbsolutePath());
+			System.out.println(file.getCanonicalPath());
+			return JSONUtil.toJsonString(new JsonResult(JsonResult.SUCCESS, file.getCanonicalPath()));
+		} catch (Exception e) {
+			e.printStackTrace();
+			return JSONUtil.toJsonString(new JsonResult(JsonResult.ERROR, "上传图片失败."));
+		}
+
 	}
 }

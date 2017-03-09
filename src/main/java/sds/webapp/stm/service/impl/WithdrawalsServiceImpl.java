@@ -16,6 +16,7 @@ import sds.webapp.stm.dao.WithdrawalsDAO;
 import sds.webapp.stm.domain.ProfitMerchantDomain;
 import sds.webapp.stm.domain.WithdrawalsDomain;
 import sds.webapp.stm.service.WithdrawalsService;
+import sds.webapp.stm.util.SettlementUtil;
 
 @TransactionService
 public class WithdrawalsServiceImpl implements WithdrawalsService {
@@ -67,6 +68,8 @@ public class WithdrawalsServiceImpl implements WithdrawalsService {
 		profitMerchantDomain.setStatus(1);
 		
 		withdrawalsDomain.setStatus(1);// 成功
+		
+		SettlementUtil.realtimeComputationBalance(withdrawalsDomain);
 		return withdrawalsDAO.update(withdrawalsDomain)+profitMerchantDAO.insert(profitMerchantDomain);
 		
 	}

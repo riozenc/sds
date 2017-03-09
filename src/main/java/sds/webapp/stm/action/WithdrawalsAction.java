@@ -32,7 +32,7 @@ import sds.webapp.stm.service.WithdrawalsService;
  */
 @ControllerAdvice
 @RequestMapping("withdrawals")
-@Scope("prototype")
+
 public class WithdrawalsAction extends BaseAction {
 
 	@Autowired
@@ -74,9 +74,10 @@ public class WithdrawalsAction extends BaseAction {
 	}
 
 	/**
+	 * 提现同意
 	 * 
 	 * @param withdrawalsDomain
-	 * id,merchantId,amount
+	 *            id,merchantId,amount
 	 * @return
 	 */
 	@ResponseBody
@@ -92,6 +93,12 @@ public class WithdrawalsAction extends BaseAction {
 		}
 	}
 
+	/**
+	 * 提现驳回
+	 * 
+	 * @param withdrawalsDomain
+	 * @return
+	 */
 	@ResponseBody
 	@RequestMapping(params = "type=reject")
 	public String reject(WithdrawalsDomain withdrawalsDomain) {
@@ -103,5 +110,16 @@ public class WithdrawalsAction extends BaseAction {
 		} else {
 			return JSONUtil.toJsonString(new JsonResult(JsonResult.ERROR, "更新失败."));
 		}
+	}
+
+	/**
+	 * 导出excel文件
+	 * 
+	 * @return
+	 */
+	@ResponseBody
+	@RequestMapping(params = "type=export")
+	public String export() {
+		return null;
 	}
 }

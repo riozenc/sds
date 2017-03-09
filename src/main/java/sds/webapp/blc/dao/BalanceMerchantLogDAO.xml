@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="sds.webapp.blc.dao.BalanceMerchantLogDAO">
+	<select id="findByKey" parameterType="BalanceMerchantLogDomain"
+		resultType="BalanceMerchantLogDomain" useCache="true">
+		select
+		ID,TARGET_ID,ACCOUNT,BALANCE,CREATE_DATE,UPDATE_DATE,REMARK,STATUS,OPERATION
+		from fm_balance_merchant_log
+		<where>
+			and ID = #{id}
+
+		</where>
+	</select>
+	<select id="findByWhere" parameterType="BalanceMerchantLogDomain"
+		resultType="BalanceMerchantLogDomain" useCache="true">
+		select
+		ID,TARGET_ID,ACCOUNT,BALANCE,CREATE_DATE,UPDATE_DATE,REMARK,STATUS,OPERATION
+		from fm_balance_merchant_log
+		<where>
+			<if test="id !=null">
+				and ID = #{id}
+			</if>
+			<if test="targetId !=null">
+				and TARGET_ID = #{targetId}
+			</if>
+			<if test="account !=null">
+				and ACCOUNT = #{account}
+			</if>
+			<if test="balance !=null">
+				and BALANCE = #{balance}
+			</if>
+			<if test="createDate !=null">
+				and CREATE_DATE = #{createDate}
+			</if>
+			<if test="updateDate !=null">
+				and UPDATE_DATE = #{updateDate}
+			</if>
+			<if test="remark !=null">
+				and REMARK = #{remark}
+			</if>
+			<if test="status !=null">
+				and STATUS = #{status}
+			</if>
+			<if test="operation !=null">
+				and OPERATION = #{operation}
+			</if>
+		</where>
+	</select>
+	<insert id="insert" parameterType="BalanceMerchantLogDomain"
+		flushCache="true">
+		insert into
+		fm_balance_merchant_log(ID,TARGET_ID,ACCOUNT,BALANCE,CREATE_DATE,UPDATE_DATE,REMARK,STATUS,OPERATION)
+		values
+		(#{id},#{targetId},#{account},#{balance},#{createDate},#{updateDate},#{remark},#{status},#{operation})
+	</insert>
+	<update id="update" parameterType="BalanceMerchantLogDomain"
+		flushCache="true">
+		update fm_balance_merchant_log
+		<set>
+			<if test="targetId !=null">
+				TARGET_ID = #{targetId},
+			</if>
+			<if test="account !=null">
+				ACCOUNT = #{account},
+			</if>
+			<if test="balance !=null">
+				BALANCE = #{balance},
+			</if>
+			<if test="createDate !=null">
+				CREATE_DATE = #{createDate},
+			</if>
+			<if test="updateDate !=null">
+				UPDATE_DATE = #{updateDate},
+			</if>
+			<if test="remark !=null">
+				REMARK = #{remark},
+			</if>
+			<if test="status !=null">
+				STATUS = #{status},
+			</if>
+			<if test="operation !=null">
+				OPERATION = #{operation},
+			</if>
+		</set>
+		<where>
+			and ID = #{id}
+
+		</where>
+	</update>
+	<delete id="delete" parameterType="BalanceMerchantLogDomain"
+		flushCache="true">
+		delete from fm_balance_merchant_log
+		<where>
+			and ID = #{id}
+
+		</where>
+	</delete>
+</mapper>

@@ -29,36 +29,36 @@ import sds.webapp.stm.service.ProfitMerchantService;
 
 @ControllerAdvice
 @RequestMapping("profitMerchant")
-@Scope("prototype")
+
 public class ProfitMerchantAction extends BaseAction {
 
 	@Autowired
 	@Qualifier("profitMerchantServiceImpl")
 	private ProfitMerchantService profitMerchantService;
 
-	/**
-	 * 获取收益额 status=0 收款 status=1取现
-	 * 
-	 * @param profitMerchantDomain
-	 * @return
-	 */
-	@ResponseBody
-	@RequestMapping(params = "type=count")
-	public String count() {
-		ProfitMerchantDomain profitMerchantDomain = new ProfitMerchantDomain();
-		profitMerchantDomain.setMerchantId(UserUtils.getPrincipal().getMerchantDomain().getId());
-
-		String profit = profitMerchantService.getMerchantTotalProfit(profitMerchantDomain);
-
-		profitMerchantDomain.setStatus(0);
-		String total = profitMerchantService.getMerchantTotalProfit(profitMerchantDomain);
-
-		Map<String, String> map = new HashMap<String, String>();
-		map.put("total", total == null ? "0" : total);
-		map.put("profit", profit == null ? "0" : profit);
-
-		return JSONUtil.toJsonString(new JsonResult(JsonResult.SUCCESS, map));
-	}
+//	/**
+//	 * 获取收益额 status=0 收款 status=1取现
+//	 * 
+//	 * @param profitMerchantDomain
+//	 * @return
+//	 */
+//	@ResponseBody
+//	@RequestMapping(params = "type=count")
+//	public String count() {
+//		ProfitMerchantDomain profitMerchantDomain = new ProfitMerchantDomain();
+//		profitMerchantDomain.setMerchantId(UserUtils.getPrincipal().getMerchantDomain().getId());
+//
+//		String profit = profitMerchantService.getMerchantTotalProfit(profitMerchantDomain);
+//
+//		profitMerchantDomain.setStatus(0);
+//		String total = profitMerchantService.getMerchantTotalProfit(profitMerchantDomain);
+//
+//		Map<String, String> map = new HashMap<String, String>();
+//		map.put("total", total == null ? "0" : total);
+//		map.put("profit", profit == null ? "0" : profit);
+//
+//		return JSONUtil.toJsonString(new JsonResult(JsonResult.SUCCESS, map));
+//	}
 
 	@ResponseBody
 	@RequestMapping(params = "type=update")

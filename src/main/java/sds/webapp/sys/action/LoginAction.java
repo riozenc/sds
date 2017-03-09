@@ -24,7 +24,7 @@ import sds.common.security.filter.PasswordShiroFilter;
 
 @ControllerAdvice
 @RequestMapping("loginAction")
-@Scope("prototype")
+
 public class LoginAction {
 
 	@ResponseBody

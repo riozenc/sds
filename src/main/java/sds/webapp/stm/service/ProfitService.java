@@ -20,4 +20,10 @@ public interface ProfitService extends BaseService<ProfitDomain> {
 			List<ProfitDomain> profitDomains);
 
 	public List<ProfitDomain> findProfitByUser(ProfitUserDomain profitUserDomain);
+
+	public List<ProfitDomain> findSubProfitByUser(ProfitUserDomain profitUserDomain);
+	
+	public List<ProfitUserDomain> findDateProfitUserByWhere(ProfitUserDomain profitUserDomain);
+
+	public int test();
 }

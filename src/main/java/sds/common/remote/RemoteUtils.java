@@ -1,7 +1,5 @@
 package sds.common.remote;
 
-import sds.common.pool.MerchantPool;
-import sds.common.pool.PoolBean;
 import sds.common.remote.domain.DownloadKeyDomain;
 import sds.common.remote.domain.RegisterDomain;
 import sds.webapp.acc.domain.MerchantDomain;
@@ -10,7 +8,7 @@ import sds.webapp.sys.domain.ConfDomain;
 
 public class RemoteUtils {
 	public enum REMOTE_TYPE {
-		REGISTER, DOWNLOAD_KEY, CHANGE_RATE, SPECIAL_VALID_CARD, GET_A_CODE_PAY
+		REGISTER, DOWNLOAD_KEY, CHANGE_RATE, GET_A_CODE_PAY
 	}
 
 	public static RemoteResult process(MerchantDomain merchantDomain, REMOTE_TYPE remoteType) {
@@ -26,9 +24,7 @@ public class RemoteUtils {
 			case CHANGE_RATE:// 修改费率
 				remoteResult = changeRate(merchantDomain);
 				break;
-			case SPECIAL_VALID_CARD:// 虚拟验卡
-				remoteResult = specialValidCard(merchantDomain);
-				break;
+
 			case GET_A_CODE_PAY:// 获取一码付
 				remoteResult = getACodePay(merchantDomain);
 				break;
@@ -72,31 +68,28 @@ public class RemoteUtils {
 	}
 
 	/**
-	 * 虚拟账户验卡
+	 * 更换结算卡
 	 * 
 	 * @param merchantDomain
+	 * @param proxyMerchantDomain
 	 * @return
 	 * @throws Exception
 	 */
-	private static RemoteResult specialValidCard(MerchantDomain merchantDomain) throws Exception {
-		PoolBean bean = MerchantPool.getInstance().getPoolBean();
-		MerchantDomain proxyMerchantDomain = bean.getObject();
-		// 替换结算卡
+	public static RemoteResult replaceCard(MerchantDomain merchantDomain, MerchantDomain proxyMerchantDomain)
+			throws Exception {
+
 		proxyMerchantDomain.setRealName(merchantDomain.getRealName());
-		proxyMerchantDomain.setMobile(merchantDomain.getMobile());
 		proxyMerchantDomain.setCardNo(merchantDomain.getCardNo());
 		proxyMerchantDomain.setCertNo(merchantDomain.getCertNo());
-		RemoteResult remoteResult = RemoteHandler.validCard(proxyMerchantDomain);
-		if (RemoteUtils.resultProcess(remoteResult)) {
-			bean.binding(merchantDomain);
-		} else {
-			// 回收bean
-			bean.recover();
-		}
-		return remoteResult;
+		proxyMerchantDomain.setMobile(merchantDomain.getMobile());
+		proxyMerchantDomain.setPhone(merchantDomain.getPhone());
+		proxyMerchantDomain.setLocation(merchantDomain.getLocation());
+
+		return RemoteHandler.validCard(proxyMerchantDomain);
 	}
 
 	/**
+	 * 修改费率
 	 * 
 	 * @param merchantDomain
 	 * @return
@@ -106,6 +99,15 @@ public class RemoteUtils {
 		return RemoteHandler.changeRate(merchantDomain);
 	}
 
+	/**
+	 * 正扫支付
+	 * 
+	 * @param merchantDomain
+	 * @param amount
+	 * @param info
+	 * @param channelCode
+	 * @return
+	 */
 	public static RemoteResult pay(MerchantDomain merchantDomain, int amount, String info, int channelCode) {
 
 		try {
@@ -118,6 +120,17 @@ public class RemoteUtils {
 		}
 	}
 
+	/**
+	 * 反扫
+	 * 
+	 * @param merchantDomain
+	 * @param amount
+	 * @param channelCode
+	 * @param productName
+	 * @param productDetail
+	 * @param authCode
+	 * @return
+	 */
 	public static RemoteResult scanPay(MerchantDomain merchantDomain, int amount, int channelCode, String productName,
 			String productDetail, String authCode) {
 
@@ -131,6 +144,13 @@ public class RemoteUtils {
 		}
 	}
 
+	/**
+	 * 订单状态查询
+	 * 
+	 * @param merchantDomain
+	 * @param orderId
+	 * @return
+	 */
 	public static RemoteResult orderConfirm(MerchantDomain merchantDomain, String orderId) {
 		try {
 			return RemoteHandler.orderConfirm(merchantDomain.getAccount(), merchantDomain.getPrivatekey(), orderId);

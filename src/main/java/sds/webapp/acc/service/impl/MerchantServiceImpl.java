@@ -1,5 +1,6 @@
 package sds.webapp.acc.service.impl;
 
+import java.math.BigDecimal;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -11,12 +12,16 @@ import com.riozenc.quicktool.annotation.TransactionService;
 import sds.webapp.acc.dao.MerchantDAO;
 import sds.webapp.acc.domain.MerchantDomain;
 import sds.webapp.acc.service.MerchantService;
+import sds.webapp.blc.dao.BalanceMerchantDAO;
+import sds.webapp.blc.domain.BalanceMerchantDomain;
 
 @TransactionService
 public class MerchantServiceImpl implements MerchantService {
 
 	@TransactionDAO
 	private MerchantDAO merchantDAO;
+	@TransactionDAO
+	private BalanceMerchantDAO balanceMerchantDAO;
 
 	@Override
 	public int insert(MerchantDomain t) {
@@ -152,6 +157,22 @@ public class MerchantServiceImpl implements MerchantService {
 
 		merchantDAO.update(real);
 		merchantDAO.updatePool(virtual);
+	}
+
+	@Override
+	public int register(MerchantDomain merchantDomain) {
+		// TODO Auto-generated method stub
+
+		merchantDAO.insert(merchantDomain);
+		BalanceMerchantDomain balanceMerchantDomain = new BalanceMerchantDomain();
+		balanceMerchantDomain.setAccount(merchantDomain.getAccount());
+		balanceMerchantDomain.setBalance(new BigDecimal(0));
+		balanceMerchantDomain.setCountIn(new BigDecimal(0));
+		balanceMerchantDomain.setCountOut(new BigDecimal(0));
+		balanceMerchantDomain.setCreateDate(new Date());
+		balanceMerchantDomain.setTargetId(merchantDomain.getId());
+
+		return balanceMerchantDAO.insert(balanceMerchantDomain);
 	}
 
 }

@@ -26,6 +26,9 @@ public class SmsCache {
 
 	public static String get(String name) {
 		if (map.get(name) != null) {
+			if (System.currentTimeMillis() - map.get(name).createTime > 5 *60* 1000) {
+				map.get(name).code = null;
+			}
 			return map.get(name).code;
 		} else {
 			return null;

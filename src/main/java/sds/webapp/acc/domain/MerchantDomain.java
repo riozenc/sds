@@ -44,6 +44,11 @@ public class MerchantDomain extends Page<MerchantDomain> implements MybatisEntit
 								// COMMENT '银行卡正面图片',
 	private String cardOpposite;// `card_opposite` varchar(255) DEFAULT NULL
 								// COMMENT '银行卡背面图片',
+	private String businessPic;// `business_pic` varchar(255) DEFAULT NULL
+								// COMMENT '营业照',
+	private String doorPic;// `door_pic` varchar(255) DEFAULT NULL COMMENT
+							// '门头照',
+
 	private Integer status;// `status` tinyint(4) DEFAULT '0' COMMENT
 							// '0审核中，1审核成功，2注销用户',
 	private String other;// `other` varchar(255) DEFAULT NULL COMMENT '失败原因',
@@ -338,6 +343,22 @@ public class MerchantDomain extends Page<MerchantDomain> implements MybatisEntit
 
 	public void setParentName(String parentName) {
 		this.parentName = parentName;
+	}
+
+	public String getBusinessPic() {
+		return businessPic;
+	}
+
+	public void setBusinessPic(String businessPic) {
+		this.businessPic = businessPic;
+	}
+
+	public String getDoorPic() {
+		return doorPic;
+	}
+
+	public void setDoorPic(String doorPic) {
+		this.doorPic = doorPic;
 	}
 
 }

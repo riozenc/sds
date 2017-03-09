@@ -23,7 +23,7 @@ import sds.webapp.sys.service.NoticeService;
 
 @ControllerAdvice
 @RequestMapping("notice")
-@Scope("prototype")
+
 public class NoticeAction {
 
 	@Autowired

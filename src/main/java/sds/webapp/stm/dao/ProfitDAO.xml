@@ -19,6 +19,7 @@
 		a.ORDER_ID,
 		a.ACCOUNT,
 		c.cmer as MERCHANT_NAME,
+		CONCAT(SUBSTR(c.real_name,1,1) ,'**') as realName,
 		a.AMOUNT,
 		a.TOTAL_PROFIT,
 		a.AGENT_ID,
@@ -67,7 +68,8 @@
 				and a.TJ_ID = #{tjId}
 			</if>
 			<if test="orderDate !=null">
-				and a.ORDER_DATE = #{orderDate}
+				and DATE_FORMAT(a.ORDER_DATE, '%Y-%m-%d') =
+				DATE_FORMAT(#{orderDate}, '%Y-%m-%d')
 			</if>
 			<if test="jsDate !=null">
 				and a.JS_DATE = #{jsDate}
@@ -178,7 +180,10 @@
 			<if test="createDate !=null">
 				and CREATE_DATE = #{createDate}
 			</if>
-			and STATUS = 1
+			<if test="status !=null">
+				and STATUS = #{status}
+			</if>
+
 		</where>
 	</select>
 
@@ -195,8 +200,10 @@
 	</update>
 
 	<select id="findProfitByUser" parameterType="ProfitUserDomain"
-		resultType="OrderDomain" useCache="true">
-		SELECT a.* FROM fm_profit a LEFT JOIN fm_merchant b ON a.account =
+		resultType="ProfitDomain" useCache="true">
+		SELECT a.*,(SELECT b.account from fm_user b WHERE b.id = a.agent_id)
+		as agent_account FROM fm_profit a LEFT JOIN fm_merchant b ON a.account
+		=
 		b.account
 		<where>
 			b.agent_id = #{agentId}
@@ -210,5 +217,59 @@
 				DATE_FORMAT(#{endDate}, '%Y-%m-%d')
 			</if>
 		</where>
+	</select>
+
+	<select id="findSubProfitByUser" parameterType="ProfitUserDomain"
+		resultType="ProfitDomain" useCache="true">
+		SELECT
+		t2.account AS agent_account,
+		t1.*
+		FROM
+		fm_profit t1
+		LEFT JOIN
+		fm_user t2 ON t1.agent_id = t2.id
+		<where>
+			agent_id in (SELECT a.id FROM fm_user a LEFT JOIN (SELECT
+			id,parent_id
+			, @pathnodes:= IF( parent_id =-1,',0', CONCAT(
+			CONCAT_WS(',',IF(LOCATE( CONCAT('|',parent_id,':'),@pathall) > 0 ,
+			SUBSTRING_INDEX(
+			SUBSTRING_INDEX(@pathall,CONCAT('|',parent_id,':'),-1),'|',1)
+			,@pathnodes),parent_id),',',id))paths
+			,@pathall:=CONCAT(@pathall,'|',id,':', @pathnodes ,'|') pathall
+			FROM
+			fm_user,(SELECT @le:=0,@pathlevel:='', @pathall:='',@pathnodes:='')
+			vv) b ON a.id = b.id
+			where b.paths like '%,${id},%')
+			<if test="startDate !=null">
+				and DATE_FORMAT(t1.order_date, '%Y-%m-%d') &gt;=
+				DATE_FORMAT(#{startDate}, '%Y-%m-%d')
+			</if>
+			<if test="endDate !=null">
+				and DATE_FORMAT(t1.order_date, '%Y-%m-%d') &lt;=
+				DATE_FORMAT(#{endDate}, '%Y-%m-%d')
+			</if>
+		</where>
+	</select>
+
+
+	<select id="findDateProfitUserByWhere" parameterType="ProfitUserDomain"
+		resultType="ProfitUserDomain" useCache="true">
+		SELECT
+		a.agent_id,
+		b.full_name,
+		b.account,
+		SUM(a.amount) as total_amount,
+		SUM(a.agent_profit) as total_profit,
+		a.order_date as date
+		FROM
+		fm_profit
+		a
+		LEFT JOIN fm_user b ON
+		a.agent_id = b.id
+		<where>
+			b.account = #{account}
+		</where>
+		GROUP BY DATE_FORMAT(a.order_date, '%Y-%m-%d')
 	</select>
 </mapper>

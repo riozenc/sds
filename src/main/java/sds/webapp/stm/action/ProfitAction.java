@@ -1,5 +1,6 @@
 package sds.webapp.stm.action;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
@@ -7,10 +8,10 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
+import javax.servlet.http.HttpServletResponse;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.context.annotation.Scope;
-import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -18,6 +19,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.riozenc.quicktool.common.util.date.DateUtil;
 import com.riozenc.quicktool.common.util.json.JSONUtil;
 
+import sds.common.excel.ExcelUtils;
 import sds.common.json.JsonGrid;
 import sds.common.webapp.base.action.BaseAction;
 import sds.webapp.acc.domain.MerchantDomain;
@@ -43,7 +45,7 @@ import sds.webapp.stm.util.SettlementUtil;
  */
 @ControllerAdvice
 @RequestMapping("profit")
-@Scope("prototype")
+
 public class ProfitAction extends BaseAction {
 
 	@Autowired
@@ -93,23 +95,13 @@ public class ProfitAction extends BaseAction {
 	}
 
 	/**
-	 * 分润统计
+	 * 分润统计--公共方法，方便调用 map-user-profitUserDomains
+	 * map-merchant-profitMerchantDomains
 	 * 
-	 * @param profitDomain
+	 * @param list
 	 * @return
 	 */
-	@ResponseBody
-	@RequestMapping(params = "type=profitCount")
-	public String profitCount(ProfitDomain profitDomain) {
-		if (profitDomain.getOrderDate() == null) {
-			profitDomain.setOrderDate(new Date());
-		}
-		List<ProfitDomain> list = profitService.getAllProfit(profitDomain);
-
-		// List<ProfitUserDomain> profitUserDomains = new
-		// ArrayList<ProfitUserDomain>();
-		// List<ProfitMerchantDomain> profitMerchantDomains = new
-		// ArrayList<ProfitMerchantDomain>();
+	private Map<String, List> getProfitCountMap(List<ProfitDomain> list) {
 
 		Map<Integer, ProfitUserDomain> profitUserMap = new HashMap<Integer, ProfitUserDomain>();
 		Map<Integer, ProfitMerchantDomain> profitMerchantMap = new HashMap<Integer, ProfitMerchantDomain>();
@@ -127,7 +119,7 @@ public class ProfitAction extends BaseAction {
 			profitUserDomain.setTotalAmount(SettlementUtil.sum(profitUserDomain.getTotalAmount(), profit.getAmount()));
 			profitUserDomain
 					.setTotalProfit(SettlementUtil.sum(profitUserDomain.getTotalProfit(), profit.getAgentProfit()));
-			profitUserDomain.setDate(profitDomain.getOrderDate());
+			profitUserDomain.setDate(profit.getOrderDate());
 			profitUserDomain.setStatus(0);
 
 			if (profit.getTjId() != null) {
@@ -142,15 +134,86 @@ public class ProfitAction extends BaseAction {
 						.setTotalAmount(SettlementUtil.sum(profitMerchantDomain.getTotalAmount(), profit.getAmount()));
 				profitMerchantDomain.setTotalProfit(
 						SettlementUtil.sum(profitMerchantDomain.getTotalProfit(), profit.getTjProfit()));
-				profitMerchantDomain.setDate(profitDomain.getOrderDate());
+				profitMerchantDomain.setDate(profit.getOrderDate());
 				profitMerchantDomain.setStatus(0);
 			}
 		});
 
 		List<ProfitUserDomain> profitUserDomains = new ArrayList<>(profitUserMap.values());
 		List<ProfitMerchantDomain> profitMerchantDomains = new ArrayList<>(profitMerchantMap.values());
+		Map<String, List> map = new HashMap<String, List>();
+		map.put("user", profitUserDomains);
+		map.put("merchant", profitMerchantDomains);
+		return map;
+	}
 
-		profitService.profitCount(profitUserDomains, profitMerchantDomains, list);
+	/**
+	 * 分润统计
+	 * 
+	 * @param profitDomain
+	 * @return
+	 */
+	@ResponseBody
+	@RequestMapping(params = "type=profitCount")
+	public String profitCount(ProfitDomain profitDomain) {
+		if (profitDomain.getOrderDate() == null) {
+			profitDomain.setOrderDate(new Date());
+		}
+		profitDomain.setStatus(1);
+		List<ProfitDomain> list = profitService.getAllProfit(profitDomain);
+		Map<String, List> map = getProfitCountMap(list);
+		profitService.profitCount(map.get("user"), map.get("merchant"), list);
+
+		// Map<Integer, ProfitUserDomain> profitUserMap = new HashMap<Integer,
+		// ProfitUserDomain>();
+		// Map<Integer, ProfitMerchantDomain> profitMerchantMap = new
+		// HashMap<Integer, ProfitMerchantDomain>();
+		//
+		// list.stream().forEach((profit) -> {
+		//
+		// ProfitUserDomain profitUserDomain =
+		// profitUserMap.get(profit.getAgentId());
+		//
+		// if (profitUserDomain == null) {
+		// profitUserDomain = new ProfitUserDomain();
+		// profitUserDomain.setAgentId(profit.getAgentId());
+		// profitUserMap.put(profit.getAgentId(), profitUserDomain);
+		// }
+		//
+		// profitUserDomain.setTotalAmount(SettlementUtil.sum(profitUserDomain.getTotalAmount(),
+		// profit.getAmount()));
+		// profitUserDomain
+		// .setTotalProfit(SettlementUtil.sum(profitUserDomain.getTotalProfit(),
+		// profit.getAgentProfit()));
+		// profitUserDomain.setDate(profitDomain.getOrderDate());
+		// profitUserDomain.setStatus(0);
+		//
+		// if (profit.getTjId() != null) {
+		// // 存在推荐人
+		// ProfitMerchantDomain profitMerchantDomain =
+		// profitMerchantMap.get(profit.getTjId());
+		// if (profitMerchantDomain == null) {
+		// profitMerchantDomain = new ProfitMerchantDomain();
+		// profitMerchantDomain.setMerchantId(profit.getTjId());
+		// profitMerchantMap.put(profit.getTjId(), profitMerchantDomain);
+		// }
+		// profitMerchantDomain
+		// .setTotalAmount(SettlementUtil.sum(profitMerchantDomain.getTotalAmount(),
+		// profit.getAmount()));
+		// profitMerchantDomain.setTotalProfit(
+		// SettlementUtil.sum(profitMerchantDomain.getTotalProfit(),
+		// profit.getTjProfit()));
+		// profitMerchantDomain.setDate(profitDomain.getOrderDate());
+		// profitMerchantDomain.setStatus(0);
+		// }
+		// });
+		//
+		// List<ProfitUserDomain> profitUserDomains = new
+		// ArrayList<>(profitUserMap.values());
+		// List<ProfitMerchantDomain> profitMerchantDomains = new
+		// ArrayList<>(profitMerchantMap.values());
+		// profitService.profitCount(profitUserDomains, profitMerchantDomains,
+		// list);
 
 		return DateUtil.formatDate(profitDomain.getOrderDate());
 	}
@@ -176,6 +239,20 @@ public class ProfitAction extends BaseAction {
 		int i = profitService.profit(list, orderDomains);
 		// System.out.println(i);
 		return "完成分润" + i;
+	}
+
+	@ResponseBody
+	@RequestMapping(params = "type=exportExcel")
+	public String exportExcel(ProfitDomain profitDomain, HttpServletResponse httpServletResponse) throws IOException {
+
+		List<ProfitDomain> list = profitService.getAllProfit(profitDomain);
+		Map<String, List> map = getProfitCountMap(list);
+
+		List<ProfitUserDomain> profitUserDomains = map.get("user");
+
+		ExcelUtils.export(httpServletResponse);
+
+		return null;
 	}
 
 	/**
@@ -243,6 +320,7 @@ public class ProfitAction extends BaseAction {
 			result.addAll(list);
 
 		});
+		SettlementUtil.realtimeComputationBalance(result);// 计算余额
 		return result;
 	}
 

@@ -34,6 +34,9 @@ public class OrderDomain extends Page<OrderDomain> implements MybatisEntity {
 								// '查询返回码',
 	private Integer status;// `status` int(4) NOT NULL DEFAULT '0' COMMENT
 							// '0未查询1成功2失败',
+	
+	private String merchantName;//
+	private String realName;//
 
 	public Integer getId() {
 		return id;
@@ -162,5 +165,22 @@ public class OrderDomain extends Page<OrderDomain> implements MybatisEntity {
 	public void setStatus(Integer status) {
 		this.status = status;
 	}
+
+	public String getMerchantName() {
+		return merchantName;
+	}
+
+	public void setMerchantName(String merchantName) {
+		this.merchantName = merchantName;
+	}
+
+	public String getRealName() {
+		return realName;
+	}
+
+	public void setRealName(String realName) {
+		this.realName = realName;
+	}
+	
 
 }

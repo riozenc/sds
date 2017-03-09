@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="sds.webapp.blc.dao.BalanceMerchantDAO">
+	<select id="findByKey" parameterType="BalanceMerchantDomain"
+		resultType="BalanceMerchantDomain" useCache="true">
+		select
+		ID,TARGET_ID,ACCOUNT,BALANCE,COUNT_IN,COUNT_OUT,CREATE_DATE,UPDATE_DATE,REMARK,STATUS
+		from fm_balance_merchant
+		<where>
+			TARGET_ID = #{targetId}
+		</where>
+	</select>
+	<select id="findByWhere" parameterType="BalanceMerchantDomain"
+		resultType="BalanceMerchantDomain" useCache="true">
+		select
+		ID,TARGET_ID,ACCOUNT,BALANCE,COUNT_IN,COUNT_OUT,CREATE_DATE,UPDATE_DATE,REMARK,STATUS
+		from fm_balance_merchant
+		<where>
+			<if test="id !=null">
+				and ID = #{id}
+			</if>
+			<if test="targetId !=null">
+				and TARGET_ID = #{targetId}
+			</if>
+			<if test="account !=null">
+				and ACCOUNT = #{account}
+			</if>
+			<if test="balance !=null">
+				and BALANCE = #{balance}
+			</if>
+			<if test="countIn !=null">
+				and COUNT_IN = #{countIn}
+			</if>
+			<if test="countOut !=null">
+				and COUNT_OUT = #{countOut}
+			</if>
+			<if test="createDate !=null">
+				and CREATE_DATE = #{createDate}
+			</if>
+			<if test="updateDate !=null">
+				and UPDATE_DATE = #{updateDate}
+			</if>
+			<if test="remark !=null">
+				and REMARK = #{remark}
+			</if>
+			<if test="status !=null">
+				and STATUS = #{status}
+			</if>
+		</where>
+	</select>
+	<insert id="insert" parameterType="BalanceMerchantDomain"
+		flushCache="true">
+		insert into
+		fm_balance_merchant(ID,TARGET_ID,ACCOUNT,BALANCE,COUNT_IN,COUNT_OUT,CREATE_DATE,UPDATE_DATE,REMARK,STATUS)
+		values
+		(#{id},#{targetId},#{account},#{balance},#{countIn},#{countOut},#{createDate},#{updateDate},#{remark},#{status})
+	</insert>
+	<update id="update" parameterType="BalanceMerchantDomain"
+		flushCache="true">
+		update fm_balance_merchant
+		<set>
+			<if test="account !=null">
+				ACCOUNT = #{account},
+			</if>
+			<if test="balance !=null">
+				BALANCE = BALANCE+#{balance},
+			</if>
+			<if test="countIn !=null">
+				COUNT_IN = COUNT_IN+#{countIn},
+			</if>
+			<if test="countOut !=null">
+				COUNT_OUT = COUNT_OUT+#{countOut},
+			</if>
+
+			<if test="updateDate !=null">
+				UPDATE_DATE = #{updateDate},
+			</if>
+			<if test="remark !=null">
+				REMARK = #{remark},
+			</if>
+			<if test="status !=null">
+				STATUS = #{status},
+			</if>
+		</set>
+		<where>
+			TARGET_ID = #{targetId}
+		</where>
+	</update>
+	<delete id="delete" parameterType="BalanceMerchantDomain"
+		flushCache="true">
+		delete from fm_balance_merchant
+		<where>
+			and ID = #{id}
+
+		</where>
+	</delete>
+</mapper>

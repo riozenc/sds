@@ -1,11 +1,9 @@
 package sds.webapp.stm.action;
 
-import java.util.Date;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.context.annotation.Scope;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -16,8 +14,11 @@ import sds.common.json.JsonGrid;
 import sds.common.json.JsonResult;
 import sds.common.security.util.UserUtils;
 import sds.common.webapp.base.action.BaseAction;
+import sds.webapp.stm.domain.ProfitDomain;
 import sds.webapp.stm.domain.ProfitUserDomain;
+import sds.webapp.stm.service.ProfitService;
 import sds.webapp.stm.service.ProfitUserService;
+import sds.webapp.stm.util.SettlementUtil;
 
 /**
  * 代理商分润统计
@@ -27,26 +28,16 @@ import sds.webapp.stm.service.ProfitUserService;
  */
 @ControllerAdvice
 @RequestMapping("profitUser")
-@Scope("prototype")
+
 public class ProfitUserAction extends BaseAction {
 
 	@Autowired
 	@Qualifier("profitUserServiceImpl")
 	private ProfitUserService profitUserService;
 
-	/**
-	 * 统计
-	 * 
-	 * @param profitUserDomain
-	 * @return
-	 */
-	@ResponseBody
-	@RequestMapping(params = "type=count")
-	public String count(ProfitUserDomain profitUserDomain) {
-		Date date = profitUserDomain.getDate();
-
-		return null;
-	}
+	@Autowired
+	@Qualifier("profitServiceImpl")
+	private ProfitService profitService;
 
 	/**
 	 * 更新数据
@@ -83,9 +74,10 @@ public class ProfitUserAction extends BaseAction {
 	public String myProfitUser(ProfitUserDomain profitUserDomain) {
 
 		profitUserDomain.setAgentId(UserUtils.getPrincipal().getUserDomain().getId());// 只查询自己的分润
-		List<ProfitUserDomain> list = profitUserService.findProfitUserByWhere(profitUserDomain);
+		List<ProfitDomain> list = profitService.findProfitByUser(profitUserDomain);
+		List<ProfitUserDomain> profitUserDomains = SettlementUtil.computeProfitByUser(list);
 
-		return JSONUtil.toJsonString(new JsonGrid(profitUserDomain, list));
+		return JSONUtil.toJsonString(new JsonGrid(profitUserDomain, profitUserDomains));
 	}
 
 	/**
@@ -99,15 +91,19 @@ public class ProfitUserAction extends BaseAction {
 	public String subProfitUser(ProfitUserDomain profitUserDomain) {
 		// parent_id
 		profitUserDomain.setId(UserUtils.getPrincipal().getUserDomain().getId());
-		List<ProfitUserDomain> list = profitUserService.findSubProfitUserByWhere(profitUserDomain);
-
-		return JSONUtil.toJsonString(new JsonGrid(profitUserDomain, list));
+		List<ProfitDomain> list = profitService.findSubProfitByUser(profitUserDomain);
+		List<ProfitUserDomain> profitUserDomains = SettlementUtil.computeProfitByUser(list);
+		return JSONUtil.toJsonString(new JsonGrid(profitUserDomain, profitUserDomains));
 	}
 
 	@ResponseBody
 	@RequestMapping(params = "type=findDateProfitUserByWhere")
 	public String findDateProfitUserByWhere(ProfitUserDomain profitUserDomain) {
-		List<ProfitUserDomain> list = profitUserService.findDateProfitUserByWhere(profitUserDomain);
+
+		List<ProfitUserDomain> list = profitService.findDateProfitUserByWhere(profitUserDomain);
+
+		// List<ProfitUserDomain> list =
+		// profitUserService.findDateProfitUserByWhere(profitUserDomain);
 		return JSONUtil.toJsonString(new JsonGrid(profitUserDomain, list));
 	}
 

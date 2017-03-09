@@ -66,6 +66,7 @@
 				and STATUS = #{status}
 			</if>
 		</where>
+		order by DATE desc
 	</select>
 	<insert id="insert" parameterType="OrderDomain" flushCache="true">
 		insert into
