@@ -130,6 +130,8 @@ public class MerchantAction extends BaseAction {
 				UserDomain param = new UserDomain();
 				param.setAccount(tjAccount);
 				param = userService.findByKey(param);
+				merchantDomain.setWxRate(param.getUserWrate());
+				merchantDomain.setAliRate(param.getUserArate());
 				merchantDomain.setAgentId(param.getId());// 建立代理商与商户关系
 			} else if (appCode.startsWith("UA")) {
 				// 商户
@@ -137,6 +139,9 @@ public class MerchantAction extends BaseAction {
 				MerchantDomain param = new MerchantDomain();
 				param.setAccount(tjAccount);
 				param = merchantService.findByKey(param);
+				
+				merchantDomain.setWxRate(param.getWxRate());
+				merchantDomain.setAliRate(param.getAliRate());
 				merchantDomain.setTjId(param.getId());// 建立商户与商户关系
 				merchantDomain.setAgentId(param.getAgentId());// 被推荐商户也属于推荐商户下的代理商
 			} else {
