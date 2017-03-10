@@ -186,10 +186,10 @@
 			</if>
 
 			<if test="businessPic!=null">
-				BUSINESS_PIC = #{businessPic!=null},
+				BUSINESS_PIC = #{businessPic},
 			</if>
 			<if test="doorPic">
-				DOOR_PIC = #{doorPic!=null},
+				DOOR_PIC = #{doorPic},
 			</if>
 
 			<if test="status !=null">

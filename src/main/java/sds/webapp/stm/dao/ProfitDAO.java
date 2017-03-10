@@ -67,4 +67,8 @@ public class ProfitDAO extends AbstractTransactionDAOSupport implements BaseDAO<
 	public List<ProfitUserDomain> findDateProfitUserByWhere(ProfitUserDomain profitUserDomain) {
 		return getPersistanceManager().find(getNamespace() + ".findDateProfitUserByWhere", profitUserDomain);
 	}
+
+	public int recalculation(List<ProfitDomain> list) {
+		return getPersistanceManager(getExecutorType()).updateList(getNamespace() + ".recalculation", list);
+	}
 }

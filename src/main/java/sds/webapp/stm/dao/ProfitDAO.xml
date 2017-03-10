@@ -128,6 +128,48 @@
 
 		</where>
 	</update>
+
+	<update id="recalculation" parameterType="ProfitDomain"
+		flushCache="true">
+		update fm_profit
+		<set>
+			<if test="amount !=null">
+				AMOUNT = #{amount},
+			</if>
+			<if test="totalProfit !=null">
+				TOTAL_PROFIT = #{totalProfit},
+			</if>
+			<if test="agentProfit !=null">
+				AGENT_PROFIT = #{agentProfit},
+			</if>
+			<if test="tjProfit !=null">
+				TJ_PROFIT = #{tjProfit},
+			</if>
+			<if test="tjId !=null">
+				TJ_ID = #{tjId},
+			</if>
+			<if test="orderDate !=null">
+				ORDER_DATE = #{orderDate},
+			</if>
+			<if test="jsDate !=null">
+				JS_DATE = #{jsDate},
+			</if>
+			<if test="createDate !=null">
+				CREATE_DATE = #{createDate},
+			</if>
+		</set>
+		<where>
+
+			ORDER_ID = #{orderId}
+			and
+			ACCOUNT = #{account}
+			and
+			AGENT_ID =
+			#{agentId}
+
+		</where>
+	</update>
+
 	<delete id="delete" parameterType="ProfitDomain" flushCache="true">
 		delete from fm_profit
 		<where>

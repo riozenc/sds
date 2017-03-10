@@ -155,31 +155,6 @@ public class ProfitServiceImpl implements ProfitService {
 	}
 
 	@Override
-	public int test() {
-		// TODO Auto-generated method stub
-		profitDAO.findByWhere(null);
-		profitUserDAO.findByWhere(null);
-		profitMerchantDAO.findByWhere(null);
-		orderDAO.findByWhere(null);
-		userDAO.findByWhere(null);
-		merchantDAO.findByWhere(null);
-
-		List<ProfitDomain> list = new ArrayList<ProfitDomain>();
-
-		ProfitDomain profitDomain1 = new ProfitDomain();
-		profitDomain1.setAccount("110");
-		profitDomain1.setOrderId("111");
-		ProfitDomain profitDomain2 = new ProfitDomain();
-		profitDomain2.setAccount("220");
-		profitDomain2.setOrderId("222");
-		list.add(profitDomain1);
-		list.add(profitDomain2);
-
-		profitDAO.insertBatch(list);
-		return 0;
-	}
-
-	@Override
 	public List<ProfitDomain> findSubProfitByUser(ProfitUserDomain profitUserDomain) {
 		// TODO Auto-generated method stub
 		return profitDAO.findSubProfitByUser(profitUserDomain);
@@ -189,6 +164,15 @@ public class ProfitServiceImpl implements ProfitService {
 	public List<ProfitUserDomain> findDateProfitUserByWhere(ProfitUserDomain profitUserDomain) {
 		// TODO Auto-generated method stub
 		return profitDAO.findDateProfitUserByWhere(profitUserDomain);
+	}
+
+	/**
+	 * 重算接口
+	 */
+	@Override
+	public int recalculation(List<ProfitDomain> list) {
+		// TODO Auto-generated method stub
+		return profitDAO.recalculation(list);
 	}
 
 }

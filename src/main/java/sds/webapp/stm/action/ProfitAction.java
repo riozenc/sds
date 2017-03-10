@@ -21,6 +21,7 @@ import com.riozenc.quicktool.common.util.json.JSONUtil;
 
 import sds.common.excel.ExcelUtils;
 import sds.common.json.JsonGrid;
+import sds.common.json.JsonResult;
 import sds.common.security.util.UserUtils;
 import sds.common.webapp.base.action.BaseAction;
 import sds.webapp.acc.domain.MerchantDomain;
@@ -149,7 +150,7 @@ public class ProfitAction extends BaseAction {
 	}
 
 	/**
-	 * 分润统计
+	 * 分润统计（目前用于定时任务，只计算指定日期内status=1的分润）
 	 * 
 	 * @param profitDomain
 	 * @return
@@ -220,7 +221,26 @@ public class ProfitAction extends BaseAction {
 	}
 
 	/**
-	 * 计算分润
+	 * 重算（以订单为单位）
+	 */
+	public String recalculation(OrderDomain orderDomain) {
+		// 获取需要重算的订单，可重算一个（指定订单号）或批量（时间段内的订单）冲算
+		orderDomain.setStatus(3);// 指定订单类型，只重算已经分润的订单。
+		List<OrderDomain> orderDomains = orderService.findByWhere(orderDomain);
+		Map<String, MARDomain> marMap = getMAR();
+		List<ProfitDomain> list = call(orderDomains, marMap);
+
+		// 更新
+		int i = profitService.recalculation(list);
+		if(i!=0){
+			return JSONUtil.toJsonString(new JsonResult(JsonResult.SUCCESS, "重算成功."));
+		}else{
+			return JSONUtil.toJsonString(new JsonResult(JsonResult.ERROR, "重算失败."));
+		}
+	}
+
+	/**
+	 * 计算分润（非正常方法）
 	 * 
 	 * @return
 	 * @throws Exception

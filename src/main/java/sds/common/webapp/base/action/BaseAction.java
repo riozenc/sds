@@ -27,7 +27,7 @@ public class BaseAction extends com.riozenc.quicktool.springmvc.webapp.action.Ba
 		System.out.println("===========应用到所有@RequestMapping注解的方法，在其抛出UnauthenticatedException异常时执行");
 		return "viewName"; // 返回一个逻辑视图名
 	}
-	
+
 	/**
 	 * 初始化数据绑定 1. 将所有传递进来的String进行HTML编码，防止XSS攻击 2. 将字段中Date类型转换为String类型
 	 */
