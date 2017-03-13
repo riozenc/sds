@@ -486,21 +486,22 @@ public class MerchantAction extends BaseAction {
 	@RequestMapping(params = "type=base64Upload")
 	public String base64Upload(String base64Data, String name, HttpServletRequest request) throws Exception {
 		String account = UserUtils.getPrincipal().getMerchantDomain().getAccount();
-		String url = Global.getConfig("file.doc.path") + File.separator
-				+ Base64.getEncoder().encodeToString(HashUtils.getHash("SHA-512", account.getBytes(), null, 10));
-		String path = Global.getConfig("project.path") + url;
-		String fileName = Base64.getEncoder().encodeToString(HashUtils.getHash("SHA-512",
-				(UserUtils.getPrincipal().getMerchantDomain().getAccount() + "_" + name).getBytes(), null, 10));
+		String fileName = account + File.separator + UserUtils.getPrincipal().getMerchantDomain().getAccount() + "_"
+				+ name;
+		String encodeFileName = Base64.getEncoder()
+				.encodeToString(HashUtils.getHash("SHA-512", fileName.getBytes(), null, 10));
+		String path = Global.getConfig("project.path") + Global.getConfig("file.doc.path") + File.separator
+				+ encodeFileName;
 
 		try {
+			File file = FileUtil.uploadPictureByBase64(base64Data, path);
+			String path1 = file.getPath().substring(Global.getConfig("project.path").length(), file.getPath().length());
 
-			File file = FileUtil.uploadPictureByBase64(base64Data, path, fileName);
 			System.out.println(file.getPath());
-			System.out.println(file.getAbsolutePath());
-			System.out.println(file.getCanonicalPath());
-			System.out.println(url + File.separator + file.getName());
+			System.out.println(Global.getConfig("file.doc.path") + File.separator + encodeFileName);
+			System.out.println(path1);
 
-			return JSONUtil.toJsonString(new JsonResult(JsonResult.SUCCESS, url + File.separator + file.getName()));
+			return JSONUtil.toJsonString(new JsonResult(JsonResult.SUCCESS, path1));
 		} catch (Exception e) {
 			e.printStackTrace();
 			return JSONUtil.toJsonString(new JsonResult(JsonResult.ERROR, "上传图片失败."));
