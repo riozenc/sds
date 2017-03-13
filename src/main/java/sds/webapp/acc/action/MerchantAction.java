@@ -497,10 +497,6 @@ public class MerchantAction extends BaseAction {
 			File file = FileUtil.uploadPictureByBase64(base64Data, path);
 			String path1 = file.getPath().substring(Global.getConfig("project.path").length(), file.getPath().length());
 
-			System.out.println(file.getPath());
-			System.out.println(Global.getConfig("file.doc.path") + File.separator + encodeFileName);
-			System.out.println(path1);
-
 			return JSONUtil.toJsonString(new JsonResult(JsonResult.SUCCESS, path1));
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -508,12 +504,4 @@ public class MerchantAction extends BaseAction {
 		}
 	}
 
-	@ResponseBody
-	@RequestMapping(params = "type=test")
-	public void test(HttpServletRequest httpServletRequest) {
-		// 取得根目录路径
-		String s = httpServletRequest.getRequestURI();
-
-		System.out.println("");
-	}
 }
