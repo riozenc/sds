@@ -2,6 +2,7 @@ package sds.webapp.acc.action;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.Base64;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
@@ -18,6 +19,7 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 import org.springframework.web.multipart.commons.CommonsMultipartResolver;
 
+import com.riozenc.quicktool.common.util.cryption.en.HashUtils;
 import com.riozenc.quicktool.common.util.file.FileUtil;
 import com.riozenc.quicktool.common.util.json.JSONUtil;
 import com.riozenc.quicktool.common.util.log.LogUtil;
@@ -139,7 +141,7 @@ public class MerchantAction extends BaseAction {
 				MerchantDomain param = new MerchantDomain();
 				param.setAccount(tjAccount);
 				param = merchantService.findByKey(param);
-				
+
 				merchantDomain.setWxRate(param.getWxRate());
 				merchantDomain.setAliRate(param.getAliRate());
 				merchantDomain.setTjId(param.getId());// 建立商户与商户关系
@@ -482,21 +484,35 @@ public class MerchantAction extends BaseAction {
 	 */
 	@ResponseBody
 	@RequestMapping(params = "type=base64Upload")
-	public String base64Upload(String base64Data, String name, HttpServletRequest request) {
+	public String base64Upload(String base64Data, String name, HttpServletRequest request) throws Exception {
 		String account = UserUtils.getPrincipal().getMerchantDomain().getAccount();
-		String path = Global.getConfig("file.doc.path") + File.separator + account;
-		String fileName = UserUtils.getPrincipal().getMerchantDomain().getAccount() + "_" + name;
+		String url = Global.getConfig("file.doc.path") + File.separator
+				+ Base64.getEncoder().encodeToString(HashUtils.getHash("SHA-512", account.getBytes(), null, 10));
+		String path = Global.getConfig("project.path") + url;
+		String fileName = Base64.getEncoder().encodeToString(HashUtils.getHash("SHA-512",
+				(UserUtils.getPrincipal().getMerchantDomain().getAccount() + "_" + name).getBytes(), null, 10));
+
 		try {
 
 			File file = FileUtil.uploadPictureByBase64(base64Data, path, fileName);
 			System.out.println(file.getPath());
 			System.out.println(file.getAbsolutePath());
 			System.out.println(file.getCanonicalPath());
-			return JSONUtil.toJsonString(new JsonResult(JsonResult.SUCCESS, file.getCanonicalPath()));
+			System.out.println(url + File.separator + file.getName());
+
+			return JSONUtil.toJsonString(new JsonResult(JsonResult.SUCCESS, url + File.separator + file.getName()));
 		} catch (Exception e) {
 			e.printStackTrace();
 			return JSONUtil.toJsonString(new JsonResult(JsonResult.ERROR, "上传图片失败."));
 		}
+	}
 
+	@ResponseBody
+	@RequestMapping(params = "type=test")
+	public void test(HttpServletRequest httpServletRequest) {
+		// 取得根目录路径
+		String s = httpServletRequest.getRequestURI();
+
+		System.out.println("");
 	}
 }
