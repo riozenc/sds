@@ -3,6 +3,7 @@ package sds.webapp.acc.dao;
 import java.util.List;
 import java.util.Map;
 
+import com.riozenc.quicktool.annotation.PaginationSupport;
 import com.riozenc.quicktool.annotation.TransactionDAO;
 import com.riozenc.quicktool.mybatis.dao.AbstractTransactionDAOSupport;
 import com.riozenc.quicktool.mybatis.dao.BaseDAO;
@@ -86,6 +87,7 @@ public class MerchantDAO extends AbstractTransactionDAOSupport implements BaseDA
 		return getPersistanceManager().load(getNamespace() + ".getRAandVP", account);
 	}
 
+	@PaginationSupport
 	public List<MerchantDomain> findMerchantByUser(MerchantDomain merchantDomain) {
 		return getPersistanceManager().find(getNamespace() + ".findMerchantByUser", merchantDomain);
 	}
