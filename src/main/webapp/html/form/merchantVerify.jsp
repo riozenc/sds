@@ -93,6 +93,33 @@ function save(){
             		
             	</select>
             </div>
+            <div class="row r_pic">
+            
+             <div class="thumbnail ">
+	            <img alt="" id="businessPic" class="m_pic" src="">
+	            <label class="row-label ">工商执照</label>
+	         </div>
+	         <div class="thumbnail">
+	            <img alt="" id="doorPic" class="m_pic"src="">
+	            <label class="row-label ">门头执照</label>
+	         </div>
+	         <div class="thumbnail">
+	            <img alt="" id="cardCorrect"class="m_pic" src="">
+	            <label class="row-label ">银行卡照片</label>
+	         </div>
+	         <div class="thumbnail">
+	            <img alt="" id="certMeet"class="m_pic" src="">
+	            <label class="row-label ">手持身份证</label>
+	         </div>
+	         <div class="thumbnail">
+	            <img alt="" id="certCorrect" class="m_pic"src="">
+	            <label class="row-label ">身份证正面</label>
+	         </div>
+	         <div class="thumbnail">
+	            <img alt="" id="certOpposite"class="m_pic" src="">
+	            <label class="row-label ">身份证背面</label>
+	         </div>
+            </div>
             <label class="row-label " >审核</label>
             <div class="row-input ">
             	<select id="status"  name="status">

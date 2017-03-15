@@ -1,0 +1,10 @@
+
+.r_pic .thumbnail{
+	width:300px;
+	float:left;
+	margin-left:5px;
+}
+.r_pic .thumbnail .row-label{
+	with:100%;
+	
+}

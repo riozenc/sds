@@ -90,7 +90,7 @@ $(function() {
 		$.ajax({
 			cache : false,
 			type : "POST",
-			url : "profit.do?type=profit",
+			url : "profit.do?type=recalculation",
 			error : function(request) {
 				alert("刷新成功");
 				
@@ -170,7 +170,7 @@ function dialog_profit(orderId){
             <div class="btn-group">
                 <button type="submit" class="btn-blue" data-icon="search">开始搜索</button>
                 <button type="reset" class="btn-orange" data-icon="times">重置</button>
-                <button type="reset" class="btn-green" id="profit" data-icon="refresh">分润计算</button>
+                <button type="reset" class="btn-green" id="profit" data-icon="refresh">分润重算</button>
             </div>
            
         </div>

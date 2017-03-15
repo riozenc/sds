@@ -72,6 +72,8 @@
 <script src="B-JUI/plugins/uploadify/scripts/jquery.uploadify.min.js"></script>
 <script src="B-JUI/plugins/download/jquery.fileDownload.js"></script>
 <!-- init -->
+<link href="css/style.css" rel="stylesheet">
+
 <script type="text/javascript">
 $(function() {
     BJUI.init({

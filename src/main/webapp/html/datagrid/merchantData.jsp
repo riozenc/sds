@@ -146,6 +146,12 @@ function dialog_verify(id) {
 			    	$.each(data, function(key, obj) {
 			    		$("#"+key).val(obj);
 					});
+			    	$("#businessPic").attr("src","./"+data.businessPic);
+			    	$("#doorPic").attr("src","./"+data.doorPic);
+			    	$("#cardCorrect").attr("src","./"+data.cardCorrect);
+			    	$("#certMeet").attr("src","./"+data.certMeet);
+			    	$("#certCorrect").attr("src","./"+data.certCorrect);
+			    	$("#certOpposite").attr("src","./"+data.certOpposite);
 			    }
 			});
 			return false;	
@@ -177,6 +183,12 @@ function dialog_merchant(id) {
 			    	$.each(data, function(key, obj) {
 			    		$("#"+key).val(obj);
 					});
+			    	$("#businessPic").attr("src","./"+data.businessPic);
+			    	$("#doorPic").attr("src","./"+data.doorPic);
+			    	$("#cardCorrect").attr("src","./"+data.cardCorrect);
+			    	$("#certMeet").attr("src","./"+data.certMeet);
+			    	$("#certCorrect").attr("src","./"+data.certCorrect);
+			    	$("#certOpposite").attr("src","./"+data.certOpposite);
 			    }
 			});
 			return false;	
