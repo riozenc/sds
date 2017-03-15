@@ -4,7 +4,7 @@
 	<select id="findByKey" parameterType="MerchantDomain"
 		resultType="MerchantDomain" useCache="true">
 		select
-		ID,ACCOUNT,PASSWORD,PRIVATEKEY,CREATE_DATE,REAL_NAME,CMER,CMER_SORT,CHANNEL_CODE,LEVEL,BUSINESS_ID,CARD_NO,CERT_NO,PHONE,MOBILE,LOCATION,CERT_CORRECT,CERT_OPPOSITE,CERT_MEET,CARD_CORRECT,CARD_OPPOSITE,BUSINESS_PIC,DOOR_PIC,STATUS,OTHER,WX_RATE,ALI_RATE,APP_CODE,TJ_ID,USER_TYPE,BUS_PIC,BUS_NO,AGENT_ID,BANK
+		ID,ACCOUNT,PASSWORD,PRIVATEKEY,CREATE_DATE,REAL_NAME,CMER,CMER_SORT,CHANNEL_CODE,LEVEL,BUSINESS_ID,CARD_NO,CERT_NO,PHONE,MOBILE,LOCATION,CERT_CORRECT,CERT_OPPOSITE,CERT_MEET,CARD_CORRECT,CARD_OPPOSITE,BUSINESS_PIC,DOOR_PIC,STATUS,OTHER,WX_RATE,ALI_RATE,APP_CODE,TJ_ID,USER_TYPE,BUS_PIC,BUS_NO,AGENT_ID,BANK,CBZID,CODE,CODE_PAY_URL
 		from fm_merchant
 		<where>
 			<if test="account !=null">
@@ -18,7 +18,7 @@
 	<select id="findByWhere" parameterType="MerchantDomain"
 		resultType="MerchantDomain" useCache="true">
 		select
-		ID,ACCOUNT,PRIVATEKEY,CREATE_DATE,REAL_NAME,CMER,CMER_SORT,CHANNEL_CODE,LEVEL,BUSINESS_ID,CARD_NO,CERT_NO,PHONE,MOBILE,LOCATION,CERT_CORRECT,CERT_OPPOSITE,CERT_MEET,CARD_CORRECT,CARD_OPPOSITE,BUSINESS_PIC,DOOR_PIC,STATUS,OTHER,WX_RATE,ALI_RATE,APP_CODE,TJ_ID,USER_TYPE,BUS_PIC,BUS_NO,AGENT_ID,BANK
+		ID,ACCOUNT,PRIVATEKEY,CREATE_DATE,REAL_NAME,CMER,CMER_SORT,CHANNEL_CODE,LEVEL,BUSINESS_ID,CARD_NO,CERT_NO,PHONE,MOBILE,LOCATION,CERT_CORRECT,CERT_OPPOSITE,CERT_MEET,CARD_CORRECT,CARD_OPPOSITE,BUSINESS_PIC,DOOR_PIC,STATUS,OTHER,WX_RATE,ALI_RATE,APP_CODE,TJ_ID,USER_TYPE,BUS_PIC,BUS_NO,AGENT_ID,BANK,CBZID,CODE,CODE_PAY_URL
 		from fm_merchant
 		<where>
 			<if test="id !=null">
@@ -114,19 +114,24 @@
 			<if test="agentId !=null">
 				and AGENT_ID = #{agentId}
 			</if>
+			<if test="cbzid != null">
+				and CBZID = #{cbzid}
+			</if>
+			<if test="code != null">
+				and CODE = #{code}
+			</if>
 		</where>
 	</select>
 	<insert id="insert" parameterType="MerchantDomain" flushCache="true"
 		useGeneratedKeys="true" keyProperty="id">
 		insert into
-		fm_merchant(ID,ACCOUNT,PASSWORD,PRIVATEKEY,CREATE_DATE,REAL_NAME,CMER,CMER_SORT,CHANNEL_CODE,LEVEL,BUSINESS_ID,CARD_NO,CERT_NO,PHONE,MOBILE,LOCATION,CERT_CORRECT,CERT_OPPOSITE,CERT_MEET,CARD_CORRECT,CARD_OPPOSITE,BUSINESS_PIC,DOOR_PIC,STATUS,OTHER,WX_RATE,ALI_RATE,APP_CODE,TJ_ID,USER_TYPE,BUS_PIC,BUS_NO,AGENT_ID,BANK)
+		fm_merchant(ID,ACCOUNT,PASSWORD,PRIVATEKEY,CREATE_DATE,REAL_NAME,CMER,CMER_SORT,CHANNEL_CODE,LEVEL,BUSINESS_ID,CARD_NO,CERT_NO,PHONE,MOBILE,LOCATION,CERT_CORRECT,CERT_OPPOSITE,CERT_MEET,CARD_CORRECT,CARD_OPPOSITE,BUSINESS_PIC,DOOR_PIC,STATUS,OTHER,WX_RATE,ALI_RATE,APP_CODE,TJ_ID,USER_TYPE,BUS_PIC,BUS_NO,AGENT_ID,BANK,CBZID,CODE,CODE_PAY_URL)
 		values
-		(#{id},#{account},#{password},#{privatekey},#{createDate},#{realName},#{cmer},#{cmerSort},#{channelCode},#{level},#{businessId},#{cardNo},#{certNo},#{phone},#{mobile},#{location},#{certCorrect},#{certOpposite},#{certMeet},#{cardCorrect},#{cardOpposite},#{businessPic},#{doorPic},#{status},#{other},#{wxRate},#{aliRate},#{appCode},#{tjId},#{userType},#{busPic},#{busNo},#{agentId},#{bank})
+		(#{id},#{account},#{password},#{privatekey},#{createDate},#{realName},#{cmer},#{cmerSort},#{channelCode},#{level},#{businessId},#{cardNo},#{certNo},#{phone},#{mobile},#{location},#{certCorrect},#{certOpposite},#{certMeet},#{cardCorrect},#{cardOpposite},#{businessPic},#{doorPic},#{status},#{other},#{wxRate},#{aliRate},#{appCode},#{tjId},#{userType},#{busPic},#{busNo},#{agentId},#{bank},#{cbzid},#{code},#{codePayUrl})
 	</insert>
 	<update id="update" parameterType="MerchantDomain" flushCache="true">
 		update fm_merchant
 		<set>
-
 			<if test="password !=null">
 				PASSWORD = #{password},
 			</if>
@@ -222,8 +227,17 @@
 			<if test="agentId !=null">
 				AGENT_ID = #{agentId},
 			</if>
-			<if test="bank!=null">
-				BANK = #{bank}
+			<if test="bank != null">
+				BANK = #{bank},
+			</if>
+			<if test="cbzid != null">
+				CBZID = #{cbzid},
+			</if>
+			<if test="code">
+				CODE = #{code},
+			</if>
+			<if test="codePayUrl != null">
+				CODE_PAY_URL = #{codePayUrl}
 			</if>
 		</set>
 		<where>
@@ -250,7 +264,7 @@
 	<select id="getUser" parameterType="MerchantDomain" resultType="MerchantDomain"
 		useCache="false" flushCache="true">
 		select
-		ID,ACCOUNT,PASSWORD,PRIVATEKEY,CREATE_DATE,REAL_NAME,CMER,CMER_SORT,CHANNEL_CODE,LEVEL,BUSINESS_ID,CARD_NO,CERT_NO,PHONE,MOBILE,LOCATION,CERT_CORRECT,CERT_OPPOSITE,CERT_MEET,CARD_CORRECT,CARD_OPPOSITE,STATUS,OTHER,WX_RATE,ALI_RATE,APP_CODE,TJ_ID,USER_TYPE,BUS_PIC,BUS_NO,AGENT_ID,BANK
+		ID,ACCOUNT,PASSWORD,PRIVATEKEY,CREATE_DATE,REAL_NAME,CMER,CMER_SORT,CHANNEL_CODE,LEVEL,BUSINESS_ID,CARD_NO,CERT_NO,PHONE,MOBILE,LOCATION,CERT_CORRECT,CERT_OPPOSITE,CERT_MEET,CARD_CORRECT,CARD_OPPOSITE,STATUS,OTHER,WX_RATE,ALI_RATE,APP_CODE,TJ_ID,USER_TYPE,BUS_PIC,BUS_NO,AGENT_ID,BANK,CBZID,CODE,CODE_PAY_URL
 		from fm_merchant
 		<where>
 			<if test="account !=null">
@@ -566,8 +580,6 @@
 			<if test="agentId !=null">
 				and AGENT_ID = #{agentId}
 			</if>
-
-
 		</where>
 	</select>
 

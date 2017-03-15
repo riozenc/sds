@@ -223,6 +223,8 @@ public class ProfitAction extends BaseAction {
 	/**
 	 * 重算（以订单为单位）
 	 */
+	@ResponseBody
+	@RequestMapping(params = "type=recalculation")
 	public String recalculation(OrderDomain orderDomain) {
 		// 获取需要重算的订单，可重算一个（指定订单号）或批量（时间段内的订单）冲算
 		orderDomain.setStatus(3);// 指定订单类型，只重算已经分润的订单。
@@ -232,9 +234,9 @@ public class ProfitAction extends BaseAction {
 
 		// 更新
 		int i = profitService.recalculation(list);
-		if(i!=0){
+		if (i != 0) {
 			return JSONUtil.toJsonString(new JsonResult(JsonResult.SUCCESS, "重算成功."));
-		}else{
+		} else {
 			return JSONUtil.toJsonString(new JsonResult(JsonResult.ERROR, "重算失败."));
 		}
 	}

@@ -33,6 +33,7 @@ public class ProfitDomain implements MybatisEntity {
 	private String merchantName;// 商户名称
 	private String agentName;// 代理商全称
 	private String agentAccount;// 代理商电话
+	
 
 	public Integer getId() {
 		return id;

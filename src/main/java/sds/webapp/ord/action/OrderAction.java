@@ -9,7 +9,6 @@ import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.context.annotation.Scope;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -132,19 +131,25 @@ public class OrderAction extends BaseAction {
 	public String codePay() throws Exception {
 
 		MerchantDomain merchantDomain = UserUtils.getPrincipal().getMerchantDomain();
-		// MerchantDomain merchantDomain = new MerchantDomain();
-		// merchantDomain.setId(40);
 
-		MerchantDomain vm = merchantService.getVirtualMerchant(merchantDomain);
+		if (merchantDomain.getCodePayUrl() == null) {
+			// MerchantDomain merchantDomain = new MerchantDomain();
+			// merchantDomain.setId(40);
 
-		RemoteResult remoteResult = RemoteUtils.getACodePay(vm);
-
-		if (RemoteUtils.resultProcess(remoteResult)) {
-			return JSONUtil.toJsonString(new JsonResult(JsonResult.SUCCESS, remoteResult.getCodePayUrl()));
+			MerchantDomain vm = merchantService.getVirtualMerchant(merchantDomain);
+			RemoteResult remoteResult = RemoteUtils.getACodePay(vm);
+			if (RemoteUtils.resultProcess(remoteResult)) {
+				merchantDomain.setCodePayUrl(remoteResult.getCodePayUrl());
+				merchantService.update(merchantDomain);
+				return JSONUtil.toJsonString(new JsonResult(JsonResult.SUCCESS, remoteResult.getCodePayUrl()));
+			} else {
+				return JSONUtil.toJsonString(new JsonResult(JsonResult.ERROR,
+						remoteResult.getMsg() + "[" + remoteResult.getRespInfo() + "]"));
+			}
 		} else {
-			return JSONUtil.toJsonString(
-					new JsonResult(JsonResult.ERROR, remoteResult.getMsg() + "[" + remoteResult.getRespInfo() + "]"));
+			return JSONUtil.toJsonString(new JsonResult(JsonResult.SUCCESS, merchantDomain.getCodePayUrl()));
 		}
+
 	}
 
 	/**
@@ -298,6 +303,17 @@ public class OrderAction extends BaseAction {
 				.toJsonString(new JsonResult(JsonResult.SUCCESS, orderService.getTotalAmountByOrder(orderDomain)));
 
 	}
-	// 当日收款
-	// 当月收款
+
+	// 批量报备商户+柜台码支付接口（）
+	public String t(MerchantDomain merchantDomain) {
+
+		merchantDomain = merchantService.findByKey(merchantDomain);
+		if (merchantDomain == null) {
+			// 返回注册界面
+		} else {
+			// 返回柜台码
+		}
+
+		return null;
+	}
 }

@@ -66,6 +66,9 @@ public class MerchantDomain extends Page<MerchantDomain> implements MybatisEntit
 							// '营业执照注册号',
 
 	private String bank;// 银行卡所属银行
+	private String codePayUrl;// 柜台码支付地址
+	private String cbzid;// 预留
+	private String code;// 预留
 
 	private Integer tjId;// 推荐人ID
 	private Integer agentId;// `agent_id` int(11) DEFAULT NULL COMMENT '所属代理商',
@@ -369,6 +372,30 @@ public class MerchantDomain extends Page<MerchantDomain> implements MybatisEntit
 
 	public void setBank(String bank) {
 		this.bank = bank;
+	}
+
+	public String getCodePayUrl() {
+		return codePayUrl;
+	}
+
+	public void setCodePayUrl(String codePayUrl) {
+		this.codePayUrl = codePayUrl;
+	}
+
+	public String getCbzid() {
+		return cbzid;
+	}
+
+	public void setCbzid(String cbzid) {
+		this.cbzid = cbzid;
+	}
+
+	public String getCode() {
+		return code;
+	}
+
+	public void setCode(String code) {
+		this.code = code;
 	}
 
 }
