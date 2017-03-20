@@ -9,6 +9,8 @@ import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 
+import org.apache.shiro.SecurityUtils;
+import org.apache.shiro.subject.Subject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.web.bind.annotation.ControllerAdvice;
@@ -241,6 +243,10 @@ public class MerchantAction extends BaseAction {
 	@ResponseBody
 	@RequestMapping(params = "type=updateRate")
 	public String updateRate(MerchantDomain merchantDomain) throws Exception {
+		Subject subject = SecurityUtils.getSubject();
+		if (!subject.hasRole("updateRate")) {
+			return JSONUtil.toJsonString(new JsonResult(JsonResult.ERROR, "该账户无法进行费率修改."));
+		}
 
 		Map<String, Object> map = merchantService.checkRate(merchantDomain.getId());
 		// 代理商成本费率

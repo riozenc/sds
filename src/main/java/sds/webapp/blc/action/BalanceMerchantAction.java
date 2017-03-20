@@ -61,6 +61,7 @@ public class BalanceMerchantAction extends BaseAction {
 		balanceMerchantDomain = balanceMerchantService.findByKey(balanceMerchantDomain);
 		if (balanceMerchantDomain == null) {
 			map.put("profit", "0");
+			map.put("total", "0");
 		} else {
 			map.put("profit", balanceMerchantDomain.getBalance().toString());
 			map.put("total", balanceMerchantDomain.getCountIn() == null ? "0" : balanceMerchantDomain.getCountIn().toString());

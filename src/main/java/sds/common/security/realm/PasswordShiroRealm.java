@@ -8,9 +8,9 @@ import org.apache.shiro.authc.AuthenticationException;
 import org.apache.shiro.authc.AuthenticationInfo;
 import org.apache.shiro.authc.AuthenticationToken;
 import org.apache.shiro.authc.SimpleAuthenticationInfo;
-
 import org.apache.shiro.authc.credential.HashedCredentialsMatcher;
 import org.apache.shiro.authz.AuthorizationInfo;
+import org.apache.shiro.authz.SimpleAuthorizationInfo;
 import org.apache.shiro.realm.AuthorizingRealm;
 import org.apache.shiro.subject.PrincipalCollection;
 import org.apache.shiro.util.ByteSource;
@@ -43,6 +43,17 @@ public class PasswordShiroRealm extends AuthorizingRealm {
 		// 登录成功授权操作
 		Principal principal = (Principal) getAvailablePrincipal(principalCollection);
 
+		if (!principal.isMobileLogin()) {
+			// web登录
+			if (principal.getId() == 1) {
+				SimpleAuthorizationInfo info = new SimpleAuthorizationInfo();
+
+				info.addRole("updateRate");
+
+				return info;
+			}
+		}
+
 		return null;
 	}
 
@@ -62,7 +73,7 @@ public class PasswordShiroRealm extends AuthorizingRealm {
 				if (merchantDomain != null) {
 					String password = WebPasswordUtils.encodePassword(merchantDomain.getPassword());
 					try {
-						
+
 						byte[] salt = Hex.decodeHex(password.substring(0, 16).toCharArray());
 						return new SimpleAuthenticationInfo(new Principal(merchantDomain), password.substring(16),
 								ByteSource.Util.bytes(salt), getName());

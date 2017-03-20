@@ -196,6 +196,25 @@ public class OrderAction extends BaseAction {
 			orderDomain.setStatus(0);
 			orderService.insert(orderDomain);
 		} else {
+			BigDecimal amount = new BigDecimal(Double.toString(orderDomain.getAmount()));
+			orderDomain.setAmount(amount.divide(new BigDecimal(100), 2, RoundingMode.DOWN).doubleValue());
+
+			if ("000000".equals(orderDomain.getRespCode())) {
+				orderDomain.setStatus(1);
+
+				Map<String, String> map = merchantService.getRAandVP(orderDomain.getAccount());
+				orderDomain.setAccount(map.get("account"));
+
+				if (profitService.profit(orderDomain) > 0) {
+					LogUtil.getLogger(LOG_TYPE.OTHER).info(orderDomain.getOrderId() + "（回调查询）交易成功,分润成功[" + WXOrderNo
+							+ "]" + DateUtil.formatDate(new Date()));
+				} else {
+					LogUtil.getLogger(LOG_TYPE.OTHER).info(orderDomain.getOrderId() + "（回调查询）交易成功,分润失败[" + WXOrderNo
+							+ "]" + DateUtil.formatDate(new Date()));
+				}
+				return;
+			}
+
 			try {
 				Thread.sleep(2 * 1000);
 
@@ -212,13 +231,11 @@ public class OrderAction extends BaseAction {
 				if (RemoteUtils.resultProcess(remoteResult)) {
 					// 更新
 					orderDomain.setStatus(1);
-					BigDecimal amount = new BigDecimal(Double.toString(orderDomain.getAmount()));
-					orderDomain.setAmount(amount.divide(new BigDecimal(100), 2, RoundingMode.DOWN).doubleValue());
 					orderDomain.setOrderNo(WXOrderNo);
 					orderDomain.setRespCode(remoteResult.getRespCode());
 					orderDomain.setRespInfo(remoteResult.getRespInfo());
 
-					if (profitService.profit(orderDomain) != 0) {
+					if (profitService.profit(orderDomain) > 0) {
 						LogUtil.getLogger(LOG_TYPE.OTHER).info(orderDomain.getOrderId() + "（回调查询）交易成功,分润成功[" + WXOrderNo
 								+ "]" + DateUtil.formatDate(new Date()));
 					} else {
@@ -260,7 +277,6 @@ public class OrderAction extends BaseAction {
 		int code = 0;
 		if (RemoteUtils.resultProcess(remoteResult)) {
 			// 更新
-			orderDomain.setStatus(1);
 			msg = msg + "交易成功";
 			code = 200;
 			LogUtil.getLogger(LOG_TYPE.OTHER)
@@ -304,16 +320,42 @@ public class OrderAction extends BaseAction {
 
 	}
 
-	// 批量报备商户+柜台码支付接口（）
-	public String t(MerchantDomain merchantDomain) {
-
-		merchantDomain = merchantService.findByKey(merchantDomain);
-		if (merchantDomain == null) {
-			// 返回注册界面
-		} else {
-			// 返回柜台码
-		}
-
-		return null;
-	}
+	// // 批量报备商户+柜台码支付接口（）
+	// @RequestMapping(params = "type=t")
+	// public ModelAndView t(MerchantDomain merchantDomain, String nsukey,
+	// HttpServletRequest httpServletRequest,
+	// HttpServletResponse httpServletResponse) {
+	// System.out.println(JSONUtil.toJsonString(httpServletRequest.getParameterMap()));
+	//
+	// WxNsukeyCache.putNsukey(nsukey);
+	// ModelAndView view = new ModelAndView();
+	// if (WxNsukeyCache.getValue(nsukey)) {
+	//
+	// if (merchantDomain.getId() == 1) {
+	// view.setViewName(
+	// "redirect:http://mf.branding.chinavalleytech.com/ChannelConn/ACodePay?data=e4fc9d080525c8ff58df50c3fcbff8793bfbeb80ca660a2dd55571263828e7a741a67f05ba23fefa9907476e17d423f7a251a55bb46228675e78d2f3b07b6f2e");
+	// } else {
+	// view.setViewName("wap_register_2017.html");
+	// }
+	// WxNsukeyCache.removeKey(nsukey);
+	// return view;
+	// } else {
+	// try {
+	// httpServletResponse.getWriter().write("success");
+	// httpServletResponse.getWriter().close();
+	// } catch (IOException e) {
+	// // TODO Auto-generated catch block
+	// e.printStackTrace();
+	// }
+	//
+	// return view;
+	// }
+	// }
+	//
+	// @ResponseBody
+	// @RequestMapping(params = "type=getWxCache")
+	// public String getWxCache() {
+	//
+	// return JSONUtil.toJsonString(WxNsukeyCache.get());
+	// }
 }

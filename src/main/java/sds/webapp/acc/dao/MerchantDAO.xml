@@ -333,9 +333,6 @@
 			<if test="account !=null">
 				ACCOUNT = #{account},
 			</if>
-			<if test="password !=null">
-				PASSWORD = #{password},
-			</if>
 
 			<if test="createDate !=null">
 				CREATE_DATE = #{createDate},
