@@ -6,6 +6,7 @@
 package sds.common.sms;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import org.apache.http.Consts;
@@ -20,17 +21,21 @@ import org.apache.http.impl.client.HttpClients;
 import org.apache.http.message.BasicNameValuePair;
 import org.apache.http.util.EntityUtils;
 
+import com.riozenc.quicktool.common.util.date.DateUtil;
+import com.riozenc.quicktool.common.util.log.LogUtil;
+import com.riozenc.quicktool.common.util.log.LogUtil.LOG_TYPE;
+
 public class SmsSender {
 
 	private final static String url = "http://sms.253.com/msg/send";
-	private final static String un = "N5030495";
-	private final static String pw = "8424888bB";
-	private final static String msg = "【253云通讯】您好，你的验证码是";
+	private final static String un = "N4054934";
+	private final static String pw = "9PoAcNKBsb2da8";
+	private final static String msg = "【马付】您好，您的验证码是";
 
 	public static String send(String account) {
 		try {
 			String code = getRandom();
-			String returnString = SmsSender.batchSend(url, un, pw, account, msg+code, "1", null);
+			String returnString = SmsSender.batchSend(url, un, pw, account, msg + code, "1", null);
 			SmsCache.put(account, code);
 			return returnString;
 		} catch (Exception e) {
@@ -64,6 +69,8 @@ public class SmsSender {
 			// 得到响应体
 			HttpEntity entity = response.getEntity();
 			String jsonStr = EntityUtils.toString(entity, Consts.UTF_8);
+			LogUtil.getLogger(LOG_TYPE.OTHER).info(DateUtil.formatDateTime(new Date()) + " [" + phone + "] " + jsonStr
+					+ " (" + response.getStatusLine().getStatusCode() + ") ");
 			if (response.getStatusLine().getStatusCode() == HttpStatus.SC_OK) {
 				return jsonStr;
 			} else {
@@ -76,5 +83,9 @@ public class SmsSender {
 
 	private static String getRandom() {
 		return Integer.toString((int) ((Math.random() * 9 + 1) * 100000));
+	}
+
+	public static void main(String[] args) {
+		System.out.println(SmsSender.send("18660509556"));
 	}
 }

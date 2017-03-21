@@ -26,7 +26,7 @@ public class SmsCache {
 
 	public static String get(String name) {
 		if (map.get(name) != null) {
-			if (System.currentTimeMillis() - map.get(name).createTime > 5 *60* 1000) {
+			if (System.currentTimeMillis() - map.get(name).createTime > 5 * 60 * 1000) {
 				map.get(name).code = null;
 			}
 			return map.get(name).code;
@@ -36,8 +36,11 @@ public class SmsCache {
 	}
 
 	public static void put(String key, String value) {
-
 		map.put(key, new SmsEntity(value));
+	}
+
+	public static void remove(String key) {
+		map.remove(key);
 	}
 
 	public static void clear() {
