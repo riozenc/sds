@@ -107,7 +107,7 @@ public class MerchantPool {
 				poolBean.release();// 释放占用标记
 			}
 			state.borrowBeans.remove(poolBean);// 移除借用列
-			if (poolBean.isValid()) {
+			if (poolBean.isValid() && poolBean.recoverCount < 5) {
 				state.idleBeans.add(poolBean);// 移到可用列
 				state.notifyAll();// 唤醒
 			} else {

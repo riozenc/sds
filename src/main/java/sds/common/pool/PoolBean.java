@@ -12,7 +12,7 @@ public class PoolBean {
 	private boolean binding;
 	private long createdTimestamp;
 	private long lastUsedTimestamp;
-
+	protected int recoverCount;// 失败回收次数
 	protected long borrowedTimestamp;// 借用时间
 
 	public PoolBean(MerchantDomain merchantDomain, MerchantPool merchantPool) {
@@ -81,6 +81,7 @@ public class PoolBean {
 	 * 回收
 	 */
 	public void recover() {
+		this.recoverCount++;
 		merchantPool.recover(this);
 	}
 
