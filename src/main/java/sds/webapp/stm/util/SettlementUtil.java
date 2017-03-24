@@ -270,21 +270,50 @@ public class SettlementUtil {
 	// return (double) x / y;
 	// }
 
+	public static void main(String[] args) {
+
+		BigDecimal b1 = new BigDecimal(0.01);
+		BigDecimal b2 = new BigDecimal(2.2);
+		System.out.println(b1.add(b2).doubleValue());
+
+		BigDecimal sum = new BigDecimal(1);
+		BigDecimal s = new BigDecimal(2.2);
+		System.out.println(sum.add(s).doubleValue());
+
+	}
+
 	/**
 	 * 校验最后结果
 	 * 
 	 * @param list
 	 */
 	private static void checkProfit(List<ProfitDomain> list) {
-		double sum = 0;
+		BigDecimal sum = new BigDecimal(0);
 		for (int i = 0; i < list.size(); i++) {
 			if ((i + 1) == list.size()) {// 最后一位
-				if (sum != list.get(i).getAgentProfit()) {
-					list.get(i).setAgentProfit(list.get(i).getTotalProfit() - sum);
+				if (sum.add(BigDecimal.valueOf(list.get(i).getAgentProfit()))
+						.compareTo(BigDecimal.valueOf(list.get(i).getTotalProfit())) != 0) {
+					list.get(i).setAgentProfit(
+							BigDecimal.valueOf(list.get(i).getTotalProfit()).subtract(sum).doubleValue());
 				}
 			}
-			sum += (list.get(i).getAgentProfit() + list.get(i).getTjProfit());
+			sum = sum.add(BigDecimal.valueOf(list.get(i).getAgentProfit())
+					.add(BigDecimal.valueOf(list.get(i).getTjProfit())));
 		}
+
+		// double sum = 0;
+		//
+		// for (int i = 0; i < list.size(); i++) {
+		// if ((i + 1) == list.size()) {// 最后一位
+		//
+		// //sum != list.get(i).getAgentProfit()
+		// if((sum+list.get(i).getAgentProfit())!=list.get(i).getTotalProfit()){
+		// list.get(i).setAgentProfit(list.get(i).getTotalProfit() - sum);
+		// }
+		// }
+		// sum += (list.get(i).getAgentProfit() + list.get(i).getTjProfit());
+		// }
+
 	}
 
 	/**
