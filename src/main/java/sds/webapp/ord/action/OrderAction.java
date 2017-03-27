@@ -7,6 +7,8 @@ import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
+import javax.servlet.http.HttpServletRequest;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.web.bind.annotation.ControllerAdvice;
@@ -309,7 +311,12 @@ public class OrderAction extends BaseAction {
 		return JSONUtil.toJsonString(new JsonGrid(orderDomain, list));
 	}
 
-	// 总收款
+	/**
+	 * 总收款
+	 * 
+	 * @param orderDomain
+	 * @return
+	 */
 	@ResponseBody
 	@RequestMapping(params = "type=getTotalAmountByOrder")
 	public String getTotalAmountByOrder(OrderDomain orderDomain) {
@@ -318,6 +325,18 @@ public class OrderAction extends BaseAction {
 		return JSONUtil
 				.toJsonString(new JsonResult(JsonResult.SUCCESS, orderService.getTotalAmountByOrder(orderDomain)));
 
+	}
+
+	/**
+	 * 购卡接口（转发数据）
+	 * 
+	 * @return
+	 */
+	@ResponseBody
+	@RequestMapping(params = "type=purchasingCard")
+	public String purchasingCard(HttpServletRequest httpServletRequest) {
+		System.out.println(httpServletRequest.getParameterMap());
+		return null;
 	}
 
 	// // 批量报备商户+柜台码支付接口（）

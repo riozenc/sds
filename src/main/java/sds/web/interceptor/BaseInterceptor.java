@@ -6,7 +6,6 @@
  */
 package sds.web.interceptor;
 
-import java.io.PrintWriter;
 import java.lang.reflect.Method;
 import java.util.Date;
 
@@ -89,7 +88,6 @@ public class BaseInterceptor extends HandlerInterceptorAdapter {
 
 	// Action之前执行
 	// 在preHandle中，可以进行编码、安全控制等处理
-
 	@Override
 	public boolean preHandle(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse,
 			Object object) throws Exception {
@@ -97,7 +95,7 @@ public class BaseInterceptor extends HandlerInterceptorAdapter {
 
 		LogUtil.getLogger(LOG_TYPE.OTHER)
 				.info("[" + DateUtil.formatDateTime(new Date()) + "]{" + httpServletRequest.getRemoteAddr() + "} 执行"
-						+ getClassMethod(object) + "[" + httpServletRequest.getMethod() + "]");
+						+ getClassMethod(object) + "[" + httpServletRequest.getMethod() + "]--("+httpServletRequest.getParameterMap()+")");
 
 		// if (RequestMethod.GET.name().equals(httpServletRequest.getMethod()))
 		// {
