@@ -260,28 +260,6 @@ public class SettlementUtil {
 		return aa.divide(c, b, RoundingMode.DOWN).doubleValue();
 	}
 
-	// private static double getDouble(double a, int b) {
-	// int x = 0;
-	// int y = 1;
-	// for (int i = 0; i < b; i++) {
-	// y = y * 10;
-	// }
-	// x = (int) (a * y);
-	// return (double) x / y;
-	// }
-
-	public static void main(String[] args) {
-
-		BigDecimal b1 = new BigDecimal(0.01);
-		BigDecimal b2 = new BigDecimal(2.2);
-		System.out.println(b1.add(b2).doubleValue());
-
-		BigDecimal sum = new BigDecimal(1);
-		BigDecimal s = new BigDecimal(2.2);
-		System.out.println(sum.add(s).doubleValue());
-
-	}
-
 	/**
 	 * 校验最后结果
 	 * 
