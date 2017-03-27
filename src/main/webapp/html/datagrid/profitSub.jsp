@@ -3,6 +3,30 @@
 <script type="text/javascript">
 
 $(function() {
+	$("#download").bind("click",function(){
+		var startDate = $("#startDate").val();
+		var endDate = $("#endDate").val();
+
+		var form = $("<form>");
+		form.attr("style","display:none");
+		form.attr("target","");
+		form.attr("method","post");
+		form.attr("action","profit.do?type=exportExcel");
+		var input1 = $("<input>");
+		input1.attr("type","hidden");
+		input1.attr("name","startDate");
+		input1.attr("value",startDate);
+		var input2 = $("<input>");
+		input2.attr("type","hidden");
+		input2.attr("name","endDate");
+		input2.attr("value",endDate);
+		$("body").append(form);
+		form.append(input1);
+		form.append(input2);
+		form.submit();
+		form.remove();
+	});
+	
 	var myDate = new Date();
 	var dateNow = myDate.getFullYear()+"-"+ (myDate.getMonth()+1)+"-"+myDate.getDate();
 	$('#profitSub_datagrid').datagrid({
@@ -223,6 +247,7 @@ function dialog_profitSubInfos(agentid,date){
 	                
 	            <div class="btn-group">
 	                <button type="submit" class="btn btn-blue" data-icon="search" >开始搜索</button>
+	                <button type="button" class="btn btn-green" data-icon="download" id="download">导出列表</button>
 	            </div>
 	           
 	        </div>
