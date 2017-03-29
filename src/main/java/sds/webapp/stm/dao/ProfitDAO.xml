@@ -31,7 +31,8 @@
 		a.TJ_ID,
 		a.ORDER_DATE,
 		a.JS_DATE,
-		a.CREATE_DATE
+		a.CREATE_DATE,
+		c.cmer_sort as TJ_NAME
 		FROM
 		fm_profit
 		a LEFT JOIN fm_user

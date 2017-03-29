@@ -20,7 +20,8 @@
 		a.TOTAL_AMOUNT,
 		a.TOTAL_PROFIT,
 		a.DATE,
-		a.STATUS
+		a.STATUS,
+		b.FULL_NAME,
 		FROM
 		fm_profit_user a
 		LEFT JOIN fm_user b ON a.agent_id = b.id

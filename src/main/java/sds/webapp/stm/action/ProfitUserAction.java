@@ -64,22 +64,22 @@ public class ProfitUserAction extends BaseAction {
 		return JSONUtil.toJsonString(new JsonGrid(profitUserDomain, list));
 	}
 
-	/**
-	 * 我的分润
-	 * 
-	 * @param profitUserDomain
-	 * @return
-	 */
-	@ResponseBody
-	@RequestMapping(params = "type=myProfitUser")
-	public String myProfitUser(ProfitUserDomain profitUserDomain) {
-
-		profitUserDomain.setAgentId(UserUtils.getPrincipal().getUserDomain().getId());// 只查询自己的分润
-		List<ProfitDomain> list = profitService.findProfitByUser(profitUserDomain);
-		List<ProfitUserDomain> profitUserDomains = SettlementHandler.computeProfitByUser(list);
-
-		return JSONUtil.toJsonString(new JsonGrid(profitUserDomain, profitUserDomains));
-	}
+//	/**
+//	 * 我的分润
+//	 * 
+//	 * @param profitUserDomain
+//	 * @return
+//	 */
+//	@ResponseBody
+//	@RequestMapping(params = "type=myProfitUser")
+//	public String myProfitUser(ProfitUserDomain profitUserDomain) {
+//
+//		profitUserDomain.setAgentId(UserUtils.getPrincipal().getUserDomain().getId());// 只查询自己的分润
+//		List<ProfitDomain> list = profitService.findProfitByUser(profitUserDomain);
+//		List<ProfitUserDomain> profitUserDomains = SettlementHandler.computeProfitByUser(list);
+//
+//		return JSONUtil.toJsonString(new JsonGrid(profitUserDomain, profitUserDomains));
+//	}
 
 	/**
 	 * 下级分润

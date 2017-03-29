@@ -1,11 +1,10 @@
 [
     {"name":"分润管理", "children":[
-      {"name":"商户分润","children":[
-      	 {"id":"profitMerchant", "name":"分润明细", "target":"navtab", "url":"html/datagrid/profitMerchant.jsp"},
+      {"name":"商户佣金","children":[
+      	 {"id":"profitMerchant", "name":"佣金明细", "target":"navtab", "url":"html/datagrid/profitMerchant.jsp"},
  		 {"id":"profitWithdrawals", "name":"提现申请", "target":"navtab", "url":"html/datagrid/profitWithdrawals.jsp"}
       ]},
 		{"name":"代理商分润","children":[
-			{"id":"profitMy", "name":"我的分润", "target":"navtab", "url":"html/datagrid/profitMy.jsp"},
 			{"id":"profitSub", "name":"下级分润", "target":"navtab", "url":"html/datagrid/profitSub.jsp"} 
 		]}
                            
