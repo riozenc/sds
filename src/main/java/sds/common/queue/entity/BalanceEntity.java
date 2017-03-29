@@ -28,7 +28,7 @@ public class BalanceEntity {
 	public BalanceEntity(ProfitDomain profitDomain) {
 		// this.account = profitDomain.getAccount();//分润的电话是商户电话
 		this.targetId = profitDomain.getTjId();
-		this.amount = new BigDecimal(profitDomain.getTjProfit());
+		this.amount = BigDecimal.valueOf(profitDomain.getTjProfit());
 		this.orderId = profitDomain.getOrderId();
 		this.type = 1;
 	}

@@ -5,6 +5,7 @@
 **/
 package sds.webapp.stm.util;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.LinkedList;
@@ -78,7 +79,7 @@ public class ScanSettlementHandler extends SettlementHandler {
 				} else {
 					profitDomain.setTjId(merchantDomain.getTjId());
 					profitDomain.setTjProfit(multiply(profitDomain.getAgentProfit(), agent.getTjRate()));
-					profitDomain.setAgentProfit(profitDomain.getAgentProfit() - profitDomain.getTjProfit());
+					profitDomain.setAgentProfit(BigDecimal.valueOf(profitDomain.getAgentProfit()).subtract(BigDecimal.valueOf(profitDomain.getTjProfit())).doubleValue());
 				}
 			}
 		}
