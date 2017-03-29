@@ -8,7 +8,6 @@
 		from fm_balance_merchant_log
 		<where>
 			and ID = #{id}
-
 		</where>
 	</select>
 	<select id="findByWhere" parameterType="BalanceMerchantLogDomain"
@@ -49,9 +48,9 @@
 	<insert id="insert" parameterType="BalanceMerchantLogDomain"
 		flushCache="true">
 		insert into
-		fm_balance_merchant_log(ID,TARGET_ID,ACCOUNT,BALANCE,CREATE_DATE,UPDATE_DATE,REMARK,STATUS,OPERATION)
+		fm_balance_merchant_log(ID,TARGET_ID,ACCOUNT,ORDER_ID,BALANCE,CREATE_DATE,UPDATE_DATE,REMARK,STATUS,OPERATION)
 		values
-		(#{id},#{targetId},#{account},#{balance},#{createDate},#{updateDate},#{remark},#{status},#{operation})
+		(#{id},#{targetId},#{account},#{orderId},#{balance},#{createDate},#{updateDate},#{remark},#{status},#{operation})
 	</insert>
 	<update id="update" parameterType="BalanceMerchantLogDomain"
 		flushCache="true">
@@ -92,7 +91,6 @@
 		delete from fm_balance_merchant_log
 		<where>
 			and ID = #{id}
-
 		</where>
 	</delete>
 
@@ -104,7 +102,7 @@
 			STATUS = 0
 		</set>
 		<where>
-			and ACCOUNT = #{account}
+			and TARGET_ID = #{targetId}
 			and ORDER_ID = #{orderId}
 		</where>
 	</update>
@@ -114,19 +112,19 @@
 		flushCache="true">
 		update fm_balance_merchant SET balance = (
 		SELECT
-		SUM(balance) FROM fm_balance_merchant_log a WHERE a.account =
-		#{account} AND a.status !=0
+		SUM(a.balance) FROM fm_balance_merchant_log a WHERE a.TARGET_ID =
+		#{targetId} AND a.status !=0
 		),count_in = (
-		SELECT SUM(balance) FROM
-		fm_balance_merchant_log a WHERE a.account =
-		#{account} AND a.status
+		SELECT SUM(a.balance) FROM
+		fm_balance_merchant_log a WHERE a.TARGET_ID =
+		#{targetId} AND a.status
 		=1
 		),count_out=(
-		SELECT SUM(balance) FROM fm_balance_merchant_log a
+		SELECT SUM(a.balance) FROM fm_balance_merchant_log a
 		WHERE
-		a.account =
-		#{account} AND a.status =2
+		a.TARGET_ID =
+		#{targetId} AND a.status =2
 		) WHERE
-		account=#{account}
+		TARGET_ID=#{targetId}
 	</update>
 </mapper>
