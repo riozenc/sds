@@ -25,6 +25,7 @@ public class OrderDomain extends Page<OrderDomain> implements MybatisEntity {
 						// COMMENT '交易日期',
 	private String account;// `account` varchar(255) DEFAULT NULL COMMENT
 							// '商户账号',
+	private String cmer; //公司名称  2017.3.28修改
 	private String proxyAccount;// 代理商户账号
 	private String codeUrl;// `code_url` varchar(255) DEFAULT NULL COMMENT
 							// '二维码支付地址',
@@ -38,7 +39,13 @@ public class OrderDomain extends Page<OrderDomain> implements MybatisEntity {
 	private Date endDate;// 截至时间
 	private String merchantName;//
 	private String realName;//
-
+	
+	public String getCmer(){
+		return cmer;
+	}
+	public void setCmer(String cmer){
+		this.cmer=cmer;
+	}
 	public Integer getId() {
 		return id;
 	}
