@@ -20,16 +20,25 @@ public class ProfitUserDomain extends Page<ProfitUserDomain> implements MybatisE
 	private Date startDate;// 分润时间区间
 	private Date endDate;// 分润时间区间
 
+	private String fullName; // 公司名称 2017.3.29 修改
+
 	private String account;// 手机号
-	//excel用
-	private String regName;//法人姓名
+	// excel用
+	private String regName;// 法人姓名
 	private String jsCard;//
 	private String jsAddress;//
 	private String jsBank;
 	private String jsBankadd;
 	private String jsName;
 	private String jsLhno;
-	
+
+	public String getFullName() {
+		return fullName;
+	}
+
+	public void setFullName(String fullName) {
+		this.fullName = fullName;
+	}
 
 	public Integer getId() {
 		return id;

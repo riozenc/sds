@@ -17,22 +17,28 @@ $(function() {
 	             name: 'orderId',
 	             label: '订单号',
 	             align: 'center',
-	             width: 130,
+	             width: 110,
 	             render: function(value) {
 		            	return '<a href="javascript:;"   onclick="dialog_profit(\''+value+'\')">'+value+'</a>';
 		            }
+	         },
+	         {
+	        	name:'cmer',
+	        	label:'公司名称',
+	        	align:'center',
+	        	width:90
 	         },
 	        {
 	            name: 'account',
 	            label: '商户手机号',
 	            align: 'center',
-	            width:100
+	            width:70
 	        },
 	        {
 	            name: 'channelCode',
 	            label: '交易通道',
 	            align: 'center',
-	            width: 100,
+	            width: 40,
 	            render: function(value) {
 	            	if(value == 1){
 	            		return "微信";
@@ -51,11 +57,12 @@ $(function() {
 	            align: 'center',
 	            width: 50
 	        },
+
 	        {
 	            name: 'date',
 	            label: '交易时间',
 	            align: 'center',
-	            width:105
+	            width:100
 	        },
 	        {
 	            name: 'status',
@@ -137,7 +144,7 @@ function dialog_profit(orderId){
 				    	$.each(data.list, function(key, obj) {
 				    		console.info(obj.orderId);
 				    		html_text = html_text +'<tr><td>'
-				    			+obj.agentAccount+'</td><td>'+obj.agentName+'</td><td>'+obj.agentProfit+'</td><td>'+obj.tjId+'</td><td>'+obj.tjProfit+'</td></tr>';
+				    			+obj.agentAccount+'</td><td>'+obj.agentName+'</td><td>'+obj.agentProfit+'</td><td>'+obj.cmerSort+'</td><td>'+obj.tjProfit+'</td></tr>';
 				    		
 						});
 				    	html_text = html_text+'<tr></table><div class="bjui-row col-2"><label class="row-label">商户号：</label><div class="row-input">'+data.list[0].account+'</div><label class="row-label">订单号：</label><div class="row-input">'+data.list[0].orderId+'</div><label class="row-label">消费金额：</label><div class="row-input">'+data.list[0].amount+'</div><label class="row-label">交易时间：</label><div class="row-input">'+data.list[0].orderDate+'</div><label class="row-label">分润总额：</label><div class="row-input">'+data.list[0].totalProfit
