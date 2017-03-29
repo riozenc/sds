@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="sds.webapp.ord.dao.OrderDAO">
-	<select id="findByKey" parameterType="OrderDomain" resultType="OrderDomain"
+<select id="findByKey" parameterType="OrderDomain" resultType="OrderDomain"
 		useCache="true">
 		select
 		ID,ORDER_ID,ORDER_NO,CHANNEL_CODE,RESP_CODE,RESP_INFO,AMOUNT,DATE,ACCOUNT,CODE_URL,REMARK,RETURN_CODE,STATUS
@@ -14,59 +14,61 @@
 				and ORDER_ID = #{orderId}
 			</if>
 		</where>
-	</select>
+	</select> 
 	<select id="findByWhere" parameterType="OrderDomain" resultType="OrderDomain"
 		useCache="true">
-		select
-		ID,ORDER_ID,ORDER_NO,CHANNEL_CODE,RESP_CODE,RESP_INFO,AMOUNT,DATE,ACCOUNT,CODE_URL,REMARK,RETURN_CODE,STATUS
-		from fm_order
+		select o.*,m.cmer FROM fm_order o JOIN fm_merchant m ON o.account=m.account
 		<where>
+			
 			<if test="id !=null">
-				and ID = #{id}
+				and o.ID = #{id}
 			</if>
 			<if test="orderId !=null">
-				and ORDER_ID = #{orderId}
+				and o.ORDER_ID = #{orderId}
 			</if>
 			<if test="orderNo !=null">
-				and ORDER_NO = #{orderNo}
+				and o.ORDER_NO = #{orderNo}
 			</if>
 			<if test="channelCode !=null">
-				and CHANNEL_CODE = #{channelCode}
+				and o.CHANNEL_CODE = #{channelCode}
 			</if>
 			<if test="respCode !=null">
-				and RESP_CODE = #{respCode}
+				and o.RESP_CODE = #{respCode}
 			</if>
 			<if test="respInfo !=null">
-				and RESP_INFO = #{respInfo}
+				and o.RESP_INFO = #{respInfo}
 			</if>
 			<if test="amount !=null">
-				and AMOUNT = #{amount}
+				and o.AMOUNT = #{amount}
 			</if>
+
 			<if test="startDate !=null">
-				and DATE_FORMAT(DATE, '%Y-%m-%d') &gt;=
-				DATE_FORMAT(#{startDate}, '%Y-%m-%d')
+				and o.DATE_FORMAT(DATE, '%Y-%m-%d') &gt;=
+				o.DATE_FORMAT(#{startDate}, '%Y-%m-%d')
 			</if>
 			<if test="endDate !=null">
-				and DATE_FORMAT(DATE, '%Y-%m-%d') &lt;=
-				DATE_FORMAT(#{endDate}, '%Y-%m-%d')
+				and o.DATE_FORMAT(DATE, '%Y-%m-%d') &lt;=
+				o.DATE_FORMAT(#{endDate}, '%Y-%m-%d')
 			</if>
 			<if test="account !=null">
-				and ACCOUNT = #{account}
+				and o.ACCOUNT = #{account}
 			</if>
+			
+		
 			<if test="codeUrl !=null">
-				and CODE_URL = #{codeUrl}
+				and o.CODE_URL = #{codeUrl}
 			</if>
 			<if test="remark !=null">
-				and REMARK = #{remark}
+				and o.REMARK = #{remark}
 			</if>
 			<if test="returnCode !=null">
-				and RETURN_CODE = #{returnCode}
+				and o.RETURN_CODE = #{returnCode}
 			</if>
 			<if test="status !=null">
-				and STATUS = #{status}
+				and o.STATUS = #{status}
 			</if>
 		</where>
-		order by DATE desc
+		order by o.DATE desc
 	</select>
 	<insert id="insert" parameterType="OrderDomain" flushCache="true">
 		insert into
@@ -178,8 +180,7 @@
 		</where>
 	</select>
 
-
-	<select id="getAllUnCheckOrder" parameterType="OrderDomain"
+<select id="getAllUnCheckOrder" parameterType="OrderDomain"
 		resultType="OrderDomain" useCache="true">
 		select
 		ID,ORDER_ID,ORDER_NO,CHANNEL_CODE,RESP_CODE,RESP_INFO,AMOUNT,DATE,ACCOUNT,CODE_URL,REMARK,RETURN_CODE,STATUS
@@ -229,6 +230,7 @@
 			and STATUS = 0
 		</where>
 	</select>
+
 
 	<update id="profitComplete" parameterType="OrderDomain"
 		flushCache="true">
