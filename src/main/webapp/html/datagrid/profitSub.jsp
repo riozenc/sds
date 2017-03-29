@@ -45,6 +45,12 @@ $(function() {
   	            align: 'center',
   	            width:50
   	        },
+			{
+  	        	name:'agentName',
+  	        	label:'公司名称',
+  	        	align:'center',
+  	        	width:100
+			},
 	        {
 	            name: 'account',
 	            label: '账号',
@@ -114,6 +120,12 @@ function dialog_profitSubInfo(account){
 			    	    data:result,			    	    
 			    	    columns: [
 			               
+			    			{
+			      	        	name:'fullName',
+			      	        	label:'公司',
+			      	        	align:'center',
+			      	        	width:100
+			    			},
 			    	        {
 			    	            name: 'account',
 			    	            label: '账号',
@@ -197,6 +209,12 @@ function dialog_profitSubInfos(agentid,date){
 			      	            align: 'center',
 			      	            width:50
 			      	        },
+			      			{
+			      	        	name:'agentName',
+			      	        	label:'公司',
+			      	        	align:'center',
+			      	        	width:100
+			    			},
 			    	        {
 			    	            name: 'account',
 			    	            label: '账号',
