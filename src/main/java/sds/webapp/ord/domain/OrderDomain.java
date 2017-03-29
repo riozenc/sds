@@ -20,7 +20,7 @@ public class OrderDomain extends Page<OrderDomain> implements MybatisEntity {
 	private String respInfo;// `resp_info` varchar(200) DEFAULT NULL COMMENT
 							// '返回码描述',
 	private Double amount;// `amount` double(10,5) DEFAULT NULL COMMENT '交易金额',
-	
+
 	private Date date;// `date` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP
 						// COMMENT '交易日期',
 	private String account;// `account` varchar(255) DEFAULT NULL COMMENT
@@ -32,8 +32,11 @@ public class OrderDomain extends Page<OrderDomain> implements MybatisEntity {
 	private String returnCode;// `return_code` varchar(255) DEFAULT NULL COMMENT
 								// '查询返回码',
 	private Integer status;// `status` int(4) NOT NULL DEFAULT '0' COMMENT
-							// '0未查询1成功2失败',
-	
+							// '0未查询1成功2失败'
+
+	private double minamount;// 最小金额
+	private double amountfee;// 手续费
+	private double fee;// 费率
 	private Date startDate;// 起始时间
 	private Date endDate;// 截至时间
 	private String merchantName;//
@@ -182,6 +185,29 @@ public class OrderDomain extends Page<OrderDomain> implements MybatisEntity {
 	public void setRealName(String realName) {
 		this.realName = realName;
 	}
-	
+
+	public double getMinamount() {
+		return minamount;
+	}
+
+	public void setMinamount(double minamount) {
+		this.minamount = minamount;
+	}
+
+	public double getAmountfee() {
+		return amountfee;
+	}
+
+	public void setAmountfee(double amountfee) {
+		this.amountfee = amountfee;
+	}
+
+	public double getFee() {
+		return fee;
+	}
+
+	public void setFee(double fee) {
+		this.fee = fee;
+	}
 
 }
