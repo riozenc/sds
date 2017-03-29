@@ -18,12 +18,13 @@ public class BalanceMerchantLogDomain extends Page<BalanceMerchantLogDomain> imp
 	private Integer targetId;// target_id int 11 0 -1 0 0 0 0 0 0 0
 	private String account;// account varchar 255 0 -1 0 0 0 0 0 utf8
 							// utf8_general_ci 0 0
+	private String orderId;// 订单号
 	private BigDecimal balance;// balance decimal 20 3 -1 0 0 0 0 0 0 0
 	private Date createDate;// create_date datetime 0 0 -1 0 0 0 0 0 0 0
 	private Date updateDate;// update_date datetime 0 0 -1 0 0 0 0 0 0 0
 	private String remark;// remark varchar 255 0 -1 0 0 0 0 0 utf8
 							// utf8_general_ci 0 0
-	private Integer status;// status int 1 0 -1 0 0 0 0 0 0 0
+	private Integer status;// 0失效，1转入，2转出，3重算
 	private String operation;// operation varchar 255 0 -1 0 0 0 0 0 操作解释：转入、转出
 								// utf8 utf8_general_ci 0 0
 
@@ -97,6 +98,14 @@ public class BalanceMerchantLogDomain extends Page<BalanceMerchantLogDomain> imp
 
 	public void setOperation(String operation) {
 		this.operation = operation;
+	}
+
+	public String getOrderId() {
+		return orderId;
+	}
+
+	public void setOrderId(String orderId) {
+		this.orderId = orderId;
 	}
 
 }

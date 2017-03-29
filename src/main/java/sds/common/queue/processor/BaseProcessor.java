@@ -28,46 +28,69 @@ public class BaseProcessor {
 
 	private static Lock lock = new ReentrantLock();// 锁
 
-	private volatile static BaseProcessor instance = null;
+	private volatile static BaseProcessor instance = new BaseProcessor();
 
 	private BaseProcessor() {
 	}
 
 	public static BaseProcessor getInstance() {
-		// 先检查实例是否存在，如果不存在才进入下面的同步块
-		if (instance == null) {
-			// 同步块，线程安全地创建实例
-			synchronized (BaseProcessor.class) {
-				// 再次检查实例是否存在，如果不存在才真正地创建实例
-				instance = new BaseProcessor();
-			}
-		}
 		return instance;
 	}
 
 	public void excute(BalanceEntity balanceEntity) {
 		Lock lock = getLock();
 		lock.lock();
+
+		// 交易日志
+		BalanceMerchantLogDomain balanceMerchantLogDomain = new BalanceMerchantLogDomain();
+		balanceMerchantLogDomain.setTargetId(balanceEntity.getTargetId());
+		balanceMerchantLogDomain.setAccount(balanceEntity.getAccount());
+		balanceMerchantLogDomain.setOrderId(balanceEntity.getOrderId());
+		balanceMerchantLogDomain.setCreateDate(new Date());
+		balanceMerchantLogDomain.setUpdateDate(new Date());
+		balanceMerchantLogDomain.setStatus(balanceEntity.getType());
+
+		// 交易实例
+		BalanceMerchantDomain balanceMerchantDomain = new BalanceMerchantDomain();
+		balanceMerchantDomain.setTargetId(balanceEntity.getTargetId());
+		balanceMerchantDomain.setAccount(balanceEntity.getAccount());
+		balanceMerchantDomain.setBalance(balanceEntity.getAmount());
+		balanceMerchantDomain.setUpdateDate(new Date());
+
+		if (balanceEntity.getType() == 1) {
+			// 入账
+			balanceMerchantDomain.setRemark("入账");
+			balanceMerchantDomain.setCountIn(balanceEntity.getAmount());
+			balanceMerchantLogDomain.setRemark("入账");
+			balanceMerchantLogDomain.setBalance(balanceEntity.getAmount());
+			balanceMerchantLogDomain.setOperation("入账");
+			compute(balanceMerchantDomain, balanceMerchantLogDomain);
+		} else if (balanceEntity.getType() == 2) {
+			// 出账
+			balanceMerchantDomain.setRemark("提现");
+			balanceMerchantDomain.setCountOut(balanceEntity.getAmount());
+			balanceMerchantLogDomain.setRemark("提现");
+			balanceMerchantLogDomain.setBalance(balanceEntity.getAmount().negate());
+			balanceMerchantLogDomain.setOperation("提现");
+			compute(balanceMerchantDomain, balanceMerchantLogDomain);
+		} else if (balanceEntity.getType() == 3) {
+			balanceMerchantLogDomain.setStatus(1);// 算为入账
+			balanceMerchantLogDomain.setRemark("重算");
+			balanceMerchantLogDomain.setBalance(balanceEntity.getAmount());
+			balanceMerchantLogDomain.setOperation("重算");
+
+			recalculation(balanceMerchantLogDomain);
+			// 让对应订单的利润失效
+			// 添加新的订单利润
+			// 计算余额
+
+		}
+	}
+
+	private void compute(BalanceMerchantDomain balanceMerchantDomain,
+			BalanceMerchantLogDomain balanceMerchantLogDomain) {
 		SqlSession sqlSession = SqlSessionManager.getSession();
 		try {
-			// 处理
-
-			BalanceMerchantDomain balanceMerchantDomain = new BalanceMerchantDomain();
-			balanceMerchantDomain.setTargetId(balanceEntity.getTargetId());
-			balanceMerchantDomain.setAccount(balanceEntity.getAccount());
-			balanceMerchantDomain.setBalance(balanceEntity.getAmount());
-			balanceMerchantDomain.setUpdateDate(new Date());
-
-			if (balanceEntity.getType() == 1) {
-				// 入账
-				balanceMerchantDomain.setRemark("入账");
-				balanceMerchantDomain.setCountIn(balanceEntity.getAmount());
-			} else {
-				// 出账
-				balanceMerchantDomain.setRemark("提现");
-				balanceMerchantDomain.setCountOut(balanceEntity.getAmount());
-			}
-
 			balanceMerchantDomain.setStatus(1);
 			int i = sqlSession.update("sds.webapp.blc.dao.BalanceMerchantDAO.update", balanceMerchantDomain);
 			if (i == 0) {
@@ -75,19 +98,27 @@ public class BaseProcessor {
 				balanceMerchantDomain.setCreateDate(new Date());
 				sqlSession.insert("sds.webapp.blc.dao.BalanceMerchantDAO.insert", balanceMerchantDomain);
 			}
-			BalanceMerchantLogDomain balanceMerchantLogDomain = new BalanceMerchantLogDomain();
-			balanceMerchantLogDomain.setTargetId(balanceEntity.getTargetId());
-			balanceMerchantLogDomain.setAccount(balanceEntity.getAccount());
-			balanceMerchantLogDomain.setBalance(balanceEntity.getAmount());
-			balanceMerchantLogDomain.setCreateDate(new Date());
-			balanceMerchantLogDomain.setUpdateDate(new Date());
-			balanceMerchantLogDomain.setRemark(balanceEntity.getType() == 1 ? "入账" : "提现");
-			balanceMerchantLogDomain.setOperation(balanceEntity.getType() == 1 ? "入账" : "提现");
-			balanceMerchantLogDomain.setStatus(1);
 			sqlSession.insert("sds.webapp.blc.dao.BalanceMerchantLogDAO.insert", balanceMerchantLogDomain);
-
 			sqlSession.commit();
+		} catch (Exception e) {
+			sqlSession.rollback();
+		} finally {
+			sqlSession.close();
+			lock.unlock();
+		}
 
+	}
+
+	private void recalculation(BalanceMerchantLogDomain balanceMerchantLogDomain) {
+		SqlSession sqlSession = SqlSessionManager.getSession();
+		try {
+			// 更新
+			sqlSession.update("sds.webapp.blc.dao.BalanceMerchantLogDAO.invalidBalanceLog", balanceMerchantLogDomain);
+			// 新增
+			sqlSession.insert("sds.webapp.blc.dao.BalanceMerchantLogDAO.insert", balanceMerchantLogDomain);
+			// 更新
+			sqlSession.update("sds.webapp.blc.dao.BalanceMerchantLogDAO.computeByLog", balanceMerchantLogDomain);
+			sqlSession.commit();
 		} catch (Exception e) {
 			sqlSession.rollback();
 		} finally {

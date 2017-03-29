@@ -162,8 +162,8 @@ public class MerchantServiceImpl implements MerchantService {
 	@Override
 	public int register(MerchantDomain merchantDomain) {
 		// TODO Auto-generated method stub
-
-		merchantDAO.insert(merchantDomain);
+		
+		insert(merchantDomain);
 		BalanceMerchantDomain balanceMerchantDomain = new BalanceMerchantDomain();
 		balanceMerchantDomain.setAccount(merchantDomain.getAccount());
 		balanceMerchantDomain.setBalance(new BigDecimal(0));

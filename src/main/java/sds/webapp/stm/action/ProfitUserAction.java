@@ -18,6 +18,7 @@ import sds.webapp.stm.domain.ProfitDomain;
 import sds.webapp.stm.domain.ProfitUserDomain;
 import sds.webapp.stm.service.ProfitService;
 import sds.webapp.stm.service.ProfitUserService;
+import sds.webapp.stm.util.SettlementHandler;
 import sds.webapp.stm.util.SettlementUtil;
 
 /**
@@ -75,7 +76,7 @@ public class ProfitUserAction extends BaseAction {
 
 		profitUserDomain.setAgentId(UserUtils.getPrincipal().getUserDomain().getId());// 只查询自己的分润
 		List<ProfitDomain> list = profitService.findProfitByUser(profitUserDomain);
-		List<ProfitUserDomain> profitUserDomains = SettlementUtil.computeProfitByUser(list);
+		List<ProfitUserDomain> profitUserDomains = SettlementHandler.computeProfitByUser(list);
 
 		return JSONUtil.toJsonString(new JsonGrid(profitUserDomain, profitUserDomains));
 	}
@@ -92,7 +93,7 @@ public class ProfitUserAction extends BaseAction {
 		// parent_id
 		profitUserDomain.setAgentId(UserUtils.getPrincipal().getUserDomain().getId());
 		List<ProfitDomain> list = profitService.findSubProfitByUser(profitUserDomain);
-		List<ProfitUserDomain> profitUserDomains = SettlementUtil.computeProfitByUser(list);
+		List<ProfitUserDomain> profitUserDomains = SettlementHandler.computeProfitByUser(list);
 		return JSONUtil.toJsonString(new JsonGrid(profitUserDomain, profitUserDomains));
 	}
 

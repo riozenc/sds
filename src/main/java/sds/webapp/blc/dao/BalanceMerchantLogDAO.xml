@@ -95,4 +95,38 @@
 
 		</where>
 	</delete>
+
+
+	<update id="invalidBalanceLog" parameterType="BalanceMerchantLogDomain"
+		flushCache="true">
+		update fm_balance_merchant_log
+		<set>
+			STATUS = 0
+		</set>
+		<where>
+			and ACCOUNT = #{account}
+			and ORDER_ID = #{orderId}
+		</where>
+	</update>
+
+
+	<update id="computeByLog" parameterType="BalanceMerchantLogDomain"
+		flushCache="true">
+		update fm_balance_merchant SET balance = (
+		SELECT
+		SUM(balance) FROM fm_balance_merchant_log a WHERE a.account =
+		#{account} AND a.status !=0
+		),count_in = (
+		SELECT SUM(balance) FROM
+		fm_balance_merchant_log a WHERE a.account =
+		#{account} AND a.status
+		=1
+		),count_out=(
+		SELECT SUM(balance) FROM fm_balance_merchant_log a
+		WHERE
+		a.account =
+		#{account} AND a.status =2
+		) WHERE
+		account=#{account}
+	</update>
 </mapper>

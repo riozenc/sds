@@ -1,6 +1,5 @@
 package sds.webapp.stm.service.impl;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
@@ -23,6 +22,7 @@ import sds.webapp.stm.domain.ProfitDomain;
 import sds.webapp.stm.domain.ProfitMerchantDomain;
 import sds.webapp.stm.domain.ProfitUserDomain;
 import sds.webapp.stm.service.ProfitService;
+import sds.webapp.stm.util.SettlementHandler;
 import sds.webapp.stm.util.SettlementUtil;
 
 @TransactionService
@@ -112,8 +112,22 @@ public class ProfitServiceImpl implements ProfitService {
 	public int profit(OrderDomain orderDomain) {
 		// TODO Auto-generated method stub
 		Map<String, MARDomain> marMap = getMAR();
-		List<ProfitDomain> list = SettlementUtil.createProfit(marMap.get(orderDomain.getAccount()), orderDomain);
-		SettlementUtil.realtimeComputationBalance(list);// 计算余额
+		List<ProfitDomain> list = SettlementHandler.getScanInstance().createProfit(marMap.get(orderDomain.getAccount()), orderDomain);
+		SettlementHandler.realtimeComputationBalance(list);// 计算余额
+		profitDAO.insertBatch(list);
+		orderDomain.setStatus(3);// 分润完毕
+		return orderDAO.update(orderDomain);
+	}
+
+	/**
+	 * 快捷分润
+	 */
+	@Override
+	public int profitQuick(OrderDomain orderDomain) {
+		// TODO Auto-generated method stub
+		Map<String, MARDomain> marMap = getMAR();
+		List<ProfitDomain> list = SettlementHandler.getPurchaseInstance().createProfit(marMap.get(orderDomain.getAccount()), orderDomain);
+		SettlementHandler.realtimeComputationBalance(list);// 计算余额
 		profitDAO.insertBatch(list);
 		orderDomain.setStatus(3);// 分润完毕
 		return orderDAO.update(orderDomain);

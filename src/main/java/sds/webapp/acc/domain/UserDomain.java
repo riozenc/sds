@@ -13,7 +13,9 @@ import com.riozenc.quicktool.annotation.TablePrimaryKey;
 import com.riozenc.quicktool.mybatis.MybatisEntity;
 import com.riozenc.quicktool.mybatis.persistence.Page;
 
-public class UserDomain extends Page<UserDomain> implements MybatisEntity {
+import sds.webapp.stm.domain.StmElement;
+
+public class UserDomain extends Page<UserDomain> implements MybatisEntity, StmElement {
 	@TablePrimaryKey
 	private Integer id;
 
@@ -399,6 +401,36 @@ public class UserDomain extends Page<UserDomain> implements MybatisEntity {
 
 	public void setStatus(Integer status) {
 		this.status = status;
+	}
+
+	@Override
+	public Double getRate(int channel) {
+		// TODO Auto-generated method stub
+		Double rate = null;
+		switch (channel) {
+		case 1:// 微信cost_wrate
+			rate = getCostWrate();
+			break;
+		case 2:// 支付宝cost_arate
+			rate = getCostArate();
+			break;
+		case 3:// 快捷支付cost_krate
+			rate = getCostKrate();
+			break;
+		default:
+			rate = getCostWrate();
+			break;
+		}
+		if (rate == null || rate == 0) {
+			throw new RuntimeException(getAccount() + "费率为空,无法计算分润..");
+		}
+		return rate;
+	}
+
+	@Override
+	public Integer getTjId() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 }

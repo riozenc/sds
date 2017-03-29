@@ -7,8 +7,6 @@ import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
-import javax.servlet.http.HttpServletRequest;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.web.bind.annotation.ControllerAdvice;
@@ -333,10 +331,17 @@ public class OrderAction extends BaseAction {
 	 * @return
 	 */
 	@ResponseBody
-	@RequestMapping(params = "type=purchasingCard")
-	public String purchasingCard(HttpServletRequest httpServletRequest) {
-		System.out.println(httpServletRequest.getParameterMap());
-		return null;
+	@RequestMapping(params = "type=purchasingCardCallback")
+	public void purchasingCardCallback(OrderDomain orderDomain) {
+		orderDomain.setStatus(1);
+		if (profitService.profitQuick(orderDomain) > 0) {
+			LogUtil.getLogger(LOG_TYPE.OTHER).info(orderDomain.getOrderId() + "（回调查询）交易成功,分润成功["
+					+ orderDomain.getOrderId() + "]" + DateUtil.formatDate(new Date()));
+		} else {
+			LogUtil.getLogger(LOG_TYPE.OTHER).info(orderDomain.getOrderId() + "（回调查询）交易成功,分润失败["
+					+ orderDomain.getOrderId() + "]" + DateUtil.formatDate(new Date()));
+		}
+
 	}
 
 	// // 批量报备商户+柜台码支付接口（）

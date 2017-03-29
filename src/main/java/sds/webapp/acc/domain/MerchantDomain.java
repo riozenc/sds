@@ -9,7 +9,9 @@ import com.riozenc.quicktool.annotation.TablePrimaryKey;
 import com.riozenc.quicktool.mybatis.MybatisEntity;
 import com.riozenc.quicktool.mybatis.persistence.Page;
 
-public class MerchantDomain extends Page<MerchantDomain> implements MybatisEntity {
+import sds.webapp.stm.domain.StmElement;
+
+public class MerchantDomain extends Page<MerchantDomain> implements MybatisEntity, StmElement {
 	@TablePrimaryKey
 	private Integer id;// `id` int(11) NOT NULL AUTO_INCREMENT,
 	private String account;// `account` varchar(255) DEFAULT NULL COMMENT
@@ -56,6 +58,7 @@ public class MerchantDomain extends Page<MerchantDomain> implements MybatisEntit
 							// '微信费率',
 	private Double aliRate;// `ali_rate` double(10,5) DEFAULT NULL COMMENT
 							// '支付宝费率',
+	private Double unipayRate;// 银联费率
 	private String appCode;// `appcode` varchar(255) DEFAULT NULL COMMENT '推广码',
 
 	private Integer userType;// `user_type` tinyint(4) DEFAULT '1' COMMENT
@@ -396,6 +399,38 @@ public class MerchantDomain extends Page<MerchantDomain> implements MybatisEntit
 
 	public void setCode(String code) {
 		this.code = code;
+	}
+
+	public Double getUnipayRate() {
+		return unipayRate;
+	}
+
+	public void setUnipayRate(Double unipayRate) {
+		this.unipayRate = unipayRate;
+	}
+
+	@Override
+	public Double getRate(int channelCode) {
+		// TODO Auto-generated method stub
+		Double rate = null;
+		switch (channelCode) {
+		case 1:// 微信
+			rate = getWxRate();
+			break;
+		case 2:// 支付宝
+			rate = getWxRate();
+			break;
+		case 3:// 快捷
+			rate = getUnipayRate();
+			break;
+		default:
+			rate = getWxRate();
+			break;
+		}
+		if (rate == null || rate == 0) {
+			throw new RuntimeException(getAccount() + "费率为空,无法计算分润..");
+		}
+		return rate;
 	}
 
 }

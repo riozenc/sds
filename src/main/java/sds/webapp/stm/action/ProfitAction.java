@@ -37,6 +37,8 @@ import sds.webapp.stm.domain.ProfitUserDomain;
 import sds.webapp.stm.service.ProfitMerchantService;
 import sds.webapp.stm.service.ProfitService;
 import sds.webapp.stm.service.ProfitUserService;
+import sds.webapp.stm.util.ScanSettlementHandler;
+import sds.webapp.stm.util.SettlementHandler;
 import sds.webapp.stm.util.SettlementUtil;
 
 /**
@@ -118,9 +120,10 @@ public class ProfitAction extends BaseAction {
 				profitUserMap.put(profit.getAgentId(), profitUserDomain);
 			}
 
-			profitUserDomain.setTotalAmount(SettlementUtil.sum(profitUserDomain.getTotalAmount(), profit.getAmount()));
 			profitUserDomain
-					.setTotalProfit(SettlementUtil.sum(profitUserDomain.getTotalProfit(), profit.getAgentProfit()));
+					.setTotalAmount(SettlementHandler.sum(profitUserDomain.getTotalAmount(), profit.getAmount()));
+			profitUserDomain
+					.setTotalProfit(SettlementHandler.sum(profitUserDomain.getTotalProfit(), profit.getAgentProfit()));
 			profitUserDomain.setDate(profit.getOrderDate());
 			profitUserDomain.setStatus(0);
 
@@ -132,10 +135,10 @@ public class ProfitAction extends BaseAction {
 					profitMerchantDomain.setMerchantId(profit.getTjId());
 					profitMerchantMap.put(profit.getTjId(), profitMerchantDomain);
 				}
-				profitMerchantDomain
-						.setTotalAmount(SettlementUtil.sum(profitMerchantDomain.getTotalAmount(), profit.getAmount()));
+				profitMerchantDomain.setTotalAmount(
+						SettlementHandler.sum(profitMerchantDomain.getTotalAmount(), profit.getAmount()));
 				profitMerchantDomain.setTotalProfit(
-						SettlementUtil.sum(profitMerchantDomain.getTotalProfit(), profit.getTjProfit()));
+						SettlementHandler.sum(profitMerchantDomain.getTotalProfit(), profit.getTjProfit()));
 				profitMerchantDomain.setDate(profit.getOrderDate());
 				profitMerchantDomain.setStatus(0);
 			}
@@ -143,6 +146,9 @@ public class ProfitAction extends BaseAction {
 
 		List<ProfitUserDomain> profitUserDomains = new ArrayList<>(profitUserMap.values());
 		List<ProfitMerchantDomain> profitMerchantDomains = new ArrayList<>(profitMerchantMap.values());
+
+		SettlementHandler.realtimeComputationBalance(list);
+
 		Map<String, List> map = new HashMap<String, List>();
 		map.put("user", profitUserDomains);
 		map.put("merchant", profitMerchantDomains);
@@ -231,7 +237,7 @@ public class ProfitAction extends BaseAction {
 		List<OrderDomain> orderDomains = orderService.findByWhere(orderDomain);
 		Map<String, MARDomain> marMap = getMAR();
 		List<ProfitDomain> list = call(orderDomains, marMap);
-
+		SettlementHandler.recalculationComputationBalance(list);// 重算余额
 		// 更新
 		int i = profitService.recalculation(list);
 		if (i != 0) {
@@ -257,7 +263,7 @@ public class ProfitAction extends BaseAction {
 		// 获取商户代理商关系
 		Map<String, MARDomain> marMap = getMAR();
 		List<ProfitDomain> list = call(orderDomains, marMap);
-
+		SettlementHandler.realtimeComputationBalance(list);// 计算余额
 		// 批量插入
 		int i = profitService.profit(list, orderDomains);
 		// System.out.println(i);
@@ -274,7 +280,7 @@ public class ProfitAction extends BaseAction {
 
 		List<ProfitDomain> list = profitService.findSubProfitByUser(profitUserDomain);
 
-		List<ProfitUserDomain> profitUserDomains = SettlementUtil.computeProfitByUser(list);
+		List<ProfitUserDomain> profitUserDomains = SettlementHandler.computeProfitByUser(list);
 
 		for (ProfitUserDomain temp : profitUserDomains) {
 
@@ -358,15 +364,12 @@ public class ProfitAction extends BaseAction {
 
 	private List<ProfitDomain> call(List<OrderDomain> orderDomains, Map<String, MARDomain> marMap) {
 		List<ProfitDomain> result = new ArrayList<>();
-
 		orderDomains.stream().forEach((order) -> {
-
-			List<ProfitDomain> list = SettlementUtil.createProfit(marMap.get(order.getAccount()), order);
-
+			// 扫码分润
+			List<ProfitDomain> list = SettlementHandler.getScanInstance().createProfit(marMap.get(order.getAccount()),
+					order);
 			result.addAll(list);
-
 		});
-		SettlementUtil.realtimeComputationBalance(result);// 计算余额
 		return result;
 	}
 

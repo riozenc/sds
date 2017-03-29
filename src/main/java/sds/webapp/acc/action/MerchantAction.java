@@ -136,6 +136,7 @@ public class MerchantAction extends BaseAction {
 				param = userService.findByKey(param);
 				merchantDomain.setWxRate(param.getUserWrate());
 				merchantDomain.setAliRate(param.getUserArate());
+				merchantDomain.setUnipayRate(param.getUserKrate());
 				merchantDomain.setAgentId(param.getId());// 建立代理商与商户关系
 			} else if (appCode.startsWith("UA")) {
 				// 商户
@@ -146,6 +147,7 @@ public class MerchantAction extends BaseAction {
 
 				merchantDomain.setWxRate(param.getWxRate());
 				merchantDomain.setAliRate(param.getAliRate());
+				merchantDomain.setUnipayRate(param.getUnipayRate());
 				merchantDomain.setTjId(param.getId());// 建立商户与商户关系
 				merchantDomain.setAgentId(param.getAgentId());// 被推荐商户也属于推荐商户下的代理商
 			} else {
@@ -156,6 +158,54 @@ public class MerchantAction extends BaseAction {
 			throw new InvalidAppCodeException("[" + appCode + "]无效的邀请码...");
 		}
 
+		if (merchantService.findByKey(merchantDomain) == null) {
+			merchantDomain.setStatus(0);// 审核中
+			int i = merchantService.register(merchantDomain);
+			if (i > 0) {
+				return JSONUtil.toJsonString(new JsonResult(JsonResult.SUCCESS, "注册成功."));
+			} else {
+				return JSONUtil.toJsonString(new JsonResult(JsonResult.ERROR, "注册失败."));
+			}
+		} else {
+			// 已经存在的手机号
+			return JSONUtil.toJsonString(new JsonResult(JsonResult.ERROR, "已经存在的手机号."));
+		}
+	}
+
+	@ResponseBody
+	@RequestMapping(params = "type=registerGouKa", method = RequestMethod.POST)
+	public String registerGouKa(MerchantDomain merchantDomain) throws Exception {
+		String tjAccount = null;
+		String appCode = merchantDomain.getAppCode();// 邀请码
+		try {
+			if (appCode.startsWith("EA")) {
+				// 代理商
+				tjAccount = appCode.substring(2);
+				UserDomain param = new UserDomain();
+				param.setAccount(tjAccount);
+				param = userService.findByKey(param);
+				merchantDomain.setWxRate(param.getUserWrate());
+				merchantDomain.setAliRate(param.getUserArate());
+				merchantDomain.setUnipayRate(param.getUserKrate());
+				merchantDomain.setAgentId(param.getId());// 建立代理商与商户关系
+			} else if (appCode.startsWith("UA")) {
+				// 商户
+				tjAccount = appCode.substring(2);
+				MerchantDomain param = new MerchantDomain();
+				param.setAccount(tjAccount);
+				param = merchantService.findByKey(param);
+				merchantDomain.setWxRate(param.getWxRate());
+				merchantDomain.setAliRate(param.getAliRate());
+				merchantDomain.setUnipayRate(param.getUnipayRate());
+				merchantDomain.setTjId(param.getId());// 建立商户与商户关系
+				merchantDomain.setAgentId(param.getAgentId());// 被推荐商户也属于推荐商户下的代理商
+			} else {
+				// 违法推荐码
+				return JSONUtil.toJsonString(new JsonResult(JsonResult.ERROR, "无效的推荐码."));
+			}
+		} catch (NullPointerException e) {
+			throw new InvalidAppCodeException("[" + appCode + "]无效的邀请码...");
+		}
 		if (merchantService.findByKey(merchantDomain) == null) {
 			merchantDomain.setStatus(0);// 审核中
 			int i = merchantService.register(merchantDomain);

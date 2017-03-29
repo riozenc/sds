@@ -22,19 +22,21 @@ public class BalanceEntity {
 	private Integer targetId;//
 	private String account;//
 	private BigDecimal amount;// 变动金额
-	private int type;// 操作：1转入，2转出
+	private String orderId;// 对应订单号
+	private int type;// 操作：1转入，2转出，3重算
 
 	public BalanceEntity(ProfitDomain profitDomain) {
-//		this.account = profitDomain.getAccount();//分润的电话是商户电话
+		// this.account = profitDomain.getAccount();//分润的电话是商户电话
 		this.targetId = profitDomain.getTjId();
 		this.amount = new BigDecimal(profitDomain.getTjProfit());
+		this.orderId = profitDomain.getOrderId();
 		this.type = 1;
 	}
 
 	public BalanceEntity(WithdrawalsDomain withdrawalsDomain) {
 		this.account = withdrawalsDomain.getAccount();
 		this.targetId = withdrawalsDomain.getMerchantId();
-		this.amount = new BigDecimal("-"+withdrawalsDomain.getAmount());
+		this.amount = new BigDecimal("-" + withdrawalsDomain.getAmount());
 		this.type = 2;
 	}
 
@@ -66,8 +68,9 @@ public class BalanceEntity {
 		return type;
 	}
 
-	public void setType(int type) {
+	public BalanceEntity setType(int type) {
 		this.type = type;
+		return this;
 	}
 
 	public Integer getTargetId() {
@@ -76,6 +79,14 @@ public class BalanceEntity {
 
 	public void setTargetId(Integer targetId) {
 		this.targetId = targetId;
+	}
+
+	public String getOrderId() {
+		return orderId;
+	}
+
+	public void setOrderId(String orderId) {
+		this.orderId = orderId;
 	}
 
 }

@@ -14,6 +14,8 @@ public interface ProfitService extends BaseService<ProfitDomain> {
 
 	public int profit(OrderDomain orderDomain);
 
+	public int profitQuick(OrderDomain orderDomain);
+
 	public int profit(List<ProfitDomain> list, List<OrderDomain> orderDomains);
 
 	public int profitCount(List<ProfitUserDomain> profitUserDomains, List<ProfitMerchantDomain> profitMerchantDomains,
