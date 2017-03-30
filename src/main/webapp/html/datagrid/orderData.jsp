@@ -115,7 +115,7 @@ function dialog_profit(orderId){
 	$.ajax({
 		cache : false,
 		type : "POST",
-		url : "profit.do?type=getProfit",
+		url : "profit.do?type=getProfitByUser",
 		data : ajaxdata,
 		dataType : "json",
 		error : function(request) {
