@@ -35,11 +35,13 @@
 		c.cmer_sort as TJ_NAME
 		FROM
 		fm_profit
-		a LEFT JOIN fm_user
+		a LEFT JOIN
+		fm_user
 		b
 		ON a.agent_id
 		= b.id
-		LEFT JOIN fm_merchant c ON c.account = a.account AND c.tj_id=a.tj_id
+		LEFT JOIN fm_merchant c ON c.account =
+		a.account AND c.tj_id=a.tj_id
 		<where>
 			<if test="id !=null">
 				and a.ID = #{id}
@@ -315,5 +317,55 @@
 			b.account = #{account}
 		</where>
 		GROUP BY DATE_FORMAT(a.order_date, '%Y-%m-%d')
+	</select>
+
+
+	<select id="getProfitByUser" parameterType="ProfitDomain"
+		resultType="ProfitDomain" useCache="true">
+		SELECT
+		a.ID,
+		a.ORDER_ID,
+		a.ACCOUNT,
+		c.cmer AS MERCHANT_NAME,
+		c.real_name,
+		a.AMOUNT,
+		a.TOTAL_PROFIT,
+		a.AGENT_ID,
+		b.full_name AS AGENT_NAME,
+		b.account AS AGENT_ACCOUNT,
+		a.AGENT_PROFIT,
+		a.TJ_PROFIT,
+		a.TJ_ID,
+		a.ORDER_DATE,
+		a.JS_DATE,
+		a.CREATE_DATE
+		FROM
+		fm_profit a
+		LEFT JOIN fm_user b
+		ON a.agent_id = b.id
+		LEFT JOIN fm_merchant c ON c.account = a.account
+		<where>
+			<if test="orderId !=null">
+				and a.ORDER_ID = #{orderId}
+			</if>
+			AND a.agent_id in (
+			SELECT a.id FROM fm_user a LEFT JOIN (SELECT
+			id,parent_id , @pathnodes:=
+			IF(
+			parent_id =-1,',0', CONCAT(
+			CONCAT_WS(',',IF(LOCATE(
+			CONCAT('|',parent_id,':'),@pathall) > 0 ,
+			SUBSTRING_INDEX(
+			SUBSTRING_INDEX(@pathall,CONCAT('|',parent_id,':'),-1),'|',1)
+			,@pathnodes),parent_id),',',id))paths
+			,@pathall:=CONCAT(@pathall,'|',id,':', @pathnodes ,'|') pathall FROM
+			fm_user,(SELECT @le:=0,@pathlevel:='', @pathall:='',@pathnodes:='')
+			vv) b ON a.id = b.id where b.paths like '%,${agentId}%'
+			)
+			<if test="orderDate !=null">
+				and DATE_FORMAT(a.ORDER_DATE, '%Y-%m-%d') =
+				DATE_FORMAT(#{orderDate}, '%Y-%m-%d')
+			</if>
+		</where>
 	</select>
 </mapper>

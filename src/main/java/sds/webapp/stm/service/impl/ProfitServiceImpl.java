@@ -112,7 +112,8 @@ public class ProfitServiceImpl implements ProfitService {
 	public int profit(OrderDomain orderDomain) {
 		// TODO Auto-generated method stub
 		Map<String, MARDomain> marMap = getMAR();
-		List<ProfitDomain> list = SettlementHandler.getScanInstance().createProfit(marMap.get(orderDomain.getAccount()), orderDomain);
+		List<ProfitDomain> list = SettlementHandler.getScanInstance().createProfit(marMap.get(orderDomain.getAccount()),
+				orderDomain);
 		SettlementHandler.realtimeComputationBalance(list);// 计算余额
 		profitDAO.insertBatch(list);
 		orderDomain.setStatus(3);// 分润完毕
@@ -126,7 +127,8 @@ public class ProfitServiceImpl implements ProfitService {
 	public int profitQuick(OrderDomain orderDomain) {
 		// TODO Auto-generated method stub
 		Map<String, MARDomain> marMap = getMAR();
-		List<ProfitDomain> list = SettlementHandler.getPurchaseInstance().createProfit(marMap.get(orderDomain.getAccount()), orderDomain);
+		List<ProfitDomain> list = SettlementHandler.getPurchaseInstance()
+				.createProfit(marMap.get(orderDomain.getAccount()), orderDomain);
 		SettlementHandler.realtimeComputationBalance(list);// 计算余额
 		profitDAO.insertBatch(list);
 		orderDomain.setStatus(3);// 分润完毕
@@ -187,6 +189,12 @@ public class ProfitServiceImpl implements ProfitService {
 	public int recalculation(List<ProfitDomain> list) {
 		// TODO Auto-generated method stub
 		return profitDAO.recalculation(list);
+	}
+
+	@Override
+	public List<ProfitDomain> getProfitByUser(ProfitDomain profitDomain) {
+		// TODO Auto-generated method stub
+		return profitDAO.getProfitByUser(profitDomain);
 	}
 
 }

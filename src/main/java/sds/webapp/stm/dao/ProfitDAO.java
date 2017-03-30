@@ -71,4 +71,8 @@ public class ProfitDAO extends AbstractTransactionDAOSupport implements BaseDAO<
 	public int recalculation(List<ProfitDomain> list) {
 		return getPersistanceManager(getExecutorType()).updateList(getNamespace() + ".recalculation", list);
 	}
+
+	public List<ProfitDomain> getProfitByUser(ProfitDomain profitDomain) {
+		return getPersistanceManager().find(getNamespace() + ".getProfitByUser", profitDomain);
+	}
 }

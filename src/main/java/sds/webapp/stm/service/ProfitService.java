@@ -29,4 +29,6 @@ public interface ProfitService extends BaseService<ProfitDomain> {
 
 	public int recalculation(List<ProfitDomain> list);
 
+	public List<ProfitDomain> getProfitByUser(ProfitDomain profitDomain);
+
 }
