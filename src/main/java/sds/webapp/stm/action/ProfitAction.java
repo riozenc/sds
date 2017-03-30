@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
@@ -227,7 +228,7 @@ public class ProfitAction extends BaseAction {
 	}
 
 	/**
-	 * 重算（以订单为单位）
+	 * 重算（以订单为单位）(购卡订单无法重算，屏蔽)
 	 */
 	@ResponseBody
 	@RequestMapping(params = "type=recalculation")
@@ -235,6 +236,14 @@ public class ProfitAction extends BaseAction {
 		// 获取需要重算的订单，可重算一个（指定订单号）或批量（时间段内的订单）冲算
 		orderDomain.setStatus(3);// 指定订单类型，只重算已经分润的订单。
 		List<OrderDomain> orderDomains = orderService.findByWhere(orderDomain);
+
+		Iterator<OrderDomain> iterator = orderDomains.iterator();
+		while (iterator.hasNext()) {
+			if (iterator.next().getChannelCode() == 3) {
+				iterator.remove();
+			}
+		}
+
 		Map<String, MARDomain> marMap = getMAR();
 		List<ProfitDomain> list = call(orderDomains, marMap);
 		SettlementHandler.recalculationComputationBalance(list);// 重算余额

@@ -36,7 +36,7 @@ public class BalanceEntity {
 	public BalanceEntity(WithdrawalsDomain withdrawalsDomain) {
 		this.account = withdrawalsDomain.getAccount();
 		this.targetId = withdrawalsDomain.getMerchantId();
-		this.amount = new BigDecimal("-" + withdrawalsDomain.getAmount());
+		this.amount = BigDecimal.valueOf(withdrawalsDomain.getAmount());
 		this.type = 2;
 	}
 

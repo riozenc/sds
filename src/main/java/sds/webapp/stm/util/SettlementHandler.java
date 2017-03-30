@@ -75,7 +75,6 @@ public abstract class SettlementHandler implements ISettlementHandler {
 			if (profitDomain.getTjId() != null && profitDomain.getTjId() != 0) {
 				if (profitDomain.getTjProfit() != null && profitDomain.getTjProfit() != 0) {
 					QueueManager.getInstance().pushTask(new BalanceEntity(profitDomain));
-					return true;
 				}
 			}
 		}
@@ -93,7 +92,6 @@ public abstract class SettlementHandler implements ISettlementHandler {
 			if (profitDomain.getTjId() != null && profitDomain.getTjId() != 0) {
 				if (profitDomain.getTjProfit() != null && profitDomain.getTjProfit() != 0) {
 					QueueManager.getInstance().pushTask(new BalanceEntity(profitDomain).setType(3));
-					return true;
 				}
 			}
 		}
@@ -110,7 +108,6 @@ public abstract class SettlementHandler implements ISettlementHandler {
 
 		if (withdrawalsDomain.getAmount() != null && withdrawalsDomain.getAmount() != 0) {
 			QueueManager.getInstance().pushTask(new BalanceEntity(withdrawalsDomain));
-			return true;
 		}
 		return false;
 	}
