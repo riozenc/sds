@@ -11,7 +11,7 @@ $(function() {
 	    local: 'remote',
 	    showToolbar: false,
 	    toolbarItem: 'del',
-	    dataUrl:"profitMerchant.do?type=findProfitMerchantByWhere",
+	    dataUrl:"balance.do?type=getBalanceLogByUser",
 	    columns: [
 	        {
 	            name: 'account',

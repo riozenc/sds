@@ -46,10 +46,10 @@ $(function() {
   	            width:50
   	        },
 			{
-  	        	name:'fullName',
-  	        	label:'公司名称',
-  	        	align:'center',
-  	        	width:100
+				name:'agentName',
+				label:'代理商',
+				align:'center',
+				width:100
 			},
 	        {
 	            name: 'account',
@@ -61,7 +61,7 @@ $(function() {
 	            name: 'totalAmount',
 	            label: '交易总额',
 	            align: 'center',
-	            width: 100
+	            width: 60
 	        },
 	        {
 	            name: 'totalProfit',
