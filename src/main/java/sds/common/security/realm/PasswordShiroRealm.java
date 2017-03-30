@@ -19,6 +19,7 @@ import org.springframework.beans.factory.annotation.Qualifier;
 
 import com.riozenc.quicktool.common.util.cryption.en.WebPasswordUtils;
 
+import sds.common.exception.InvalidAccountException;
 import sds.common.security.Principal;
 import sds.common.security.token.UsernamePasswordToken;
 import sds.webapp.acc.domain.MerchantDomain;
@@ -81,6 +82,8 @@ public class PasswordShiroRealm extends AuthorizingRealm {
 						// TODO Auto-generated catch block
 						throw new AuthenticationException("密码错误...");
 					}
+				} else {
+					throw new InvalidAccountException("msg:账户不存在...");
 				}
 
 			} else {
@@ -100,6 +103,7 @@ public class PasswordShiroRealm extends AuthorizingRealm {
 			}
 
 		}
+
 		return null;
 	}
 

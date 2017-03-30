@@ -126,6 +126,9 @@ public class ProfitServiceImpl implements ProfitService {
 	@Override
 	public int profitQuick(OrderDomain orderDomain) {
 		// TODO Auto-generated method stub
+
+		orderDAO.insert(orderDomain);
+
 		Map<String, MARDomain> marMap = getMAR();
 		List<ProfitDomain> list = SettlementHandler.getPurchaseInstance()
 				.createProfit(marMap.get(orderDomain.getAccount()), orderDomain);
