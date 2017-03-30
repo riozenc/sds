@@ -46,7 +46,7 @@ $(function() {
   	            width:50
   	        },
 			{
-  	        	name:'agentName',
+  	        	name:'fullName',
   	        	label:'公司名称',
   	        	align:'center',
   	        	width:100

@@ -39,7 +39,7 @@
 		b
 		ON a.agent_id
 		= b.id
-		LEFT JOIN fm_merchant c ON c.account = a.account
+		LEFT JOIN fm_merchant c ON c.account = a.account AND c.tj_id=a.tj_id
 		<where>
 			<if test="id !=null">
 				and a.ID = #{id}

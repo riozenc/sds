@@ -50,7 +50,7 @@ public abstract class SettlementHandler implements ISettlementHandler {
 			if (profitUserDomain == null) {
 				profitUserDomain = new ProfitUserDomain();
 				profitUserDomain.setAgentId(profit.getAgentId());
-				profitUserDomain.setFullName(profit.getAgentName());
+				profitUserDomain.setAgentName(profit.getAgentName());
 				profitUserMap.put(profit.getAgentId(), profitUserDomain);
 			}
 			profitUserDomain.setAccount(profit.getAgentAccount());

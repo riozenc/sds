@@ -19,9 +19,7 @@ public class ProfitUserDomain extends Page<ProfitUserDomain> implements MybatisE
 							// '状态0未提现1提现',
 	private Date startDate;// 分润时间区间
 	private Date endDate;// 分润时间区间
-
 	private String fullName; // 公司名称 2017.3.29 修改
-
 	private String account;// 手机号
 	// excel用
 	private String regName;// 法人姓名
@@ -31,6 +29,15 @@ public class ProfitUserDomain extends Page<ProfitUserDomain> implements MybatisE
 	private String jsBankadd;
 	private String jsName;
 	private String jsLhno;
+	private String agentName;// 代理商全称
+
+	public String getAgentName() {
+		return agentName;
+	}
+
+	public void setAgentName(String agentName) {
+		this.agentName = agentName;
+	}
 
 	public String getFullName() {
 		return fullName;
