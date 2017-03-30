@@ -33,25 +33,18 @@ function reject(){
         <form  id="j_withdrawalsEdit_form" >
        
         <div class="bjui-row col-1">
-            <label class="row-label " >ID</label>
-            <div class="row-input ">
-                <input type="text" id="withdrawals_ID" name="id" value=""   readonly="readonly">
-            </div>
-            <label class="row-label " >商户ID</label>
-            <div class="row-input "> <input type="text"   id="withdrawals_merchantId"  name="merchantId"  value="" readonly="readonly">
-            </div>
             <label class="row-label " >商户账号</label>
             <div class="row-input ">
-                <input type="text"   id="withdrawals_Account"  name="account"  value="" readonly="readonly">
-            
+                <input type="text" id="withdrawals_Account"  name="account"  value="" readonly="readonly">
             </div>
-            
-            <label class="row-label " >提现金额</label>
+            <label class="row-label">提现金额</label>
             <div class="row-input ">
-                <input type="text" id="withdrawals_Amount" value=""  name="amount"  readonly="readonly" >
+                <input type="text" id="withdrawals_Amount"name="amount" value="" readonly="readonly" >
             </div>
-            
-            
+            <label class="row-label">余额</label>
+            <div class="row-input">
+            	<input type="text" id="withdrawals_Balance" name="balance" value="" readonly="readonly">
+            </div>
         </div>
         
         </form>
