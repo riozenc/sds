@@ -64,14 +64,17 @@ public class BalanceMerchantAction extends BaseAction {
 			map.put("total", "0");
 		} else {
 			map.put("profit", balanceMerchantDomain.getBalance().toString());
-			map.put("total", balanceMerchantDomain.getCountIn() == null ? "0" : balanceMerchantDomain.getCountIn().toString());
+			map.put("total",
+					balanceMerchantDomain.getCountIn() == null ? "0" : balanceMerchantDomain.getCountIn().toString());
 		}
 
-		//getCountBalanceByIn sql 未写
-//		BalanceMerchantLogDomain balanceMerchantLogDomain = new BalanceMerchantLogDomain();
-//		balanceMerchantLogDomain.setAccount(UserUtils.getPrincipal().getMerchantDomain().getAccount());
-//		String count = balanceMerchantLogService.getCountBalanceByIn(balanceMerchantLogDomain);
-//		map.put("total", count == null ? "0" : count);
+		// getCountBalanceByIn sql 未写
+		// BalanceMerchantLogDomain balanceMerchantLogDomain = new
+		// BalanceMerchantLogDomain();
+		// balanceMerchantLogDomain.setAccount(UserUtils.getPrincipal().getMerchantDomain().getAccount());
+		// String count =
+		// balanceMerchantLogService.getCountBalanceByIn(balanceMerchantLogDomain);
+		// map.put("total", count == null ? "0" : count);
 
 		return JSONUtil.toJsonString(new JsonResult(JsonResult.SUCCESS, map));
 	}
@@ -79,9 +82,21 @@ public class BalanceMerchantAction extends BaseAction {
 	@ResponseBody
 	@RequestMapping(params = "type=getBalanceLogByMerchant")
 	public String getBalanceLogByMerchant(BalanceMerchantLogDomain balanceMerchantLogDomain) {
-		balanceMerchantLogDomain.setId(UserUtils.getPrincipal().getMerchantDomain().getId());
+		balanceMerchantLogDomain.setTargetId(UserUtils.getPrincipal().getMerchantDomain().getId());
+		// balanceMerchantLogDomain.setId(UserUtils.getPrincipal().getMerchantDomain().getId());
 		balanceMerchantLogDomain.setAccount(UserUtils.getPrincipal().getMerchantDomain().getAccount());
 		List<BalanceMerchantLogDomain> list = balanceMerchantLogService.findByWhere(balanceMerchantLogDomain);
+		return JSONUtil.toJsonString(new JsonGrid(balanceMerchantLogDomain, list));
+	}
+
+	@ResponseBody
+	@RequestMapping(params = "type=getBalanceLogByUser")
+	public String getBalanceLogByUser(BalanceMerchantLogDomain balanceMerchantLogDomain) {
+		UserUtils.getPrincipal().getUserDomain().getAccount();
+
+		List<BalanceMerchantLogDomain> list = balanceMerchantLogService
+				.getBalanceLogByUser(UserUtils.getPrincipal().getUserDomain().getAccount());
+
 		return JSONUtil.toJsonString(new JsonGrid(balanceMerchantLogDomain, list));
 	}
 }

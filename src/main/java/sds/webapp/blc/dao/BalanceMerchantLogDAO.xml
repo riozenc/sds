@@ -48,9 +48,9 @@
 	<insert id="insert" parameterType="BalanceMerchantLogDomain"
 		flushCache="true">
 		insert into
-		fm_balance_merchant_log(ID,TARGET_ID,ACCOUNT,ORDER_ID,BALANCE,CREATE_DATE,UPDATE_DATE,REMARK,STATUS,OPERATION)
+		fm_balance_merchant_log(ID,TARGET_ID,ACCOUNT,ORDER_ID,ORDER_DATE,BALANCE,CREATE_DATE,UPDATE_DATE,REMARK,STATUS,OPERATION)
 		values
-		(#{id},#{targetId},#{account},#{orderId},#{balance},#{createDate},#{updateDate},#{remark},#{status},#{operation})
+		(#{id},#{targetId},#{account},#{orderId},#{orderDate},#{balance},#{createDate},#{updateDate},#{remark},#{status},#{operation})
 	</insert>
 	<update id="update" parameterType="BalanceMerchantLogDomain"
 		flushCache="true">
@@ -127,4 +127,26 @@
 		) WHERE
 		TARGET_ID=#{targetId}
 	</update>
+
+
+
+	<select id="getBalanceLogByUser" resultType="BalanceMerchantLogDomain"
+		useCache="true">
+		SELECT
+		a.id,
+		a.target_id,
+		b.account,
+		a.order_id,
+		a.balance,
+		a.create_date
+		FROM
+		fm_balance_merchant_log a
+		LEFT JOIN fm_merchant b ON a.target_id =
+		b.id
+		LEFT JOIN fm_user c ON b.agent_id = c.id
+		<where>
+			c.account = #{1} 
+			and a.status = 1
+		</where>
+	</select>
 </mapper>

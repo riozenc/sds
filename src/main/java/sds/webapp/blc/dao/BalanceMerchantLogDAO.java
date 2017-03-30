@@ -45,9 +45,12 @@ public class BalanceMerchantLogDAO extends AbstractTransactionDAOSupport impleme
 		// TODO Auto-generated method stub
 		return getPersistanceManager().find(getNamespace() + ".findByWhere", t);
 	}
-	
-	public String getCountBalanceByIn(BalanceMerchantLogDomain balanceMerchantLogDomain){
+
+	public String getCountBalanceByIn(BalanceMerchantLogDomain balanceMerchantLogDomain) {
 		return getPersistanceManager().load(getNamespace() + ".getCountBalanceByIn", balanceMerchantLogDomain);
 	}
 
+	public List<BalanceMerchantLogDomain> getBalanceLogByUser(String account) {
+		return getPersistanceManager().find(getNamespace()+".getBalanceLogByUser", account);
+	}
 }

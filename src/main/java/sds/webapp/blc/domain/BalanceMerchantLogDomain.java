@@ -19,6 +19,7 @@ public class BalanceMerchantLogDomain extends Page<BalanceMerchantLogDomain> imp
 	private String account;// account varchar 255 0 -1 0 0 0 0 0 utf8
 							// utf8_general_ci 0 0
 	private String orderId;// 订单号
+	private Date orderDate;// 订单时间
 	private BigDecimal balance;// balance decimal 20 3 -1 0 0 0 0 0 0 0
 	private Date createDate;// create_date datetime 0 0 -1 0 0 0 0 0 0 0
 	private Date updateDate;// update_date datetime 0 0 -1 0 0 0 0 0 0 0
@@ -106,6 +107,14 @@ public class BalanceMerchantLogDomain extends Page<BalanceMerchantLogDomain> imp
 
 	public void setOrderId(String orderId) {
 		this.orderId = orderId;
+	}
+
+	public Date getOrderDate() {
+		return orderDate;
+	}
+
+	public void setOrderDate(Date orderDate) {
+		this.orderDate = orderDate;
 	}
 
 }

@@ -6,6 +6,7 @@
 package sds.common.queue.entity;
 
 import java.math.BigDecimal;
+import java.util.Date;
 
 import sds.webapp.stm.domain.ProfitDomain;
 import sds.webapp.stm.domain.WithdrawalsDomain;
@@ -23,6 +24,7 @@ public class BalanceEntity {
 	private String account;//
 	private BigDecimal amount;// 变动金额
 	private String orderId;// 对应订单号
+	private Date orderDate;// 订单时间
 	private int type;// 操作：1转入，2转出，3重算
 
 	public BalanceEntity(ProfitDomain profitDomain) {
@@ -30,6 +32,7 @@ public class BalanceEntity {
 		this.targetId = profitDomain.getTjId();
 		this.amount = BigDecimal.valueOf(profitDomain.getTjProfit());
 		this.orderId = profitDomain.getOrderId();
+		this.orderDate = profitDomain.getOrderDate();
 		this.type = 1;
 	}
 
@@ -87,6 +90,14 @@ public class BalanceEntity {
 
 	public void setOrderId(String orderId) {
 		this.orderId = orderId;
+	}
+
+	public Date getOrderDate() {
+		return orderDate;
+	}
+
+	public void setOrderDate(Date orderDate) {
+		this.orderDate = orderDate;
 	}
 
 }

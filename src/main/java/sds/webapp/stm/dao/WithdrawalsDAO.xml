@@ -18,7 +18,8 @@
 		fm_merchant
 		WHERE
 		id = fm_withdrawals.merchant_id
-		) AS account from fm_withdrawals
+		) AS account from
+		fm_withdrawals
 		<where>
 			<if test="id !=null">
 				and ID = #{id}
@@ -86,4 +87,60 @@
 
 		</where>
 	</delete>
+
+	<select id="getwithdrawals" parameterType="WithdrawalsDomain"
+		resultType="WithdrawalsDomain" useCache="true">
+		SELECT
+		ID,
+		MERCHANT_ID,
+		AMOUNT,
+		DATE,
+		OPERATOR,
+		STATUS,
+		(
+		SELECT
+		account
+		FROM
+		fm_merchant
+		WHERE
+		id = fm_withdrawals.merchant_id
+		) AS account,
+		(
+		SELECT
+		balance
+		FROM
+		fm_balance_merchant
+		WHERE
+		target_id = fm_withdrawals.merchant_id
+		) AS balance
+		FROM
+		fm_withdrawals
+		<where>
+			<if test="id !=null">
+				and ID = #{id}
+			</if>
+			<if test="merchantId !=null">
+				and MERCHANT_ID = #{merchantId}
+			</if>
+			<if test="amount !=null">
+				and AMOUNT = #{amount}
+			</if>
+
+			<if test="startDate !=null">
+				and DATE_FORMAT(DATE, '%Y-%m-%d') &gt;=
+				DATE_FORMAT(#{startDate}, '%Y-%m-%d')
+			</if>
+			<if test="endDate !=null">
+				and DATE_FORMAT(DATE, '%Y-%m-%d') &lt;=
+				DATE_FORMAT(#{endDate}, '%Y-%m-%d')
+			</if>
+
+			<if test="operator !=null">
+				and OPERATOR = #{operator}
+			</if>
+			<if test="status !=null">
+				and STATUS = #{status}
+			</if>
+		</where>
+	</select>
 </mapper>

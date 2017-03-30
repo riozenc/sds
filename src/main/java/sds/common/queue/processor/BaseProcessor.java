@@ -46,6 +46,7 @@ public class BaseProcessor {
 		balanceMerchantLogDomain.setTargetId(balanceEntity.getTargetId());
 		balanceMerchantLogDomain.setAccount(balanceEntity.getAccount());
 		balanceMerchantLogDomain.setOrderId(balanceEntity.getOrderId());
+		balanceMerchantLogDomain.setOrderDate(balanceEntity.getOrderDate());
 		balanceMerchantLogDomain.setCreateDate(new Date());
 		balanceMerchantLogDomain.setUpdateDate(new Date());
 		balanceMerchantLogDomain.setStatus(balanceEntity.getType());

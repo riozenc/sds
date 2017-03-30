@@ -5,10 +5,14 @@
 **/
 package sds.webapp.blc.service;
 
+import java.util.List;
+
 import sds.common.webapp.base.service.BaseService;
 import sds.webapp.blc.domain.BalanceMerchantLogDomain;
 
 public interface BalanceMerchantLogService extends BaseService<BalanceMerchantLogDomain> {
 
 	public String getCountBalanceByIn(BalanceMerchantLogDomain balanceMerchantLogDomain);
+	
+	public List<BalanceMerchantLogDomain> getBalanceLogByUser(String account);
 }

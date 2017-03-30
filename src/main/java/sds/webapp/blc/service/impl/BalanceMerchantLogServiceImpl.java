@@ -56,4 +56,10 @@ public class BalanceMerchantLogServiceImpl implements BalanceMerchantLogService 
 		return balanceMerchantLogDAO.getCountBalanceByIn(balanceMerchantLogDomain);
 	}
 
+	@Override
+	public List<BalanceMerchantLogDomain> getBalanceLogByUser(String account) {
+		// TODO Auto-generated method stub
+		return balanceMerchantLogDAO.getBalanceLogByUser(account);
+	}
+
 }
