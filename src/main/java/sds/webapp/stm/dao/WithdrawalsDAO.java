@@ -46,4 +46,8 @@ public class WithdrawalsDAO extends AbstractTransactionDAOSupport implements Bas
 		return getPersistanceManager().update(getNamespace() + ".update", withdrawalsDomain);
 	}
 
+	public List<WithdrawalsDomain> getwithdrawals(WithdrawalsDomain withdrawalsDomain) {
+		return getPersistanceManager().find(getNamespace() + ".getwithdrawals", withdrawalsDomain);
+	}
+
 }
