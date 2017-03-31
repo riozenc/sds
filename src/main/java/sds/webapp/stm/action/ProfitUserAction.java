@@ -19,7 +19,6 @@ import sds.webapp.stm.domain.ProfitUserDomain;
 import sds.webapp.stm.service.ProfitService;
 import sds.webapp.stm.service.ProfitUserService;
 import sds.webapp.stm.util.SettlementHandler;
-import sds.webapp.stm.util.SettlementUtil;
 
 /**
  * 代理商分润统计

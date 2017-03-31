@@ -70,7 +70,7 @@ public class WithdrawalsAction extends BaseAction {
 	@RequestMapping(params = "type=findByWhere")
 	public String findByWhere(WithdrawalsDomain withdrawalsDomain) {
 		return JSONUtil
-				.toJsonString(new JsonGrid(withdrawalsDomain, withdrawalsService.findByWhere(withdrawalsDomain)));
+				.toJsonString(new JsonGrid(withdrawalsDomain, withdrawalsService.getwithdrawals(withdrawalsDomain)));
 	}
 
 	/**
