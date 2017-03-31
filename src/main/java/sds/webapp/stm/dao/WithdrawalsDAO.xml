@@ -91,30 +91,24 @@
 	<select id="getwithdrawals" parameterType="WithdrawalsDomain"
 		resultType="WithdrawalsDomain" useCache="true">
 		SELECT
-		ID,
-		MERCHANT_ID,
-		AMOUNT,
-		DATE,
-		OPERATOR,
-		STATUS,
-		(
-		SELECT
-		account
+		fm_withdrawals.id,
+		fm_withdrawals.merchant_id,
+		fm_withdrawals.amount,
+		fm_withdrawals.date,
+		fm_withdrawals.operator,
+		fm_withdrawals.`status`,
+		fm_merchant.account,
+		fm_merchant.real_name,
+		fm_merchant.cmer,
+		fm_merchant.`status`,
+		fm_balance_merchant.balance
 		FROM
-		fm_merchant
-		WHERE
-		id = fm_withdrawals.merchant_id
-		) AS account,
-		(
-		SELECT
-		balance
-		FROM
+		fm_withdrawals ,
+		fm_merchant ,
 		fm_balance_merchant
 		WHERE
-		target_id = fm_withdrawals.merchant_id
-		) AS balance
-		FROM
-		fm_withdrawals
+		fm_withdrawals.merchant_id = fm_merchant.id AND
+		fm_balance_merchant.target_id = fm_withdrawals.merchant_id
 		<where>
 			<if test="id !=null">
 				and ID = #{id}

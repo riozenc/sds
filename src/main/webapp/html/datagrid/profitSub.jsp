@@ -51,6 +51,12 @@ $(function() {
 				align:'center',
 				width:100
 			},
+			{
+				name:'cmer',
+				label:'代理人',
+				align:'center',
+				width:100
+			},
 	        {
 	            name: 'account',
 	            label: '账号',
@@ -223,13 +229,13 @@ function dialog_profitSubInfos(agentid,date){
 			    	        },
 			    	       
 			    	        {
-			    	            name: 'amount',
+			    	            name: 'totalProfit',
 			    	            label: '交易金额',
 			    	            align: 'center',
 			    	            width: 100
 			    	        },
 			    	        {
-			    	            name: 'totalProfit',
+			    	            name: 'agentProfit',
 			    	            label: '分润金额',
 			    	            align: 'center',
 			    	            width: 100

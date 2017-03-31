@@ -30,6 +30,15 @@ public class ProfitUserDomain extends Page<ProfitUserDomain> implements MybatisE
 	private String jsName;
 	private String jsLhno;
 	private String agentName;// 代理商全称
+	private String cmer;//下级分润中的人名
+
+	public String getCmer() {
+		return cmer;
+	}
+
+	public void setCmer(String cmer) {
+		this.cmer = cmer;
+	}
 
 	public String getAgentName() {
 		return agentName;

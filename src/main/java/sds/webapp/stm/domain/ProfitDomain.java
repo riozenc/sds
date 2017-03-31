@@ -33,7 +33,16 @@ public class ProfitDomain implements MybatisEntity {
 	private String agentAccount;// 代理商电话
 	private String fullName; //公司名称 2017.3.29修改
 	private String tjName;//推荐人名字 2017.3.29修改
-	
+	private String cmer;//下级分润中人名 2017.3.30修改
+
+
+	public String getCmer() {
+		return cmer;
+	}
+
+	public void setCmer(String cmer) {
+		this.cmer = cmer;
+	}
 
 	public Integer getId() {
 		return id;
