@@ -190,9 +190,9 @@
 		<dependency>
 			<groupId>com.riozenc</groupId>
 			<artifactId>quicktool</artifactId>
-			<version>0.0.1-SNAPSHOT</version>
+			<version>1.0.2-SNAPSHOT</version>
 			<scope>system</scope>
-			<systemPath>${project.basedir}/lib/quicktool-1.2.jar</systemPath>
+			<systemPath>${project.basedir}/lib/quicktool.jar</systemPath>
 		</dependency>
 
 
@@ -231,7 +231,7 @@
 							<targetPath>WEB-INF/lib</targetPath>
 							<includes>
 								<!-- <include>**/*.jar</include> -->
-								<include>quicktool-1.2.jar</include>
+								<include>quicktool.jar</include>
 							</includes>
 						</resource>
 					</webResources>
