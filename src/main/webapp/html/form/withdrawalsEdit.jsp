@@ -6,6 +6,8 @@
 	var Balance=$("#withdrawals_Balance").val();//获取余额
 		if(Amount>Balance){
 		alert("余额不足");
+		BJUI.dialog('closeCurrent');
+		BJUI.navtab('reload');
 			return;
 		}
 		BJUI.ajax('ajaxform', {
@@ -19,6 +21,7 @@
 				BJUI.navtab('refresh', 'withdrawals_datagrid'); //刷新
 			}
 		})
+		BJUI.dialog('closeCurrent');
 	}
 	function reject() { //驳回提现
 		BJUI.ajax('ajaxform', {
@@ -32,6 +35,8 @@
 				BJUI.navtab('refresh', 'withdrawals_datagrid'); //刷新
 			}
 		})
+		BJUI.dialog('closeCurrent');
+		BJUI.navtab('reload');
 	}
 </script>
 <div class="bjui-pageContent">
