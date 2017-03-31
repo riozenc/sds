@@ -229,7 +229,7 @@ function dialog_profitSubInfos(agentid,date){
 			    	        },
 			    	       
 			    	        {
-			    	            name: 'totalProfit',
+			    	            name: 'amount',
 			    	            label: '交易金额',
 			    	            align: 'center',
 			    	            width: 100

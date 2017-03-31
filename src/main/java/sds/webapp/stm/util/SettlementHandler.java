@@ -51,6 +51,7 @@ public abstract class SettlementHandler implements ISettlementHandler {
 				profitUserDomain = new ProfitUserDomain();
 				profitUserDomain.setAgentId(profit.getAgentId());
 				profitUserDomain.setAgentName(profit.getAgentName());
+				profitUserDomain.setCmer(profit.getCmer());
 				profitUserMap.put(profit.getAgentId(), profitUserDomain);
 			}
 			profitUserDomain.setAccount(profit.getAgentAccount());

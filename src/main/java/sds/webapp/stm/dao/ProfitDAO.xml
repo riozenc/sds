@@ -269,6 +269,7 @@
 		SELECT
 		t2.account AS agent_account,
 		t2.full_name AS agent_name,
+		t2.reg_name as cmer,
 		t1.*
 		FROM
 		fm_profit t1

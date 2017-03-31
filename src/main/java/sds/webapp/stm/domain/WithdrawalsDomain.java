@@ -30,6 +30,15 @@ public class WithdrawalsDomain extends Page<WithdrawalsDomain> implements Mybati
 	private Date startDate;
 	private Date endDate;
 	private String account;
+	private Double balance;
+
+	public Double getBalance() {
+		return balance;
+	}
+
+	public void setBalance(Double balance) {
+		this.balance = balance;
+	}
 
 	public Integer getId() {
 		return id;
