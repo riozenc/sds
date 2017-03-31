@@ -55,7 +55,6 @@ public class BaseAction extends com.riozenc.quicktool.springmvc.webapp.action.Ba
 			public void setAsText(String text) {
 				setValue(DateUtil.parseDateTime(text));
 			}
-
 		});
 	}
 
