@@ -73,4 +73,10 @@ public class WithdrawalsServiceImpl implements WithdrawalsService {
 		return withdrawalsDAO.update(withdrawalsDomain) + profitMerchantDAO.insert(profitMerchantDomain);
 
 	}
+
+	@Override
+	public List<WithdrawalsDomain> getwithdrawals(WithdrawalsDomain withdrawalsDomain) {
+		// TODO Auto-generated method stub
+		return withdrawalsDAO.getwithdrawals(withdrawalsDomain);
+	}
 }
