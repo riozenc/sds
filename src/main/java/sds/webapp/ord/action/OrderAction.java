@@ -7,6 +7,8 @@ import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
+import javax.servlet.http.HttpServletRequest;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.web.bind.annotation.ControllerAdvice;
@@ -342,6 +344,12 @@ public class OrderAction extends BaseAction {
 					+ orderDomain.getOrderId() + "]" + DateUtil.formatDate(new Date()));
 		}
 
+	}
+
+	@ResponseBody
+	@RequestMapping(params = "type=purchasingCardCallbackTest")
+	public void purchasingCardCallbackTest(HttpServletRequest httpServletRequest) {
+		System.out.println(JSONUtil.toJsonString(httpServletRequest.getParameterMap()));
 	}
 
 	// // 批量报备商户+柜台码支付接口（）

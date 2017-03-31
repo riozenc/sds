@@ -9,8 +9,8 @@ import javax.servlet.http.HttpServletResponse;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authz.UnauthorizedException;
 import org.apache.shiro.subject.Subject;
+import org.apache.shiro.web.filter.authc.FormAuthenticationFilter;
 import org.apache.shiro.web.util.WebUtils;
-import org.springframework.context.annotation.Scope;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -52,6 +52,16 @@ public class LoginAction {
 
 			return loginFail(errorClassName, httpServletRequest, httpServletResponse);
 		}
+	}
+
+	@ResponseBody
+	@RequestMapping(value = "relogin")
+	public String relogin(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse) {
+
+		Subject subject = SecurityUtils.getSubject();
+		Principal principal = (Principal) subject.getPrincipal();
+
+		return null;
 	}
 
 	public String loginFail(String errorClassName, HttpServletRequest request, HttpServletResponse response) {

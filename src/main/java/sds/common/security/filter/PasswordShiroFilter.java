@@ -18,10 +18,8 @@ import com.riozenc.quicktool.common.util.http.HttpUtils;
 
 import sds.common.security.token.UsernamePasswordToken;
 
-
-
 @Service
-public class PasswordShiroFilter extends FormAuthenticationFilter{
+public class PasswordShiroFilter extends FormAuthenticationFilter {
 	private static final String DEFAULT_CAPTCHA_PARAM = "validateCode";
 	public static final String DEFAULT_MOBILE_PARAM = "mobileLogin";
 	public static final String DEFAULT_MESSAGE_PARAM = "message";
@@ -68,7 +66,7 @@ public class PasswordShiroFilter extends FormAuthenticationFilter{
 			message = "系统出现点问题，请稍后再试！";
 			e.printStackTrace(); // 输出到控制台
 		}
-//		request.setAttribute(getFailureKeyAttribute(), className);
+		// request.setAttribute(getFailureKeyAttribute(), className);
 		request.setAttribute("message", message);
 
 		return super.onLoginFailure(token, e, request, response);
