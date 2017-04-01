@@ -154,9 +154,9 @@ function dialog_profit(orderId){
 				    	+data.list[0].orderId+'</div><label class="row-label">消费金额：</label><div class="row-input">'
 				    	+data.list[0].amount+'</div><label class="row-label">交易时间：</label><div class="row-input">'
 				    	+data.list[0].orderDate+'</div><label class="row-label">分润总额：</label><div class="row-input">'
-				    	+data.list[0].totalProfit+'</div><label class="row-label">微信手续费：</label><div class="row-input">'
-				    	+data.list[0].wxRate+'</div><label class="row-label">支付宝手续费：</label><div class="row-input">'
-				    	+data.list[0].aliRate+'</div><label class="row-label">银联手续费：</label><div class="row-input">'
+				    	+data.list[0].totalProfit+'</div><label class="row-label">微信费率：</label><div class="row-input">'
+				    	+data.list[0].wxRate+'</div><label class="row-label">支付宝费率：</label><div class="row-input">'
+				    	+data.list[0].aliRate+'</div><label class="row-label">银联费率：</label><div class="row-input">'
 				    	+data.list[0].unipayRate+'</div></div>';
 				    	$("#table_profitInfo").html(html_text);
 				    }
