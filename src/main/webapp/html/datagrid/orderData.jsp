@@ -147,9 +147,16 @@ function dialog_profit(orderId){
 				    			+obj.agentAccount+'</td><td>'+obj.agentName+'</td><td>'+obj.agentProfit+'</td><td>'+obj.tjName+'</td><td>'+obj.tjProfit+'</td></tr>';
 				    		
 						});
-				    	html_text = html_text+'<tr></table><div class="bjui-row col-2"><label class="row-label">商户号：</label><div class="row-input">'+data.list[0].account+'</div><label class="row-label">订单号：</label><div class="row-input">'+data.list[0].orderId+'</div><label class="row-label">消费金额：</label><div class="row-input">'+data.list[0].amount+'</div><label class="row-label">交易时间：</label><div class="row-input">'+data.list[0].orderDate+'</div><label class="row-label">分润总额：</label><div class="row-input">'+data.list[0].totalProfit
-				    		+'</div></div>';
-				    	
+				    	html_text = html_text
+				    	+'<tr></table><div class="bjui-row col-2"><label class="row-label">商户号：</label><div class="row-input">'
+				    	+data.list[0].account+'</div><label class="row-label">订单号：</label><div class="row-input">'
+				    	+data.list[0].orderId+'</div><label class="row-label">消费金额：</label><div class="row-input">'
+				    	+data.list[0].amount+'</div><label class="row-label">交易时间：</label><div class="row-input">'
+				    	+data.list[0].orderDate+'</div><label class="row-label">分润总额：</label><div class="row-input">'
+				    	+data.list[0].totalProfit+'</div><label class="row-label">微信手续费：</label><div class="row-input">'
+				    	+data.list[0].wxRate+'</div><label class="row-label">支付宝手续费：</label><div class="row-input">'
+				    	+data.list[0].aliRate+'</div><label class="row-label">银联手续费：</label><div class="row-input">'
+				    	+data.list[0].unipayRate+'</div></div>';
 				    	$("#table_profitInfo").html(html_text);
 				    }
 				});

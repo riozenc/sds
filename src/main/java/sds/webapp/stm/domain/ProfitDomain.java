@@ -34,7 +34,34 @@ public class ProfitDomain implements MybatisEntity {
 	private String fullName; //公司名称 2017.3.29修改
 	private String tjName;//推荐人名字 2017.3.29修改
 	private String cmer;//下级分润中人名 2017.3.30修改
+	private Double wxRate;//微信微信手续费
+	private Double aliRate;//支付宝手续费
+	private Double unipayRate;//银联手续费
+	
 
+	public Double getWxRate() {
+		return wxRate;
+	}
+
+	public void setWxRate(Double wxRate) {
+		this.wxRate = wxRate;
+	}
+
+	public Double getAliRate() {
+		return aliRate;
+	}
+
+	public void setAliRate(Double aliRate) {
+		this.aliRate = aliRate;
+	}
+
+	public Double getUnipayRate() {
+		return unipayRate;
+	}
+
+	public void setUnipayRate(Double unipayRate) {
+		this.unipayRate = unipayRate;
+	}
 
 	public String getCmer() {
 		return cmer;
