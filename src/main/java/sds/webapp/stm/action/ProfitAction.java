@@ -87,7 +87,6 @@ public class ProfitAction extends BaseAction {
 	@ResponseBody
 	@RequestMapping(params = "type=getProfitByUser")
 	public String getProfitByUser(ProfitDomain profitDomain) {
-
 		profitDomain.setAgentId(UserUtils.getPrincipal().getUserDomain().getId());
 		List<ProfitDomain> list = profitService.findByWhere(profitDomain);
 		return JSONUtil.toJsonString(new JsonGrid(list.size(), 1, list));
