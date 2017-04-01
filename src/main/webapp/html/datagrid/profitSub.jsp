@@ -123,7 +123,7 @@ function dialog_profitSubInfo(account){
 			    	    gridTitle : ' ',
 			    	    local: 'local',
 			    	    showToolbar: false,
-			    	    data:result,			    	    
+			    	    data:result,
 			    	    columns: [
 			               
 			    			{
@@ -142,7 +142,8 @@ function dialog_profitSubInfo(account){
 			    	            name: 'date',
 			    	            label: '交易日期',
 			    	            align: 'center',
-			    	            width: 140
+			    	            width: 140,
+			    	            
 			    	        },
 			    	        {
 			    	            name: 'totalAmount',
