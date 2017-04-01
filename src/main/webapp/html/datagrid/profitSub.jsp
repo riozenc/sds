@@ -139,6 +139,9 @@ function dialog_profitSubInfo(account){
 			    	            width:100
 			    	        },
 			    	        {
+			    	        	name:'date',
+			    	        	label:'交易时间',
+			    	        	align:'center',
 			    	        	type:'date',
 			    	            pattern:'yyyy-MM-dd',
 			    	            render: function(value) {
