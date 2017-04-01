@@ -24,6 +24,7 @@ $(function() {
 	    gridTitle : ' ',
 	    local: 'remote',
 	    showToolbar: false,
+	    filterThead:false,
 	    toolbarItem: 'del',
 	    dataUrl:"user.do?type=findUserByWhere",
 	    delUrl:'user.do?type=delete',
