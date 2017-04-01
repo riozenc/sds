@@ -10,6 +10,7 @@ import java.util.List;
 import com.riozenc.quicktool.annotation.TransactionDAO;
 import com.riozenc.quicktool.annotation.TransactionService;
 
+import sds.webapp.acc.domain.UserDomain;
 import sds.webapp.blc.dao.BalanceMerchantLogDAO;
 import sds.webapp.blc.domain.BalanceMerchantLogDomain;
 import sds.webapp.blc.service.BalanceMerchantLogService;
@@ -57,9 +58,9 @@ public class BalanceMerchantLogServiceImpl implements BalanceMerchantLogService 
 	}
 
 	@Override
-	public List<BalanceMerchantLogDomain> getBalanceLogByUser(String account) {
+	public List<BalanceMerchantLogDomain> getBalanceLogByUser(UserDomain userDomain) {
 		// TODO Auto-generated method stub
-		return balanceMerchantLogDAO.getBalanceLogByUser(account);
+		return balanceMerchantLogDAO.getBalanceLogByUser(userDomain);
 	}
 
 }

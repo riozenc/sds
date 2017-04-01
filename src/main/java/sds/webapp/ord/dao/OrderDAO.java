@@ -8,6 +8,7 @@ import com.riozenc.quicktool.annotation.TransactionDAO;
 import com.riozenc.quicktool.mybatis.dao.AbstractTransactionDAOSupport;
 import com.riozenc.quicktool.mybatis.dao.BaseDAO;
 
+import sds.webapp.acc.domain.UserDomain;
 import sds.webapp.ord.domain.OrderDomain;
 
 @TransactionDAO
@@ -57,5 +58,9 @@ public class OrderDAO extends AbstractTransactionDAOSupport implements BaseDAO<O
 
 	public String getTotalAmountByOrder(OrderDomain orderDomain) {
 		return getPersistanceManager().load(getNamespace() + ".getTotalAmountByOrder", orderDomain);
+	}
+
+	public List<OrderDomain> getOrderByUser(OrderDomain orderDomain) {
+		return getPersistanceManager().find(getNamespace() + ".getOrderByUser", orderDomain);
 	}
 }

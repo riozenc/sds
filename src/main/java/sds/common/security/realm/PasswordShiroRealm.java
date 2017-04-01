@@ -49,7 +49,8 @@ public class PasswordShiroRealm extends AuthorizingRealm {
 			if (principal.getId() == 1) {
 				SimpleAuthorizationInfo info = new SimpleAuthorizationInfo();
 
-				info.addRole("updateRate");
+				info.addRole("updateRate");// 修改费率
+				info.addRole("withdrawalsCheck");// 提现申请
 
 				return info;
 			}

@@ -5,6 +5,7 @@ import java.util.List;
 import com.riozenc.quicktool.annotation.TransactionDAO;
 import com.riozenc.quicktool.annotation.TransactionService;
 
+import sds.webapp.acc.domain.UserDomain;
 import sds.webapp.ord.dao.OrderDAO;
 import sds.webapp.ord.domain.OrderDomain;
 import sds.webapp.ord.service.OrderService;
@@ -61,6 +62,12 @@ public class OrderServiceImpl implements OrderService {
 	public String getTotalAmountByOrder(OrderDomain orderDomain) {
 		// TODO Auto-generated method stub
 		return orderDAO.getTotalAmountByOrder(orderDomain);
+	}
+
+	@Override
+	public List<OrderDomain> getOrderByUser(OrderDomain orderDomain) {
+		// TODO Auto-generated method stub
+		return orderDAO.getOrderByUser(orderDomain);
 	}
 
 }

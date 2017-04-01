@@ -5,11 +5,12 @@
 **/
 package sds.webapp.stm.action;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.context.annotation.Scope;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -69,8 +70,13 @@ public class WithdrawalsAction extends BaseAction {
 	@ResponseBody
 	@RequestMapping(params = "type=findByWhere")
 	public String findByWhere(WithdrawalsDomain withdrawalsDomain) {
-		return JSONUtil
-				.toJsonString(new JsonGrid(withdrawalsDomain, withdrawalsService.getwithdrawals(withdrawalsDomain)));
+		List<WithdrawalsDomain> withdrawalsDomains = null;
+		if (UserUtils.hasRole("withdrawalsCheck")) {
+			withdrawalsDomains = withdrawalsService.getwithdrawals(withdrawalsDomain);
+		} else {
+			withdrawalsDomains = new ArrayList<WithdrawalsDomain>();
+		}
+		return JSONUtil.toJsonString(new JsonGrid(withdrawalsDomain, withdrawalsDomains));
 	}
 
 	/**

@@ -92,10 +92,9 @@ public class BalanceMerchantAction extends BaseAction {
 	@ResponseBody
 	@RequestMapping(params = "type=getBalanceLogByUser")
 	public String getBalanceLogByUser(BalanceMerchantLogDomain balanceMerchantLogDomain) {
-		UserUtils.getPrincipal().getUserDomain().getAccount();
 
 		List<BalanceMerchantLogDomain> list = balanceMerchantLogService
-				.getBalanceLogByUser(UserUtils.getPrincipal().getUserDomain().getAccount());
+				.getBalanceLogByUser(UserUtils.getPrincipal().getUserDomain());
 
 		return JSONUtil.toJsonString(new JsonGrid(balanceMerchantLogDomain, list));
 	}

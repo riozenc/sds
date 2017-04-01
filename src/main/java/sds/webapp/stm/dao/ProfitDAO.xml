@@ -274,7 +274,8 @@
 		FROM
 		fm_profit t1
 		LEFT JOIN
-		fm_user t2 ON t1.agent_id = t2.id
+		fm_user t2 ON
+		t1.agent_id = t2.id
 		<where>
 			agent_id in (SELECT a.id FROM fm_user a LEFT JOIN (SELECT
 			id,parent_id
@@ -339,7 +340,8 @@
 		b.account AS AGENT_ACCOUNT,
 		a.AGENT_PROFIT,
 		a.TJ_PROFIT,
-		a.TJ_ID,
+		(SELECT
+		m.real_name FROM fm_merchant m WHERE m.id = a.TJ_ID) as TJ_NAME,
 		a.ORDER_DATE,
 		a.JS_DATE,
 		a.CREATE_DATE

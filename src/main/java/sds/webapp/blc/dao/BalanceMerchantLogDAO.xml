@@ -143,9 +143,43 @@
 		fm_balance_merchant_log a
 		LEFT JOIN fm_merchant b ON a.target_id =
 		b.id
-		LEFT JOIN fm_user c ON b.agent_id = c.id
+		LEFT JOIN (
+		SELECT
+		id,
+		parent_id,
+		@pathnodes :=
+		IF (
+		parent_id =- 1,
+		',0',
+		CONCAT(
+		CONCAT_WS(
+		',',
+		IF (
+		LOCATE(
+		CONCAT('|', parent_id, ':')
+		,@pathall
+		) > 0,
+		SUBSTRING_INDEX(
+		SUBSTRING_INDEX(
+		@pathall,
+		CONCAT('|',
+		parent_id, ':') ,- 1
+		),
+		'|',
+		1
+		) ,@pathnodes
+		),
+		parent_id
+		),
+		',',
+		id
+		)
+		) paths
+		FROM
+		fm_user
+		) c ON b.agent_id = c.id
 		<where>
-			c.account = #{1} 
+			c.paths LIKE '%,${id}%'
 			and a.status = 1
 		</where>
 	</select>

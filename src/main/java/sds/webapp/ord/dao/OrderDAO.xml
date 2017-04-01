@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="sds.webapp.ord.dao.OrderDAO">
-<select id="findByKey" parameterType="OrderDomain" resultType="OrderDomain"
+	<select id="findByKey" parameterType="OrderDomain" resultType="OrderDomain"
 		useCache="true">
 		select
 		ID,ORDER_ID,ORDER_NO,CHANNEL_CODE,RESP_CODE,RESP_INFO,AMOUNT,DATE,ACCOUNT,CODE_URL,REMARK,RETURN_CODE,STATUS
@@ -14,12 +14,13 @@
 				and ORDER_ID = #{orderId}
 			</if>
 		</where>
-	</select> 
+	</select>
 	<select id="findByWhere" parameterType="OrderDomain" resultType="OrderDomain"
 		useCache="true">
-		select o.*,m.cmer FROM fm_order o JOIN fm_merchant m ON o.account=m.account
+		select o.*,m.cmer FROM fm_order o JOIN fm_merchant m ON
+		o.account=m.account
 		<where>
-			
+
 			<if test="id !=null">
 				and o.ID = #{id}
 			</if>
@@ -53,8 +54,8 @@
 			<if test="account !=null">
 				and o.ACCOUNT = #{account}
 			</if>
-			
-		
+
+
 			<if test="codeUrl !=null">
 				and o.CODE_URL = #{codeUrl}
 			</if>
@@ -180,7 +181,7 @@
 		</where>
 	</select>
 
-<select id="getAllUnCheckOrder" parameterType="OrderDomain"
+	<select id="getAllUnCheckOrder" parameterType="OrderDomain"
 		resultType="OrderDomain" useCache="true">
 		select
 		ID,ORDER_ID,ORDER_NO,CHANNEL_CODE,RESP_CODE,RESP_INFO,AMOUNT,DATE,ACCOUNT,CODE_URL,REMARK,RETURN_CODE,STATUS
@@ -243,7 +244,8 @@
 		</where>
 	</update>
 
-	<select id="getTotalAmountByOrder" parameterType="OrderDomain"  resultType="String">
+	<select id="getTotalAmountByOrder" parameterType="OrderDomain"
+		resultType="String">
 		SELECT sum(amount) as amount FROM fm_order
 		<where>
 			<if test="account !=null">
@@ -265,4 +267,68 @@
 	</select>
 
 
+	<select id="getOrderByUser" parameterType="OrderDomain"
+		resultType="OrderDomain" useCache="true">
+		SELECT
+		o.*, m.cmer
+		FROM
+		fm_order o
+		LEFT JOIN fm_merchant m ON o.account =
+		m.account LEFT JOIN ( SELECT id,
+		parent_id, @pathnodes := IF (
+		parent_id =- 1, ',0', CONCAT( CONCAT_WS(
+		',', IF ( LOCATE( CONCAT('|',
+		parent_id, ':') ,@pathall ) > 0,
+		SUBSTRING_INDEX( SUBSTRING_INDEX(
+		@pathall, CONCAT('|', parent_id,
+		':') ,- 1 ), '|', 1 ) ,@pathnodes ),
+		parent_id ), ',', id ) ) paths
+		FROM fm_user ) c
+		ON c.id = m.agent_id
+		<where>
+			c.paths LIKE '%,${id}%'
+			<if test="orderId !=null">
+				and o.ORDER_ID = #{orderId}
+			</if>
+			<if test="orderNo !=null">
+				and o.ORDER_NO = #{orderNo}
+			</if>
+			<if test="channelCode !=null">
+				and o.CHANNEL_CODE = #{channelCode}
+			</if>
+			<if test="respCode !=null">
+				and o.RESP_CODE = #{respCode}
+			</if>
+			<if test="respInfo !=null">
+				and o.RESP_INFO = #{respInfo}
+			</if>
+			<if test="amount !=null">
+				and o.AMOUNT = #{amount}
+			</if>
+			<if test="startDate !=null">
+				and o.DATE_FORMAT(DATE, '%Y-%m-%d') &gt;=
+				o.DATE_FORMAT(#{startDate}, '%Y-%m-%d')
+			</if>
+			<if test="endDate !=null">
+				and o.DATE_FORMAT(DATE, '%Y-%m-%d') &lt;=
+				o.DATE_FORMAT(#{endDate}, '%Y-%m-%d')
+			</if>
+			<if test="account !=null">
+				and o.ACCOUNT = #{account}
+			</if>
+			<if test="codeUrl !=null">
+				and o.CODE_URL = #{codeUrl}
+			</if>
+			<if test="remark !=null">
+				and o.REMARK = #{remark}
+			</if>
+			<if test="returnCode !=null">
+				and o.RETURN_CODE = #{returnCode}
+			</if>
+			<if test="status !=null">
+				and o.STATUS = #{status}
+			</if>
+		</where>
+		order by o.DATE desc
+	</select>
 </mapper>

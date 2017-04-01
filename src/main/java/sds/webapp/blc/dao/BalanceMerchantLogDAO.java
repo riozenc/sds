@@ -11,6 +11,7 @@ import com.riozenc.quicktool.annotation.TransactionDAO;
 import com.riozenc.quicktool.mybatis.dao.AbstractTransactionDAOSupport;
 import com.riozenc.quicktool.mybatis.dao.BaseDAO;
 
+import sds.webapp.acc.domain.UserDomain;
 import sds.webapp.blc.domain.BalanceMerchantLogDomain;
 
 @TransactionDAO
@@ -50,7 +51,7 @@ public class BalanceMerchantLogDAO extends AbstractTransactionDAOSupport impleme
 		return getPersistanceManager().load(getNamespace() + ".getCountBalanceByIn", balanceMerchantLogDomain);
 	}
 
-	public List<BalanceMerchantLogDomain> getBalanceLogByUser(String account) {
-		return getPersistanceManager().find(getNamespace()+".getBalanceLogByUser", account);
+	public List<BalanceMerchantLogDomain> getBalanceLogByUser(UserDomain userDomain) {
+		return getPersistanceManager().find(getNamespace()+".getBalanceLogByUser", userDomain);
 	}
 }

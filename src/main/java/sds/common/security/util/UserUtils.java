@@ -17,4 +17,9 @@ public class UserUtils {
 		}
 		return principal;
 	}
+
+	public static boolean hasRole(String role) {
+		Subject subject = SecurityUtils.getSubject();
+		return subject.hasRole(role);
+	}
 }
