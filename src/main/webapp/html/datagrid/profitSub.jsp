@@ -139,11 +139,12 @@ function dialog_profitSubInfo(account){
 			    	            width:100
 			    	        },
 			    	        {
-			    	            name: 'date',
-			    	            label: '交易日期',
-			    	            align: 'center',
-			    	            width: 140,
-			    	            
+			    	        	type:'date',
+			    	            pattern:'yyyy-MM-dd',
+			    	            render: function(value) {
+			                        return value ? value.substr(0, 10) : value
+			                    },
+			    	            width: 140
 			    	        },
 			    	        {
 			    	            name: 'totalAmount',
