@@ -10,6 +10,7 @@ $(function() {
 	    gridTitle : ' ',
 	    local: 'remote',
 	    showToolbar: false,
+	    filterThead:false,
 	    toolbarItem: 'del',
 	    dataUrl:"balance.do?type=getBalanceLogByUser",
 	    columns: [

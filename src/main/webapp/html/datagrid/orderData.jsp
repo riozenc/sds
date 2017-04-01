@@ -11,6 +11,7 @@ $(function() {
 	    local: 'remote',
 	    showToolbar: false,
 	    toolbarItem: 'del',
+	    filterThead:false,
 	    dataUrl:"order.do?type=findOrder",
 	    columns: [
 	         {

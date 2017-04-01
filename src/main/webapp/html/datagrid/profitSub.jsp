@@ -36,6 +36,7 @@ $(function() {
 	    local: 'remote',
 	    showToolbar: false,
 	    toolbarItem: 'del',
+	    filterThead:false,
 	    dataUrl:'profitUser.do?type=subProfitUser',
 	    postData:{startDate:dateNow,endDate:dateNow},
 	    columns: [
@@ -123,6 +124,7 @@ function dialog_profitSubInfo(account){
 			    	    gridTitle : ' ',
 			    	    local: 'local',
 			    	    showToolbar: false,
+			    	    filterThead:false,
 			    	    data:result,
 			    	    columns: [
 			               
@@ -212,6 +214,7 @@ function dialog_profitSubInfos(agentid,date){
 			    	    gridTitle : ' ',
 			    	    local: 'local',
 			    	    showToolbar: false,
+			    	    filterThead:false,
 			    	    data:result,			    	    
 			    	    columns: [
 			                {

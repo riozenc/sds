@@ -10,6 +10,7 @@ $(function() {
 	    gridTitle : ' ',
 	    local:'remote',
 	    showToolbar: false,
+	    filterThead:false,
 	    toolbarItem: 'del',
 	    dataUrl: 'merchant.do?type=findMerchantByWhere',
 	    columns: [
