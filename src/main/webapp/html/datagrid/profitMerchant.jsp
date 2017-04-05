@@ -16,25 +16,66 @@ $(function() {
 	    columns: [
 	        {
 	            name: 'account',
-	            label: '登录手机号',
+	            label: '商户手机号',
 	            align: 'center',
-	            width:100
+	            width:70
 	        },
 	        {
-	            name: 'totalAmount',
-	            label: '交易总额',
+	            name: 'realName',
+	            label: '商户名称',
 	            align: 'center',
-	            width: 100
+	            width: 50
 	        },
 	        {
-	            name: 'totalProfit',
-	            label: '分润金额',
+	            name: 'orderId',
+	            label: '订单号',
 	            align: 'center',
-	            width: 100
+	            width: 125
 	        },
 	        {
-	            name: 'date',
-	            label: '分润时间',
+	        	name:'amount',
+	        	label:'金额',
+	        	align:'center',
+	        	width:50
+	        	
+	        },
+	        {
+	        	name:'balance',
+	        	label:'返佣金额',
+	        	align:'center',
+	        	width:50
+	        },
+	        {
+	        	name:'tjAccount',
+	        	label:'推荐人手机号',
+	        	align:'center',
+	            render: function(value) {
+	            	for(var i=0;i<value.length;i++){
+	            		if(value[i].tjAccount == null){
+	            			return '无推荐人';
+	            		}
+	            		return value[i].tjAccount;
+	            	}
+                },
+	        	width:70
+	        },
+	        {
+	        	name:'tjName',
+	        	label:'推荐人',
+	        	align:'center',
+	            render: function(value) {
+	            	for(var i=0;i<value.length;i++){
+	            		if(value[i].tjAccount == null){
+	            			return '无推荐人';
+	            		}
+	            		return value[i].tjAccount;
+	            	}
+                },
+	        	width:50
+	        },
+	        {
+	            name: 'createDate',
+	            label: '返佣时间',
 	            align: 'center',
 	            width:125
 	        },
