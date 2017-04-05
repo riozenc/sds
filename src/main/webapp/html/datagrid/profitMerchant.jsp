@@ -79,24 +79,6 @@ $(function() {
 	            align: 'center',
 	            width:125
 	        },
-	        {
-	            name: 'status',
-	            label: '状态',
-	            align: 'center',
-	            width: 70,
-	            render: function(value,data) {
-	            	if(value == 0){
-	            	
-	            		 return '<a href="javascript:;"   onclick="dialog_profitm(\''+data.id+'\')">未提现</a>';
-	            	}else if(value == 1){
-	            		return "已提现";
-	            	
-	            	}else{
-	            		return value;
-	            	}
-	                
-	            }
-	        }
 	    ],
 	    
 	    paging:{pageSize:5,selectPageSize:'10,20,30'},

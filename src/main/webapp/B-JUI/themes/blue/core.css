@@ -1,31 +1,33 @@
 @charset "utf-8";
 body{background:#fff;}
-a{color:#16669e; text-decoration:none;}
-a:hover{color:#222; text-decoration:underline;}
-fieldset{border-color:#c3ced5;}
+a{color:#0000ff; text-decoration:none;}  //设置表单内超链接字体颜色
+a:hover{color:#fafafa; text-decoration:underline;}
+fieldset{border-color:#fafafa;}
 /*--- nav ---*/
 #bjui-top{background-color:#293038;}
 #bjui-top .nav > li.active > a,
 #bjui-top .nav > li > a:hover,
 #bjui-top .nav > li > a.active,
-#bjui-top .nav > li > a:focus{background-color:#37424f;}
-#bjui-navbar{background-color:#1f73b6;}
-#bjui-navbar .navbar-header button:hover{background-color:#16669e !important;}
-#bjui-navbar .navbar-nav > li > a{color:#fff;}
+#bjui-top .nav > li > a:focus{background-color:#293038;}//换皮肤按钮颜色
+#bjui-navbar{background-color:#fff;} //logo区颜色
+#bjui-navbar.navbar-header a.brand{background-color:#293038 !important;}
+#bjui-navbar .navbar-header button:hover{background-color:#293038 !important;}
+#bjui-navbar .navbar-nav > li > a{color:#293038;} //菜单选项字体颜色
 #bjui-navbar .navbar-nav > li.active > a,
 #bjui-navbar .navbar-nav > li > a:hover,
 #bjui-navbar .navbar-nav > li > a:focus,
-#bjui-navbar .navbar-nav > li > a.active{background-color:#16669e;}
-#bjui-navbar .navbar-header > button:focus{background-color:#1f73b6;}
-#bjui-navbar .navbar-collapse.navbar-show{background-color:#1f73b6 !important;}
+#bjui-navbar .navbar-nav > li > a.active{background-color:#DDDDDD;}//选中按钮底色
+#bjui-navbar .navbar-header > button:focus{background-color:#ff0080;}
+#bjui-navbar .navbar-collapse.navbar-show{background-color:#fafafa !important;}
+#bjui-navbar .navbar-nav > hr{background-color:#ff0080 !important;}
 #bjui-sidenav-box > .nav > li > a:hover,
 #bjui-sidenav-box > .nav > li.active > a,
 #bjui-sidenav-box > .nav > li .nav > li > a:hover,
 #bjui-sidenav-box > .nav > li .nav > li.active > a,
-#bjui-sidenav-box .nav > li.open > a{border-right-color:#16669e !important;}
+#bjui-sidenav-box .nav > li.open > a{border-right-color:#fafafa !important;}
 /* ------------- bootstrap ------------- */
-.btn-default{border-color:#c3ced5;}
-.btn-default.selectpicker{background-color:#fff;}
+.btn-default{border-color:#fafafa;}
+.btn-default.selectpicker{background-color:#fafafa;}
 .btn-default:hover,
 .btn-default:focus,
 .btn-default:active,

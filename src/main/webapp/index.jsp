@@ -195,10 +195,10 @@ function outLogin(){
                             <!-- 
                             <li><a href="javascript:;" class="theme_default" data-toggle="theme" data-theme="default">&nbsp;<i class="fa fa-tree"></i> 黑白分明&nbsp;&nbsp;</a></li>
                             <li><a href="javascript:;" class="theme_orange" data-toggle="theme" data-theme="orange">&nbsp;<i class="fa fa-tree"></i> 橘子红了</a></li>
-                             -->
                             <li><a href="javascript:;" class="theme_purple" data-toggle="theme" data-theme="purple">&nbsp;<i class="fa fa-tree"></i> 紫罗兰</a></li>
-                            <li class="active"><a href="javascript:;" class="theme_blue" data-toggle="theme" data-theme="blue">&nbsp;<i class="fa fa-tree"></i> 天空蓝</a></li>
                             <li><a href="javascript:;" class="theme_green" data-toggle="theme" data-theme="green">&nbsp;<i class="fa fa-tree"></i> 绿草如茵</a></li>
+                             -->
+                            <li class="active"><a href="javascript:;" class="theme_blue" data-toggle="theme" data-theme="blue">&nbsp;<i class="fa fa-tree"></i>默认</a></li>
                         </ul>
                     </li>
                     <li><a href="javascript:;" onclick="bjui_index_exchange()" title="横向收缩/充满屏幕"><i class="fa fa-exchange"></i></a></li>
@@ -212,7 +212,7 @@ function outLogin(){
                 <button type="button" class="navbar-toggle collapsed" id="bjui-navbar-collapsebtn" data-toggle="collapsenavbar" data-target="#bjui-navbar-collapse" aria-expanded="false">
                     <i class="fa fa-angle-double-right"></i>
                 </button>
-                <a class="navbar-brand" href="http://b-jui.com"><img src="./images/logo.png" height="30"></a>
+                <a class="navbar-brand" href=""><img src="./images/logo01.png" height="40"></a>
             </div>
             <nav class="collapse navbar-collapse" id="bjui-navbar-collapse">
                 <ul class="nav navbar-nav navbar-right" id="bjui-hnav-navbar">
@@ -231,10 +231,11 @@ function outLogin(){
                     <li>
                         <a href="json/menu-conf.json" data-toggle="sidenav" data-id-key="targetid">系统设置</a>
                     </li>
-                   
                 </ul>
             </nav>
+            
         </div>
+        <hr style="background-color:black;width:100%;height:2px;">
     </header>
     <div id="bjui-body-box">
         <div class="container_fluid" id="bjui-body">

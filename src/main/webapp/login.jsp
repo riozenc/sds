@@ -28,7 +28,7 @@ body {
 .main_box .logo img{height:35px;}
 @media (min-width: 768px) {
     .main_box {margin-left:-240px; padding:15px 55px; width:480px;}
-    .main_box .logo img{height:40px;}
+    .main_box .logo img{height:80px;}
 }
 </style>
 <script type="text/javascript">
@@ -104,7 +104,7 @@ function changeCode(){
     //$("#captcha_img").attr("src", "sys/login/getCaptcha?t="+ (new Date().getTime()));
 }
 function choose_bg() {
-    var bg = Math.floor(Math.random() * 9 + 1);
+    var bg = Math.floor(Math.random() * 0 + 1);
     $('body').css('background-image', 'url(images/loginbg_0'+ bg +'.jpg)');
 }
 </script>
@@ -122,13 +122,12 @@ function choose_bg() {
 <div class="container">
     <div class="main_box">
     	<div class="setting">
-			<a href="javascript:;" onclick="choose_bg();" title="更换背景"><span
-				class="glyphicon glyphicon-th-large"></span></a>
+			<a href="javascript:;" onclick="choose_bg();" title=""></a>
 		</div>
         <form  id="login_form" >
             <input type="hidden" value="" id="j_randomKey" />
             <input type="hidden" name="jfinal_token" value="" />
-            <p class="text-center logo"><img src="images/logo.png" height="45"></p>
+            <p class="text-center logo"><img src="images/logo.png" width="320" height="45"></p>
             <div class="login_msg text-center"><font color="red"></font></div>
             <div class="form-group">
                 <div class="input-group">
