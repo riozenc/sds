@@ -206,13 +206,13 @@ function outLogin(){
             </nav>
         </div>
     </div>
-    <header class="navbar bjui-header" id="bjui-navbar">
-        <div class="container_fluid">
+    <header class="navbar bjui-header" id="bjui-navbar" style="background-color:#fff;width:100%;height:55px;">
+        <div class="container_fluid" >
             <div class="navbar-header">
                 <button type="button" class="navbar-toggle collapsed" id="bjui-navbar-collapsebtn" data-toggle="collapsenavbar" data-target="#bjui-navbar-collapse" aria-expanded="false">
                     <i class="fa fa-angle-double-right"></i>
                 </button>
-                <a class="navbar-brand" href=""><img src="./images/logo01.png" height="40"></a>
+                <a class="navbar-brand" href=""><img src="./images/logo01.png" width="126"height="47"></a>
             </div>
             <nav class="collapse navbar-collapse" id="bjui-navbar-collapse">
                 <ul class="nav navbar-nav navbar-right" id="bjui-hnav-navbar">
@@ -233,10 +233,9 @@ function outLogin(){
                     </li>
                 </ul>
             </nav>
-            
         </div>
-        <hr style="background-color:black;width:100%;height:2px;">
     </header>
+    <div style="background-color:#397FE9;width:100%;height:5px;"></div>
     <div id="bjui-body-box">
         <div class="container_fluid" id="bjui-body">
             <div id="bjui-sidenav-col">
