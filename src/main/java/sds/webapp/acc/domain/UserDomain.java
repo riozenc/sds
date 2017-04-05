@@ -5,6 +5,7 @@
  */
 package sds.webapp.acc.domain;
 
+import java.math.BigDecimal;
 import java.util.Date;
 
 import org.apache.shiro.authc.UsernamePasswordToken;
@@ -81,8 +82,47 @@ public class UserDomain extends Page<UserDomain> implements MybatisEntity, StmEl
 	private Integer tjStatus;
 	private Double tjRate;
 	private Double tjLimit;
-
+	
 	private Integer status;
+	private String realName;//商户名称 2017.4.3增加
+	private String tjName;//推荐人增加 2017.4.3
+	private String tjAccount;//推荐人手机号增加2017.4.3
+	private BigDecimal amount; //增加显示金额功能 2017.4.3
+	
+	
+	public BigDecimal getAmount() {
+		return amount;
+	}
+
+	public void setAmount(BigDecimal amount) {
+		this.amount = amount;
+	}
+	
+	
+	public String getTjAccount() {
+		return tjAccount;
+	}
+
+	public void setTjAccount(String tjAccount) {
+		this.tjAccount = tjAccount;
+	}
+	
+	
+	public String getTjName() {
+		return tjName;
+	}
+
+	public void setTjName(String tjName) {
+		this.tjName = tjName;
+	}
+
+	public String getRealName() {
+		return realName;
+	}
+
+	public void setRealName(String realName) {
+		this.realName = realName;
+	}
 
 	public UserDomain() {
 	}

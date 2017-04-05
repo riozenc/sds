@@ -138,8 +138,15 @@
 		b.account,
 		a.order_id,
 		a.balance,
-		a.create_date
+		a.create_date,
+		b.real_name as realName,
+		(SELECT
+		b.real_name FROM fm_merchant b WHERE b.id = d.TJ_ID) as tjName,
+		(SELECT
+		b.account FROM fm_merchant b WHERE b.id = d.TJ_ID) as tjAccount,
+		d.amount
 		FROM
+		fm_profit d,
 		fm_balance_merchant_log a
 		LEFT JOIN fm_merchant b ON a.target_id =
 		b.id

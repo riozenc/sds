@@ -28,6 +28,43 @@ public class BalanceMerchantLogDomain extends Page<BalanceMerchantLogDomain> imp
 	private Integer status;// 0失效，1转入，2转出，3重算
 	private String operation;// operation varchar 255 0 -1 0 0 0 0 0 操作解释：转入、转出
 								// utf8 utf8_general_ci 0 0
+	private String realName; //商户名称
+	private String tjName;//推荐人增加 2017.4.3
+	private String tjAccount;//推荐人手机号增加2017.4.3
+	private BigDecimal amount; //增加显示金额功能 2017.4.3
+	
+	
+	public BigDecimal getAmount() {
+		return amount;
+	}
+
+	public void setAmount(BigDecimal amount) {
+		this.amount = amount;
+	}
+
+	public String getTjAccount() {
+		return tjAccount;
+	}
+
+	public void setTjAccount(String tjAccount) {
+		this.tjAccount = tjAccount;
+	}
+
+	public String getTjName() {
+		return tjName;
+	}
+
+	public void setTjName(String tjName) {
+		this.tjName = tjName;
+	}
+
+	public String getRealName() {
+		return realName;
+	}
+
+	public void setRealName(String realName) {
+		this.realName = realName;
+	}
 
 	public Integer getId() {
 		return id;
