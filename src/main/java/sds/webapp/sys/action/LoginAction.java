@@ -42,8 +42,8 @@ public class LoginAction {
 			}
 
 			// 增加session 还需要考虑
-			boolean mobile = WebUtils.isTrue(httpServletRequest, PasswordShiroFilter.DEFAULT_MOBILE_PARAM);
-			if (!mobile) {
+			
+			if (principal.getUserDomain()!=null) {
 				httpServletRequest.getSession().setAttribute("username", principal.getUserDomain().getAccount());
 			}
 			return JSONUtil.toJsonString(new JsonResult(JsonResult.SUCCESS, principal.getUserName()));

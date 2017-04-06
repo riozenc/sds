@@ -1,4 +1,4 @@
-package sds.webapp.acc.action;
+ package sds.webapp.acc.action;
 
 import java.io.File;
 import java.io.IOException;
@@ -157,6 +157,7 @@ public class MerchantAction extends BaseAction {
 		}
 
 		if (merchantService.findByKey(merchantDomain) == null) {
+			merchantDomain.setAppCode("EA"+merchantDomain.getAccount());
 			merchantDomain.setStatus(0);// 审核中
 			int i = merchantService.register(merchantDomain);
 			if (i > 0) {
