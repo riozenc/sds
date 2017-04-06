@@ -17,9 +17,8 @@ fieldset{border-color:#fafafa;}
 #bjui-navbar .navbar-nav > li > a:hover,
 #bjui-navbar .navbar-nav > li > a:focus,
 #bjui-navbar .navbar-nav > li > a.active{background-color:#DDDDDD;}//选中按钮底色
-#bjui-navbar .navbar-header > button:focus{background-color:#ff0080;}
+#bjui-navbar .navbar-header > button:focus{background-color:#fafafa;}
 #bjui-navbar .navbar-collapse.navbar-show{background-color:#fafafa !important;}
-#bjui-navbar .navbar-nav > hr{background-color:#ff0080 !important;}
 #bjui-sidenav-box > .nav > li > a:hover,
 #bjui-sidenav-box > .nav > li.active > a,
 #bjui-sidenav-box > .nav > li .nav > li > a:hover,
