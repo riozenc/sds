@@ -43,8 +43,6 @@ PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
 
 
 
-	<plugins>
-		<plugin interceptor="sds.common.mybatis.plus.PaginationInterceptor"></plugin>
-	</plugins>
+
 
 </configuration>

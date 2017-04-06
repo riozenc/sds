@@ -10,77 +10,70 @@
 			<if test="id !=null">
 				and ID = #{id}
 			</if>
-			<if test="orderId !=null">
-				and ORDER_ID = #{orderId}
-			</if>
 		</where>
 	</select>
 	<select id="findByWhere" parameterType="OrderDomain" resultType="OrderDomain"
 		useCache="true">
-		select o.*,m.cmer FROM fm_order o JOIN fm_merchant m ON
-		o.account=m.account
+		select
+		ID,ORDER_ID,ORDER_NO,CHANNEL_CODE,RESP_CODE,RESP_INFO,AMOUNT,DATE,ACCOUNT,CODE_URL,REMARK,RETURN_CODE,STATUS
+		from fm_order
 		<where>
-
 			<if test="id !=null">
-				and o.ID = #{id}
+				and ID = #{id}
 			</if>
 			<if test="orderId !=null">
-				and o.ORDER_ID = #{orderId}
+				and ORDER_ID = #{orderId}
 			</if>
 			<if test="orderNo !=null">
-				and o.ORDER_NO = #{orderNo}
+				and ORDER_NO = #{orderNo}
 			</if>
 			<if test="channelCode !=null">
-				and o.CHANNEL_CODE = #{channelCode}
+				and CHANNEL_CODE = #{channelCode}
 			</if>
 			<if test="respCode !=null">
-				and o.RESP_CODE = #{respCode}
+				and RESP_CODE = #{respCode}
 			</if>
 			<if test="respInfo !=null">
-				and o.RESP_INFO = #{respInfo}
+				and RESP_INFO = #{respInfo}
 			</if>
 			<if test="amount !=null">
-				and o.AMOUNT = #{amount}
+				and AMOUNT = #{amount}
 			</if>
-
-			<if test="startDate !=null">
-				and o.DATE_FORMAT(DATE, '%Y-%m-%d') &gt;=
-				o.DATE_FORMAT(#{startDate}, '%Y-%m-%d')
-			</if>
-			<if test="endDate !=null">
-				and o.DATE_FORMAT(DATE, '%Y-%m-%d') &lt;=
-				o.DATE_FORMAT(#{endDate}, '%Y-%m-%d')
+			<if test="date !=null">
+				and DATE = #{date}
 			</if>
 			<if test="account !=null">
-				and o.ACCOUNT = #{account}
+				and ACCOUNT = #{account}
 			</if>
-
-
 			<if test="codeUrl !=null">
-				and o.CODE_URL = #{codeUrl}
+				and CODE_URL = #{codeUrl}
 			</if>
 			<if test="remark !=null">
-				and o.REMARK = #{remark}
+				and REMARK = #{remark}
 			</if>
 			<if test="returnCode !=null">
-				and o.RETURN_CODE = #{returnCode}
+				and RETURN_CODE = #{returnCode}
 			</if>
 			<if test="status !=null">
-				and o.STATUS = #{status}
+				and STATUS = #{status}
 			</if>
 		</where>
-		order by o.DATE desc
 	</select>
 	<insert id="insert" parameterType="OrderDomain" flushCache="true">
 		insert into
-		fm_order(ID,ORDER_ID,ORDER_NO,CHANNEL_CODE,RESP_CODE,RESP_INFO,AMOUNT,DATE,ACCOUNT,PROXY_ACCOUNT,CODE_URL,REMARK,RETURN_CODE,STATUS)
+		fm_order(ID,ORDER_ID,ORDER_NO,CHANNEL_CODE,RESP_CODE,RESP_INFO,AMOUNT,DATE,ACCOUNT,CODE_URL,REMARK,RETURN_CODE,STATUS)
 		values
-		(#{id},#{orderId},#{orderNo},#{channelCode},#{respCode},#{respInfo},#{amount},#{date},#{account},#{proxyAccount},#{codeUrl},#{remark},#{returnCode},#{status})
+		(#{id},#{orderId},#{orderNo},#{channelCode},#{respCode},#{respInfo},#{amount},#{date},#{account},#{codeUrl},#{remark},#{returnCode},#{status})
 	</insert>
 	<update id="update" parameterType="OrderDomain" flushCache="true">
 		update fm_order
 		<set>
-
+			<if test="id !=null">
+				ID = #{id},
+			</if>
+			<if test="orderId !=null">
+				ORDER_ID = #{orderId},
+			</if>
 			<if test="orderNo !=null">
 				ORDER_NO = #{orderNo},
 			</if>
@@ -116,219 +109,17 @@
 			</if>
 		</set>
 		<where>
-			ORDER_ID = #{orderId}
+			<if test="id !=null">
+				and ID = #{id}
+			</if>
 		</where>
 	</update>
 	<delete id="delete" parameterType="OrderDomain" flushCache="true">
 		delete from fm_order
 		<where>
-
-			ID = #{id}
-
+			<if test="id !=null">
+				and ID = #{id}
+			</if>
 		</where>
 	</delete>
-
-
-
-	<select id="getAllCheckedOrder" parameterType="OrderDomain"
-		resultType="OrderDomain" useCache="true">
-		select
-		ID,ORDER_ID,ORDER_NO,CHANNEL_CODE,RESP_CODE,RESP_INFO,AMOUNT,DATE,ACCOUNT,CODE_URL,REMARK,RETURN_CODE,STATUS
-		from fm_order
-		<where>
-			<if test="id !=null">
-				and ID = #{id}
-			</if>
-			<if test="orderId !=null">
-				and ORDER_ID = #{orderId}
-			</if>
-			<if test="orderNo !=null">
-				and ORDER_NO = #{orderNo}
-			</if>
-			<if test="channelCode !=null">
-				and CHANNEL_CODE = #{channelCode}
-			</if>
-			<if test="respCode !=null">
-				and RESP_CODE = #{respCode}
-			</if>
-			<if test="respInfo !=null">
-				and RESP_INFO = #{respInfo}
-			</if>
-			<if test="amount !=null">
-				and AMOUNT = #{amount}
-			</if>
-			<if test="startDate !=null">
-				and DATE_FORMAT(DATE, '%Y-%m-%d') &gt;=
-				DATE_FORMAT(#{startDate}, '%Y-%m-%d')
-			</if>
-			<if test="endDate !=null">
-				and DATE_FORMAT(DATE, '%Y-%m-%d') &lt;=
-				DATE_FORMAT(#{endDate}, '%Y-%m-%d')
-			</if>
-			<if test="account !=null">
-				and ACCOUNT = #{account}
-			</if>
-			<if test="codeUrl !=null">
-				and CODE_URL = #{codeUrl}
-			</if>
-			<if test="remark !=null">
-				and REMARK = #{remark}
-			</if>
-			<if test="returnCode !=null">
-				and RETURN_CODE = #{returnCode}
-			</if>
-			and STATUS = 1
-		</where>
-	</select>
-
-	<select id="getAllUnCheckOrder" parameterType="OrderDomain"
-		resultType="OrderDomain" useCache="true">
-		select
-		ID,ORDER_ID,ORDER_NO,CHANNEL_CODE,RESP_CODE,RESP_INFO,AMOUNT,DATE,ACCOUNT,CODE_URL,REMARK,RETURN_CODE,STATUS
-		from fm_order
-		<where>
-			<if test="id !=null">
-				and ID = #{id}
-			</if>
-			<if test="orderId !=null">
-				and ORDER_ID = #{orderId}
-			</if>
-			<if test="orderNo !=null">
-				and ORDER_NO = #{orderNo}
-			</if>
-			<if test="channelCode !=null">
-				and CHANNEL_CODE = #{channelCode}
-			</if>
-			<if test="respCode !=null">
-				and RESP_CODE = #{respCode}
-			</if>
-			<if test="respInfo !=null">
-				and RESP_INFO = #{respInfo}
-			</if>
-			<if test="amount !=null">
-				and AMOUNT = #{amount}
-			</if>
-			<if test="startDate !=null">
-				and DATE_FORMAT(DATE, '%Y-%m-%d') &gt;=
-				DATE_FORMAT(#{startDate}, '%Y-%m-%d')
-			</if>
-			<if test="endDate !=null">
-				and DATE_FORMAT(DATE, '%Y-%m-%d') &lt;=
-				DATE_FORMAT(#{endDate}, '%Y-%m-%d')
-			</if>
-			<if test="account !=null">
-				and ACCOUNT = #{account}
-			</if>
-			<if test="codeUrl !=null">
-				and CODE_URL = #{codeUrl}
-			</if>
-			<if test="remark !=null">
-				and REMARK = #{remark}
-			</if>
-			<if test="returnCode !=null">
-				and RETURN_CODE = #{returnCode}
-			</if>
-			and STATUS = 0
-		</where>
-	</select>
-
-
-	<update id="profitComplete" parameterType="OrderDomain"
-		flushCache="true">
-		update fm_order
-		<set>
-			STATUS = 3
-		</set>
-		<where>
-			ID = #{id}
-		</where>
-	</update>
-
-	<select id="getTotalAmountByOrder" parameterType="OrderDomain"
-		resultType="String">
-		SELECT sum(amount) as amount FROM fm_order
-		<where>
-			<if test="account !=null">
-				and ACCOUNT = #{account}
-			</if>
-			<if test="channelCode !=null">
-				and CHANNEL_CODE = #{channelCode}
-			</if>
-			<if test="startDate !=null">
-				and DATE_FORMAT(DATE, '%Y-%m-%d') &gt;=
-				DATE_FORMAT(#{startDate}, '%Y-%m-%d')
-			</if>
-			<if test="endDate !=null">
-				and DATE_FORMAT(DATE, '%Y-%m-%d') &lt;=
-				DATE_FORMAT(#{endDate}, '%Y-%m-%d')
-			</if>
-			and resp_code='000000'
-		</where>
-	</select>
-
-
-	<select id="getOrderByUser" parameterType="OrderDomain"
-		resultType="OrderDomain" useCache="true">
-		SELECT
-		o.*, m.cmer
-		FROM
-		fm_order o
-		LEFT JOIN fm_merchant m ON o.account =
-		m.account LEFT JOIN ( SELECT id,
-		parent_id, @pathnodes := IF (
-		parent_id =- 1, ',0', CONCAT( CONCAT_WS(
-		',', IF ( LOCATE( CONCAT('|',
-		parent_id, ':') ,@pathall ) > 0,
-		SUBSTRING_INDEX( SUBSTRING_INDEX(
-		@pathall, CONCAT('|', parent_id,
-		':') ,- 1 ), '|', 1 ) ,@pathnodes ),
-		parent_id ), ',', id ) ) paths
-		FROM fm_user ) c
-		ON c.id = m.agent_id
-		<where>
-			c.paths LIKE '%,${id}%'
-			<if test="orderId !=null">
-				and o.ORDER_ID = #{orderId}
-			</if>
-			<if test="orderNo !=null">
-				and o.ORDER_NO = #{orderNo}
-			</if>
-			<if test="channelCode !=null">
-				and o.CHANNEL_CODE = #{channelCode}
-			</if>
-			<if test="respCode !=null">
-				and o.RESP_CODE = #{respCode}
-			</if>
-			<if test="respInfo !=null">
-				and o.RESP_INFO = #{respInfo}
-			</if>
-			<if test="amount !=null">
-				and o.AMOUNT = #{amount}
-			</if>
-			<if test="startDate !=null">
-				and o.DATE_FORMAT(DATE, '%Y-%m-%d') &gt;=
-				o.DATE_FORMAT(#{startDate}, '%Y-%m-%d')
-			</if>
-			<if test="endDate !=null">
-				and o.DATE_FORMAT(DATE, '%Y-%m-%d') &lt;=
-				o.DATE_FORMAT(#{endDate}, '%Y-%m-%d')
-			</if>
-			<if test="account !=null">
-				and o.ACCOUNT = #{account}
-			</if>
-			<if test="codeUrl !=null">
-				and o.CODE_URL = #{codeUrl}
-			</if>
-			<if test="remark !=null">
-				and o.REMARK = #{remark}
-			</if>
-			<if test="returnCode !=null">
-				and o.RETURN_CODE = #{returnCode}
-			</if>
-			<if test="status !=null">
-				and o.STATUS = #{status}
-			</if>
-		</where>
-		order by o.DATE desc
-	</select>
 </mapper>

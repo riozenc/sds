@@ -27,12 +27,12 @@
 
 	<!-- 默认的注解映射的支持 --><!-- 解决@ResponseBody中文乱码 --><!-- 启动spring内置json转换(注释) -->
 	<mvc:annotation-driven>
-		<mvc:message-converters>
-			<bean class="org.springframework.http.converter.StringHttpMessageConverter">
-				<constructor-arg value="UTF-8" />
-			</bean>
-		</mvc:message-converters>
-	</mvc:annotation-driven>
+        <mvc:message-converters>
+            <bean class="org.springframework.http.converter.StringHttpMessageConverter">
+                <constructor-arg value="UTF-8" />
+            </bean>
+        </mvc:message-converters>
+    </mvc:annotation-driven>
 	<!-- 注解请求映射 相当与 <mvc:annotation-driven /> 优势：可扩展自定义 <bean class="org.springframework.web.servlet.mvc.annotation.DefaultAnnotationHandlerMapping"> 
 		<property name="interceptors"> <list> <ref bean="logNDCInteceptor"/> 日志拦截器，这是你自定义的拦截器 
 		<ref bean="myRequestHelperInteceptor"/> RequestHelper拦截器，这是你自定义的拦截器 <ref 
@@ -53,10 +53,10 @@
 
 
 	<!-- 上传文件配置 -->
-	<bean id="multipartResolver"
-		class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
-		<property name="maxUploadSize" value="200000" />
-	</bean>
+	<!-- <bean id="multipartResolver" -->
+	<!-- class="org.springframework.web.multipart.commons.CommonsMultipartResolver"> -->
+	<!-- <property name="maxUploadSize" value="200000" /> -->
+	<!-- </bean> -->
 
 
 	<!-- 视图解释类 -->
@@ -94,8 +94,9 @@
 		cache-period="31556926"/> -->
 
 
-	<bean id="springContextHolder"
-		class="com.riozenc.quicktool.springmvc.context.SpringContextHolder" />
+	<!-- <bean id="springContextHolder" -->
+	<!-- class="com.riozenc.quicktool.springmvc.context.SpringContextHolder" 
+		/> -->
 	<!-- <bean id="dfFactory" class="com.riozenc.quicktool.mybatis.db.DbFactory" -->
 	<!-- init-method="initDBs" /> -->
 
