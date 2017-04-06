@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.riozenc.quicktool.common.util.StringUtils;
 import com.riozenc.quicktool.common.util.json.JSONUtil;
+import com.sun.xml.internal.ws.api.policy.PolicyResolver.ServerContext;
 
 import sds.common.json.JsonResult;
 import sds.common.security.Principal;
@@ -33,17 +34,17 @@ public class LoginAction {
 
 		String errorClassName = (String) httpServletRequest
 				.getAttribute(PasswordShiroFilter.DEFAULT_ERROR_KEY_ATTRIBUTE_NAME);
-
 		if (errorClassName == null) {
 			// 成功
 			Subject subject = SecurityUtils.getSubject();
 			Principal principal = (Principal) subject.getPrincipal();
-
+	
 			if (principal == null) {
 				// 非法请求
 				return loginFail("IncorrectCredentialsException", httpServletRequest, httpServletResponse);
 			}
-
+			//增加session
+			httpServletRequest.getSession().setAttribute("username",principal.getUserDomain().getAccount());
 			return JSONUtil.toJsonString(new JsonResult(JsonResult.SUCCESS, principal.getUserName()));
 
 		} else {

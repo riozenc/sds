@@ -1,5 +1,59 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<script type="text/javascript">
+
+$(function() {
+	//公司需要显示营业执照编号等信息，个体户则不需要显示。
+	$("#agType_div").hide();
+	$("#agType").change(function(){
+		if($("#agType").val() == "个体户"){
+			$("#agType_div").hide();
+		}else{
+			$("#agType_div").show();
+		}
+	});
+	//提交
+	$("#submitSave").bind("click",function(){
+		BJUI.ajax('ajaxform', {
+		    url: 'user.do?type=insert',
+		    form: $('#j_userAdd_form'),
+		    validate: true,
+		    loadingmask: true,
+		    okCallback: function(json, options) {
+		       
+		        $("#submitSave").unbind("click");
+		        BJUI.navtab('refresh', 'userAdd');  //刷新
+		    }
+		})
+	});
+	$.ajax({
+		cache : false,
+		type : "POST",
+		url : "user.do?type=findUserByWhere",
+		data : null,
+		dataType : "json",
+		error : function(request) {
+			alert("Connection error");
+			return false;
+		},
+		success : function(data) {
+		
+			var list =data.list;
+			var selector=$('<select data-toggle="selectpicker" name="parentId" ></select>');  
+	
+			  selector.append('<option value="'+data.list[0].id+'">'+data.list[0].fullName+'</option>');  
+			
+			$("#parentSelUserAdd").append(selector);
+		}
+	});
+})
+
+	//输入推广码功能
+	function func(){
+		var a=document.getElementsByName("account")[0].value;
+		document.getElementsByName("appCode")[0].value="EA"+a;
+		}
+</script>
 <div class="bjui-pageContent">
     <div class="bs-example">
         <form id="j_userAdd_form" >
@@ -7,11 +61,11 @@
         <div class="bjui-row col-2">
             <label class="row-label " >系统账号</label>
             <div class="row-input required">
-                <input type="text" name="account" value="" data-rule="required">
+                <input type="text" id="rowid" onblur="func()" name="account" value="" data-rule="required" >
             </div>
             <label class="row-label">推广码</label>
             <div class="row-input">
-                <input type="text"  value="EA" name="appCode" data-rule="required">
+                <input type="text" id="roid1" value="" name="appCode" data-rule="required">
             </div>
             <label class="row-label " >系统密码</label>
             <div class="row-input required">
@@ -19,7 +73,6 @@
             </div>
             <label class="row-label">所属上级代理商</label>
             <div class="row-input" id="parentSelUserAdd">
-               
             </div>
             <label class="row-label">企业全称</label>
             <div class="row-input">
@@ -36,7 +89,6 @@
 				<option value="有限责任公司">有限责任公司</option>
 				
 			</select>
-               
             </div>
             <label class="row-label">公司地址</label>
             <div class="row-input">
@@ -209,53 +261,3 @@
         <li><button id="submitSave" class="btn-default" data-icon="save" >保存</button></li>
     </ul>
 </div>
-<script type="text/javascript">
-
-$(function() {
-	//公司需要显示营业执照编号等信息，个体户则不需要显示。
-	$("#agType_div").hide();
-	$("#agType").change(function(){
-		if($("#agType").val() == "个体户"){
-			$("#agType_div").hide();
-		}else{
-			$("#agType_div").show();
-		}
-	});
-	//提交
-	$("#submitSave").bind("click",function(){
-		BJUI.ajax('ajaxform', {
-		    url: 'user.do?type=insert',
-		    form: $('#j_userAdd_form'),
-		    validate: true,
-		    loadingmask: true,
-		    okCallback: function(json, options) {
-		       
-		        $("#submitSave").unbind("click");
-		        BJUI.navtab('refresh', 'userAdd');  //刷新
-		    }
-		})
-	});
-	$.ajax({
-		cache : false,
-		type : "POST",
-		url : "user.do?type=findUserByWhere",
-		data : null,
-		dataType : "json",
-		error : function(request) {
-			alert("Connection error");
-			return false;
-		},
-		success : function(data) {
-		
-			var list =data.list;
-			var selector=$('<select data-toggle="selectpicker" name="parentId" ></select>');  
-			
-			for(var i=0;i< data.totalRow;i++){   
-			  selector.append('<option value="'+data.list[i].id+'">'+data.list[i].fullName+'</option>');  
-			}
-			$("#parentSelUserAdd").append(selector);
-			
-		}
-	});
-})
-</script>

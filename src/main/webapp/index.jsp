@@ -1,12 +1,13 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+
 <!DOCTYPE html>
 <html lang="zh">
 <head>
 <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
-<title>B-JUI 前端管理框架</title>
+<title>马付</title>
 <meta name="Keywords" content="B-JUI,Bootstrap,jquery,ui,前端,框架,开源,OSC,开源框架,knaan"/>
 <meta name="Description" content="B-JUI(Best jQuery UI)前端管理框架。轻松开发，专注您的业务，从B-JUI开始！"/> 
 <!-- bootstrap - css -->
@@ -24,7 +25,7 @@
 <link href="B-JUI/themes/css/FA/css/font-awesome.min.css" rel="stylesheet">
 <!-- Favicons -->
 <link rel="apple-touch-icon-precomposed" href="assets/ico/apple-touch-icon-precomposed.png">
-<link rel="shortcut icon" href="assets/ico/favicon.png">
+<link rel="shortcut icon" href=""> <!-- 网站前增加小图标用   删除->assets/ico/favicon.png<- -->
 <!--[if lte IE 7]>
 <link href="B-JUI/themes/css/ie7.css" rel="stylesheet">
 <![endif]-->
@@ -152,8 +153,9 @@ function outLogin(){
 			return false;	
 		}
 	});
-}
 
+}
+<% String name = (String)session.getAttribute("username");%>
 </script>
 <!-- highlight && ZeroClipboard -->
 <link href="assets/prettify.css" rel="stylesheet">
@@ -178,8 +180,8 @@ function outLogin(){
             <nav class="collapse navbar-collapse" id="bjui-top-collapse">
                 <ul class="nav navbar-nav navbar-right">
                     <li class="datetime"><a><span id="bjui-date">0000/00/00</span> <span id="bjui-clock">00:00:00</span></a></li>
-                    <li><a href="#">账号：BJUI</a></li>
-                    <li><a href="#">角色：管理员</a></li>
+                    <li><a href="javascript:;" id="bjui-username">登陆用户：<%=name%></a></li>
+                    <li><a href="#"></a></li>
                     <li><a href="changepassword.html" data-toggle="dialog" data-id="sys_user_changepass" data-mask="true" data-width="400" data-height="300">修改密码</a></li>
                     <li><a href="javascript:;"  onclick="outLogin()" style="font-weight:bold;">&nbsp;<i class="fa fa-power-off"></i> 注销登陆</a></li>
                     <li class="dropdown"><a href="#" class="dropdown-toggle bjui-fonts-tit" data-toggle="dropdown" title="更改字号"><i class="fa fa-font"></i> 大</a>
@@ -214,7 +216,7 @@ function outLogin(){
                 </button>
                 <a class="navbar-brand" href=""><img src="./images/logo01.png" width="126"height="47"></a>
             </div>
-            <nav class="collapse navbar-collapse" id="bjui-navbar-collapse">
+            <nav class="collapse navbar-collapse" id="bjui-navbar-collapse" >
                 <ul class="nav navbar-nav navbar-right" id="bjui-hnav-navbar">
                     <li class="active">
                         <a href="json/menu-user.json" data-toggle="sidenav" data-id-key="targetid">代理商管理</a>
