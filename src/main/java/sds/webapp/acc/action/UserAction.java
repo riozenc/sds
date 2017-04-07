@@ -131,8 +131,7 @@ public class UserAction extends BaseAction {
 	@RequestMapping(params = "type=findMeInfo")
 	public String findMeInfo() {
 		UserDomain userDomain = UserUtils.getPrincipal().getUserDomain();
-		List<UserDomain> list = userService.findSubUserList(userDomain);
-		return JSONUtil.toJsonString(new JsonGrid(userDomain, list));
+		return JSONUtil.toJsonString(userDomain);
 	}
 
 	/**

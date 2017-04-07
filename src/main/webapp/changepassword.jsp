@@ -12,9 +12,8 @@ $.ajax({
 		return false;
 	},
 	success : function(data) {
-		var list =data.list;
 		var selector=$('#bjui-account');  
-		  selector.append('<span value="'+data.list[0].id+'">'+data.list[0].account+'</span>');  
+		  selector.append('<span value="'+data.id+'">'+data.account+'</span>');  
 		$("#bjui-account").append(selector);
 	}
 });
