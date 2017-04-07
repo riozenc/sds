@@ -104,7 +104,6 @@ public class RemoteHandler {
 	 * @throws Exception
 	 */
 	public static RemoteResult validCard(final MerchantDomain merchantDomain) throws Exception {
-		System.out.println(JSONUtil.toJsonString(merchantDomain));
 		VerifyCardDomain verifyCardDomain = new VerifyCardDomain();
 		verifyCardDomain.setCmer(Base64.encodeToString(merchantDomain.getCmer()));
 		verifyCardDomain.setCmer_sort(Base64.encodeToString(merchantDomain.getCmerSort()));
@@ -127,7 +126,6 @@ public class RemoteHandler {
 		verifyCardDomain.setCert_no(merchantDomain.getCertNo());// 证件号
 		verifyCardDomain.setMobile(merchantDomain.getMobile());// 手机号
 
-		System.out.println(JSONUtil.toJsonString(verifyCardDomain));
 		return encryptionProcess("tb_verifyInfo", merchantDomain.getAccount(), merchantDomain.getPrivatekey(),
 				verifyCardDomain, false);
 
@@ -324,12 +322,14 @@ public class RemoteHandler {
 					msgDatas.getBytes(Common.CHARSET));
 			if (vfy) {
 				RemoteResult remoteResult = JSONUtil.readValue(msgDatas, RemoteResult.class);
+
 				return remoteResult;
 			} else {
 				return new RemoteResult("999999", "异常数据.");
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
+
 			return JSONUtil.readValue(response, RemoteResult.class);
 		}
 
