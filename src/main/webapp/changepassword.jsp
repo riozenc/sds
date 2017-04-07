@@ -35,7 +35,7 @@ $.ajax({
             <label class="row-label">新密码:</label>
             <div class="row-input required">
                 <input type="password" id="j_userinfo_changepass_newpass" name="password" value="" data-rule="新密码:required;length(6~)">
-            </div>
+            </div> 
             <label class="row-label">确认密码:</label>
             <div class="row-input required">
                 <input type="password" id="j_userinfo_changepass_confirmpass" name="" value="" data-rule="required;match(#j_userinfo_changepass_newpass)">
