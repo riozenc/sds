@@ -1,5 +1,8 @@
 package sds.common.pool;
 
+import com.riozenc.quicktool.common.util.log.LogUtil;
+import com.riozenc.quicktool.common.util.log.LogUtil.LOG_TYPE;
+
 /**
  * 商户池 1、虚拟商户可靠性方法未完成 2、虚拟商户与真实数据是否建立关系方法未完成
  * 
@@ -62,7 +65,7 @@ public class MerchantPool {
 						// } else {
 						// // 该刷新了
 						// }
-						System.out.println("***************申请补充" + Thread.currentThread().getName());
+						LogUtil.getLogger(LOG_TYPE.MAIN).info("***************申请补充" + Thread.currentThread().getName());
 						state.supplyIdleBeans();// 补充空闲
 					}
 
