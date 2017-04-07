@@ -9,7 +9,6 @@ import javax.servlet.http.HttpServletResponse;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authz.UnauthorizedException;
 import org.apache.shiro.subject.Subject;
-import org.apache.shiro.web.filter.authc.FormAuthenticationFilter;
 import org.apache.shiro.web.util.WebUtils;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -17,7 +16,6 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.riozenc.quicktool.common.util.StringUtils;
 import com.riozenc.quicktool.common.util.json.JSONUtil;
-import com.sun.xml.internal.ws.api.policy.PolicyResolver.ServerContext;
 
 import sds.common.json.JsonResult;
 import sds.common.security.Principal;
@@ -25,7 +23,6 @@ import sds.common.security.filter.PasswordShiroFilter;
 
 @ControllerAdvice
 @RequestMapping("loginAction")
-
 public class LoginAction {
 
 	@ResponseBody
@@ -38,10 +35,16 @@ public class LoginAction {
 			// 成功
 			Subject subject = SecurityUtils.getSubject();
 			Principal principal = (Principal) subject.getPrincipal();
+
 			if (principal == null) {
 				// 非法请求
 				return loginFail("IncorrectCredentialsException", httpServletRequest, httpServletResponse);
 			}
+
+			if (principal.getUserDomain() != null) {
+				httpServletRequest.getSession().setAttribute("username", principal.getUserDomain().getAccount());
+			}
+
 			return JSONUtil.toJsonString(new JsonResult(JsonResult.SUCCESS, principal.getUserName()));
 		} else {
 			// 失败
@@ -67,7 +70,7 @@ public class LoginAction {
 		boolean mobile = WebUtils.isTrue(request, PasswordShiroFilter.DEFAULT_MOBILE_PARAM);
 		String exception = (String) request.getAttribute(PasswordShiroFilter.DEFAULT_ERROR_KEY_ATTRIBUTE_NAME);
 		String message = (String) request.getAttribute(PasswordShiroFilter.DEFAULT_MESSAGE_PARAM);
-		
+
 		if (StringUtils.isBlank(message)) {
 			message = "用户或密码错误, 请重试.";
 		}

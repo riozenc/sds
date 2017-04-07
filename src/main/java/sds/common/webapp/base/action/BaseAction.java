@@ -53,7 +53,11 @@ public class BaseAction extends com.riozenc.quicktool.springmvc.webapp.action.Ba
 		binder.registerCustomEditor(Date.class, new PropertyEditorSupport() {
 			@Override
 			public void setAsText(String text) {
-				setValue(DateUtil.parseDateTime(text));
+				if (text.length() == 10) {
+					setValue(DateUtil.parseDate(text));
+				} else {
+					setValue(DateUtil.parseDateTime(text));
+				}
 			}
 		});
 	}

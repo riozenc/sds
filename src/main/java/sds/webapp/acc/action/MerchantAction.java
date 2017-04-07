@@ -157,6 +157,7 @@ public class MerchantAction extends BaseAction {
 		}
 
 		if (merchantService.findByKey(merchantDomain) == null) {
+			merchantDomain.setAppCode("EA" + merchantDomain.getAccount());
 			merchantDomain.setStatus(0);// 审核中
 			int i = merchantService.register(merchantDomain);
 			if (i > 0) {
@@ -444,6 +445,7 @@ public class MerchantAction extends BaseAction {
 
 			// 为分配的虚拟账号进行验卡
 			remoteResult = RemoteUtils.validCard(merchantDomain, bean.getObject());
+			LogUtil.getLogger(LOG_TYPE.MAIN).info(JSONUtil.toJsonString(remoteResult));
 			if (RemoteUtils.resultProcess(remoteResult)) {
 				// 绑定成功
 				bean.binding(merchantDomain);// 绑定处理

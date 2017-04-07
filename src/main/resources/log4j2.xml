@@ -11,29 +11,29 @@
 			<PatternLayout pattern="%d{yyyy-MM-dd 'at' HH:mm:ss.SSS} [%t] %-5level %logger{36} - %msg%n" />
 		</Console>
 
-		<File name="ERROR" fileName="../sds_logs/error.log">
+		<File name="ERROR" fileName="../riozenc_logs/error.log">
 			<ThresholdFilter level="error" onMatch="ACCEPT"
 				onMismatch="DENY" />
 			<PatternLayout
 				pattern="%d{yyyy.MM.dd 'at' HH:mm:ss z} %-5level %class{36} %L %M - %msg%xEx%n" />
 		</File>
 
-		<File name="default" fileName="../sds_logs/default.log">
+		<File name="default" fileName="../riozenc_logs/default.log">
 			<ThresholdFilter level="info" onMatch="ACCEPT"
 				onMismatch="DENY" />
 			<PatternLayout
 				pattern="%d{yyyy.MM.dd 'at' HH:mm:ss z} %-5level %class{36} %L %M - %msg%n" />
 		</File>
 
-		<RollingFile name="DB" fileName="../sds_logs/db/db.log"
-			filePattern="../sds_logs/db/db-$${date:yyyy-MM}/app-%d{MM-dd-yyyy}-%i.log.gz">
+		<RollingFile name="DB" fileName="../riozenc_logs/db/db.log"
+			filePattern="../riozenc_logs/db/db-$${date:yyyy-MM}/app-%d{MM-dd-yyyy}-%i.log.gz">
 			<PatternLayout
 				pattern="%d{yyyy.MM.dd 'at' HH:mm:ss z} %-5level %class{36} %L %M - %msg%xEx%n" />
 			<SizeBasedTriggeringPolicy size="50 MB" />
 		</RollingFile>
 
-		<RollingFile name="IO" fileName="../sds_logs/io/io.log"
-			filePattern="../sds_logs/io/io-%d{MM-dd-yyyy}.log.gz">
+		<RollingFile name="IO" fileName="../riozenc_logs/io/io.log"
+			filePattern="../riozenc_logs/io/io-%d{MM-dd-yyyy}.log.gz">
 			<PatternLayout>
 				<Pattern>%d %p %c{1.} [%t] %m%n</Pattern>
 			</PatternLayout>
