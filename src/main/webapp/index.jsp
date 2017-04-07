@@ -25,7 +25,7 @@
 <link href="B-JUI/themes/css/FA/css/font-awesome.min.css" rel="stylesheet">
 <!-- Favicons -->
 <link rel="apple-touch-icon-precomposed" href="assets/ico/apple-touch-icon-precomposed.png">
-<link rel="shortcut icon" href=""> <!-- 网站前增加小图标用   删除->assets/ico/favicon.png<- -->
+<link rel="shortcut icon" href="./images/logo01.png"> <!-- 网站前增加小图标用   删除->assets/ico/favicon.png<- -->
 <!--[if lte IE 7]>
 <link href="B-JUI/themes/css/ie7.css" rel="stylesheet">
 <![endif]-->
@@ -153,9 +153,24 @@ function outLogin(){
 			return false;	
 		}
 	});
-
 }
-<% String name = (String)session.getAttribute("username");%>
+$.ajax({
+	cache : false,
+	type : "POST",
+	url : "user.do?type=findMeInfo",
+	data : null,
+	dataType : "json",
+	error : function(request) {
+		alert("Connection error");
+		return false;
+	},
+	success : function(data) {
+		var list =data.list;
+		var selector=$('#bjui-username');  
+		  selector.append('<span value="'+data.list[0].id+'">'+data.list[0].account+'</span>');  
+		$("#bjui-username").append(selector);
+	}
+});
 </script>
 <!-- highlight && ZeroClipboard -->
 <link href="assets/prettify.css" rel="stylesheet">
@@ -180,9 +195,9 @@ function outLogin(){
             <nav class="collapse navbar-collapse" id="bjui-top-collapse">
                 <ul class="nav navbar-nav navbar-right">
                     <li class="datetime"><a><span id="bjui-date">0000/00/00</span> <span id="bjui-clock">00:00:00</span></a></li>
-                    <li><a href="javascript:;" id="bjui-username">登陆用户：<%=name%></a></li>
+                    <li><a href="javascript:;" id="bjui-username">登陆用户:</a></li>
                     <li><a href="#"></a></li>
-                    <li><a href="changepassword.html" data-toggle="dialog" data-id="sys_user_changepass" data-mask="true" data-width="400" data-height="300">修改密码</a></li>
+                    <li><a href="changepassword.jsp" data-toggle="dialog" data-id="sys_user_changepass" data-mask="true" data-width="400" data-height="300">修改密码</a></li>
                     <li><a href="javascript:;"  onclick="outLogin()" style="font-weight:bold;">&nbsp;<i class="fa fa-power-off"></i> 注销登陆</a></li>
                     <li class="dropdown"><a href="#" class="dropdown-toggle bjui-fonts-tit" data-toggle="dropdown" title="更改字号"><i class="fa fa-font"></i> 大</a>
                         <ul class="dropdown-menu" role="menu" id="bjui-fonts">

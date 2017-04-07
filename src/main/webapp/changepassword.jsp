@@ -1,3 +1,24 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
+<script type="text/javascript">
+$.ajax({
+	cache : false,
+	type : "POST",
+	url : "user.do?type=findMeInfo",
+	data : null,
+	dataType : "json",
+	error : function(request) {
+		alert("Connection error");
+		return false;
+	},
+	success : function(data) {
+		var list =data.list;
+		var selector=$('#bjui-account');  
+		  selector.append('<span value="'+data.list[0].id+'">'+data.list[0].account+'</span>');  
+		$("#bjui-account").append(selector);
+	}
+});
+</script>
 <div class="bjui-pageContent">
     <form action="../../json/ajaxDone.json" data-toggle="validate" method="post" data-close-current="true">
         <input type="hidden" name="user.id" value="${user.id }">
@@ -5,10 +26,8 @@
         <input type="hidden" name="user.password" value="" id="j_userinfo_changepass_userpassword">
         <input type="hidden" name="user.oldpass" value="" id="j_userinfo_changepass_userpassword_old">
         <div class="bjui-row col-1">
-            <label class="row-label">姓名:</label>
-            <div class="row-input">管理员</div>
-            <label class="row-label">登陆账号:</label>
-            <div class="row-input">BJUI</div>
+            <label class="row-label">用户：</label>
+            <div class="row-input"id=bjui-account></div>
             <label class="row-label">旧密码:</label>
             <div class="row-input required">
                 <input type="password" id="j_userinfo_changepass_oldpass" name="oldpassword" value="" data-rule="required">
