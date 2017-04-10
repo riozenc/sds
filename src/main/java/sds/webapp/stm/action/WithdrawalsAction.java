@@ -139,9 +139,20 @@ public class WithdrawalsAction extends BaseAction {
 		@RequestMapping(params = "type=exportExcelAmount")
 		public String exportExcelAmount(WithdrawalsDomain withdrawalsDomain, HttpServletResponse httpServletResponse)
 				throws IOException {
+			
 			List<WithdrawalsDomain> list = withdrawalsService.findAmountExcel(withdrawalsDomain);
-			ExcelUtils.exportExcel(list, httpServletResponse);
+			for(WithdrawalsDomain wd :list){
+				if(wd.getStatus()<=0){
+					wd.setStatus(3);
+					int i = withdrawalsService.update(wd);
+					if (i >= 0) {
+						ExcelUtils.exportExcel(list, httpServletResponse);
+						return JSONUtil.toJsonString(new JsonResult(JsonResult.SUCCESS, "操作成功."));
+					} else {
+						return JSONUtil.toJsonString(new JsonResult(JsonResult.ERROR, "操作失败."));
+					}
+				}
+			}
 			return null;
 		}
-
 }

@@ -143,7 +143,7 @@ public class UserAction extends BaseAction {
 	@ResponseBody
 	@RequestMapping(params = "type=findUserByKey")
 	public String findUserByKey(UserDomain userDomain) {
-		
+
 		return JSONUtil.toJsonString(userService.findByKey(userDomain));
 	}
 
@@ -159,6 +159,26 @@ public class UserAction extends BaseAction {
 		userDomain.setId(UserUtils.getPrincipal().getUserDomain().getId());
 		List<UserDomain> list = userService.findSubUserList(userDomain);
 		return JSONUtil.toJsonString(new JsonGrid(userDomain, list));
+	}
+
+	/**
+	 * 更改密码
+	 * 
+	 * @param userDomain
+	 * @return
+	 */
+	@ResponseBody
+	@RequestMapping(params = "type=changepassword")
+	public String changepassword(String password) {
+		UserDomain user = UserUtils.getPrincipal().getUserDomain();
+		UserDomain domain = new UserDomain();
+		domain.setId(user.getId());
+		domain.setPassword(password);
+		if (userService.update(domain) > 0) {
+			return JSONUtil.toJsonString(new JsonResult(JsonResult.SUCCESS, "更新成功."));
+		} else {
+			return JSONUtil.toJsonString(new JsonResult(JsonResult.ERROR, "更新失败."));
+		}
 	}
 
 }
