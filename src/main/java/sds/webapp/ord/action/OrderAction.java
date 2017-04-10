@@ -134,7 +134,7 @@ public class OrderAction extends BaseAction {
 
 		MerchantDomain merchantDomain = UserUtils.getPrincipal().getMerchantDomain();
 
-		if (merchantDomain.getCodePayUrl() == null) {
+		if (merchantDomain.getCodePayUrl() == null || "".equals(merchantDomain.getCodePayUrl())) {
 			// MerchantDomain merchantDomain = new MerchantDomain();
 			// merchantDomain.setId(40);
 
@@ -288,7 +288,7 @@ public class OrderAction extends BaseAction {
 			msg = msg + remoteResult.getRespInfo();
 			code = 300;
 			LogUtil.getLogger(LOG_TYPE.OTHER)
-					.info(orderDomain.getOrderId() + "（主动查询）交易成功[" + "]" + DateUtil.formatDate(new Date()));
+					.info(orderDomain.getOrderId() + "（主动查询）交易未支付[" + "]" + DateUtil.formatDate(new Date()));
 		}
 		orderDomain.setRespCode(remoteResult.getRespCode());
 		orderDomain.setRespInfo(remoteResult.getRespInfo());
