@@ -263,7 +263,13 @@
 			</if>
 		</where>
 	</select>
+	
+	
 
+	
+	
+	
+	
 	<select id="findSubProfitByUser" parameterType="ProfitUserDomain"
 		resultType="ProfitDomain" useCache="true">
 		SELECT

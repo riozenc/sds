@@ -1,6 +1,7 @@
 package sds.webapp.stm.action;
 
 import java.io.IOException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
@@ -290,7 +291,7 @@ public class ProfitAction extends BaseAction {
 		// System.out.println(i);
 		return "完成分润" + i;
 	}
-
+	//下级分润表格导出
 	@ResponseBody
 	@RequestMapping(params = "type=exportExcel")
 	public String exportExcel(ProfitUserDomain profitUserDomain, HttpServletResponse httpServletResponse)
@@ -327,7 +328,7 @@ public class ProfitAction extends BaseAction {
 
 		return null;
 	}
-
+	
 	/**
 	 * 根据商户查询分润//有问题
 	 * 

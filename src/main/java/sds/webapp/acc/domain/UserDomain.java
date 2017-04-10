@@ -87,14 +87,23 @@ public class UserDomain extends Page<UserDomain> implements MybatisEntity, StmEl
 	private String realName;//商户名称 2017.4.3增加
 	private String tjName;//推荐人增加 2017.4.3
 	private String tjAccount;//推荐人手机号增加2017.4.3
-	private BigDecimal amount; //增加显示金额功能 2017.4.3
+	private Double amount; //增加显示金额功能 2017.4.3
+	private Date date;//增加提现日期功能 2017.4.8
 	
 	
-	public BigDecimal getAmount() {
+	public Date getDate() {
+		return date;
+	}
+
+	public void setDate(Date date) {
+		this.date = date;
+	}
+
+	public Double getAmount() {
 		return amount;
 	}
 
-	public void setAmount(BigDecimal amount) {
+	public void setAmount(Double amount) {
 		this.amount = amount;
 	}
 	

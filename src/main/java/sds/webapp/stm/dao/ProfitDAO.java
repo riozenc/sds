@@ -75,4 +75,5 @@ public class ProfitDAO extends AbstractTransactionDAOSupport implements BaseDAO<
 	public List<ProfitDomain> getProfitByUser(ProfitDomain profitDomain) {
 		return getPersistanceManager().find(getNamespace() + ".getProfitByUser", profitDomain);
 	}
+
 }

@@ -31,4 +31,7 @@ public interface ProfitService extends BaseService<ProfitDomain> {
 
 	public List<ProfitDomain> getProfitByUser(ProfitDomain profitDomain);
 
+
+	
+
 }

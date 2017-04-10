@@ -199,5 +199,4 @@ public class ProfitServiceImpl implements ProfitService {
 		// TODO Auto-generated method stub
 		return profitDAO.getProfitByUser(profitDomain);
 	}
-
 }

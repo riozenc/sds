@@ -11,6 +11,7 @@ import com.riozenc.quicktool.annotation.TransactionDAO;
 import com.riozenc.quicktool.mybatis.dao.AbstractTransactionDAOSupport;
 import com.riozenc.quicktool.mybatis.dao.BaseDAO;
 
+import sds.webapp.stm.domain.ProfitUserDomain;
 import sds.webapp.stm.domain.WithdrawalsDomain;
 
 @TransactionDAO
@@ -50,4 +51,8 @@ public class WithdrawalsDAO extends AbstractTransactionDAOSupport implements Bas
 		return getPersistanceManager().find(getNamespace() + ".getwithdrawals", withdrawalsDomain);
 	}
 
+	public List<WithdrawalsDomain> findAmountExcel(WithdrawalsDomain withdrawalsDomain) {
+		// TODO Auto-generated method stub
+		return getPersistanceManager().find(getNamespace() + ".findAmountExcel",withdrawalsDomain);
+	}
 }

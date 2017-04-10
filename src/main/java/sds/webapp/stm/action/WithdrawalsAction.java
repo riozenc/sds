@@ -5,9 +5,12 @@
 **/
 package sds.webapp.stm.action;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+
+import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -17,11 +20,14 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.riozenc.quicktool.common.util.json.JSONUtil;
 
+import sds.common.excel.ExcelUtils;
 import sds.common.json.JsonGrid;
 import sds.common.json.JsonResult;
 import sds.common.security.util.UserUtils;
 import sds.common.webapp.base.action.BaseAction;
 import sds.webapp.acc.domain.MerchantDomain;
+import sds.webapp.acc.domain.UserDomain;
+import sds.webapp.stm.domain.ProfitUserDomain;
 import sds.webapp.stm.domain.WithdrawalsDomain;
 import sds.webapp.stm.service.WithdrawalsService;
 
@@ -128,4 +134,14 @@ public class WithdrawalsAction extends BaseAction {
 	public String export() {
 		return null;
 	}
+	//提现表格导出
+		@ResponseBody
+		@RequestMapping(params = "type=exportExcelAmount")
+		public String exportExcelAmount(WithdrawalsDomain withdrawalsDomain, HttpServletResponse httpServletResponse)
+				throws IOException {
+			List<WithdrawalsDomain> list = withdrawalsService.findAmountExcel(withdrawalsDomain);
+			ExcelUtils.exportExcel(list, httpServletResponse);
+			return null;
+		}
+
 }

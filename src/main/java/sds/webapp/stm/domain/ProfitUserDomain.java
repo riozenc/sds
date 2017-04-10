@@ -31,6 +31,55 @@ public class ProfitUserDomain extends Page<ProfitUserDomain> implements MybatisE
 	private String jsLhno;
 	private String agentName;// 代理商全称
 	private String cmer;//下级分润中的人名
+	private Double amount;//2017.4.7日增加为显示提现金额
+	
+
+	private Integer merchantId;
+	private String operator;
+	private Double balance;
+	private String realName;
+	
+	
+	
+	public String getRealName() {
+		return realName;
+	}
+
+	public void setRealName(String realName) {
+		this.realName = realName;
+	}
+
+	public Integer getMerchantId() {
+		return merchantId;
+	}
+
+	public void setMerchantId(Integer merchantId) {
+		this.merchantId = merchantId;
+	}
+
+	public String getOperator() {
+		return operator;
+	}
+
+	public void setOperator(String operator) {
+		this.operator = operator;
+	}
+
+	public Double getBalance() {
+		return balance;
+	}
+
+	public void setBalance(Double balance) {
+		this.balance = balance;
+	}
+
+	public Double getAmount() {
+		return amount;
+	}
+
+	public void setAmount(Double amount) {
+		this.amount = amount;
+	}
 
 	public String getCmer() {
 		return cmer;

@@ -31,6 +31,18 @@ public class WithdrawalsDomain extends Page<WithdrawalsDomain> implements Mybati
 	private Date endDate;
 	private String account;
 	private Double balance;
+	private String realName;//2017.4.10增加显示提现明细人
+
+	
+
+
+	public String getRealName() {
+		return realName;
+	}
+
+	public void setRealName(String realName) {
+		this.realName = realName;
+	}
 
 	public Double getBalance() {
 		return balance;

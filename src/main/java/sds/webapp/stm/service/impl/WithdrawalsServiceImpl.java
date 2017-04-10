@@ -14,6 +14,7 @@ import com.riozenc.quicktool.annotation.TransactionService;
 import sds.webapp.stm.dao.ProfitMerchantDAO;
 import sds.webapp.stm.dao.WithdrawalsDAO;
 import sds.webapp.stm.domain.ProfitMerchantDomain;
+import sds.webapp.stm.domain.ProfitUserDomain;
 import sds.webapp.stm.domain.WithdrawalsDomain;
 import sds.webapp.stm.service.WithdrawalsService;
 import sds.webapp.stm.util.SettlementHandler;
@@ -79,4 +80,12 @@ public class WithdrawalsServiceImpl implements WithdrawalsService {
 		// TODO Auto-generated method stub
 		return withdrawalsDAO.getwithdrawals(withdrawalsDomain);
 	}
+
+	@Override
+	//这个方法用来导出提现金额明细
+	public List<WithdrawalsDomain> findAmountExcel(WithdrawalsDomain withdrawalsDomain) {
+		// TODO Auto-generated method stub
+		 return withdrawalsDAO.findAmountExcel(withdrawalsDomain);
+	}
+
 }
