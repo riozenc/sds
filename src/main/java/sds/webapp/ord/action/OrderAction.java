@@ -134,7 +134,7 @@ public class OrderAction extends BaseAction {
 
 		MerchantDomain merchantDomain = UserUtils.getPrincipal().getMerchantDomain();
 
-		if (merchantDomain.getCodePayUrl() == null) {
+		if (merchantDomain.getCodePayUrl() == null || "".equals(merchantDomain.getCodePayUrl())) {
 			// MerchantDomain merchantDomain = new MerchantDomain();
 			// merchantDomain.setId(40);
 
