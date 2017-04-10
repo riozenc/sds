@@ -87,8 +87,8 @@
 
 		</where>
 	</delete>
-	
-	
+
+
 	<select id="findAmountExcel" parameterType="WithdrawalsDomain"
 		resultType="WithdrawalsDomain" useCache="true">
 		SELECT
@@ -99,7 +99,8 @@
 		fm_withdrawals.operator,
 		fm_withdrawals.`status`,
 		fm_merchant.account,
-		fm_merchant.real_name as realName,
+		fm_merchant.real_name as
+		realName,
 		fm_merchant.cmer,
 		fm_merchant.`status`,
 		fm_balance_merchant.balance
@@ -107,18 +108,12 @@
 		fm_withdrawals ,
 		fm_merchant ,
 		fm_balance_merchant
-		WHERE
-		fm_withdrawals.merchant_id = fm_merchant.id AND
-		fm_balance_merchant.target_id = fm_withdrawals.merchant_id
 		<where>
-			<if test="id !=null">
-				and ID = #{id}
-			</if>
-			<if test="merchantId !=null">
-				and MERCHANT_ID = #{merchantId}
-			</if>
-			<if test="amount !=null">
-				and AMOUNT = #{amount}
+			fm_withdrawals.merchant_id = fm_merchant.id
+			AND
+			fm_balance_merchant.target_id = fm_withdrawals.merchant_id
+			<if test="account !=null">
+				and fm_merchant.ACCOUNT = #{account}
 			</if>
 
 			<if test="startDate !=null">
@@ -130,11 +125,8 @@
 				DATE_FORMAT(#{endDate}, '%Y-%m-%d')
 			</if>
 
-			<if test="operator !=null">
-				and OPERATOR = #{operator}
-			</if>
 			<if test="status !=null">
-				and STATUS = #{status}
+				and fm_withdrawals.STATUS = #{status}
 			</if>
 		</where>
 	</select>
@@ -157,34 +149,25 @@
 		fm_withdrawals ,
 		fm_merchant ,
 		fm_balance_merchant
-		WHERE
-		fm_withdrawals.merchant_id = fm_merchant.id AND
-		fm_balance_merchant.target_id = fm_withdrawals.merchant_id
 		<where>
-			<if test="id !=null">
-				and ID = #{id}
-			</if>
-			<if test="merchantId !=null">
-				and MERCHANT_ID = #{merchantId}
-			</if>
-			<if test="amount !=null">
-				and AMOUNT = #{amount}
+			fm_withdrawals.merchant_id = fm_merchant.id AND
+			fm_balance_merchant.target_id = fm_withdrawals.merchant_id
+			<if test="account !=null">
+				and fm_merchant.account = #{account}
 			</if>
 
 			<if test="startDate !=null">
-				and DATE_FORMAT(DATE, '%Y-%m-%d') &gt;=
+				and DATE_FORMAT(fm_withdrawals.DATE, '%Y-%m-%d') &gt;=
 				DATE_FORMAT(#{startDate}, '%Y-%m-%d')
 			</if>
 			<if test="endDate !=null">
-				and DATE_FORMAT(DATE, '%Y-%m-%d') &lt;=
+				and DATE_FORMAT(fm_withdrawals.DATE, '%Y-%m-%d') &lt;=
 				DATE_FORMAT(#{endDate}, '%Y-%m-%d')
 			</if>
 
-			<if test="operator !=null">
-				and OPERATOR = #{operator}
-			</if>
+
 			<if test="status !=null">
-				and STATUS = #{status}
+				and fm_withdrawals.STATUS = #{status}
 			</if>
 		</where>
 	</select>
