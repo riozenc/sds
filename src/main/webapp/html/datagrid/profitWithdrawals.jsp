@@ -3,6 +3,29 @@
 <script type="text/javascript">
 
 $(function() {
+	$("#downloadExcel").bind("click",function(){
+		var startDate = $("#startDate").val();
+		var endDate = $("#endDate").val();
+		
+		var form = $("<form>");
+		form.attr("style","display:none");
+		form.attr("target","");
+		form.attr("method","post");
+		form.attr("action","withdrawals.do?type=exportExcelAmount");
+		var input1 = $("<input>");
+		input1.attr("type","hidden");
+		input1.attr("name","startDate");
+		input1.attr("value",startDate);
+		var input2 = $("<input>");
+		input2.attr("type","hidden");
+		input2.attr("name","endDate");
+		input2.attr("value",endDate);
+		$("body").append(form);
+		form.append(input1);
+		form.append(input2);
+		form.submit();
+		form.remove();
+	});
 		
 	$('#withdrawals_datagrid').datagrid({
 	    height: '100%',
@@ -45,6 +68,8 @@ $(function() {
 	            		return "已提现";
 	            	}else if(value ==2){
 	            		return "被驳回";
+	            	}else if(value ==3){
+	            		return "报表导出";
 	            	}
 	                
 	            }
@@ -73,8 +98,12 @@ function dialog_withdrawals(Id,merchantId,Amount,Account,Balance){
 	    	$("#withdrawals_Balance").val(Balance);
 	    }
 	});
-	
 }
+function fulsh(){
+	BJUI.navtab('reload', '')
+}
+
+
 </script>
 <div class="bjui-pageHeader" style="background-color:#fefefe; border-bottom:none;">
 <form data-toggle="ajaxsearch" data-options="{searchDatagrid:$.CurrentNavtab.find('#withdrawals_datagrid')}">
@@ -91,6 +120,7 @@ function dialog_withdrawals(Id,merchantId,Amount,Account,Balance){
             <div class="btn-group">
                 <button type="submit" class="btn-green" data-icon="search">开始搜索</button>
                 <button type="reset" class="btn-orange" data-icon="times">重置</button>
+                <button type="button" class="btn btn-green" data-icon="download" id="downloadExcel" onclick="fulsh()">导出列表</button>
             </div>
         </div>
     </fieldset>
