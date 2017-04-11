@@ -7,20 +7,20 @@ $(function() {
 	$("#agType_div").hide();
 	$("#agType").change(function(){
 		if($("#agType").val() == "个体户"){
-			$("#agType_div").hide();
+			$("#agType_div").hide()
 		}else{
-			$("#agType_div").show();
+			$("#agType_div").show()
 		}
 	});
 	//提交
 	$("#submitSave").bind("click",function(){
+
 		BJUI.ajax('ajaxform', {
 		    url: 'user.do?type=insert',
 		    form: $('#j_userAdd_form'),
 		    validate: true,
 		    loadingmask: true,
 		    okCallback: function(json, options) {
-		       
 		        $("#submitSave").unbind("click");
 		        BJUI.navtab('refresh', 'userAdd');  //刷新
 		    }
@@ -90,21 +90,23 @@ $(function() {
 				
 			</select>
             </div>
+            
+            
             <label class="row-label">公司地址</label>
             <div class="row-input">
-                <input type="text" value="" name="agAddress" data-rule="required">
+                <input type="text" value="" name="agAddress" data-rule="novalidate">
             </div>
             <label class="row-label">法人姓名</label>
             <div class="row-input">
-                <input type="text" value="" name="regName" data-rule="required">
+                <input type="text" value="" name="regName" data-rule="novalidate">
             </div>
             <label class="row-label">身份证号</label>
             <div class="row-input">
-                <input type="text" value="" name="regCard" data-rule="required">
+                <input type="text" value="" name="regCard" data-rule="novalidate">
             </div>
             <label class="row-label">身份证地址</label>
             <div class="row-input">
-                <input type="text" value="" name="regAddress" data-rule="required">
+                <input type="text" value="" name="regAddress" data-rule="novalidate">
             </div>
             
             <label class="row-label">成立日期</label>
@@ -113,30 +115,32 @@ $(function() {
             </div>
             <label class="row-label">经营范围</label>
             <div class="row-input">
-                <input type="text" value="" name="regExt" data-rule="required">
+                <input type="text" value="" name="regExt" data-rule="novalidate">
             </div>
             <div id="agType_div">
             <label class="row-label">营业执照编号</label>
             <div class="row-input">
-                <input type="text" value="" name="regNo" id="regNo" data-rule="required">
+                <input type="text" value="" name="regNo" id="regNo" data-rule="novalidate">
             </div>
             <label class="row-label">营业期限</label>
             <div class="row-input">
-                <input type="text" value="" name="busTerm" id="busTerm" data-rule="required">
+                <input type="text" value="" name="busTerm" id="busTerm" data-rule="novalidate">
             </div>
             <label class="row-label">注册资本</label>
             <div class="row-input">
-                <input type="text" value="" name="regMoney" data-rule="required">
+                <input type="text" value="" name="regMoney" data-rule="novalidate">
             </div>
             <label class="row-label">机构组织代码</label>
             <div class="row-input">
-                <input type="text" value="" name="busAno" id="busAno" data-rule="required">
+                <input type="text" value="" name="busAno" id="busAno" data-rule="novalidate">
             </div>
             <label class="row-label">税务登记号</label>
             <div class="row-input">
-                <input type="text" value="" name="busSno" id="busSno"  data-rule="required">
+                <input type="text" value="" name="busSno" id="busSno"  data-rule="novalidate">
             </div>
             </div>
+            
+            
             <hr>
             <label class="row-label">微信成本费率</label>
             <div class="row-input">
