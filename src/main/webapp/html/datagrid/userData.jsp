@@ -58,10 +58,7 @@ $(function() {
 	            name: 'parentName',
 	            label: '上级名称',
 	            align: 'center',
-	            width:125,
-	            	render: function(value,data) {
-	            		return '<a href="javascript:;"   onclick="dialog_user('+data.parentId+');">'+value+'</a>';
-	            	}
+	            width:125
 	        },
 	        {
 	            name: 'status',
@@ -108,7 +105,7 @@ function dialog_user(id) {
 	$.ajax({
 		cache : false,
 		type : "POST",
-		url : "user.do?type=findUserByWhere",
+		url : "user.do?type=findUserByKey",
 		data : {id:id} ,
 		dataType : "json",
 		error : function(request) {
@@ -126,12 +123,12 @@ function dialog_user(id) {
 			    	var selector=$('<select id="parentId" name="parentId" ></select>');  
 			    	selector.append('<option value="0">管理员</option>');  
 					
-					for(var i=0;i< selectorData.length;i++){   
+			    	for(var i=0;i< selectorData.length;i++){
 					  selector.append('<option value="'+selectorData[i].id+'">'+selectorData[i].fullName+'</option>');  
-					}
+					     };
 					console.info(selector);
 					$("#parentSel").append(selector);
-			    	$.each(data.list[0], function(key, obj) {
+			    	$.each(data, function(key, obj) {
 			    		$("#"+key).val(obj);
 					});
 			    }
