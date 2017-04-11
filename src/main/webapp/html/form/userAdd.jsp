@@ -65,7 +65,7 @@ $(function() {
             </div>
             <label class="row-label">推广码</label>
             <div class="row-input">
-                <input type="text" id="roid1" value="" name="appCode" data-rule="required">
+                <input type="text" id="roid1" value="" name="appCode" readOnly="true" data-rule="required">
             </div>
             <label class="row-label " >系统密码</label>
             <div class="row-input required">
@@ -87,26 +87,23 @@ $(function() {
             <select name="agType"  id="agType">
             	<option value="个体户" selected>个体户</option>
 				<option value="有限责任公司">有限责任公司</option>
-				
 			</select>
             </div>
-            
-            
             <label class="row-label">公司地址</label>
             <div class="row-input">
-                <input type="text" value="" name="agAddress" data-rule="novalidate">
+                <input type="text" value="" name="agAddress" data-rule="required">
             </div>
             <label class="row-label">法人姓名</label>
             <div class="row-input">
-                <input type="text" value="" name="regName" data-rule="novalidate">
+                <input type="text" value="" name="regName" data-rule="required">
             </div>
             <label class="row-label">身份证号</label>
             <div class="row-input">
-                <input type="text" value="" name="regCard" data-rule="novalidate">
+                <input type="text" value="" name="regCard" data-rule="required">
             </div>
             <label class="row-label">身份证地址</label>
             <div class="row-input">
-                <input type="text" value="" name="regAddress" data-rule="novalidate">
+                <input type="text" value="" name="regAddress" data-rule="required">
             </div>
             
             <label class="row-label">成立日期</label>
@@ -115,8 +112,10 @@ $(function() {
             </div>
             <label class="row-label">经营范围</label>
             <div class="row-input">
-                <input type="text" value="" name="regExt" data-rule="novalidate">
+                <input type="text" value="" name="regExt" data-rule="required">
             </div>
+            
+            
             <div id="agType_div">
             <label class="row-label">营业执照编号</label>
             <div class="row-input">
@@ -251,17 +250,16 @@ $(function() {
                 <input type="text" value="0.5" name="tjRate" data-rule="required">
             </div>
         </div>
+        
         </form>
-    </div>
-    
-    <div class="bs-callout bs-callout-info">
-        <h4>联行号<code></code></h4>
-        <p><a href="https://www.hebbank.com/corporbank/otherBankQueryWeb.do"  target="_blank">银行联行号在线查询</a></p>
+       <HR style="FILTER: alpha(opacity=100,finishopacity=0,style=2)" width="100%"SIZE=10>
+        <div class="bjui-pageFooter">
+    		<ul>
+        		<li><button type="button" class="btn-close" data-icon="close">关闭</button></li>
+        		<li><button id="submitSave" class="btn-default" data-icon="save" >保存</button></li>
+    		</ul>
+		</div>
+
     </div>
 </div>
-<div class="bjui-pageFooter">
-    <ul>
-        <li><button type="button" class="btn-close" data-icon="close">关闭</button></li>
-        <li><button id="submitSave" class="btn-default" data-icon="save" >保存</button></li>
-    </ul>
-</div>
+

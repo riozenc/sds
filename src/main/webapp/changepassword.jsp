@@ -21,6 +21,8 @@ function onchangePass(){
 				console.info(data);
 				
 				BJUI.alertmsg('ok',data.message);
+				BJUI.dialog('closeCurrent');
+				
 			}
 		});
 	}

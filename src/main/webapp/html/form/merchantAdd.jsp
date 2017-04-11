@@ -17,20 +17,17 @@ $.ajax({
 	success : function(data) {
 		var selectorData=data.list;
 		var selector=$('<select  name="agentId" ></select>');  
-		selector.append('<option value="0">管理员</option>');  
 
-		for(var i=0;i< selectorData.length;i++){   
-		  selector.append('<option value="'+selectorData[i].id+'">'+selectorData[i].fullName+'</option>');  
-		}
+		  selector.append('<option value="'+selectorData[0].id+'">'+selectorData[0].fullName+'</option>');  
+		  for(var i=0;i< selectorData.length;i++){ }
 		$("#parentSel").append(selector);
-		alert("该功能需优化");
-		
+
 	}
 });
 function save(){
 
 	BJUI.ajax('ajaxform', {
-	    url: 'merchant.do?type=insert',
+	    url: 'merchant.do?type=register',
 	    form: $('#j_custom_form'),
 	    validate: true,
 	    loadingmask: true,
