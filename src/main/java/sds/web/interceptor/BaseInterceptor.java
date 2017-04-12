@@ -17,6 +17,7 @@ import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
 
 import com.riozenc.quicktool.common.util.date.DateUtil;
+import com.riozenc.quicktool.common.util.http.HttpUtils;
 import com.riozenc.quicktool.common.util.json.JSONUtil;
 import com.riozenc.quicktool.common.util.log.ExceptionLogUtil;
 import com.riozenc.quicktool.common.util.log.LogUtil;
@@ -55,9 +56,9 @@ public class BaseInterceptor extends HandlerInterceptorAdapter {
 			// "text/html;charset=UTF-8");
 			// httpServletResponse.getWriter().println(ExceptionLogUtil.log(exception));
 			httpServletResponse.getWriter().close();
-
+			
 			LogUtil.getLogger(LOG_TYPE.ERROR)
-					.error("[" + DateUtil.formatDateTime(new Date()) + "]{" + httpServletRequest.getRemoteAddr()
+					.error("[" + DateUtil.formatDateTime(new Date()) + "]{" + HttpUtils.getRemoteAddr(httpServletRequest)
 							+ "} 执行" + getClassMethod(object) + "[" + httpServletRequest.getMethod() + "]:"
 							+ ExceptionLogUtil.log(exception));
 		}
@@ -80,7 +81,7 @@ public class BaseInterceptor extends HandlerInterceptorAdapter {
 			// httpServletResponse.getWriter().close();
 			//
 			// LogUtil.getLogger(LOG_TYPE.OTHER)
-			// .info("[" + httpServletRequest.getRemoteAddr() + "]" +
+			// .info("[" + HttpUtils.getRemoteAddr(httpServletRequest) + "]" +
 			// modelAndView.getModel().get("json"));
 		}
 		System.out.println("postHandler");
@@ -94,7 +95,7 @@ public class BaseInterceptor extends HandlerInterceptorAdapter {
 		// TODO Auto-generated method stub
 
 		LogUtil.getLogger(LOG_TYPE.OTHER)
-				.info("[" + DateUtil.formatDateTime(new Date()) + "]{" + httpServletRequest.getRemoteAddr() + "} 执行"
+				.info("[" + DateUtil.formatDateTime(new Date()) + "]{" + HttpUtils.getRemoteAddr(httpServletRequest) + "} 执行"
 						+ getClassMethod(object) + "[" + httpServletRequest.getMethod() + "]");
 
 		// if (RequestMethod.GET.name().equals(httpServletRequest.getMethod()))
