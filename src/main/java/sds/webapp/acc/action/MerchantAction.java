@@ -346,48 +346,50 @@ public class MerchantAction extends BaseAction {
 	public String checkMerchant(MerchantDomain merchantDomain) throws Exception {
 		UserDomain userDomain = UserUtils.getPrincipal().getUserDomain();
 
-		// merchantDomain = merchantService.findByKey(merchantDomain);
+		if (merchantDomain.getStatus() == 3) {// 审核通过
+			try {
+				MerchantDomain vm = merchantService.getVirtualMerchant(merchantDomain);
+				// 同步费率
+				vm.setWxRate(userDomain.getUserArate());
+				vm.setAliRate(userDomain.getUserArate());
+				RemoteResult remoteResult = RemoteUtils.process(vm, REMOTE_TYPE.CHANGE_RATE);
+				if (RemoteUtils.resultProcess(remoteResult)) {
+					merchantDomain.setWxRate(userDomain.getUserArate());
+					merchantDomain.setAliRate(userDomain.getUserWrate());
+					LogUtil.getLogger(LOG_TYPE.OTHER).info(merchantDomain.getAccount() + "[" + vm.getAccount() + "]"
+							+ "费率同步成功(" + userDomain.getUserArate() + "," + userDomain.getUserWrate() + ").");
+				} else {
+					return JSONUtil.toJsonString(new JsonResult(JsonResult.ERROR, remoteResult.getMsg()));
+				}
 
-		try {
-			MerchantDomain vm = merchantService.getVirtualMerchant(merchantDomain);
-
-			// 同步费率
-			vm.setWxRate(userDomain.getUserArate());
-			vm.setAliRate(userDomain.getUserArate());
-			RemoteResult remoteResult = RemoteUtils.process(vm, REMOTE_TYPE.CHANGE_RATE);
-			if (RemoteUtils.resultProcess(remoteResult)) {
-				merchantDomain.setWxRate(userDomain.getUserArate());
-				merchantDomain.setAliRate(userDomain.getUserWrate());
-				LogUtil.getLogger(LOG_TYPE.OTHER).info(merchantDomain.getAccount() + "[" + vm.getAccount() + "]"
-						+ "费率同步成功(" + userDomain.getUserArate() + "," + userDomain.getUserWrate() + ").");
-			} else {
-				return JSONUtil.toJsonString(new JsonResult(JsonResult.ERROR, remoteResult.getMsg()));
+				// if (merchantDomain.getUserType() != 2) {
+				// // ===根据等级进行分配虚拟账户
+				// ConfDomain confDomain =
+				// ConfAction.getConfig(ConfAction.MERCHANT_LEVEL_COUNT)
+				// .get(merchantDomain.getLevel().toString());
+				// for (int i = Integer.valueOf(confDomain.getValue()); i > 0;
+				// i--)
+				// {
+				// PoolBean bean = MerchantPool.getInstance().getPoolBean();
+				// bean.binding(merchantDomain);
+				// }
+				// } else {
+				// PoolBean bean = MerchantPool.getInstance().getPoolBean();
+				// bean.binding(merchantDomain);
+				// }
+			} catch (Exception e) {
+				e.printStackTrace();
+				return JSONUtil.toJsonString(new JsonResult(JsonResult.ERROR, e.getMessage()));
 			}
 
-			// if (merchantDomain.getUserType() != 2) {
-			// // ===根据等级进行分配虚拟账户
-			// ConfDomain confDomain =
-			// ConfAction.getConfig(ConfAction.MERCHANT_LEVEL_COUNT)
-			// .get(merchantDomain.getLevel().toString());
-			// for (int i = Integer.valueOf(confDomain.getValue()); i > 0; i--)
-			// {
-			// PoolBean bean = MerchantPool.getInstance().getPoolBean();
-			// bean.binding(merchantDomain);
-			// }
-			// } else {
-			// PoolBean bean = MerchantPool.getInstance().getPoolBean();
-			// bean.binding(merchantDomain);
-			// }
-		} catch (Exception e) {
-			e.printStackTrace();
-			return JSONUtil.toJsonString(new JsonResult(JsonResult.ERROR, e.getMessage()));
+			merchantService.update(merchantDomain);
+
+			return JSONUtil.toJsonString(new JsonResult(JsonResult.SUCCESS, "审核商户成功."));
+		} else {// 拒绝通过
+			merchantService.update(merchantDomain);//更新审核状态与失败原因
+			return JSONUtil.toJsonString(new JsonResult(JsonResult.SUCCESS, "商户审核已拒绝."));
 		}
 
-		// 判断费率
-		merchantDomain.setStatus(3);// 3审核成功
-		merchantService.update(merchantDomain);
-
-		return JSONUtil.toJsonString(new JsonResult(JsonResult.SUCCESS, "审核商户成功."));
 	}
 
 	/**
