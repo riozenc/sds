@@ -297,13 +297,26 @@ public class OrderAction extends BaseAction {
 	}
 
 	/**
-	 * 获取订单
+	 * 商户获取订单
 	 * 
 	 * @param orderDomain
 	 * @return
 	 */
 	@ResponseBody
-	@RequestMapping(params = "type=findOrder")
+	@RequestMapping(params = "type=getOrderByMerchant")
+	public String getOrderByMerchant(OrderDomain orderDomain) {
+		List<OrderDomain> list = orderService.getOrderByUser(orderDomain);
+		return JSONUtil.toJsonString(new JsonGrid(orderDomain, list));
+	}
+
+	/**
+	 * 代理商获取订单
+	 * 
+	 * @param orderDomain
+	 * @return
+	 */
+	@ResponseBody
+	@RequestMapping(params = "type=getOrderByUser")
 	public String getOrderByUser(OrderDomain orderDomain) {
 		orderDomain.setId(UserUtils.getPrincipal().getId());
 		List<OrderDomain> list = orderService.getOrderByUser(orderDomain);
