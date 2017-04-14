@@ -79,6 +79,7 @@ public class PoolBean {
 
 	/**
 	 * 回收
+	 * 目前只有验卡失败才会回收
 	 */
 	public void recover() {
 		this.recoverCount++;
