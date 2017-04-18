@@ -121,55 +121,21 @@
             </div>
             <label class="row-label">开户行</label>
             <div class="row-input">
-                <select name="jsBank" id="jsBank">
-                                    
-                    <option value="中国工商银行">中国工商银行</option>
+               <!--  <select name="jsBank" id="jsBank">-->
+                <input type="text" value="" name="jsBank" id="jsBank"data-rule="required">                  
+                  <!-- <option value=""></option>-->
                         
-                    <option value="中国农业银行">中国农业银行</option>
-                        
-                    <option value="中国银行">中国银行</option>
-                        
-                    <option value="中国建设银行">中国建设银行</option>
-                        
-                    <option value="交通银行">交通银行</option>
-                        
-                    <option value="中信银行">中信银行</option>
-                        
-                    <option value="中国光大银行">中国光大银行</option>
-                        
-                    <option value="华夏银行">华夏银行</option>
-                        
-                    <option value="中国民生银行">中国民生银行</option>
-                        
-                    <option value="平安银行">平安银行</option>
-                        
-                    <option value="招商银行">招商银行</option>
-                        
-                    <option value="兴业银行">兴业银行</option>
-                        
-                    <option value="上海浦东发展银行">上海浦东发展银行</option>
-                        
-                    <option value="盛京银行">盛京银行</option>
-                        
-                    <option value="恒丰银行">恒丰银行</option>
-                        
-                    <option value="浙商银行">浙商银行</option>
-                        
-                    <option value="渤海银行">渤海银行</option>
-                        
-                    <option value="徽商银行">徽商银行</option>
-                        
-                    <option value="上海农村商业银行">上海农村商业银行</option>
-                        
-                    <option value="中国邮政储蓄银行">中国邮政储蓄银行</option>
-                        
-                </select>
-                <input type="text" value="" name="jsBankadd" id="jsBankadd" style="width:250px" data-rule="required">
+               <!--</select>-->
+               <!-- <input type="text" value="" name="jsBankadd" id="jsBankadd" style="width:250px" data-rule="required">  -->
             </div>
             <label class="row-label">开户名</label>
             <div class="row-input">
                 <input type="text" value="" name="jsName" id="jsName"data-rule="required">
             </div>
+            <label class="row-label">开户支行</label>
+				<div class="row-input">
+					<input type="text" value="" name="jsBankadd" id="jsBankadd" data-rule="required">
+				</div>
             <label class="row-label">联行号</label>
             <div class="row-input">
                 <input type="text" value="" name="jsLhno" id="jsLhno"data-rule="required">

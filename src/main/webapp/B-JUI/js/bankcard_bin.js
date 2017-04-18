@@ -20,7 +20,7 @@ function getNameOfBank(idCard) {
 	if(index != -1) {
 	for(var j=0;j<sustainbankName.length;j++){
 			if(bankName[index].indexOf(sustainbankName[j])!=-1){
-				cacc = bankName[index];
+				cacc = sustainbankName[j];
 				$("#CACCBANK option:last").remove(); 
 				$("#CACCBANK").append("<option value='"+cacc+"'selected ='"+true+"'>"+cacc+"</option>");
 				return ;
@@ -38,7 +38,7 @@ function getNameOfBank(idCard) {
 	if(index != -1) {
 		for(var j=0;j<sustainbankName.length;j++){
 			if(bankName[index].indexOf(sustainbankName[j])!=-1){
-				cacc = bankName[index];
+				cacc = sustainbankName[j];
 				$("#CACCBANK").append("<option value='"+cacc+"'selected ='"+true+"'>"+cacc+"</option>");
 				return ;
 	

@@ -285,7 +285,7 @@ $(function() {
 				</div>
 				<label class="row-label">开户支行</label>
 				<div class="row-input">
-					<input type="text" value="" name="jsName" data-rule="required">
+					<input type="text" value="" name="jsBankadd" data-rule="required">
 				</div>
 				<label class="row-label">联行号</label>
 				<div class="row-input">

@@ -123,9 +123,9 @@ function dialog_user(id) {
 			    	var selector=$('<select id="parentId" name="parentId" ></select>');  
 			    	selector.append('<option value="0">管理员</option>');  
 					
-			    	for(var i=0;i< selectorData.length;i++){
-					  selector.append('<option value="'+selectorData[i].id+'">'+selectorData[i].fullName+'</option>');  
-					     };
+			    	//for(var i=0;i< selectorData.length;i++){
+					  selector.append('<option value="'+selectorData[0].id+'">'+selectorData[0].fullName+'</option>');  
+					   //  };
 					console.info(selector);
 					$("#parentSel").append(selector);
 			    	$.each(data, function(key, obj) {
