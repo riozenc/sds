@@ -2,16 +2,20 @@
     pageEncoding="UTF-8"%>
 <script type="text/javascript">
 function save(){
+	var obj=document.getElementById('status'); 
+	var index = obj.selectedIndex;
+	if(index==-1){
+		return alert("未审核")
+	}
 	BJUI.ajax('ajaxform', {
 	    url: 'merchant.do?type=checkMerchant',
-
 	    form: $('#j_merchantVerify_form'),
 	    validate: true,
 	    loadingmask: true,
 	    okCallback: function(json, options) {
 	    	BJUI.dialog('close', 'merchantVerify');      //关闭
 	    	BJUI.navtab('refresh', 'merchantData');    //刷新
-	       
+	    	
 	    }
 	})
 }
@@ -120,13 +124,12 @@ function save(){
 	            <label class="row-label ">身份证背面</label>
 	         </div>
             </div>
-            <label class="row-label " >审核</label>
+            <label class="row-label ">审核</label>
             <div class="row-input ">
             	<select id="status"  name="status">
-            		<option value="3">审核成功</option>
+            		<option value="3" selected ="selected">审核成功</option>
             		<option value="4">审核失败</option>
             	</select>
-                
             </div>
             <label class="row-label " >审核原因</label>
             <div class="row-input ">
