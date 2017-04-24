@@ -42,6 +42,7 @@
 <![endif]-->
 <!-- B-JUI -->
 <script src="B-JUI/js/bjui-all.min.js"></script>
+<script src="B-JUI/js/bankcard_bin.js"></script>
 <!-- plugins -->
 <!-- swfupload for kindeditor -->
 <script src="B-JUI/plugins/swfupload/swfupload.js"></script>
@@ -198,15 +199,12 @@ $.ajax({
                     <li><a href="#"></a></li>
                     <li><a href="changepassword.jsp" data-toggle="dialog" data-id="sys_user_changepass" data-mask="true" data-width="400" data-height="300">修改密码</a></li>
                     <li><a href="javascript:;"  onclick="outLogin()" style="font-weight:bold;">&nbsp;<i class="fa fa-power-off"></i> 注销登陆</a></li>
-                    <li class="dropdown"><a href="#" class="dropdown-toggle bjui-fonts-tit" data-toggle="dropdown" title="更改字号"><i class="fa fa-font"></i> 大</a>
+                    <li class="dropdown"><a href="#" class="dropdown-toggle bjui-fonts-tit" data-toggle="dropdown"><i class="fa fa-font"></i></a>
                         <ul class="dropdown-menu" role="menu" id="bjui-fonts">
-                            <li><a href="javascript:;" class="bjui-font-a" data-toggle="fonts"><i class="fa fa-font"></i> 特大</a></li>
-                            <li><a href="javascript:;" class="bjui-font-b" data-toggle="fonts"><i class="fa fa-font"></i> 大</a></li>
-                            <li><a href="javascript:;" class="bjui-font-c" data-toggle="fonts"><i class="fa fa-font"></i> 中</a></li>
-                            <li><a href="javascript:;" class="bjui-font-d" data-toggle="fonts"><i class="fa fa-font"></i> 小</a></li>
+                            <li><a href="javascript:;" class="bjui-font-c" data-toggle="fonts"> </a></li>
                         </ul>
                     </li>
-                    <li class="dropdown active"><a href="#" class="dropdown-toggle theme" data-toggle="dropdown" title="切换皮肤"><i class="fa fa-tree"></i></a>
+                    <li class="dropdown active">
                         <ul class="dropdown-menu" role="menu" id="bjui-themes">
                             <!-- 
                             <li><a href="javascript:;" class="theme_default" data-toggle="theme" data-theme="default">&nbsp;<i class="fa fa-tree"></i> 黑白分明&nbsp;&nbsp;</a></li>

@@ -28,7 +28,7 @@ $(function() {
 	});
 		
 	$('#withdrawals_datagrid').datagrid({
-	    height: '100%',
+	    height: '95%',
 	    tableWidth:'99%',
 	    gridTitle : ' ',
 	    local: 'remote',
@@ -76,7 +76,7 @@ $(function() {
 	        }
 	    ],
 	    
-	    paging:{pageSize:5,selectPageSize:'10,20,30'},
+	    paging:{pageSize:20,selectPageSize:'20,30,40'},
 	    showLinenumber: false,
 	    inlineEditMult: false
 	});

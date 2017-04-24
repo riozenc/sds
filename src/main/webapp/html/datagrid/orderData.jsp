@@ -5,7 +5,7 @@
 $(function() {
 		
 	$('#order_datagrid').datagrid({
-	    height: '100%',
+	    height: '95%',
 	    tableWidth:'99.5%',
 	    gridTitle : ' ',
 	    local: 'remote',
@@ -89,7 +89,7 @@ $(function() {
 	    
 	    delUrl:'order.do?type=delete',
 	    delPK:'id',
-	    paging:{pageSize:5,selectPageSize:'10,20,30'},
+	    paging:{pageSize:20,selectPageSize:'20,30,40'},
 	    showLinenumber: false,
 	    inlineEditMult: false
 	});

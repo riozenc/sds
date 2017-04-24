@@ -19,7 +19,7 @@ $.ajax({
 $(function() {
 		
 	$('#user_datagrid').datagrid({
-	    height: '100%',
+	    height: '95%',
 	    tableWidth:'99.5%',
 	    gridTitle : ' ',
 	    local: 'remote',
@@ -94,7 +94,7 @@ $(function() {
 	            }
 	        }
 	    ],
-	    paging:{pageSize:5,selectPageSize:'10,20,30'},
+	    paging:{pageSize:20,selectPageSize:'20,30,40'},
 	    showLinenumber: false,
 	    inlineEditMult: false
 	})
@@ -121,11 +121,11 @@ function dialog_user(id) {
 			    height:500,
 			    onLoad:function(){
 			    	var selector=$('<select id="parentId" name="parentId" ></select>');  
-			    	selector.append('<option value="0">管理员</option>');  
+			    	//selector.append('<option value="0">管理员</option>');  
 					
-			    	//for(var i=0;i< selectorData.length;i++){
-					  selector.append('<option value="'+selectorData[0].id+'">'+selectorData[0].fullName+'</option>');  
-					   //  };
+			    	for(var i=0;i< selectorData.length;i++){
+					  selector.append('<option value="'+selectorData[i].id+'">'+selectorData[i].fullName+'</option>');  
+					     };
 					console.info(selector);
 					$("#parentSel").append(selector);
 			    	$.each(data, function(key, obj) {

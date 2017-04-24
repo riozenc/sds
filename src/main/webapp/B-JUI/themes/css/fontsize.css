@@ -1,5 +1,5 @@
 @charset "utf-8";
-/*特大*/
+/*特大
 html.bjui-font-a body,
 html.bjui-font-a legend{font-size:22px;}
 html.bjui-font-a .bjui-header .navbar-nav > li > a{font-size:22px;}
@@ -75,9 +75,9 @@ html.bjui-font-a .bjui-paging-box > .paging-content > .datagrid-pagesize > .btn-
 html.bjui-font-a .bjui-paging-box{min-height:52px;}
 html.bjui-font-a .bjui-paging-box > .paging-content > span{height:44px;}
 html.bjui-font-a .bjui-paging-box > .paging-content > .paging-box > .pagination > li.btn-nav > a{width:40px;}
-html.bjui-font-a .bjui-paging-box > .paging-content > .paging-box > .pagination > li > span.page-input > input{width:50px !important; height:30px; font-size:20px;}
+html.bjui-font-a .bjui-paging-box > .paging-content > .paging-box > .pagination > li > span.page-input > input{width:50px !important; height:30px; font-size:20px;}*/
 
-/*大*/
+/*大
 html.bjui-font-b body,
 html.bjui-font-b legend{font-size:20px;}
 html.bjui-font-b .bjui-header .navbar-nav > li > a{font-size:20px;}
@@ -153,7 +153,7 @@ html.bjui-font-b .bjui-paging-box > .paging-content > .datagrid-pagesize > .btn-
 html.bjui-font-b .bjui-paging-box{min-height:50px;}
 html.bjui-font-b .bjui-paging-box > .paging-content > span{height:44px;}
 html.bjui-font-b .bjui-paging-box > .paging-content > .paging-box > .pagination > li.btn-nav > a{width:40px;}
-html.bjui-font-b .bjui-paging-box > .paging-content > .paging-box > .pagination > li > span.page-input > input{width:50px !important; height:27px; font-size:20px;}
+html.bjui-font-b .bjui-paging-box > .paging-content > .paging-box > .pagination > li > span.page-input > input{width:50px !important; height:27px; font-size:20px;}*/
 /*中*/
 html.bjui-font-c body,
 html.bjui-font-c legend{font-size:16px;}
@@ -165,62 +165,62 @@ html.bjui-font-c #bjui-navtab > .tabsPageHeader{height:32px;}
 html.bjui-font-c #bjui-navtab > .tabsPageHeader > .tabsPageHeaderContent{height:32px;}
 html.bjui-font-c #bjui-navtab > .tabsPageHeader > .tabsPageHeaderContent > ul{height:32px;}
 html.bjui-font-c #bjui-navtab > .tabsPageHeader > .tabsPageHeaderContent > ul > li > a{padding:4px 24px 4px 16px;}
-html.bjui-font-c #bjui-navtab > .tabsPageHeader > .tabsPageHeaderContent > ul > li > a > span{font-size:16px;}
-html.bjui-font-c #bjui-navtab > .tabsPageHeader > .tabsPageHeaderContent > ul > li span.close{font-size:16px;}
+html.bjui-font-c #bjui-navtab > .tabsPageHeader > .tabsPageHeaderContent > ul > li > a > span{font-size:12px;}
+html.bjui-font-c #bjui-navtab > .tabsPageHeader > .tabsPageHeaderContent > ul > li span.close{font-size:12px;}
 html.bjui-font-c #bjui-navtab > .tabsPageHeader > .tabsLeft, html.bjui-font-c #bjui-navtab > .tabsPageHeader > .tabsRight, html.bjui-font-c #bjui-navtab > .tabsPageHeader > .tabsMore{height:32px; line-height:1.78;}
 html.bjui-font-c #bjui-navtab > .tabsMoreList{top:31px;}
 html.bjui-font-c #bjui-navtab > .tabsMoreList > li a{height:30px; line-height:30px;}
 html.bjui-font-c #bjui-contextmenu li{height:26px; line-height:26px;}
-html.bjui-font-c .bjui-datagrid .datagrid-title{font-size:16px;}
-html.bjui-font-c .bjui-datagrid .table > thead > tr > th{padding-top:5px; padding-bottom:5px; font-size:16px;}
-html.bjui-font-c .bjui-datagrid .table > tbody > tr > td{padding:5px 7px; font-size:16px;}
+html.bjui-font-c .bjui-datagrid .datagrid-title{font-size:12px;}
+html.bjui-font-c .bjui-datagrid .table > thead > tr > th{padding-top:5px; padding-bottom:5px; font-size:12px;}
+html.bjui-font-c .bjui-datagrid .table > tbody > tr > td{padding:5px 7px; font-size:12px;}
 html.bjui-font-c ul.selectpicker > li{height:28px; font-size:16px; line-height:36px;}
 html.bjui-font-c .bootstrap-select.btn-group .btn .filter-option{line-height:1.4;}
-html.bjui-font-c .btn{height:28px; font-size:16px;}
+html.bjui-font-c .btn{height:28px; font-size:12px;}
 html.bjui-font-c .btn.btn-lg{height:40px;}
-html.bjui-font-c .form-control{height:28px; font-size:16px;}
+html.bjui-font-c .form-control{height:28px; font-size:12px;}
 html.bjui-font-c textarea.form-control{height:auto;}
 html.bjui-font-c .input-group-lg > .form-control,
 html.bjui-font-c .input-group-lg > .input-group-addon,
 html.bjui-font-c .input-group-lg > .input-group-btn > .btn{
     height: 46px;
     padding: 10px 16px;
-    font-size: 18px;
+    font-size: 12px;
     line-height: 1.3333333;
 }
 html.bjui-font-c .bjui-lookup{width:22px;}
-html.bjui-font-c .bjui-spinner{font-size:14px;}
+html.bjui-font-c .bjui-spinner{font-size:12px;}
 html.bjui-font-c #bjui-calendar{width:216px;}
 html.bjui-font-c #bjui-calendar > .main > .body > dl > dt, html.bjui-font-c #bjui-calendar > .main > .body > dl > dd{width:30px; height:24px; line-height:24px;}
-html.bjui-font-c #bjui-calendar > .main > .foot > .time td{font-size:14px; line-height:26px;}
+html.bjui-font-c #bjui-calendar > .main > .foot > .time td{font-size:12px; line-height:26px;}
 html.bjui-font-c #bjui-calendar > .main > .foot > .time .hh, html.bjui-font-c #bjui-calendar > .main > .foot > .time .mm, html.bjui-font-c #bjui-calendar > .main > .foot > .time .ss{
-    width:24px; height:26px; font-size:14px; line-height:26px;
+    width:24px; height:26px; font-size:12px; line-height:26px;
 }
-html.bjui-font-c #bjui-calendar > .main > .foot .btn{height:28px; font-size:14px;}
+html.bjui-font-c #bjui-calendar > .main > .foot .btn{height:28px; font-size:12px;}
 html.bjui-font-c #bjui-calendar > .main > .tm > .hh, html.bjui-font-c #bjui-calendar > .main > .tm > .mm, html.bjui-font-c #bjui-calendar > .main > .tm > .ss{width:182px;}
 html.bjui-font-c #bjui-calendar > .main > .tm > .hh > li, html.bjui-font-c #bjui-calendar > .main > .tm > .mm > li, html.bjui-font-c #bjui-calendar > .main > .tm > .ss > li{
-    width:30px; height:26px; font-size:14px; line-height:26px;
+    width:30px; height:26px; font-size:12px; line-height:26px;
 }
 html.bjui-font-c #bjui-calendar > .main > .foot > .time .up, html.bjui-font-c #bjui-calendar > .main > .foot > .time .down{height:13px;}
 html.bjui-font-c .bjui-row .row-label,
 html.bjui-font-c .bjui-row .row-input{
-    font-size:16px;
+    font-size:12px;
 }
-html.bjui-font-c .bjui-dialog > .dialogHeader h1{font-size:16px;}
-html.bjui-font-c .bjui-alert > .alertContent .alertInner > h1{padding-top:5px; padding-bottom:5px; height:30px; font-size:16px;}
-html.bjui-font-c .bjui-alert > .alertContent .alertInner > .msg{font-size:16px;}
-html.bjui-font-c .bjui-maskProgress{padding:2px 10px; width:280px; height:50px; font-size:16px;}
+html.bjui-font-c .bjui-dialog > .dialogHeader h1{font-size:12px;}
+html.bjui-font-c .bjui-alert > .alertContent .alertInner > h1{padding-top:5px; padding-bottom:5px; height:30px; font-size:12px;}
+html.bjui-font-c .bjui-alert > .alertContent .alertInner > .msg{font-size:12px;}
+html.bjui-font-c .bjui-maskProgress{padding:2px 10px; width:280px; height:50px; font-size:12px;}
 html.bjui-font-c .bjui-maskProgress > .progressBg{bottom:8px; width:260px;}
 html.bjui-font-c .bjui-datagrid .datagrid-box-h,
 html.bjui-font-c .bjui-datagrid .datagrid-box-h .btn,
 html.bjui-font-c .bjui-datagrid .datagrid-paging-box,
 html.bjui-font-c .bjui-datagrid .datagrid-paging-box .btn{
-    font-size:16px;
+    font-size:12px;/*设置分页按钮字体大小*/
 }
 html.bjui-font-c .bjui-datagrid .table > thead > tr.datagrid-filter th .form-control,
 html.bjui-font-c .bjui-datagrid .table > tbody > tr > td.datagrid-edit-td .form-control{
     height:28px;
-    font-size:16px;
+    font-size:12px;
 }
 html.bjui-font-c .bjui-paging-box > .paging-content > .datagrid-pagesize,
 html.bjui-font-c .bjui-paging-box > .paging-content > .datagrid-pagesize > .btn-refresh,
@@ -230,10 +230,10 @@ html.bjui-font-c .bjui-paging-box > .paging-content > .datagrid-pagesize > .btn-
 html.bjui-font-c .bjui-paging-box{min-height:42px;}
 html.bjui-font-c .bjui-paging-box > .paging-content > span{height:37px;}
 html.bjui-font-c .bjui-paging-box > .paging-content > .paging-box > .pagination > li.btn-nav > a{width:30px;}
-html.bjui-font-c .bjui-paging-box > .paging-content > .paging-box > .pagination > li > span.page-input > input{width:35px !important; height:23px; font-size:16px;}
+html.bjui-font-c .bjui-paging-box > .paging-content > .paging-box > .pagination > li > span.page-input > input{width:35px !important; height:23px; font-size:12px;}
 
-/*小*/
-html.bjui-font-d .bjui-datagrid .table > thead > tr > th{font-family:"Verdana", "Tahoma", "Lucida Grande", "SimSun", "Hiragino Sans GB", sans-serif;}
+/*小
+html.bjui-font-d .bjui-datagrid .table > thead > tr > th{font-family:"Verdana", "Verdana", "Lucida Grande", "SimSun", "Hiragino Sans GB", sans-serif;}*/
 
 /**/
 html.bjui-font-c .bjui-datagrid .table > tbody > tr > td{padding-left:1px; padding-right:1px;}
