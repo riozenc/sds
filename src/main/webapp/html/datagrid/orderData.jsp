@@ -12,7 +12,7 @@ $(function() {
 	    showToolbar: false,
 	    toolbarItem: 'del',
 	    filterThead:false,
-	    dataUrl:"order.do?type=getOrderByMerchant",
+	    dataUrl:"order.do?type=getOrderByUser",
 	    columns: [
 	         {
 	             name: 'orderId',
