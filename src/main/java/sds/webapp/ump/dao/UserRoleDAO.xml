@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="sds.webapp.ump.dao.UserRoleDAO">
+	<select id="findByKey" parameterType="UserRoleDomain"
+		resultType="UserRoleDomain" useCache="true">
+		select ID,USER_ID,ROLE_ID from fm_users_roles
+		<where>
+			and ID = #{id}
+
+		</where>
+	</select>
+	<select id="findByWhere" parameterType="UserRoleDomain"
+		resultType="UserRoleDomain" useCache="true">
+		select ID,USER_ID,ROLE_ID from fm_users_roles
+		<where>
+			<if test="id !=null">
+				and ID = #{id}
+			</if>
+			<if test="userId !=null">
+				and USER_ID = #{userId}
+			</if>
+			<if test="roleId !=null">
+				and ROLE_ID = #{roleId}
+			</if>
+		</where>
+	</select>
+	<insert id="insert" parameterType="UserRoleDomain" flushCache="true">
+		insert into fm_users_roles(ID,USER_ID,ROLE_ID) values
+		(#{id},#{userId},#{roleId})
+	</insert>
+	<update id="update" parameterType="UserRoleDomain" flushCache="true">
+		update fm_users_roles
+		<set>
+			<if test="userId !=null">
+				USER_ID = #{userId},
+			</if>
+			<if test="roleId !=null">
+				ROLE_ID = #{roleId},
+			</if>
+		</set>
+		<where>
+			and ID = #{id}
+
+		</where>
+	</update>
+	<delete id="delete" parameterType="UserRoleDomain" flushCache="true">
+		delete from fm_users_roles
+		<where>
+			and ID = #{id}
+
+		</where>
+	</delete>
+</mapper>
