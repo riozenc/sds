@@ -13,12 +13,26 @@ import javax.servlet.ServletException;
 import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
 
-public class RegisterCorsFilter implements Filter{
+public class RegisterCorsFilter implements Filter {
 
 	@Override
 	public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain)
 			throws IOException, ServletException {
 		// TODO Auto-generated method stub
+		
+		
+		// getRegisterVerificationCode
+		// registerMerchant
+		
+		
+		
+		
+		
+//		if(){
+//			httpServletResponse.addHeader("Access-Control-Allow-Origin", "*");
+//			httpServletResponse.addHeader("Access-Control-Allow-Methods", "POST, GET");
+//			httpServletResponse.addHeader("Access-Control-Allow-Headers", "Content-Type, Accept, Authorization, X-Requested-With, Origin");	
+//		}
 		
 		chain.doFilter(request, response);
 	}
