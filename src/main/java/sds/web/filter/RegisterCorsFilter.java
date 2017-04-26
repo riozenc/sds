@@ -37,14 +37,12 @@ public class RegisterCorsFilter implements Filter {
 		HttpServletRequest servletRequest = (HttpServletRequest) request;
 		HttpServletResponse servletResponse = (HttpServletResponse) response;
 		String path = servletRequest.getQueryString();
-		//System.out.println("路径信息"+path);
 		if(path.indexOf("getRegisterVerificationCode")!=-1||path.indexOf("register")!=-1){
 			servletResponse.addHeader("Access-Control-Allow-Origin", "*");
 			servletResponse.addHeader("Access-Control-Allow-Methods", "POST, GET");
 			servletResponse.addHeader("Access-Control-Allow-Headers", "Content-Type, Accept, Authorization, X-Requested-With, Origin");	
 		}
-		System.out.println(servletResponse.getHeader("Access-Control-Allow-Methods"));
-		chain.doFilter(servletRequest, servletResponse);
+		chain.doFilter(request, response);
 	}
 }
 
