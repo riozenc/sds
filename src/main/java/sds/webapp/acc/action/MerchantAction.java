@@ -560,5 +560,4 @@ public class MerchantAction extends BaseAction {
 			return JSONUtil.toJsonString(new JsonResult(JsonResult.ERROR, "上传图片失败."));
 		}
 	}
-
 }
