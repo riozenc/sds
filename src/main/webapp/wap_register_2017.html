@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<title>新用户注册</title>
+		<link href="css/mui.min.css" rel="stylesheet" />
+		<link rel="stylesheet" href="css/style_2017.css" />
+		<script src="js/jquery.min.js"></script>
+	</head>
+
+	<body>
+		<div class="mui-content">
+			<div class="friname">您最明智的好友 :&nbsp;
+				<span id="friphone"></span>
+			</div>
+			<input class="input-phone" type="number" placeholder="请输入您的手机号码" />
+			<input class="input-note-code" type="number" placeholder="请输入验证码" />
+			<div class="code-btn">
+				<img src="images/vertify.png" />
+			</div>
+			<input class="input-password" type="password" placeholder="请输入您密码" />
+			<input class="input-next-password" type="password" placeholder="请再次输入您的密码" />
+			<input id="appcode" class="input-next-appcode" type="text" placeholder="输入邀请码" />
+			<div class="rigister-agreement">注册即同意
+				<span>
+					<a href="register_deal.html">
+						《用户注册协议》
+					</a>
+				</span>
+			</div>
+			<img id="submit" src="images/btntj2017.png" />
+
+			<a href="http://a.app.qq.com/o/simple.jsp?pkgname=io.dcloud.H563E4791">
+				<img class="logopt" src="images/logopt2017.png" />
+				<div class="textbg">点此下载码付App哦～</div>
+			</a>
+		</div>
+		<script src="js/mui.min.js"></script>
+		<script type="text/javascript" src="js/castapp.js"></script>
+	</body>
+	<script type="text/javascript">
+		ca.init();
+		//用户推荐
+		var friPhone = mui('#friphone')[0];
+		//手机号码
+		var userPhone = mui('.input-phone')[0];
+		//短信验证码
+		var noteCode = mui('.input-note-code')[0];
+		//第一次输入密码
+		var userPwd = mui('.input-password')[0];
+		//第二次刷入密码
+		var userPwdCopy = mui('.input-next-password')[0];
+		//验证码
+		var appcode = mui('#appcode')[0];
+
+		/**
+		 * 截取用户推荐信息的方法
+		 * 
+		 * @param {Object} name
+		 */
+		function GetQueryString(name) {
+			var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)");
+			var r = window.location.search.substr(1).match(reg);
+			if(r != null) {
+				mui('#appcode')[0].value = 'UA' + unescape(r[2]);
+				return replacePhone(unescape(r[2]));
+			}
+			return null;
+		};
+
+		/**
+		 * 邀请好友电话显示
+		 */
+		friPhone.innerHTML = GetQueryString("p");
+
+		/**
+		 * 获取短信验证码
+		 */
+		var onoff = true;
+		mui('.code-btn')[0].addEventListener('tap', function() {
+			var userPhone = mui('.input-phone')[0].value;
+			var num = 60;
+			if(userPhone.length != 11) {
+				mui.toast('请输入正确的手机号码');
+				return;
+			} else {
+				if(!onoff) {
+					return;
+				}
+				var timer = setInterval(function() {
+					num--;
+					if(num < 1) {
+						mui('.code-btn')[0].innerHTML = '<img src="images/vertify.png" />';
+						onoff = true;
+						clearInterval(timer); //清除验证码
+						onoff = true;
+					} else {
+						mui('.code-btn')[0].innerHTML = num + 's';
+						onoff = false;
+					}
+				}, 1000);
+				$.ajax({
+					url: "http://gk.marketpay.cn/sds/merchant.do?type=getRegisterVerificationCode",
+					crossDomain:true,
+					data: {
+						account: userPhone
+					},
+					type: "POST",
+					success: function(data) {
+						data = data.toString();
+						if(data.indexOf(',0') > 0) {
+							alert("验证码已发送,60秒后可重新获取");
+						}
+					}
+				});
+			}
+		});
+		/**
+		 * 给手机号加"*"号的方法
+		 * 
+		 * @param {Object} phone
+		 */
+		function replacePhone(phone) {
+			var length = phone.length;
+			if(length >= 11) {
+				var first = phone.substring(0, 4);
+				var last = phone.substring(length - 4, length);
+				var middle = '';
+				for(var i = 0; i < length - 8; i++) {
+					middle += "*";
+				}
+				return first + middle + last;
+			}
+			return phone;
+		}
+
+		//注册操作
+		mui('#submit')[0].addEventListener('tap', function() {
+			//获取元素
+			var userPhone = mui('.input-phone')[0].value;
+			var userCod = mui('.input-note-code')[0].value;
+			var userPwd = mui('.input-password')[0].value;
+			var userPwdCopy = mui('.input-next-password')[0].value;
+			var appcode = mui('#appcode')[0].value;
+
+			if(userPhone == '' || userPhone.length != 11) {
+				mui.toast('您输入的手机号有误');
+				return;
+			};
+			if(userCod == '' || userCod.length != 6) {
+				mui.toast('您输入的手机验证码不正确');
+				return;
+			};
+			if(userPwd == '') {
+				mui.toast('您输入的密码格式不正确');
+				return;
+			};
+			if(userPwd != userPwdCopy) {
+				mui.toast('您两次输入的密码不一致');
+				return;
+			};
+
+			/**
+			 * 发送注册请求
+			 */
+			$.ajax({		
+				type:"POST",	
+				url:"http://gk.marketpay.cn/sds/sds/merchant.do?type=register",
+				crossDomain:true,
+				data: {
+						'account': userPhone,
+						'password': userPwd,
+						'userType': "2",
+						'appCode': appcode,
+						'code': userCod
+				},
+				success: function(data) {
+					data = JSON.parse(data);
+					if(data.statusCode == 200){
+						alert(data.message);
+					}else{
+						alert(data.message);
+					}
+				}			
+			});
+		});
+	</script>
+</html>

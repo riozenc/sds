@@ -1,6 +1,5 @@
 [
     {"name":"商户管理", "children":[
-   		{"id":"merchantAdd", "name":"添加商户", "target":"navtab", "url":"html/form/merchantAdd.jsp"},
         {"id":"merchantData", "name":"商户列表", "target":"navtab", "url":"html/datagrid/merchantData.jsp"}
     ]}
 ]

@@ -1,0 +1,37 @@
+@font-face {font-family: 'iconfont';
+    src:url('../fonts/iconfont.ttf') format('truetype');
+}
+.mui-bar-tab .mui-tab-item.mui-active {
+    color: #57cbff !important;
+}
+.iconfont{
+	font-family: 'iconfont' !important;
+}
+.mui-bar-nav{
+	box-shadow: none !important;
+	border-bottom: 1px solid #efefef !important;
+}
+.mui-bar-tab .mui-tab-item{
+	border-top: 1px solid #efefef !important;
+}
+.mui-bar{
+	background: #35B3ED !important;
+}
+.mui-bar .mui-title{
+	font-family: "微软雅黑";
+	color: white !important;
+	font-size: 1rem !important;
+}
+.mui-bar-nav a{
+	color: white !important;
+}
+.mui-action-back{
+	color: white !important;
+}
+.mui-table-view{
+	margin: 0px !important;
+}
+.mui-table-view-cell{
+	font-size: .8rem;
+	font-family: "微软雅黑";
+}
