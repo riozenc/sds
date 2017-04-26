@@ -1,0 +1,106 @@
+body{
+    background: url(../images/bannerg.png) top center no-repeat;
+    background-size:  cover;
+}
+img{
+    width: 100%;
+}
+.mui-content{
+    background: none;
+}
+.friname{
+    font-size: 0.8rem;
+    color: #916735;
+    padding: 0.4rem 0.8rem;
+    background: #f4ecc2;
+    width: 70%;
+    margin-left: 15%;
+    border-radius: 0.4rem;
+    border: 4px solid #ffd573;
+    margin-top: 70%;
+}
+.friname span	{
+    color: #ff4b4a;
+}
+.bg-img{
+    display: block;
+}
+input{
+    border: none !important;
+    font-size: 0.8rem !important;
+    color: #c5c5c5 !important;
+    border-radius: 0.5rem !important;
+}
+.input-phone{
+    width: 90% !important;
+    margin-left: 5%;
+    margin-top: 18rem;
+}
+.input-note-code{
+    width: 44% !important;
+    margin-top: 0.4rem;
+    margin-left: 5%;
+}
+.input-password{
+    width: 90% !important;
+    margin-top: 0.4rem;
+    margin-left: 5%;
+}
+
+.input-next-password{
+    width: 90% !important;
+    margin-top: 0.4rem;
+    margin-left: 5%;
+}
+
+.input-next-appcode{
+    width: 90% !important;
+    margin-top: 0.4rem;
+    margin-left: 5%;
+}
+
+.code-btn{
+    font-size: 0.8rem !important;
+    width: 44% !important;
+    margin-right: 5% !important;
+    text-align: center !important;
+    border-radius: 0.5rem !important;
+    float: right !important;
+    line-height: 40px;
+    height: 40px;
+    color: black !important;
+}
+
+.codbtn img{
+    width: 100% !important; 
+    height:auto;
+}
+
+.rigister-agreement{
+    font-size: 0.8rem;
+    text-align: center;
+    color: #916735;
+    margin-top: 0.4rem;
+    display: block;
+    width: 100%;
+}
+.rigister-agreement span{
+    color: #e94746;
+}
+.btn-tj{
+    margin-top: 0.4rem;
+}
+.logopt{
+    width: 30%;
+    margin-top: 0.4rem;
+    margin-left: 35%;
+}
+.textbg{
+    font-size: 0.8rem;
+    text-align: center;
+    display: block;
+    width: 100%;
+    margin-top: 0.4rem;
+    margin-bottom: 0.4rem;
+    color: #916735;
+}

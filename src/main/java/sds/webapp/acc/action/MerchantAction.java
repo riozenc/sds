@@ -8,6 +8,7 @@ import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -62,7 +63,13 @@ public class MerchantAction extends BaseAction {
 	 */
 	@ResponseBody
 	@RequestMapping(params = "type=getRegisterVerificationCode")
-	public String getRegisterVerificationCode(String account) {
+	public String getRegisterVerificationCode(String account, HttpServletRequest httpServletRequest,
+			HttpServletResponse httpServletResponse) {
+
+		httpServletResponse.addHeader("Access-Control-Allow-Origin", "*");
+		httpServletResponse.addHeader("Access-Control-Allow-Methods", "POST, GET");
+		httpServletResponse.addHeader("Access-Control-Allow-Headers",
+				"Content-Type, Accept, Authorization, X-Requested-With, Origin");
 
 		return JSONUtil.toJsonString(SmsSender.send(account));
 	}
@@ -117,7 +124,12 @@ public class MerchantAction extends BaseAction {
 	 */
 	@ResponseBody
 	@RequestMapping(params = "type=register", method = RequestMethod.POST)
-	public String registerMerchant(MerchantDomain merchantDomain, String code) throws Exception {
+	public String registerMerchant(MerchantDomain merchantDomain, String code, HttpServletResponse httpServletResponse)
+			throws Exception {
+		httpServletResponse.addHeader("Access-Control-Allow-Origin", "*");
+		httpServletResponse.addHeader("Access-Control-Allow-Methods", "POST, GET");
+		httpServletResponse.addHeader("Access-Control-Allow-Headers", "Content-Type, Accept, Authorization, X-Requested-With, Origin");
+		
 		String tjAccount = null;
 		String appCode = merchantDomain.getAppCode();// 邀请码
 
@@ -161,6 +173,7 @@ public class MerchantAction extends BaseAction {
 			merchantDomain.setStatus(0);// 审核中
 			int i = merchantService.register(merchantDomain);
 			if (i > 0) {
+
 				return JSONUtil.toJsonString(new JsonResult(JsonResult.SUCCESS, "注册成功."));
 			} else {
 				return JSONUtil.toJsonString(new JsonResult(JsonResult.ERROR, "注册失败."));
@@ -386,7 +399,7 @@ public class MerchantAction extends BaseAction {
 
 			return JSONUtil.toJsonString(new JsonResult(JsonResult.SUCCESS, "审核商户成功."));
 		} else {// 拒绝通过
-			merchantService.update(merchantDomain);//更新审核状态与失败原因
+			merchantService.update(merchantDomain);// 更新审核状态与失败原因
 			return JSONUtil.toJsonString(new JsonResult(JsonResult.SUCCESS, "商户审核已拒绝."));
 		}
 
