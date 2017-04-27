@@ -161,6 +161,14 @@ public class UserAction extends BaseAction {
 		return JSONUtil.toJsonString(new JsonGrid(userDomain, list));
 	}
 
+	@ResponseBody
+	@RequestMapping(params = "type=getAllUser")
+	public String getAllUser() {
+		UserDomain userDomain = new UserDomain();
+		List<UserDomain> list = userService.findByWhere(userDomain);
+		return JSONUtil.toJsonString(list);
+	}
+
 	/**
 	 * 更改密码
 	 * 
