@@ -6,8 +6,9 @@
 package sds.webapp.ump.domain;
 
 import com.riozenc.quicktool.annotation.TablePrimaryKey;
+import com.riozenc.quicktool.mybatis.MybatisEntity;
 
-public class UserRoleDomain {
+public class UserRoleDomain implements MybatisEntity{
 	@TablePrimaryKey
 	private Integer id;//
 	private Integer userId;//
