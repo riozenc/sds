@@ -54,5 +54,22 @@ public class RoleServiceImpl implements IRoleService {
 	public List<RoleDomain> getRoleByUser(UserDomain userDomain) {
 		return roleDAO.getRoleByUser(userDomain);
 	}
+	@Override
+	public List<RoleDomain> findByWhereAll(RoleDomain t) {
+		// TODO Auto-generated method stub
+		return roleDAO.findByWhereAll(t);
+	}
+
+	@Override
+	public int changeUser(List<RoleDomain> list) {
+		// TODO Auto-generated method stub
+		//roleDAO.deleteUserRole(list);
+		return roleDAO.changeUser(list);
+	}
+	@Override
+	public int deleteUserRole(List<RoleDomain> list) {
+		// TODO Auto-generated method stub
+		return roleDAO.deleteUserRole(list);
+	}
 
 }

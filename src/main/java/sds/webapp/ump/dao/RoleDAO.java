@@ -7,6 +7,8 @@ package sds.webapp.ump.dao;
 
 import java.util.List;
 
+import org.apache.ibatis.session.ExecutorType;
+
 import com.riozenc.quicktool.annotation.TransactionDAO;
 import com.riozenc.quicktool.mybatis.dao.AbstractTransactionDAOSupport;
 import com.riozenc.quicktool.mybatis.dao.BaseDAO;
@@ -51,4 +53,17 @@ public class RoleDAO extends AbstractTransactionDAOSupport implements BaseDAO<Ro
 		return getPersistanceManager().find(getNamespace() + ".getRoleByUser", userDomain);
 	}
 
+	public List<RoleDomain> findByWhereAll(RoleDomain t) {
+		// TODO Auto-generated method stub
+		return getPersistanceManager().find(getNamespace() + ".findByWhereAll", t);
+	}
+
+	public int changeUser(List<RoleDomain> list) {
+		// TODO Auto-generated method stub
+		return getPersistanceManager(ExecutorType.BATCH).insertList(getNamespace() + ".changeUser", list);
+	}
+
+	public int deleteUserRole(List<RoleDomain> list) {
+		return getPersistanceManager(ExecutorType.BATCH).deleteList(getNamespace() + ".deleteUserRole", list);
+	}
 }

@@ -13,4 +13,13 @@ import sds.webapp.ump.domain.RoleDomain;
 
 public interface IRoleService extends BaseService<RoleDomain>{
 	public List<RoleDomain> getRoleByUser(UserDomain userDomain);
+
+	public List<RoleDomain> findByWhereAll(RoleDomain roleDomain);
+	
+	public int changeUser(List<RoleDomain> list);
+
+	public int deleteUserRole(List<RoleDomain> list);
+
+
+
 }

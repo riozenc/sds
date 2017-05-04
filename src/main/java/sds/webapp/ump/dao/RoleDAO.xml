@@ -3,44 +3,80 @@
 <mapper namespace="sds.webapp.ump.dao.RoleDAO">
 	<select id="findByKey" parameterType="RoleDomain" resultType="RoleDomain"
 		useCache="true">
-		select ID,ROLE_NAME from fm_roles
+		SELECT
+		fm_user.id,
+		fm_users_roles.user_id
+		FROM
+		fm_user ,
+		fm_users_roles
 		<where>
-			and ID = #{id}
-
+			fm_user.id = fm_users_roles.id
 		</where>
 	</select>
 	<select id="findByWhere" parameterType="RoleDomain" resultType="RoleDomain"
 		useCache="true">
-		select ID,ROLE_NAME from fm_roles
+		SELECT
+		b.id,
+		b.role_name,
+		a.user_id,
+		a.role_id
+		FROM
+		fm_users_roles a,
+		fm_roles b
 		<where>
-			<if test="id !=null">
-				and ID = #{id}
-			</if>
+			b.id=a.role_id and
+			a.user_id = #{id}
 			<if test="roleName !=null">
 				and ROLE_NAME = #{roleName}
 			</if>
 		</where>
 	</select>
+
+	<select id="findByWhereAll" parameterType="RoleDomain"
+		resultType="RoleDomain" useCache="true">
+		SELECT
+		fm_roles.id,
+		fm_roles.role_name,
+		fm_users_roles.user_id,
+		fm_users_roles.role_id
+		FROM
+		fm_roles ,
+		fm_users_roles
+		WHERE
+		fm_users_roles.role_id = fm_roles.id
+	</select>
 	<insert id="insert" parameterType="RoleDomain" flushCache="true">
-		insert into fm_roles(ID,ROLE_NAME) values (#{id},#{roleName})
+		insert into fm_users_roles(ID,ROLE_NAME) values (#{id},#{roleName})
 	</insert>
+
+
 	<update id="update" parameterType="RoleDomain" flushCache="true">
-		update fm_roles
+		update fm_users_roles
 		<set>
-			<if test="roleName !=null">
-				ROLE_NAME = #{roleName},
+			<if test="roleId !=null">
+				ROLE_ID = #{roleId}
 			</if>
 		</set>
 		<where>
-			and ID = #{id}
-
+			user_id = #{id}
 		</where>
 	</update>
 	<delete id="delete" parameterType="RoleDomain" flushCache="true">
 		delete from fm_roles
 		<where>
 			and ID = #{id}
+		</where>
+	</delete>
 
+
+	<insert id="changeUser" parameterType="RoleDomain" flushCache="true">
+		insert into fm_users_roles(USER_ID,ROLE_ID) values (#{userId},#{roleId})
+	</insert>
+	<delete id="deleteUserRole" parameterType="RoleDomain"
+		flushCache="true">
+		delete from fm_users_roles 
+		<where>
+			and USER_ID = #{userId}
 		</where>
 	</delete>
 </mapper>
