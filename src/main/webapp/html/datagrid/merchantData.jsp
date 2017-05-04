@@ -94,7 +94,9 @@ $(function() {
 	            width:100,
 	            type:'date',
 	            pattern:'yyyy-MM-dd',
-	            render:function(value){return value?value.substr(0,20):value}
+	            render: function(value) {
+                    return value ? value.substr(0, 10) : value
+                }
 	        },
 	        {
 	            name: 'status',

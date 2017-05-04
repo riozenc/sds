@@ -9,16 +9,18 @@ $(function() {
 	    tableWidth:'99.5%',
 	    gridTitle : ' ',
 	    local: 'remote',
-	    showToolbar: false,
 	    toolbarItem: 'del',
+	    showToolbar: false,
 	    filterThead:false,
+	    columnMenu:false,
+	    fieldSortable:false,
 	    dataUrl:"order.do?type=getOrderByUser",
 	    columns: [
 	         {
 	             name: 'orderId',
 	             label: '订单号',
 	             align: 'center',
-	             width: 110,
+	             width: 50,
 	             render: function(value) {
 		            	return '<a href="javascript:;"   onclick="dialog_profit(\''+value+'\')">'+value+'</a>';
 		            }
@@ -27,19 +29,19 @@ $(function() {
 	        	name:'cmer',
 	        	label:'公司名称',
 	        	align:'center',
-	        	width:90
+	        	width:120
 	         },
 	        {
 	            name: 'account',
 	            label: '商户手机号',
 	            align: 'center',
-	            width:70
+	            width:35
 	        },
 	        {
 	            name: 'channelCode',
 	            label: '交易通道',
 	            align: 'center',
-	            width: 40,
+	            width: 25,
 	            render: function(value) {
 	            	if(value == 1){
 	            		return "微信";
@@ -47,7 +49,8 @@ $(function() {
 	            		return "支付宝";
 	            	}else if(value == 3){
 	            		return "银联";
-	            	}else{
+	            	}else if(value.indexOf("xx")){
+	            		return "柜台码";
 	            		return value;
 	            	}
 	            }
@@ -56,27 +59,31 @@ $(function() {
 	            name: 'amount',
 	            label: '交易金额',
 	            align: 'center',
-	            width: 50
+	            width: 20
 	        },
-
 	        {
 	            name: 'date',
 	            label: '交易时间',
 	            align: 'center',
-	            width:100
+	            width:30,
+	            type:'date',
+	            pattern:'yyyy-MM-dd',
+	            render: function(value) {
+                    return value ? value.substr(0, 10) : value
+                }
 	        },
 	        {
 	            name: 'status',
 	            label: '状态',
 	            align: 'center',
-	            width: 70,
+	            width: 25,
 	            render: function(value) {
 	            	if(value == 0){
-	            		return "未查询";
+	            		return "未支付";
 	            	}else if(value == 1){
-	            		return "成功";
+	            		return "支付成功";
 	            	}else if(value == 2){
-	            		return "失败";
+	            		return "支付失败";
 	            	}else if(value == 3){
 	            		return "分润完毕";
 	            	}else{
@@ -121,7 +128,6 @@ function dialog_profit(orderId){
 		dataType : "json",
 		error : function(request) {
 			console.info(request);
-			
 			alert("请先登录");
 			return false;
 		},
@@ -144,6 +150,9 @@ function dialog_profit(orderId){
 					
 				    	$.each(data.list, function(key, obj) {
 				    		console.info(obj.orderId);
+				    		if(obj.tjName==null){
+				    			obj.tjName="无";
+				    		}
 				    		html_text = html_text +'<tr><td>'
 				    			+obj.agentAccount+'</td><td>'+obj.agentName+'</td><td>'+obj.agentProfit+'</td><td>'+obj.tjName+'</td><td>'+obj.tjProfit+'</td></tr>';
 				    		

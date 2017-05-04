@@ -34,9 +34,11 @@ $(function() {
 	    tableWidth:'99%',
 	    gridTitle : ' ',
 	    local: 'remote',
-	    showToolbar: false,
 	    toolbarItem: 'del',
+	    showToolbar: false,
 	    filterThead:false,
+	    columnMenu:false,
+	    fieldSortable:false,
 	    dataUrl:'profitUser.do?type=subProfitUser',
 	    postData:{startDate:dateNow,endDate:dateNow},
 	    columns: [
@@ -44,44 +46,44 @@ $(function() {
   	            name: 'agentId',
   	            label: 'ID',
   	            align: 'center',
-  	            width:50
+  	            width:15
   	        },
 			{
 				name:'agentName',
 				label:'代理商',
 				align:'center',
-				width:100
+				width:150
 			},
 			{
 				name:'cmer',
 				label:'代理人',
 				align:'center',
-				width:100
+				width:30
 			},
 	        {
 	            name: 'account',
 	            label: '账号',
 	            align: 'center',
-	            width:100
+	            width:45
 	        },
 	        {
 	            name: 'totalAmount',
 	            label: '交易总额',
 	            align: 'center',
-	            width: 60
+	            width: 35
 	        },
 	        {
 	            name: 'totalProfit',
 	            label: '分润金额',
 	            align: 'center',
-	            width: 100
+	            width: 25
 	        },
 	        
 	        {
 	            name: 'account',
 	            label: '详情',
 	            align: 'center',
-	            width: 50,
+	            width: 15,
 	            render:function(value,data){
 	            	return '<a href="javascript:;"   onclick="dialog_profitSubInfo(\''+value+'\')">详情</a>';
 	            }
@@ -125,6 +127,8 @@ function dialog_profitSubInfo(account){
 			    	    local: 'local',
 			    	    showToolbar: false,
 			    	    filterThead:false,
+			    	    columnMenu:false,
+			    	    fieldSortable:false,
 			    	    data:result,
 			    	    columns: [
 			               
@@ -132,7 +136,7 @@ function dialog_profitSubInfo(account){
 			      	        	name:'fullName',
 			      	        	label:'公司',
 			      	        	align:'center',
-			      	        	width:100
+			      	        	width:150
 			    			},
 			    	        {
 			    	            name: 'account',
@@ -149,7 +153,7 @@ function dialog_profitSubInfo(account){
 			    	            render: function(value) {
 			                        return value ? value.substr(0, 10) : value
 			                    },
-			    	            width: 140
+			    	            width: 90
 			    	        },
 			    	        {
 			    	            name: 'totalAmount',
@@ -215,6 +219,8 @@ function dialog_profitSubInfos(agentid,date){
 			    	    local: 'local',
 			    	    showToolbar: false,
 			    	    filterThead:false,
+			    	    columnMenu:false,
+			    	    fieldSortable:false,
 			    	    data:result,			    	    
 			    	    columns: [
 			                {
@@ -227,7 +233,7 @@ function dialog_profitSubInfos(agentid,date){
 			      	        	name:'agentName',
 			      	        	label:'公司',
 			      	        	align:'center',
-			      	        	width:100
+			      	        	width:150
 			    			},
 			    	        {
 			    	            name: 'account',
@@ -252,7 +258,7 @@ function dialog_profitSubInfos(agentid,date){
 			    	            name: 'orderDate',
 			    	            label: '交易时间',
 			    	            align: 'center',
-			    	            width: 100
+			    	            width: 90
 			    	        }
 			    	    ],
 			    	    paging:{pageSize:10,selectPageSize:'20,30'},
