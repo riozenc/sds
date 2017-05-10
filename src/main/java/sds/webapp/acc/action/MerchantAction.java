@@ -132,8 +132,9 @@ public class MerchantAction extends BaseAction {
 			throws Exception {
 		httpServletResponse.addHeader("Access-Control-Allow-Origin", "*");
 		httpServletResponse.addHeader("Access-Control-Allow-Methods", "POST, GET");
-		httpServletResponse.addHeader("Access-Control-Allow-Headers", "Content-Type, Accept, Authorization, X-Requested-With, Origin");
-		
+		httpServletResponse.addHeader("Access-Control-Allow-Headers",
+				"Content-Type, Accept, Authorization, X-Requested-With, Origin");
+
 		String tjAccount = null;
 		String appCode = merchantDomain.getAppCode();// 邀请码
 
@@ -570,11 +571,10 @@ public class MerchantAction extends BaseAction {
 				+ name;
 		String encodeFileName = Base64.getEncoder()
 				.encodeToString(HashUtils.getHash("SHA-512", fileName.getBytes(), null, 10));
-		String path = Global.getConfig("project.path") + Global.getConfig("file.doc.path") + File.separator
-				+ encodeFileName;
+		String path = Global.getConfig("project.path") + Global.getConfig("file.doc.path");
 
 		try {
-			File file = FileUtil.uploadPictureByBase64(base64Data, path);
+			File file = FileUtil.uploadPictureByBase64(base64Data, path, encodeFileName);
 			String path1 = file.getPath().substring(Global.getConfig("project.path").length(), file.getPath().length());
 
 			return JSONUtil.toJsonString(new JsonResult(JsonResult.SUCCESS, path1));
