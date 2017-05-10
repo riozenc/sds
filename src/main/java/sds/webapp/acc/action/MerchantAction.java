@@ -29,6 +29,7 @@ import com.riozenc.quicktool.common.util.log.LogUtil.LOG_TYPE;
 import com.riozenc.quicktool.config.Global;
 
 import sds.common.exception.InvalidAppCodeException;
+import sds.common.jgpush.Jpush;
 import sds.common.json.JsonGrid;
 import sds.common.json.JsonResult;
 import sds.common.pool.MerchantPool;
@@ -178,7 +179,6 @@ public class MerchantAction extends BaseAction {
 			merchantDomain.setStatus(0);// 审核中
 			int i = merchantService.register(merchantDomain);
 			if (i > 0) {
-
 				return JSONUtil.toJsonString(new JsonResult(JsonResult.SUCCESS, "注册成功."));
 			} else {
 				return JSONUtil.toJsonString(new JsonResult(JsonResult.ERROR, "注册失败."));
@@ -401,11 +401,12 @@ public class MerchantAction extends BaseAction {
 			}
 
 			merchantService.update(merchantDomain);
-
+			Jpush.SendPush(merchantDomain.getAccount(), "恭喜您通过审核", "审核商户成功");
 			return JSONUtil.toJsonString(new JsonResult(JsonResult.SUCCESS, "审核商户成功."));
 		} else {// 拒绝通过
 			merchantService.update(merchantDomain);// 更新审核状态与失败原因
-			return JSONUtil.toJsonString(new JsonResult(JsonResult.SUCCESS, "商户审核已拒绝."));
+			Jpush.SendPush(merchantDomain.getAccount(),"失败原因"+merchantDomain.getOther(), "审核商户成功");
+			return JSONUtil.toJsonString(new JsonResult(JsonResult.SUCCESS, "审核商户成功."));
 		}
 
 	}
