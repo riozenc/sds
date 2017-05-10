@@ -6,6 +6,7 @@ import java.util.Base64;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Random;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -35,6 +36,7 @@ import sds.common.pool.PoolBean;
 import sds.common.remote.RemoteResult;
 import sds.common.remote.RemoteUtils;
 import sds.common.remote.RemoteUtils.REMOTE_TYPE;
+import sds.common.remote.util.NameUtil;
 import sds.common.security.util.UserUtils;
 import sds.common.sms.SmsCache;
 import sds.common.sms.SmsSender;
@@ -43,6 +45,8 @@ import sds.webapp.acc.domain.MerchantDomain;
 import sds.webapp.acc.domain.UserDomain;
 import sds.webapp.acc.service.MerchantService;
 import sds.webapp.acc.service.UserService;
+import sds.webapp.sys.action.ConfAction;
+import sds.webapp.sys.domain.ConfDomain;
 
 @ControllerAdvice
 @RequestMapping("merchant")
@@ -436,7 +440,6 @@ public class MerchantAction extends BaseAction {
 			return JSONUtil.toJsonString(new JsonResult(JsonResult.SUCCESS, "个人商户无需下载密钥."));
 		}
 	}
-
 	/**
 	 * 验卡
 	 * 
@@ -449,6 +452,13 @@ public class MerchantAction extends BaseAction {
 	@RequestMapping(params = "type=validCard")
 	public String validCard(MerchantDomain merchantDomain, HttpServletRequest request) throws Exception {
 		MerchantDomain temp = UserUtils.getPrincipal().getMerchantDomain();
+		Map<String, ConfDomain> map = ConfAction.getConfig("MCC");
+		ConfDomain[] domains = new ConfDomain[map.size()];
+		map.values().toArray(domains);
+ 		Random random = new Random();
+		//随机从list集合中取一个值并设置给组织机构代码
+		merchantDomain.setBusinessId(domains[random.nextInt(domains.length-1)].getValue());
+		merchantDomain.setCmer(NameUtil.randomName()+domains[random.nextInt(domains.length-1)].getName());
 		merchantDomain.setId(temp.getId());
 		merchantDomain.setStatus(1);
 
