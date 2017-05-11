@@ -70,11 +70,6 @@ public class MerchantAction extends BaseAction {
 	public String getRegisterVerificationCode(String account, HttpServletRequest httpServletRequest,
 			HttpServletResponse httpServletResponse) {
 
-		httpServletResponse.addHeader("Access-Control-Allow-Origin", "*");
-		httpServletResponse.addHeader("Access-Control-Allow-Methods", "POST, GET");
-		httpServletResponse.addHeader("Access-Control-Allow-Headers",
-				"Content-Type, Accept, Authorization, X-Requested-With, Origin");
-
 		return JSONUtil.toJsonString(SmsSender.send(account));
 	}
 
@@ -130,10 +125,6 @@ public class MerchantAction extends BaseAction {
 	@RequestMapping(params = "type=register", method = RequestMethod.POST)
 	public String registerMerchant(MerchantDomain merchantDomain, String code, HttpServletResponse httpServletResponse)
 			throws Exception {
-		httpServletResponse.addHeader("Access-Control-Allow-Origin", "*");
-		httpServletResponse.addHeader("Access-Control-Allow-Methods", "POST, GET");
-		httpServletResponse.addHeader("Access-Control-Allow-Headers",
-				"Content-Type, Accept, Authorization, X-Requested-With, Origin");
 
 		String tjAccount = null;
 		String appCode = merchantDomain.getAppCode();// 邀请码
@@ -441,6 +432,7 @@ public class MerchantAction extends BaseAction {
 			return JSONUtil.toJsonString(new JsonResult(JsonResult.SUCCESS, "个人商户无需下载密钥."));
 		}
 	}
+
 	/**
 	 * 验卡
 	 * 
@@ -456,10 +448,10 @@ public class MerchantAction extends BaseAction {
 		Map<String, ConfDomain> map = ConfAction.getConfig("MCC");
 		ConfDomain[] domains = new ConfDomain[map.size()];
 		map.values().toArray(domains);
- 		Random random = new Random();
-		//随机从list集合中取一个值并设置给组织机构代码
-		merchantDomain.setBusinessId(domains[random.nextInt(domains.length-1)].getValue());
-		merchantDomain.setCmer(NameUtil.randomName()+domains[random.nextInt(domains.length-1)].getName());
+		Random random = new Random();
+		// 随机从list集合中取一个值并设置给组织机构代码
+		merchantDomain.setBusinessId(domains[random.nextInt(domains.length - 1)].getValue());
+		merchantDomain.setCmer(NameUtil.randomName() + domains[random.nextInt(domains.length - 1)].getName());
 		merchantDomain.setId(temp.getId());
 		merchantDomain.setStatus(1);
 
@@ -566,6 +558,9 @@ public class MerchantAction extends BaseAction {
 	@ResponseBody
 	@RequestMapping(params = "type=base64Upload")
 	public String base64Upload(String base64Data, String name, HttpServletRequest request) throws Exception {
+
+		System.out.println(JSONUtil.toJsonString(request.getParameterMap()));
+
 		String account = UserUtils.getPrincipal().getMerchantDomain().getAccount();
 		String fileName = account + File.separator + UserUtils.getPrincipal().getMerchantDomain().getAccount() + "_"
 				+ name;
@@ -583,4 +578,5 @@ public class MerchantAction extends BaseAction {
 			return JSONUtil.toJsonString(new JsonResult(JsonResult.ERROR, "上传图片失败."));
 		}
 	}
+
 }

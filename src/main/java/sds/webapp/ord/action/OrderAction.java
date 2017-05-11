@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.riozenc.quicktool.common.util.date.DateUtil;
+import com.riozenc.quicktool.common.util.http.HttpUtils;
 import com.riozenc.quicktool.common.util.json.JSONUtil;
 import com.riozenc.quicktool.common.util.log.LogUtil;
 import com.riozenc.quicktool.common.util.log.LogUtil.LOG_TYPE;
@@ -362,6 +363,42 @@ public class OrderAction extends BaseAction {
 	@RequestMapping(params = "type=purchasingCardCallbackTest")
 	public void purchasingCardCallbackTest(HttpServletRequest httpServletRequest) {
 		System.out.println(JSONUtil.toJsonString(httpServletRequest.getParameterMap()));
+	}
+
+	@ResponseBody
+	@RequestMapping(params = "type=oauthCallBack")
+	public String oauthCallBack(String amount, String channelCode, String code, String state,
+			HttpServletRequest servletRequest) {
+
+		System.out.println(JSONUtil.toJsonString(servletRequest.getParameterMap()));
+
+		StringBuffer sb = new StringBuffer();
+		sb.append("https://api.weixin.qq.com/sns/oauth2/access_token?");
+		sb.append("appid=wx4d18f260af8feed9");
+		sb.append("&");
+		sb.append("secret=").append("5857ed0c475b96fa8b5a96fdba56bea0");
+		sb.append("&");
+		sb.append("code=").append(code);
+		sb.append("&");
+		sb.append("grant_type=authorization_code");
+
+		try {
+			String result = HttpUtils.postSSL(sb.toString(), "", "UTF-8", 30);
+
+			//{"access_token":"WgUjxz6Y13MjLmCi-Ml4V3vFrfPfo2CXHskgunFtqWgx7Ij7u0nJ6GyAVmSU7TW-CQ79lPRbuymzgHQF2MgCvkIYAMPIbYJr93DZlK2bVR0","expires_in":7200,"refresh_token":"2YXU1_8jDDxnExO2h5IOlPEQ8bpGt6HUyLmAbXrmcDi-A_Tlti7ur2h7dxeohhEaPAeSg6F880FoT_wtQSa2SxaSjO9ZD2hxKOKvSuaMyB0","openid":"oneCHw3u881Vlf9tSxeEJ1rSopZs","scope":"snsapi_base"}
+			
+			Map<String,String> map = JSONUtil.readValue(result, Map.class);
+			String openid = map.get("openid");
+			
+			System.out.println("result:" + result);
+
+			return result;
+
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return null;
 	}
 
 	// // 批量报备商户+柜台码支付接口（）
