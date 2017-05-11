@@ -467,6 +467,7 @@
 
 		<where>
 			b.account = #{1}
+			AND a.status =1
 		</where>
 	</select>
 
