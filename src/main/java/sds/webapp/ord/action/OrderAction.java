@@ -203,6 +203,9 @@ public class OrderAction extends BaseAction {
 
 			if ("000000".equals(orderDomain.getRespCode())) {
 				
+				Jpush.SendPush(orderDomain.getAccount(), "交易金额为"+orderDomain.getAmount(), "支付成功");
+				LogUtil.getLogger(LOG_TYPE.IO).info(orderDomain.getAccount()+"交易金额为:"+orderDomain.getAmount()+"{支付成功}");;
+				
 				orderDomain.setStatus(1);
 
 				Map<String, String> map = merchantService.getRAandVP(orderDomain.getAccount());
