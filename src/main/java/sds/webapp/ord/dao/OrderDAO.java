@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.apache.ibatis.session.ExecutorType;
 
+import com.riozenc.quicktool.annotation.PaginationSupport;
 import com.riozenc.quicktool.annotation.TransactionDAO;
 import com.riozenc.quicktool.mybatis.dao.AbstractTransactionDAOSupport;
 import com.riozenc.quicktool.mybatis.dao.BaseDAO;
@@ -60,6 +61,7 @@ public class OrderDAO extends AbstractTransactionDAOSupport implements BaseDAO<O
 		return getPersistanceManager().load(getNamespace() + ".getTotalAmountByOrder", orderDomain);
 	}
 
+	@PaginationSupport
 	public List<OrderDomain> getOrderByUser(OrderDomain orderDomain) {
 		return getPersistanceManager().find(getNamespace() + ".getOrderByUser", orderDomain);
 	}
