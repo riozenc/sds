@@ -21,6 +21,7 @@ import com.riozenc.quicktool.common.util.json.JSONUtil;
 import com.riozenc.quicktool.common.util.log.LogUtil;
 import com.riozenc.quicktool.common.util.log.LogUtil.LOG_TYPE;
 
+import sds.common.jgpush.Jpush;
 import sds.common.json.JsonGrid;
 import sds.common.json.JsonResult;
 import sds.common.remote.RemoteResult;
@@ -68,6 +69,7 @@ public class OrderAction extends BaseAction {
 		MerchantDomain vm = merchantService.getVirtualMerchant(merchantDomain);
 
 		RemoteResult remoteResult = RemoteUtils.pay(vm, amount, info, channelCode);
+		
 		if (RemoteUtils.resultProcess(remoteResult)) {
 			OrderDomain orderDomain = new OrderDomain();
 			orderDomain.setOrderId(remoteResult.getOrderId());
@@ -80,6 +82,8 @@ public class OrderAction extends BaseAction {
 			orderDomain.setRemark(info);
 			orderDomain.setStatus(0);// 0：未查询
 			orderService.insert(orderDomain);
+			//推送
+
 		} else {
 			return JSONUtil.toJsonString(new JsonResult(JsonResult.ERROR, remoteResult.getMsg()));
 		}
@@ -168,16 +172,11 @@ public class OrderAction extends BaseAction {
 	@ResponseBody
 	@RequestMapping(params = "type=orderConfirmCallback")
 	public void orderConfirmCallback(OrderDomain orderDomain, String WXOrderNo) {
-
 		LogUtil.getLogger(LOG_TYPE.OTHER).info(JSONUtil.toJsonString(orderDomain) + "   [" + WXOrderNo + "]");
-
 		String orderId = orderDomain.getOrderId();
-
 		if (orderId.length() > 100) {
 			// 一码付订单生成
-
 			Map<String, String> map = merchantService.getRAandVP(orderDomain.getAccount());
-
 			PrivateKey privateKey;
 			try {
 				privateKey = RSAUtils.loadPrivateKey(map.get("privatekey"));
@@ -203,6 +202,8 @@ public class OrderAction extends BaseAction {
 			orderDomain.setAmount(amount.divide(new BigDecimal(100), 2, RoundingMode.DOWN).doubleValue());
 
 			if ("000000".equals(orderDomain.getRespCode())) {
+				//推送
+				Jpush.SendPush(orderDomain.getAccount(), "交易金额为"+orderDomain.getAmount(), "支付成功");
 				orderDomain.setStatus(1);
 
 				Map<String, String> map = merchantService.getRAandVP(orderDomain.getAccount());
@@ -245,6 +246,7 @@ public class OrderAction extends BaseAction {
 						LogUtil.getLogger(LOG_TYPE.OTHER).info(orderDomain.getOrderId() + "（回调查询）交易成功,分润失败[" + WXOrderNo
 								+ "]" + DateUtil.formatDate(new Date()));
 					}
+					
 				} else {
 					orderDomain.setStatus(2);
 					orderDomain.setOrderNo(WXOrderNo);
