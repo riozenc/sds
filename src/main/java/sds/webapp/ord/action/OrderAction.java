@@ -202,8 +202,7 @@ public class OrderAction extends BaseAction {
 			orderDomain.setAmount(amount.divide(new BigDecimal(100), 2, RoundingMode.DOWN).doubleValue());
 
 			if ("000000".equals(orderDomain.getRespCode())) {
-				//推送
-				Jpush.SendPush(orderDomain.getAccount(), "交易金额为"+orderDomain.getAmount(), "支付成功");
+				
 				orderDomain.setStatus(1);
 
 				Map<String, String> map = merchantService.getRAandVP(orderDomain.getAccount());
@@ -233,6 +232,8 @@ public class OrderAction extends BaseAction {
 
 				RemoteResult remoteResult = RemoteUtils.orderConfirm(vm, orderDomain.getOrderId());
 				if (RemoteUtils.resultProcess(remoteResult)) {
+					//推送
+					Jpush.SendPush(orderDomain.getAccount(), "交易金额为"+orderDomain.getAmount(), "支付成功");
 					// 更新
 					orderDomain.setStatus(1);
 					orderDomain.setOrderNo(WXOrderNo);
