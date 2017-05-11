@@ -316,7 +316,7 @@ public class OrderAction extends BaseAction {
 	@ResponseBody
 	@RequestMapping(params = "type=getOrderByMerchant")
 	public String getOrderByMerchant(OrderDomain orderDomain) {
-		List<OrderDomain> list = orderService.getOrderByUser(orderDomain);
+		List<OrderDomain> list = orderService.findByWhere(orderDomain);
 		return JSONUtil.toJsonString(new JsonGrid(orderDomain, list));
 	}
 
