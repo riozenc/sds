@@ -69,7 +69,7 @@ public class OrderAction extends BaseAction {
 		MerchantDomain vm = merchantService.getVirtualMerchant(merchantDomain);
 
 		RemoteResult remoteResult = RemoteUtils.pay(vm, amount, info, channelCode);
-		
+
 		if (RemoteUtils.resultProcess(remoteResult)) {
 			OrderDomain orderDomain = new OrderDomain();
 			orderDomain.setOrderId(remoteResult.getOrderId());
@@ -82,7 +82,7 @@ public class OrderAction extends BaseAction {
 			orderDomain.setRemark(info);
 			orderDomain.setStatus(0);// 0：未查询
 			orderService.insert(orderDomain);
-			//推送
+			// 推送
 
 		} else {
 			return JSONUtil.toJsonString(new JsonResult(JsonResult.ERROR, remoteResult.getMsg()));
@@ -202,14 +202,15 @@ public class OrderAction extends BaseAction {
 			orderDomain.setAmount(amount.divide(new BigDecimal(100), 2, RoundingMode.DOWN).doubleValue());
 
 			if ("000000".equals(orderDomain.getRespCode())) {
-				
-				Jpush.SendPush(orderDomain.getAccount(), "交易金额为"+orderDomain.getAmount(), "支付成功");
-				LogUtil.getLogger(LOG_TYPE.IO).info(orderDomain.getAccount()+"交易金额为:"+orderDomain.getAmount()+"{支付成功}");;
-				
+
 				orderDomain.setStatus(1);
 
 				Map<String, String> map = merchantService.getRAandVP(orderDomain.getAccount());
 				orderDomain.setAccount(map.get("account"));
+
+				Jpush.SendPush(orderDomain.getAccount(), "交易金额为" + orderDomain.getAmount(), "支付成功");
+				LogUtil.getLogger(LOG_TYPE.IO)
+						.info(orderDomain.getAccount() + "交易金额为:" + orderDomain.getAmount() + "{支付成功}");
 
 				if (profitService.profit(orderDomain) > 0) {
 					LogUtil.getLogger(LOG_TYPE.OTHER).info(orderDomain.getOrderId() + "（回调查询）交易成功,分润成功[" + WXOrderNo
@@ -235,9 +236,11 @@ public class OrderAction extends BaseAction {
 
 				RemoteResult remoteResult = RemoteUtils.orderConfirm(vm, orderDomain.getOrderId());
 				if (RemoteUtils.resultProcess(remoteResult)) {
-					//推送
-					Jpush.SendPush(orderDomain.getAccount(), "交易金额为"+orderDomain.getAmount(), "支付成功");
-					LogUtil.getLogger(LOG_TYPE.IO).info(orderDomain.getAccount()+"交易金额为:"+orderDomain.getAmount()+"{支付成功}");;
+					// 推送
+					Jpush.SendPush(orderDomain.getAccount(), "交易金额为" + orderDomain.getAmount(), "支付成功");
+					LogUtil.getLogger(LOG_TYPE.IO)
+							.info(orderDomain.getAccount() + "交易金额为:" + orderDomain.getAmount() + "{支付成功}");
+					;
 					// 更新
 					orderDomain.setStatus(1);
 					orderDomain.setOrderNo(WXOrderNo);
@@ -251,7 +254,7 @@ public class OrderAction extends BaseAction {
 						LogUtil.getLogger(LOG_TYPE.OTHER).info(orderDomain.getOrderId() + "（回调查询）交易成功,分润失败[" + WXOrderNo
 								+ "]" + DateUtil.formatDate(new Date()));
 					}
-					
+
 				} else {
 					orderDomain.setStatus(2);
 					orderDomain.setOrderNo(WXOrderNo);
@@ -392,11 +395,11 @@ public class OrderAction extends BaseAction {
 		try {
 			String result = HttpUtils.postSSL(sb.toString(), "", "UTF-8", 30);
 
-			//{"access_token":"WgUjxz6Y13MjLmCi-Ml4V3vFrfPfo2CXHskgunFtqWgx7Ij7u0nJ6GyAVmSU7TW-CQ79lPRbuymzgHQF2MgCvkIYAMPIbYJr93DZlK2bVR0","expires_in":7200,"refresh_token":"2YXU1_8jDDxnExO2h5IOlPEQ8bpGt6HUyLmAbXrmcDi-A_Tlti7ur2h7dxeohhEaPAeSg6F880FoT_wtQSa2SxaSjO9ZD2hxKOKvSuaMyB0","openid":"oneCHw3u881Vlf9tSxeEJ1rSopZs","scope":"snsapi_base"}
-			
-			Map<String,String> map = JSONUtil.readValue(result, Map.class);
+			// {"access_token":"WgUjxz6Y13MjLmCi-Ml4V3vFrfPfo2CXHskgunFtqWgx7Ij7u0nJ6GyAVmSU7TW-CQ79lPRbuymzgHQF2MgCvkIYAMPIbYJr93DZlK2bVR0","expires_in":7200,"refresh_token":"2YXU1_8jDDxnExO2h5IOlPEQ8bpGt6HUyLmAbXrmcDi-A_Tlti7ur2h7dxeohhEaPAeSg6F880FoT_wtQSa2SxaSjO9ZD2hxKOKvSuaMyB0","openid":"oneCHw3u881Vlf9tSxeEJ1rSopZs","scope":"snsapi_base"}
+
+			Map<String, String> map = JSONUtil.readValue(result, Map.class);
 			String openid = map.get("openid");
-			
+
 			System.out.println("result:" + result);
 
 			return result;
