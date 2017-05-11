@@ -20,7 +20,7 @@ public class Jpush {
 	public static final String ALERT = "5345345223423";// 会推送出这个常量
 	public static final String MSG_CONTENT = "极光推送测试";
 	public static final String TITLE = "测试字段-极光推送";
-	public static final JPushClient jpushClient = new JPushClient(masterSecret, appKey, 3);
+	public static final JPushClient jpushClient = new JPushClient(masterSecret, appKey);
 
 //	 public static void main(String[] args){
 //	 SendPush("123","看看","瞅瞅");//第一个参数是别名，第二个参数是推送内容，第三个参数是消息头
