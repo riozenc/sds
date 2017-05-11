@@ -234,6 +234,7 @@ public class OrderAction extends BaseAction {
 				if (RemoteUtils.resultProcess(remoteResult)) {
 					//推送
 					Jpush.SendPush(orderDomain.getAccount(), "交易金额为"+orderDomain.getAmount(), "支付成功");
+					LogUtil.getLogger(LOG_TYPE.IO).info(orderDomain.getAccount()+"交易金额为:"+orderDomain.getAmount()+"{支付成功}");;
 					// 更新
 					orderDomain.setStatus(1);
 					orderDomain.setOrderNo(WXOrderNo);

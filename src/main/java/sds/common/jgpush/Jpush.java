@@ -1,7 +1,11 @@
 package sds.common.jgpush;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+
+
+import org.apache.logging.log4j.Logger;
+
+import com.riozenc.quicktool.common.util.log.LogUtil;
+import com.riozenc.quicktool.common.util.log.LogUtil.LOG_TYPE;
 
 import cn.jiguang.common.resp.APIConnectionException;
 import cn.jiguang.common.resp.APIRequestException;
@@ -14,7 +18,7 @@ import cn.jpush.api.push.model.notification.AndroidNotification;
 import cn.jpush.api.push.model.notification.Notification;
 
 public class Jpush {
-	protected static final Logger LOG = LoggerFactory.getLogger(Jpush.class);
+	protected static final Logger LOG = LogUtil.getLogger(LOG_TYPE.IO);
 	private static final String appKey = "810793943f1676930b73f7fb";
 	private static final String masterSecret = "b35846014c8eacbda6e3f340";
 	public static final String ALERT = "5345345223423";// 会推送出这个常量
