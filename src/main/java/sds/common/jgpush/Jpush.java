@@ -60,6 +60,22 @@ public class Jpush {
 			LOG.info("Msg ID: " + e.getMsgId());
 		}
 	}
+	//准备做一个审核的方法
+	public static void SendPushSH(String alias, String alert, String title) {
+        PushPayload payload = buildPushObject_all(alias,alert,title);  
+		try {
+			PushResult result = jpushClient.sendPush(payload);
+			LOG.info("Got result - " + result);
+		} catch (APIConnectionException e) {
+			LOG.error("Connection error. Should retry later. ", e);
+		} catch (APIRequestException e) {
+			LOG.error("Error response from JPush server. Should review and fix it. ", e);
+			LOG.info("HTTP Status: " + e.getStatus());
+			LOG.info("Error Code: " + e.getErrorCode());
+			LOG.info("Error Message: " + e.getErrorMessage());
+			LOG.info("Msg ID: " + e.getMsgId());
+		}
+	}
 	public static PushPayload buildPushObject_all_alias_Message(String alias,String message,  
             Map<String, String> extras)  {  
         return PushPayload.newBuilder().setPlatform(Platform.all())// 设置接受的平台
