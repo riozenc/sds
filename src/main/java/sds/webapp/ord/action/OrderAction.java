@@ -3,6 +3,7 @@ package sds.webapp.ord.action;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.security.PrivateKey;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -15,6 +16,7 @@ import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.mysql.fabric.xmlrpc.base.Data;
 import com.riozenc.quicktool.common.util.date.DateUtil;
 import com.riozenc.quicktool.common.util.http.HttpUtils;
 import com.riozenc.quicktool.common.util.json.JSONUtil;
@@ -208,7 +210,7 @@ public class OrderAction extends BaseAction {
 				Map<String, String> map = merchantService.getRAandVP(orderDomain.getAccount());
 				orderDomain.setAccount(map.get("account"));
 
-				Jpush.SendPush(orderDomain.getAccount(), "交易金额为" + orderDomain.getAmount(), "支付成功");
+				Jpush.SendPush(orderDomain.getAccount(),orderDomain.getRealName(),orderDomain.getCmer(),orderDomain.getOrderId(),orderDomain.getAmount()+"");
 				LogUtil.getLogger(LOG_TYPE.IO)
 						.info(orderDomain.getAccount() + "交易金额为:" + orderDomain.getAmount() + "{支付成功}");
 
@@ -237,7 +239,8 @@ public class OrderAction extends BaseAction {
 				RemoteResult remoteResult = RemoteUtils.orderConfirm(vm, orderDomain.getOrderId());
 				if (RemoteUtils.resultProcess(remoteResult)) {
 					// 推送
-					Jpush.SendPush(orderDomain.getAccount(), "交易金额为" + orderDomain.getAmount(), "支付成功");
+
+					Jpush.SendPush(orderDomain.getAccount(),orderDomain.getRealName(),orderDomain.getCmer(),orderDomain.getOrderId(),orderDomain.getAmount()+"");
 					LogUtil.getLogger(LOG_TYPE.IO)
 							.info(orderDomain.getAccount() + "交易金额为:" + orderDomain.getAmount() + "{支付成功}");
 					;

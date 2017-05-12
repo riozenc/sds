@@ -2,6 +2,11 @@ package sds.common.jgpush;
 
 
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
+
 import org.apache.logging.log4j.Logger;
 
 import com.riozenc.quicktool.common.util.log.LogUtil;
@@ -11,6 +16,8 @@ import cn.jiguang.common.resp.APIConnectionException;
 import cn.jiguang.common.resp.APIRequestException;
 import cn.jpush.api.JPushClient;
 import cn.jpush.api.push.PushResult;
+import cn.jpush.api.push.model.Message;
+import cn.jpush.api.push.model.Options;
 import cn.jpush.api.push.model.Platform;
 import cn.jpush.api.push.model.PushPayload;
 import cn.jpush.api.push.model.audience.Audience;
@@ -29,8 +36,17 @@ public class Jpush {
 //	 public static void main(String[] args){
 //	 SendPush("123","看看","瞅瞅");//第一个参数是别名，第二个参数是推送内容，第三个参数是消息头
 //	 }
-	public static void SendPush(String str1, String str2, String str3) {
-		PushPayload payload = buildPushObject_all(str1, str2, str3);
+	public static void SendPush(String account,String message,String cmer,String orderId,String amount) {
+		SimpleDateFormat sdf=new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+		Date date = new Date();
+		String time = sdf.format(date.getTime());
+        Map<String, String> extras = new HashMap<String, String>();  
+        // 添加附加信息  
+        extras.put("cmer", cmer);
+        extras.put("amount", amount);
+        extras.put("orderId", orderId);
+        extras.put("data", time.toString());
+        PushPayload payload = buildPushObject_all_alias_Message(account,message, extras);  
 		try {
 			PushResult result = jpushClient.sendPush(payload);
 			LOG.info("Got result - " + result);
@@ -44,12 +60,14 @@ public class Jpush {
 			LOG.info("Msg ID: " + e.getMsgId());
 		}
 	}
-
-	//
-	// public static PushPayload buildPushObject_all_all_alert(String str) {
-	// return PushPayload.alertAll(str);
-	// }
-	//
+	public static PushPayload buildPushObject_all_alias_Message(String alias,String message,  
+            Map<String, String> extras)  {  
+        return PushPayload.newBuilder().setPlatform(Platform.all())// 设置接受的平台
+        .setAudience(Audience.alias(alias))// 根据别名推送
+            .setMessage(Message.newBuilder().setMsgContent(message).addExtras(extras).build())  
+            //设置ios平台环境  True 表示推送生产环境，False 表示要推送开发环境   默认是开发    
+            .setOptions(Options.newBuilder().setApnsProduction(true).build()).build();  
+    }  
 	// 广播
 	public static PushPayload buildPushObject_all_alias_alert(String str) {
 
