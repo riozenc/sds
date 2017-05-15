@@ -60,7 +60,7 @@ public class Jpush {
 			LOG.info("Msg ID: " + e.getMsgId());
 		}
 	}
-	//准备做一个审核的方法
+	//商户审核的方法
 	public static void SendPushSH(String alias, String alert, String title) {
         PushPayload payload = buildPushObject_all(alias,alert,title);  
 		try {
@@ -76,6 +76,7 @@ public class Jpush {
 			LOG.info("Msg ID: " + e.getMsgId());
 		}
 	}
+	//自定义推送消息
 	public static PushPayload buildPushObject_all_alias_Message(String alias,String message,  
             Map<String, String> extras)  {  
         return PushPayload.newBuilder().setPlatform(Platform.all())// 设置接受的平台
