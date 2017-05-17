@@ -36,7 +36,7 @@ public class Jpush {
 //	 public static void main(String[] args){
 //	 SendPush("123","看看","瞅瞅");//第一个参数是别名，第二个参数是推送内容，第三个参数是消息头
 //	 }
-	public static void SendPush(String account,String message,String cmer,String orderId,String amount) {
+	public static void SendPush(String account,String message,String cmer,String orderId,String amount,String type) {
 		SimpleDateFormat sdf=new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 		Date date = new Date();
 		String time = sdf.format(date.getTime());
@@ -46,6 +46,7 @@ public class Jpush {
         extras.put("amount", amount);
         extras.put("orderId", orderId);
         extras.put("data", time.toString());
+        extras.put("type", type);
         PushPayload payload = buildPushObject_all_alias_Message(account,message, extras);  
 		try {
 			PushResult result = jpushClient.sendPush(payload);
@@ -61,8 +62,16 @@ public class Jpush {
 		}
 	}
 	//商户审核的方法
-	public static void SendPushSH(String alias, String alert, String title) {
-        PushPayload payload = buildPushObject_all(alias,alert,title);  
+	public static void SendPushSH(String account,String message,String status,String type) {
+		SimpleDateFormat sdf=new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+		Date date = new Date();
+		String time = sdf.format(date.getTime());
+        Map<String, String> extras = new HashMap<String, String>();  
+        // 添加附加信息  
+        extras.put("data", time.toString());
+        extras.put("status", status);
+        extras.put("type", type);
+        PushPayload payload = buildPushObject_all_alias_Message(account,message, extras);  
 		try {
 			PushResult result = jpushClient.sendPush(payload);
 			LOG.info("Got result - " + result);
