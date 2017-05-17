@@ -207,7 +207,8 @@ public class OrderAction extends BaseAction {
 				OrderDomain order = orderService.findByKey(orderDomain);
 				orderDomain.setDate(order.getDate());
 				orderDomain.setStatus(1);
-
+				// 推送
+				Jpush.SendPush(orderDomain.getAccount(),orderDomain.getRealName(),orderDomain.getCmer(),orderDomain.getOrderId(),orderDomain.getAmount()+"","0");
 				Map<String, String> map = merchantService.getRAandVP(orderDomain.getAccount());
 				orderDomain.setAccount(map.get("account"));
 				LogUtil.getLogger(LOG_TYPE.IO)
