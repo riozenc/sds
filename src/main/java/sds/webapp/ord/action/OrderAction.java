@@ -204,7 +204,8 @@ public class OrderAction extends BaseAction {
 			orderDomain.setAmount(amount.divide(new BigDecimal(100), 2, RoundingMode.DOWN).doubleValue());
 
 			if ("000000".equals(orderDomain.getRespCode())) {
-
+				OrderDomain order = orderService.findByKey(orderDomain);
+				orderDomain.setDate(order.getDate());
 				orderDomain.setStatus(1);
 
 				Map<String, String> map = merchantService.getRAandVP(orderDomain.getAccount());
