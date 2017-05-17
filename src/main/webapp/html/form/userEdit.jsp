@@ -88,18 +88,25 @@
             <div class="row-input">
                 <input type="text" value="" name="costWrate" id="costWrate"data-rule="required">
             </div>
-            <label class="row-label">支付宝成本费率</label>
-            <div class="row-input">
-                <input type="text" value="" name="costArate" id="costArate"data-rule="required">
-            </div>
-            
             <label class="row-label">商户微信费率</label>
             <div class="row-input">
                 <input type="text" value="" name="userWrate" id="userWrate"data-rule="required">
             </div>
+            <label class="row-label">支付宝成本费率</label>
+            <div class="row-input">
+                <input type="text" value="" name="costArate" id="costArate"data-rule="required">
+            </div>
             <label class="row-label">商户支付宝费率</label>
             <div class="row-input">
                 <input type="text" value="" name="userArate" id="userArate"data-rule="required">
+            </div>
+            <label class="row-label">快捷成本费率</label>
+            <div class="row-input">
+                <input type="text" value="" name="costKrate" id="costKrate"data-rule="required">
+            </div>
+            <label class="row-label">商户快捷费率</label>
+            <div class="row-input">
+                <input type="text" value="" name="userKrate" id="userKrate"data-rule="required">
             </div>
             
             <hr>

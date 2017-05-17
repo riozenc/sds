@@ -78,6 +78,10 @@ function save(){
             <div class="row-input ">
                 <input type="text" name="wxRate" id="wxRate" value="" data-rule="required" >
             </div>
+            <label class="row-label " >快捷费率</label>
+            <div class="row-input ">
+                <input type="text" name="unipayRate" id="unipayRate" value="" data-rule="required" >
+            </div>
             <label class="row-label " >推广码</label>
             <div class="row-input ">
                 <input type="text"  id="appCode" value=""  readonly="readonly">
