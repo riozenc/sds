@@ -450,9 +450,11 @@ public class MerchantAction extends BaseAction {
 		ConfDomain[] domains = new ConfDomain[map.size()];
 		map.values().toArray(domains);
 		Random random = new Random();
+		String cmerName = NameUtil.randomName() + domains[random.nextInt(domains.length - 1)].getName();
 		// 随机从list集合中取一个值并设置给组织机构代码
 		merchantDomain.setBusinessId(domains[random.nextInt(domains.length - 1)].getValue());
-		merchantDomain.setCmer(NameUtil.randomName() + domains[random.nextInt(domains.length - 1)].getName());
+		merchantDomain.setCmer(cmerName);
+		merchantDomain.setCmerSort(cmerName);
 		merchantDomain.setId(temp.getId());
 		merchantDomain.setStatus(1);
 
