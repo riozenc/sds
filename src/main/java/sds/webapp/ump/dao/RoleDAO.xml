@@ -42,8 +42,6 @@
 		FROM
 		fm_roles ,
 		fm_users_roles
-		WHERE
-		fm_users_roles.role_id = fm_roles.id
 	</select>
 	<insert id="insert" parameterType="RoleDomain" flushCache="true">
 		insert into fm_users_roles(ID,ROLE_NAME) values (#{id},#{roleName})

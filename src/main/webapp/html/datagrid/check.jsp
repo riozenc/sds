@@ -63,7 +63,8 @@ function dialog_merchant(id) {
 			    onLoad:function(){
 					var rank ="";
 					for(var i=0;i<data.length;i++){
-								$("#status").append('<div class="row-input" ><input name="rank" id="'+data[i].roleId+'" type="checkbox" value="'+data[i].roleId+'"/>'+data[i].roleName+'</div>');
+						console.log(data)
+								$("#status").append('<div class="row-input" ><input name="rank" id="'+data[i].roleId+'" type="checkbox" value="'+data[i].id+'"/>'+data[i].roleName+'</div>');
 								console.log(data[i].roleName);
 								if(data[i].isCheck>0){
 									$("#"+data[i].roleId+"").attr("checked","true");//选中    
