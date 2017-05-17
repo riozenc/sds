@@ -208,7 +208,7 @@ public class OrderAction extends BaseAction {
 				orderDomain.setDate(order.getDate());
 				orderDomain.setStatus(1);
 				// 推送
-				Jpush.SendPush(orderDomain.getAccount(),orderDomain.getRealName(),orderDomain.getCmer(),orderDomain.getOrderId(),orderDomain.getAmount()+"","0");
+				Jpush.SendPush(orderDomain.getAccount(),"订单支付成功","完成一笔交易",orderDomain.getOrderId(),orderDomain.getAmount()+"","0");
 				Map<String, String> map = merchantService.getRAandVP(orderDomain.getAccount());
 				orderDomain.setAccount(map.get("account"));
 				LogUtil.getLogger(LOG_TYPE.IO)
@@ -239,7 +239,7 @@ public class OrderAction extends BaseAction {
 				RemoteResult remoteResult = RemoteUtils.orderConfirm(vm, orderDomain.getOrderId());
 				if (RemoteUtils.resultProcess(remoteResult)) {
 					// 推送
-					Jpush.SendPush(orderDomain.getAccount(),orderDomain.getRealName(),orderDomain.getCmer(),orderDomain.getOrderId(),orderDomain.getAmount()+"","0");
+					Jpush.SendPush(orderDomain.getAccount(),"订单支付成功","完成一笔交易",orderDomain.getOrderId(),orderDomain.getAmount()+"","0");
 					LogUtil.getLogger(LOG_TYPE.IO)
 							.info(orderDomain.getAccount() + "交易金额为:" + orderDomain.getAmount() + "{支付成功}");
 					;
