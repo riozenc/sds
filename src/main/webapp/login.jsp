@@ -127,7 +127,7 @@ function choose_bg() {
         <form  id="login_form" >
             <input type="hidden" value="" id="j_randomKey" />
             <input type="hidden" name="jfinal_token" value="" />
-            <p class="text-center logo"><img src="images/logo.png" width="320" height="45"></p>
+            <p class="text-center logo"><img src="images/logo.png"></p>
             <div class="login_msg text-center"><font color="red"></font></div>
             <div class="form-group">
                 <div class="input-group">
