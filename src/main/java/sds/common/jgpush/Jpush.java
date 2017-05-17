@@ -1,7 +1,5 @@
 package sds.common.jgpush;
 
-
-
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
@@ -33,21 +31,26 @@ public class Jpush {
 	public static final String TITLE = "测试字段-极光推送";
 	public static final JPushClient jpushClient = new JPushClient(masterSecret, appKey);
 
-//	 public static void main(String[] args){
-//	 SendPush("123","看看","瞅瞅");//第一个参数是别名，第二个参数是推送内容，第三个参数是消息头
-//	 }
-	public static void SendPush(String account,String message,String cmer,String orderId,String amount,String type) {
-		SimpleDateFormat sdf=new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+	/**
+	 * 推送-交易成功
+	 * 
+	 * @param account
+	 * @param orderId
+	 * @param amount
+	 * @param type
+	 */
+	public static void pushPaySuccess(String account, String orderId, String amount, String type) {
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 		Date date = new Date();
 		String time = sdf.format(date.getTime());
-        Map<String, String> extras = new HashMap<String, String>();  
-        // 添加附加信息  
-        extras.put("cmer", cmer);
-        extras.put("amount", amount);
-        extras.put("orderId", orderId);
-        extras.put("data", time.toString());
-        extras.put("type", type);
-        PushPayload payload = buildPushObject_all_alias_Message(account,message, extras);  
+		Map<String, String> extras = new HashMap<String, String>();
+		// 添加附加信息
+		extras.put("cmer", "订单支付成功");
+		extras.put("amount", amount);
+		extras.put("orderId", orderId);
+		extras.put("data", time.toString());
+		extras.put("type", type);
+		PushPayload payload = buildPushObject_all_alias_Message(account, "完成一笔交易", extras);
 		try {
 			PushResult result = jpushClient.sendPush(payload);
 			LOG.info("Got result - " + result);
@@ -61,17 +64,18 @@ public class Jpush {
 			LOG.info("Msg ID: " + e.getMsgId());
 		}
 	}
-	//商户审核的方法
-	public static void SendPushSH(String account,String message,String status,String type) {
-		SimpleDateFormat sdf=new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+
+	// 商户审核的方法
+	public static void sendPush(String account, String message, String status, String type) {
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 		Date date = new Date();
 		String time = sdf.format(date.getTime());
-        Map<String, String> extras = new HashMap<String, String>();  
-        // 添加附加信息  
-        extras.put("data", time.toString());
-        extras.put("status", status);
-        extras.put("type", type);
-        PushPayload payload = buildPushObject_all_alias_Message(account,message, extras);  
+		Map<String, String> extras = new HashMap<String, String>();
+		// 添加附加信息
+		extras.put("data", time.toString());
+		extras.put("status", status);
+		extras.put("type", type);
+		PushPayload payload = buildPushObject_all_alias_Message(account, message, extras);
 		try {
 			PushResult result = jpushClient.sendPush(payload);
 			LOG.info("Got result - " + result);
@@ -85,15 +89,17 @@ public class Jpush {
 			LOG.info("Msg ID: " + e.getMsgId());
 		}
 	}
-	//自定义推送消息
-	public static PushPayload buildPushObject_all_alias_Message(String alias,String message,  
-            Map<String, String> extras)  {  
-        return PushPayload.newBuilder().setPlatform(Platform.all())// 设置接受的平台
-        .setAudience(Audience.alias(alias))// 根据别名推送
-            .setMessage(Message.newBuilder().setMsgContent(message).addExtras(extras).build())  
-            //设置ios平台环境  True 表示推送生产环境，False 表示要推送开发环境   默认是开发    
-            .setOptions(Options.newBuilder().setApnsProduction(true).build()).build();  
-    }  
+
+	// 自定义推送消息
+	public static PushPayload buildPushObject_all_alias_Message(String alias, String message,
+			Map<String, String> extras) {
+		return PushPayload.newBuilder().setPlatform(Platform.all())// 设置接受的平台
+				.setAudience(Audience.alias(alias))// 根据别名推送
+				.setMessage(Message.newBuilder().setMsgContent(message).addExtras(extras).build())
+				// 设置ios平台环境 True 表示推送生产环境，False 表示要推送开发环境 默认是开发
+				.setOptions(Options.newBuilder().setApnsProduction(true).build()).build();
+	}
+
 	// 广播
 	public static PushPayload buildPushObject_all_alias_alert(String str) {
 
@@ -124,6 +130,5 @@ public class Jpush {
 		return PushPayload.newBuilder().setPlatform(Platform.ios_winphone()).setAudience(Audience.alias(alias))
 				.setNotification(Notification.newBuilder().setAlert(alert).build()).build();
 	}
-	
-	
+
 }

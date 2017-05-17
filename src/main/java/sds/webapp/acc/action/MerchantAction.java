@@ -398,11 +398,11 @@ public class MerchantAction extends BaseAction {
 			}
 
 			merchantService.update(merchantDomain);
-			Jpush.SendPushSH(merchantDomain.getAccount(), merchantDomain.getOther(), merchantDomain.getStatus()+"","1");
+			Jpush.sendPush(merchantDomain.getAccount(), merchantDomain.getOther(), merchantDomain.getStatus()+"","1");
 			return JSONUtil.toJsonString(new JsonResult(JsonResult.SUCCESS, "审核商户成功."));
 		} else {// 拒绝通过
 			merchantService.update(merchantDomain);// 更新审核状态与失败原因
-			Jpush.SendPushSH(merchantDomain.getAccount(), merchantDomain.getOther(), merchantDomain.getStatus()+"","1");
+			Jpush.sendPush(merchantDomain.getAccount(), merchantDomain.getOther(), merchantDomain.getStatus()+"","1");
 			return JSONUtil.toJsonString(new JsonResult(JsonResult.SUCCESS, "审核商户成功."));
 		}
 
