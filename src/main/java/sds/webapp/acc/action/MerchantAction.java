@@ -309,9 +309,11 @@ public class MerchantAction extends BaseAction {
 		// 代理商成本费率
 		Double cost_wrate = map.get("cost_wrate") == null ? 0 : (Double) map.get("cost_wrate");
 		Double cost_arate = map.get("cost_arate") == null ? 0 : (Double) map.get("cost_arate");
+		Double cost_krate = map.get("cost_krate") == null ? 0 : (Double) map.get("cost_krate");
 		// 商户费率
 		Double wx_rate = map.get("wx_rate") == null ? 0 : (Double) map.get("wx_rate");
 		Double ali_rate = map.get("ali_rate") == null ? 0 : (Double) map.get("ali_rate");
+		Double unipay_rate = map.get("unipay_rate") == null ? 0 : (Double) map.get("unipay_rate");
 
 		// 费率判断
 		if (wx_rate < cost_wrate) {
@@ -319,6 +321,9 @@ public class MerchantAction extends BaseAction {
 		}
 		if (ali_rate < cost_arate) {
 			return JSONUtil.toJsonString(new JsonResult(JsonResult.ERROR, "支付宝费率错误"));
+		}
+		if (unipay_rate < cost_krate){
+			return JSONUtil.toJsonString(new JsonResult(JsonResult.ERROR, "快捷费率错误"));
 		}
 
 		MerchantDomain temp = merchantService.getVirtualMerchant(merchantDomain);
@@ -328,6 +333,7 @@ public class MerchantAction extends BaseAction {
 
 		temp.setWxRate(merchantDomain.getWxRate());
 		temp.setAliRate(merchantDomain.getAliRate());
+		//银联费率不用同步恒丰
 		RemoteResult remoteResult = RemoteUtils.process(temp, REMOTE_TYPE.CHANGE_RATE);
 		if (RemoteUtils.resultProcess(remoteResult)) {
 			int i = merchantService.updateRate(merchantDomain);
