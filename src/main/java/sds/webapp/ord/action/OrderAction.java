@@ -207,14 +207,14 @@ public class OrderAction extends BaseAction {
 				OrderDomain order = orderService.findByKey(orderDomain);
 				orderDomain.setDate(order.getDate());
 				orderDomain.setStatus(1);
+				Map<String, String> map = merchantService.getRAandVP(orderDomain.getAccount());
+				orderDomain.setAccount(map.get("account"));
+				
+				LogUtil.getLogger(LOG_TYPE.IO)
+						.info(orderDomain.getAccount() + "交易金额为:" + orderDomain.getAmount() + "{支付成功}");
 				// 推送
 				Jpush.pushPaySuccess(orderDomain.getAccount(), orderDomain.getOrderId(), orderDomain.getAmount() + "",
 						"0");
-				Map<String, String> map = merchantService.getRAandVP(orderDomain.getAccount());
-				orderDomain.setAccount(map.get("account"));
-				LogUtil.getLogger(LOG_TYPE.IO)
-						.info(orderDomain.getAccount() + "交易金额为:" + orderDomain.getAmount() + "{支付成功}");
-
 				if (profitService.profit(orderDomain) > 0) {
 					LogUtil.getLogger(LOG_TYPE.OTHER).info(orderDomain.getOrderId() + "（回调查询）交易成功,分润成功[" + WXOrderNo
 							+ "]" + DateUtil.formatDate(new Date()));
