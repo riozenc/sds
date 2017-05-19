@@ -7,6 +7,7 @@ import java.util.Map;
 
 import org.apache.logging.log4j.Logger;
 
+import com.riozenc.quicktool.common.util.date.DateUtil;
 import com.riozenc.quicktool.common.util.log.LogUtil;
 import com.riozenc.quicktool.common.util.log.LogUtil.LOG_TYPE;
 
@@ -40,9 +41,8 @@ public class Jpush {
 	 * @param type
 	 */
 	public static void pushPaySuccess(String account, String orderId, String amount, String type) {
-		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-		Date date = new Date();
-		String time = sdf.format(date.getTime());
+		
+		String time = DateUtil.formatDateTime(new Date());
 		Map<String, String> extras = new HashMap<String, String>();
 		// 添加附加信息
 		extras.put("cmer", "订单支付成功");
