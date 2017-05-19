@@ -26,7 +26,6 @@ $(function() {
 		form.submit();
 		form.remove();
 	});
-	
 	var myDate = new Date();
 	var dateNow = myDate.getFullYear()+"-"+ (myDate.getMonth()+1)+"-"+myDate.getDate();
 	$('#profitSub_datagrid').datagrid({
@@ -99,20 +98,7 @@ $(function() {
 function dialog_profitSubInfo(account){
 	var startDate=$("#startDate").val();
 	var endDate =$("#endDate").val();
-	
 	var ajaxdata={startDate:startDate,endDate:endDate,account:account};
-	$.ajax({
-		cache : false,
-		type : "POST",
-		url : "profitUser.do?type=findDateProfitUserByWhere",
-		data : ajaxdata,
-		dataType : "json",
-		error : function(request) {
-			console.info(request);
-			alert("请重新登录");
-			return false;
-		},
-		success : function(result) {
 			BJUI.dialog({
 			    id:'profitSubInfo',
 			    url:'html/form/profitSubInfo.jsp',
@@ -121,17 +107,18 @@ function dialog_profitSubInfo(account){
 			    height:500,
 			    onLoad:function(){
 			    	$('#profitSubInfo_datagrid').datagrid({
-			    	    height: '100%',
-			    	    tableWidth:'99%',
+			    	    height: '95%',
+			    	    tableWidth:'99.5%',
 			    	    gridTitle : ' ',
-			    	    local: 'local',
+			    	    local: 'remote',
+			    	    toolbarItem: 'del',
 			    	    showToolbar: false,
 			    	    filterThead:false,
 			    	    columnMenu:false,
 			    	    fieldSortable:false,
-			    	    data:result,
+			    	    postData:ajaxdata,
+			    	    dataUrl:"profitUser.do?type=findDateProfitUserByWhere",
 			    	    columns: [
-			               
 			    			{
 			      	        	name:'fullName',
 			      	        	label:'公司',
@@ -178,13 +165,10 @@ function dialog_profitSubInfo(account){
 			    	            }
 			    	        }
 			    	    ],
-			    	    paging:{pageSize:10,selectPageSize:'20,30'},
+			    	    paging:{pageSize:20,selectPageSize:'20,30,40'},
 			    	    showLinenumber: false,
 			    	    inlineEditMult: false
 			    	});
-			    }
-			});
-			return false;	
 		}
 	});
 }
@@ -261,7 +245,7 @@ function dialog_profitSubInfos(agentid,date){
 			    	            width: 90
 			    	        }
 			    	    ],
-			    	    paging:{pageSize:10,selectPageSize:'20,30'},
+			    	    paging:{pageSize:20,selectPageSize:'20,30,40'},
 			    	    showLinenumber: false,
 			    	    inlineEditMult: false
 			    	});
