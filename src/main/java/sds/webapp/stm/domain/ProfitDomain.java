@@ -4,6 +4,7 @@ import java.util.Date;
 
 import com.riozenc.quicktool.annotation.TablePrimaryKey;
 import com.riozenc.quicktool.mybatis.MybatisEntity;
+import com.riozenc.quicktool.mybatis.persistence.Page;
 
 /**
  * 利润
@@ -11,7 +12,7 @@ import com.riozenc.quicktool.mybatis.MybatisEntity;
  * @author riozenc
  *
  */
-public class ProfitDomain implements MybatisEntity {
+public class ProfitDomain extends Page<ProfitDomain> implements MybatisEntity {
 	@TablePrimaryKey
 	private Integer id;// `id` int(11) NOT NULL AUTO_INCREMENT,
 	private String orderId;// '订单号',

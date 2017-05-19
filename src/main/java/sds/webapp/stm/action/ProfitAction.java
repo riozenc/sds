@@ -82,7 +82,7 @@ public class ProfitAction extends BaseAction {
 	@RequestMapping(params = "type=getProfit")
 	public String getProfit(ProfitDomain profitDomain) {
 		List<ProfitDomain> list = profitService.findByWhere(profitDomain);
-		return JSONUtil.toJsonString(new JsonGrid(list.size(), 1, list));
+		return JSONUtil.toJsonString(new JsonGrid(profitDomain, list));
 	}
 
 	/**
@@ -96,7 +96,7 @@ public class ProfitAction extends BaseAction {
 	public String getProfitByUser(ProfitDomain profitDomain) {
 		profitDomain.setAgentId(UserUtils.getPrincipal().getUserDomain().getId());
 		List<ProfitDomain> list = profitService.getProfitByUser(profitDomain);
-		return JSONUtil.toJsonString(new JsonGrid(list.size(), 1, list));
+		return JSONUtil.toJsonString(new JsonGrid(profitDomain, list));
 	}
 
 	/**
@@ -109,7 +109,7 @@ public class ProfitAction extends BaseAction {
 	@RequestMapping(params = "type=getProfitMerchant")
 	public String getProfitMerchant(ProfitDomain profitDomain) {
 		List<ProfitDomain> list = profitService.findByWhere(profitDomain);
-		return JSONUtil.toJsonString(new JsonGrid(list.size(), 1, list));
+		return JSONUtil.toJsonString(new JsonGrid(profitDomain, list));
 	}
 
 	/**
