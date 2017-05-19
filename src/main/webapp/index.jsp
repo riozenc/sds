@@ -7,7 +7,7 @@
 <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
-<title>收钱吧</title>
+<title>收点钱</title>
 <meta name="Keywords" content="B-JUI,Bootstrap,jquery,ui,前端,框架,开源,OSC,开源框架,knaan"/>
 <meta name="Description" content="B-JUI(Best jQuery UI)前端管理框架。轻松开发，专注您的业务，从B-JUI开始！"/> 
 <!-- bootstrap - css -->
@@ -25,7 +25,7 @@
 <link href="B-JUI/themes/css/FA/css/font-awesome.min.css" rel="stylesheet">
 <!-- Favicons -->
 <link rel="apple-touch-icon-precomposed" href="assets/ico/apple-touch-icon-precomposed.png">
-<link rel="shortcut icon" href="./images/logo01.png"> <!-- 网站前增加小图标用   删除->assets/ico/favicon.png<- -->
+<link rel="shortcut icon" href="./images/toplogo.png"> <!-- 网站前增加小图标用   删除->assets/ico/favicon.png<- -->
 <!--[if lte IE 7]>
 <link href="B-JUI/themes/css/ie7.css" rel="stylesheet">
 <![endif]-->
