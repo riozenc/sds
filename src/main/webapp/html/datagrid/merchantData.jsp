@@ -11,6 +11,8 @@ $(function() {
 	    local:'remote',
 	    showToolbar: false,
 	    filterThead:false,
+	    columnMenu:false,
+	    fieldSortable:false,
 	    toolbarItem: 'del',
 	    dataUrl: 'merchant.do?type=findMerchantByWhere',
 	    columns: [

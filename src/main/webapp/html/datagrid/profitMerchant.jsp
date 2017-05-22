@@ -11,6 +11,8 @@ $(function() {
 	    local: 'remote',
 	    showToolbar: false,
 	    filterThead:false,
+	    columnMenu:false,
+	    fieldSortable:false,
 	    toolbarItem: 'del',
 	    dataUrl:"balance.do?type=getBalanceLogByUser",
 	    columns: [
@@ -50,12 +52,10 @@ $(function() {
 	        	label:'推荐人手机号',
 	        	align:'center',
 	            render: function(value) {
-	            	for(var i=0;i<value.length;i++){
-	            		if(value[i].tjAccount == null){
+	            		if(value == null){
 	            			return '无推荐人';
 	            		}
-	            		return value[i].tjAccount;
-	            	}
+	            		return value;
                 },
 	        	width:70
 	        },
@@ -64,13 +64,12 @@ $(function() {
 	        	label:'推荐人',
 	        	align:'center',
 	            render: function(value) {
-	            	for(var i=0;i<value.length;i++){
-	            		if(value[i].tjAccount == null){
-	            			return '无推荐人';
-	            		}
-	            		return value[i].tjAccount;
-	            	}
-                },
+	            	console.log(value);
+            		if(value == null){
+            			return '无推荐人';
+            		}
+            		return value;
+            },
 	        	width:50
 	        },
 	        {
