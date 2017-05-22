@@ -66,22 +66,4 @@ public class SmsCache {
 
 	}
 
-	public static void main(String[] args) {
-		SmsCache.put("1", "A");
-		SmsCache.put("2", "B");
-		SmsCache.put("3", "C");
-
-		System.out.println(SmsCache.get("2"));
-
-		for (Entry<String, SmsEntity> entry : map.entrySet()) {
-			if (entry.getKey().equals("1")) {
-				map.remove(entry.getKey());
-				continue;
-			}
-			if (System.currentTimeMillis() - entry.getValue().createTime > 60 * 60 * 1000) {
-				entry.getValue().code = null;
-			}
-		}
-
-	}
 }

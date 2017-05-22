@@ -68,14 +68,6 @@ public class BalanceMerchantAction extends BaseAction {
 					balanceMerchantDomain.getCountIn() == null ? "0" : balanceMerchantDomain.getCountIn().toString());
 		}
 
-		// getCountBalanceByIn sql 未写
-		// BalanceMerchantLogDomain balanceMerchantLogDomain = new
-		// BalanceMerchantLogDomain();
-		// balanceMerchantLogDomain.setAccount(UserUtils.getPrincipal().getMerchantDomain().getAccount());
-		// String count =
-		// balanceMerchantLogService.getCountBalanceByIn(balanceMerchantLogDomain);
-		// map.put("total", count == null ? "0" : count);
-
 		return JSONUtil.toJsonString(new JsonResult(JsonResult.SUCCESS, map));
 	}
 
