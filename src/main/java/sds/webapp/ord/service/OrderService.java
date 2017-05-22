@@ -9,7 +9,7 @@ import sds.webapp.ord.domain.OrderDomain;
 public interface OrderService extends BaseService<OrderDomain> {
 
 	/**
-	 * 指定status=3
+	 * 指定status=1
 	 * 
 	 * @param orderDomain
 	 * @return
@@ -17,7 +17,7 @@ public interface OrderService extends BaseService<OrderDomain> {
 	public List<OrderDomain> getAllCheckedOrder(OrderDomain orderDomain);
 
 	/**
-	 * 指定status=1
+	 * 指定status=0
 	 * 
 	 * @param orderDomain
 	 * @return

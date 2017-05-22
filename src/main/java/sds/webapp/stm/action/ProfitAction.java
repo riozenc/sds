@@ -96,6 +96,7 @@ public class ProfitAction extends BaseAction {
 	public String getProfitByUser(ProfitDomain profitDomain) {
 		profitDomain.setAgentId(UserUtils.getPrincipal().getUserDomain().getId());
 		List<ProfitDomain> list = profitService.getProfitByUser(profitDomain);
+		profitDomain.setTotalRow(list.size());
 		return JSONUtil.toJsonString(new JsonGrid(profitDomain, list));
 	}
 
@@ -247,12 +248,13 @@ public class ProfitAction extends BaseAction {
 	@RequestMapping(params = "type=recalculation")
 	public String recalculation(OrderDomain orderDomain) {
 		// 获取需要重算的订单，可重算一个（指定订单号）或批量（时间段内的订单）冲算
+		
 		orderDomain.setStatus(3);// 指定订单类型，只重算已经分润的订单。
 		List<OrderDomain> orderDomains = orderService.findByWhere(orderDomain);
 
 		Iterator<OrderDomain> iterator = orderDomains.iterator();
 		while (iterator.hasNext()) {
-			if (iterator.next().getChannelCode() == 3) {
+			if (iterator.next().getChannelCode() == null || iterator.next().getChannelCode() == 3) {
 				iterator.remove();
 			}
 		}
@@ -291,7 +293,8 @@ public class ProfitAction extends BaseAction {
 		// System.out.println(i);
 		return "完成分润" + i;
 	}
-	//下级分润表格导出
+
+	// 下级分润表格导出
 	@ResponseBody
 	@RequestMapping(params = "type=exportExcel")
 	public String exportExcel(ProfitUserDomain profitUserDomain, HttpServletResponse httpServletResponse)
@@ -328,7 +331,7 @@ public class ProfitAction extends BaseAction {
 
 		return null;
 	}
-	
+
 	/**
 	 * 根据商户查询分润//有问题
 	 * 

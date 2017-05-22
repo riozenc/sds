@@ -139,17 +139,28 @@
 		a.order_id,
 		a.balance,
 		a.create_date,
-		b.real_name as realName,
-		(SELECT
-		b.real_name FROM fm_merchant b WHERE b.id = d.TJ_ID) as tjName,
-		(SELECT
-		b.account FROM fm_merchant b WHERE b.id = d.TJ_ID) as tjAccount,
-		d.amount
+		d.amount,
+		b.real_name AS realName,
+		(
+		SELECT
+		b.real_name
 		FROM
-		fm_profit d,
+		fm_merchant b
+		WHERE
+		b.id = a.target_id
+		) AS tjName,
+		(
+		SELECT
+		b.account
+		FROM
+		fm_merchant b
+		WHERE
+		b.id = a.target_id
+		) AS tjAccount
+		FROM
+		fm_order d,
 		fm_balance_merchant_log a
-		LEFT JOIN fm_merchant b ON a.target_id =
-		b.id
+		LEFT JOIN fm_merchant b ON a.target_id = b.id
 		LEFT JOIN (
 		SELECT
 		id,
@@ -161,16 +172,15 @@
 		CONCAT(
 		CONCAT_WS(
 		',',
+
 		IF (
 		LOCATE(
-		CONCAT('|', parent_id, ':')
-		,@pathall
+		CONCAT('|', parent_id, ':') ,@pathall
 		) > 0,
 		SUBSTRING_INDEX(
 		SUBSTRING_INDEX(
 		@pathall,
-		CONCAT('|',
-		parent_id, ':') ,- 1
+		CONCAT('|', parent_id, ':') ,- 1
 		),
 		'|',
 		1
@@ -187,7 +197,8 @@
 		) c ON b.agent_id = c.id
 		<where>
 			c.paths LIKE '%,${id}%'
-			and a.status = 1
+			AND a.status = 1
+			AND a.order_id = d.order_id
 		</where>
 	</select>
 </mapper>
