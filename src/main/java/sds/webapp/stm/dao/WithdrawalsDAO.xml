@@ -134,40 +134,29 @@
 	<select id="getwithdrawals" parameterType="WithdrawalsDomain"
 		resultType="WithdrawalsDomain" useCache="true">
 		SELECT
-		fm_withdrawals.id,
-		fm_withdrawals.merchant_id,
-		fm_withdrawals.amount,
-		fm_withdrawals.date,
-		fm_withdrawals.operator,
-		fm_withdrawals.`status`,
-		fm_merchant.account,
-		fm_merchant.real_name,
-		fm_merchant.cmer,
-		fm_merchant.`status`,
-		fm_balance_merchant.balance
+		a.*, b.account,b.real_name,b.cmer,c.balance
 		FROM
-		fm_withdrawals ,
-		fm_merchant ,
-		fm_balance_merchant
+		fm_withdrawals a
+		LEFT JOIN fm_merchant b ON a.merchant_id = b.id
+		LEFT JOIN
+		fm_balance_merchant c ON c.target_id = b.id
 		<where>
-			fm_withdrawals.merchant_id = fm_merchant.id AND
-			fm_balance_merchant.target_id = fm_withdrawals.merchant_id
+
 			<if test="account !=null">
-				and fm_merchant.account = #{account}
+				and b.account = #{account}
 			</if>
 
 			<if test="startDate !=null">
-				and DATE_FORMAT(fm_withdrawals.DATE, '%Y-%m-%d') &gt;=
+				and DATE_FORMAT(a.DATE, '%Y-%m-%d') &gt;=
 				DATE_FORMAT(#{startDate}, '%Y-%m-%d')
 			</if>
 			<if test="endDate !=null">
-				and DATE_FORMAT(fm_withdrawals.DATE, '%Y-%m-%d') &lt;=
+				and DATE_FORMAT(a.DATE, '%Y-%m-%d') &lt;=
 				DATE_FORMAT(#{endDate}, '%Y-%m-%d')
 			</if>
 
-
 			<if test="status !=null">
-				and fm_withdrawals.STATUS = #{status}
+				and a.STATUS = #{status}
 			</if>
 		</where>
 	</select>
