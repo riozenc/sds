@@ -34,14 +34,11 @@
 
 	<select id="findByWhereAll" parameterType="RoleDomain"
 		resultType="RoleDomain" useCache="true">
-		SELECT
-		fm_roles.id,
-		fm_roles.role_name,
-		fm_users_roles.user_id,
-		fm_users_roles.role_id
-		FROM
-		fm_roles ,
-		fm_users_roles
+SELECT
+	fm_roles.id,
+	fm_roles.role_name
+FROM
+	fm_roles
 	</select>
 	<insert id="insert" parameterType="RoleDomain" flushCache="true">
 		insert into fm_users_roles(ID,ROLE_NAME) values (#{id},#{roleName})

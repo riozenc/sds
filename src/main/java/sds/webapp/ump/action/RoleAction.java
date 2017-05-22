@@ -78,7 +78,8 @@ public class RoleAction {
 		List<RoleDomain> listAll = roleService.findByWhereAll(roleDomain);
 		List<RoleDomain> list = roleService.findByWhere(roleDomain);
 		Set<RoleDomain> ts = new HashSet<RoleDomain>();
-		if (list.size() == 0) {
+		if (list.size() < 1) {
+			System.out.println(list.size());
 			ts.addAll(listAll);
 			return JSONUtil.toJsonString(ts);
 		}
