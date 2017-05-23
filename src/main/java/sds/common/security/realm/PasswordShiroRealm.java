@@ -1,5 +1,7 @@
 package sds.common.security.realm;
 
+import java.util.List;
+
 import javax.annotation.PostConstruct;
 
 import org.apache.commons.codec.DecoderException;
@@ -26,6 +28,8 @@ import sds.webapp.acc.domain.MerchantDomain;
 import sds.webapp.acc.domain.UserDomain;
 import sds.webapp.acc.service.MerchantService;
 import sds.webapp.acc.service.UserService;
+import sds.webapp.ump.domain.RoleDomain;
+import sds.webapp.ump.service.IRoleService;
 
 public class PasswordShiroRealm extends AuthorizingRealm {
 	@Autowired
@@ -37,6 +41,10 @@ public class PasswordShiroRealm extends AuthorizingRealm {
 	private MerchantService merchantService;
 	// userServiceImpl,RIOZENC_userServiceImpl
 
+	@Autowired
+	@Qualifier("roleServiceImpl")
+	private IRoleService roleService;
+
 	@Override
 	protected AuthorizationInfo doGetAuthorizationInfo(PrincipalCollection principalCollection) {
 		// TODO Auto-generated method stub
@@ -46,14 +54,20 @@ public class PasswordShiroRealm extends AuthorizingRealm {
 
 		if (!principal.isMobileLogin()) {
 			// web登录
-			if (principal.getId() == 1) {
-				SimpleAuthorizationInfo info = new SimpleAuthorizationInfo();
 
-				info.addRole("updateRate");// 修改费率
-				info.addRole("withdrawalsCheck");// 提现申请
+			RoleDomain roleDomain = new RoleDomain();
 
-				return info;
-			}
+			roleDomain.setUserId(principal.getId());
+
+			List<RoleDomain> list = roleService.findByWhere(roleDomain);
+
+			SimpleAuthorizationInfo info = new SimpleAuthorizationInfo();
+
+			info.addRole("updateRate");// 修改费率
+			info.addRole("withdrawalsCheck");// 提现申请
+
+			return info;
+
 		}
 
 		return null;

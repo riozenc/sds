@@ -25,7 +25,7 @@
 		fm_roles b
 		<where>
 			b.id=a.role_id and
-			a.user_id = #{id}
+			a.user_id = #{userId}
 			<if test="roleName !=null">
 				and ROLE_NAME = #{roleName}
 			</if>
@@ -34,11 +34,11 @@
 
 	<select id="findByWhereAll" parameterType="RoleDomain"
 		resultType="RoleDomain" useCache="true">
-SELECT
-	fm_roles.id,
-	fm_roles.role_name
-FROM
-	fm_roles
+		SELECT
+		fm_roles.id,
+		fm_roles.role_name
+		FROM
+		fm_roles
 	</select>
 	<insert id="insert" parameterType="RoleDomain" flushCache="true">
 		insert into fm_users_roles(ID,ROLE_NAME) values (#{id},#{roleName})
@@ -65,11 +65,12 @@ FROM
 
 
 	<insert id="changeUser" parameterType="RoleDomain" flushCache="true">
-		insert into fm_users_roles(USER_ID,ROLE_ID) values (#{userId},#{roleId})
+		insert into fm_users_roles(USER_ID,ROLE_ID) values
+		(#{userId},#{roleId})
 	</insert>
 	<delete id="deleteUserRole" parameterType="RoleDomain"
 		flushCache="true">
-		delete from fm_users_roles 
+		delete from fm_users_roles
 		<where>
 			and USER_ID = #{userId}
 		</where>

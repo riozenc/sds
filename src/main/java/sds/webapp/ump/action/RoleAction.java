@@ -84,19 +84,8 @@ public class RoleAction {
 			return JSONUtil.toJsonString(ts);
 		}
 		for (RoleDomain c : list) {
-			if (c.getRoleId() == 1) {
-				c.setIsCheck(1);
-				c.setRoleId(c.getRoleId());
-			} else if (c.getRoleId() == 2) {
-				c.setIsCheck(2);
-				c.setRoleId(c.getRoleId());
-			} else if (c.getRoleId() == 3) {
-				c.setIsCheck(3);
-				c.setRoleId(c.getRoleId());
-			} else if (c.getRoleId() == 4) {
-				c.setIsCheck(4);
-				c.setRoleId(c.getRoleId());
-			}
+			c.setIsCheck(c.getRoleId());
+			c.setRoleId(c.getRoleId());
 		}
 		listAll.removeAll(list);
 		listAll.addAll(list);
