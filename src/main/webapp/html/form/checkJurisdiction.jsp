@@ -5,7 +5,7 @@
 
 function chk(){ 
 	var rank=document.getElementsByName('rank'); //选择所有name="'rank'"的对象，返回数组 
-	var userId = <%=request.getParameter("id") %>; //拿到上一个页面传过来的 id值
+	var userId = <%=request.getParameter("userId") %>; //拿到上一个页面传过来的 id值
 	//取到对象数组后，循环检测它是不是被选中 
 	var s=''; 
 	for(var i=0; i<rank.length; i++){

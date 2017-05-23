@@ -43,13 +43,13 @@ $(function() {
 	});
 });
 function dialog_merchant(id) {
-	var id = id;
+	var userId = id;
 	console.log(id);
 	$.ajax({
 		cache : false,
 		type : "POST",
 		url : "role.do?type=findRoleByWhere",
-		data : {id:id},
+		data : {userId:userId},
 		dataType : "json",
 		error : function(request) {
 			alert("Connection error");
@@ -58,7 +58,7 @@ function dialog_merchant(id) {
 		success : function(data) {
 			BJUI.dialog({
 			    id:'check',
-			    url:'html/form/checkJurisdiction.jsp?id='+id,
+			    url:'html/form/checkJurisdiction.jsp?userId='+userId,
 			    title:'权限修改',
 			    width:500,
 			    height:400,

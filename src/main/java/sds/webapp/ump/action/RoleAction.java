@@ -7,11 +7,13 @@ package sds.webapp.ump.action;
 
 import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.context.support.ReloadableResourceBundleMessageSource;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -21,6 +23,7 @@ import com.riozenc.quicktool.common.util.json.JSONUtil;
 import sds.common.json.JsonResult;
 import sds.webapp.ump.domain.RoleDomain;
 import sds.webapp.ump.service.IRoleService;
+import sun.security.util.Length;
 
 @ControllerAdvice
 @RequestMapping("role")
@@ -74,6 +77,7 @@ public class RoleAction {
 	@ResponseBody
 	@RequestMapping(params = "type=findRoleByWhere")
 	public String findRoleByWhere(RoleDomain roleDomain) {
+
 		// System.out.println(JSONUtil.toJsonString(httpServletRequest.getParameterMap()));
 		List<RoleDomain> listAll = roleService.findByWhereAll(roleDomain);
 		List<RoleDomain> list = roleService.findByWhere(roleDomain);
@@ -92,26 +96,27 @@ public class RoleAction {
 		ts.addAll(listAll);
 		return JSONUtil.toJsonString(ts);
 	}
+
 	@ResponseBody
 	@RequestMapping(params = "type=changeUser")
-	public String changeUser(RoleDomain roleDomain, String rankValue,String userId) {
+	public String changeUser(RoleDomain roleDomain, String rankValue, String userId) {
 		roleDomain.setId(Integer.valueOf(userId));
 		String[] values = rankValue.split(",");
 		List<RoleDomain> list = new ArrayList<>();
 		for (String roleId : values) {
-			RoleDomain role = new RoleDomain();
-			role.setUserId(roleDomain.getId());
-			if(Integer.parseInt(roleId)!=0){
+			if (Integer.parseInt(roleId) != 0) {
+				RoleDomain role = new RoleDomain();
+				role.setUserId(roleDomain.getId());
 				role.setRoleId(Integer.parseInt(roleId));
+				list.add(role);
 			}
-			list.add(role);
 		}
-		roleService.deleteUserRole(list); //删除所有权限
-		int i = roleService.changeUser(list);//根据权限添加
-		if (i>0){
+		roleService.deleteUserRole(list); // 删除所有权限
+		int i = roleService.changeUser(list);// 根据权限添加
+		if (i > 0) {
 			return JSONUtil.toJsonString(new JsonResult(JsonResult.SUCCESS, "成功."));
 		} else {
 			return JSONUtil.toJsonString(new JsonResult(JsonResult.ERROR, "失败."));
 		}
-}
+	}
 }
