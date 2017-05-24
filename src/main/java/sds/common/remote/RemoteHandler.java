@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.security.PrivateKey;
 import java.security.PublicKey;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
 
 import com.fasterxml.jackson.core.JsonParseException;
@@ -114,11 +115,14 @@ public class RemoteHandler {
 		verifyCardDomain.setCert_type("00");
 		verifyCardDomain.setLocation(
 				Base64.encodeToString(merchantDomain.getLocation() == null ? "" : merchantDomain.getLocation()));// 开户城市
-		verifyCardDomain.setCert_correct("");
-		verifyCardDomain.setCert_opposite("");
-		verifyCardDomain.setCert_meet("");
-		verifyCardDomain.setCard_correct("");
-		verifyCardDomain.setCard_opposite("");
+		verifyCardDomain.setCert_correct(merchantDomain.getCertCorrect());
+		verifyCardDomain.setCert_opposite(merchantDomain.getCertOpposite());
+		verifyCardDomain.setCert_meet(merchantDomain.getCertMeet());
+		verifyCardDomain.setCard_correct(merchantDomain.getCardCorrect());
+		verifyCardDomain.setCard_opposite(merchantDomain.getCardOpposite());
+		verifyCardDomain.setBlImg(merchantDomain.getBusinessPic());
+		verifyCardDomain.setDoorImg(merchantDomain.getDoorPic());
+		verifyCardDomain.setCashierImg(merchantDomain.getCashierImg());
 
 		// 结算卡四要素
 		verifyCardDomain.setReal_name(Base64.encodeToString(merchantDomain.getRealName()));
@@ -126,8 +130,20 @@ public class RemoteHandler {
 		verifyCardDomain.setCert_no(merchantDomain.getCertNo());// 证件号
 		verifyCardDomain.setMobile(merchantDomain.getMobile());// 手机号
 
+		Map<String, String> map = new LinkedHashMap<String, String>();
+		map.put("cert_correct", merchantDomain.getCertCorrect());
+		map.put("cert_opposite", merchantDomain.getCertOpposite());
+		map.put("cert_meet", merchantDomain.getCertMeet());
+		map.put("card_correct", merchantDomain.getCardCorrect());
+		map.put("card_opposite", merchantDomain.getCardOpposite());
+		map.put("blImg", merchantDomain.getBusinessPic());
+		map.put("doorImg", merchantDomain.getDoorPic());
+		map.put("cashierImg", merchantDomain.getCashierImg());
+
+		String pic = JSONUtil.toJsonString(map);
+
 		return encryptionProcess("tb_verifyInfo", merchantDomain.getAccount(), merchantDomain.getPrivatekey(),
-				verifyCardDomain, false);
+				verifyCardDomain, pic, false);
 
 	}
 
@@ -269,6 +285,10 @@ public class RemoteHandler {
 		}
 	}
 
+	public static void asd() {
+
+	}
+
 	public static RemoteResult encryptionProcess(String orderCode, String account, String privateKey, Object params,
 			boolean isEncode) throws Exception {
 
@@ -299,6 +319,72 @@ public class RemoteHandler {
 		dataMap.put("signature", new String(sign));
 		dataMap.put("data", Base64Utils.encode(decryptByte1));
 
+		String request = JSONUtil.toJsonString(dataMap);
+		byte[] res = MyURLConnection.postBinResource(Common.URL, request, Common.CHARSET, 30);
+		String response = new String(res, "UTF-8");
+
+		// 可能返回异常，直接返回RemoteResult
+		try {
+			RemoteBlackResult remoteBlackResult = JSONUtil.readValue(response, RemoteBlackResult.class);
+
+			String msg = remoteBlackResult.getData();
+			String signature = remoteBlackResult.getSignature();
+			PrivateKey key = RSAUtils.loadPrivateKey(privateKey);
+
+			byte[] decryptByte = RSAUtils.decryptData(Base64Utils.decode(msg), key);
+			String decryptStr = new String(decryptByte);
+			String datas = Base64.decodeToString(decryptStr);
+			RemoteResult msgResult = JSONUtil.readValue(datas, RemoteResult.class);
+
+			String msgDatas = msgResult.getMsg();
+			// 验签
+			boolean vfy = LocalUtil.verifySignature(Base64.decode(Common.PUBLICKKEY.getBytes()), signature,
+					msgDatas.getBytes(Common.CHARSET));
+			if (vfy) {
+				RemoteResult remoteResult = JSONUtil.readValue(msgDatas, RemoteResult.class);
+
+				return remoteResult;
+			} else {
+				return new RemoteResult("999999", "异常数据.");
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+
+			return JSONUtil.readValue(response, RemoteResult.class);
+		}
+
+	}
+
+	public static RemoteResult encryptionProcess(String orderCode, String account, String privateKey, Object params,
+			String pic, boolean isEncode) throws Exception {
+
+		Map<String, String> jsonMap = new HashMap<>();
+		jsonMap.put("orderCode", orderCode);
+		jsonMap.put("account", account);// 手机号
+
+		String paramsJson = null;
+
+		if (isEncode) {
+			paramsJson = Base64.encodeToString(JSONUtil.toJsonString(params));// 与验卡不同
+		} else {
+			paramsJson = JSONUtil.toJsonString(params);
+		}
+
+		byte[] sign = LocalUtil.sign(Base64.decode(privateKey.getBytes()), paramsJson);
+		if (sign == null) {
+			throw new Exception("签名失败.");
+		}
+		jsonMap.put("msg", paramsJson);
+
+		String data = Base64.encodeToString(JSONUtil.toJsonString(jsonMap));
+		// 加密
+		PublicKey publicKey = RSAUtils.loadPublicKey(Common.PUBLICKKEY);
+		byte[] decryptByte1 = RSAUtils.encryptData(data.getBytes(), publicKey);
+
+		Map<String, String> dataMap = new HashMap<>();
+		dataMap.put("signature", new String(sign));
+		dataMap.put("data", Base64Utils.encode(decryptByte1));
+		dataMap.put("pic", pic);
 		String request = JSONUtil.toJsonString(dataMap);
 		byte[] res = MyURLConnection.postBinResource(Common.URL, request, Common.CHARSET, 30);
 		String response = new String(res, "UTF-8");

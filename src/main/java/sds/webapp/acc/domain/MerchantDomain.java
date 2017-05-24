@@ -50,6 +50,7 @@ public class MerchantDomain extends Page<MerchantDomain> implements MybatisEntit
 								// COMMENT '营业照',
 	private String doorPic;// `door_pic` varchar(255) DEFAULT NULL COMMENT
 							// '门头照',
+	private String cashierImg;// cashier_img 收银台照片 1.1 图片信息 选填
 
 	private Integer status;// `status` tinyint(4) DEFAULT '0' COMMENT
 							// '0审核中，1审核成功，2注销用户',
@@ -407,6 +408,14 @@ public class MerchantDomain extends Page<MerchantDomain> implements MybatisEntit
 
 	public void setUnipayRate(Double unipayRate) {
 		this.unipayRate = unipayRate;
+	}
+
+	public String getCashierImg() {
+		return cashierImg;
+	}
+
+	public void setCashierImg(String cashierImg) {
+		this.cashierImg = cashierImg;
 	}
 
 	@Override
