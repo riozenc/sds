@@ -12,6 +12,7 @@ import com.fasterxml.jackson.databind.JsonMappingException;
 import com.riozenc.quicktool.common.util.json.JSONUtil;
 
 import sds.common.remote.Regesitor;
+import sds.common.remote.RemoteHandler;
 import sds.common.remote.RemoteResult;
 import sds.common.remote.RemoteUtils;
 import sds.common.remote.RemoteUtils.REMOTE_TYPE;
@@ -53,7 +54,35 @@ public class TestHF {
 		System.out.println(JSONUtil.toJsonString(remoteResult));
 	}
 
+	// 验卡接口
+	public static void validCard() {
+		MerchantDomain merchantDomain = new MerchantDomain();
+		merchantDomain.setAccount("19900000001");
+
+		RemoteResult remoteResult;
+		try {
+			remoteResult = RemoteHandler.validCard(merchantDomain);
+			System.out.println(JSONUtil.toJsonString(remoteResult));
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+	}
+
+	// 修改费率
+
+	// 二维码支付接口
+
+	// 订单状态查询接口
+
+	// 交易回调通知返回信息
+
+	// 一码付接口
+
+	// 商户审核回调通知返回信息
+
 	public static void main(String[] args) {
-		register();
+		downloadKey();
 	}
 }

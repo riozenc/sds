@@ -1,6 +1,6 @@
 package sds.common.remote.domain;
 
-import com.riozenc.quicktool.config.Global;
+import sds.common.remote.util.Common;
 
 /**
  * 发送注册请求数据格式
@@ -12,8 +12,10 @@ public class RegisterDomain {
 
 	private String account;// 手机号码 必填
 	private String pass = "123123";// >=6位(英文/数字) 必填
-	private String code = Global.getConfig("CODE");// 按照下放信息填写 必填
-	private String cbzid = Global.getConfig("CBZID");// 按照下放信息填写 必填
+	// private String code = Global.getConfig("CODE");// 按照下放信息填写 必填
+	// private String cbzid = Global.getConfig("CBZID");// 按照下放信息填写 必填
+	private String code = Common.CODE;// 按照下放信息填写 必填
+	private String cbzid = Common.CBZID;// 按照下放信息填写 必填
 
 	public RegisterDomain(String account) {
 		this.account = account;
