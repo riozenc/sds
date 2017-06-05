@@ -463,6 +463,7 @@ public class MerchantAction extends BaseAction {
 		merchantDomain.setCmerSort(cmerName);
 		merchantDomain.setId(temp.getId());
 		merchantDomain.setStatus(1);
+		merchantDomain.setLocation("北京");
 
 		// 真实商户绑定虚拟账户
 		PoolBean bean = null;
