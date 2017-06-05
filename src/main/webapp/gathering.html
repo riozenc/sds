@@ -1,0 +1,109 @@
+<!doctype html>
+<html>
+
+<head>
+<meta charset="UTF-8">
+<title></title>
+<meta name="viewport"
+	content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+<link href="css/mui.min.css" rel="stylesheet" />
+<link href="css/gathering.css" rel="stylesheet" />
+</head>
+
+<body>
+	<header class="mui-bar mui-bar-nav">
+		<h1 class="mui-title" style="">收款</h1>
+	</header>
+	<div class="mui-content">
+		<div class="gathering-top-hint">—— 请输入金额 ——</div>
+		<div class="gathering-input-bg">
+			<input type="text" class="gathering-input" readonly="readonly">
+		</div>
+		<nav class="mui-bar-tab mui-bar">
+			<div class="gathering-gathering">确认收款</div>
+			<div class="gathering-keyword-list-bg">
+				<div>
+					<div class="gathering-keyboard-bg">
+						<button type="button" class="mui-btn"
+							onclick="keyWord(this.innerHTML)">1</button>
+					</div>
+					<div class="gathering-keyboard-bg">
+						<button type="button" class="mui-btn"
+							onclick="keyWord(this.innerHTML)">2</button>
+					</div>
+					<div class="gathering-keyboard-bg">
+						<button type="button" class="mui-btn"
+							onclick="keyWord(this.innerHTML)">3</button>
+					</div>
+				</div>
+				<div>
+					<div class="gathering-keyboard-bg">
+						<button type="button" class="mui-btn"
+							onclick="keyWord(this.innerHTML)">4</button>
+					</div>
+					<div class="gathering-keyboard-bg">
+						<button type="button" class="mui-btn"
+							onclick="keyWord(this.innerHTML)">5</button>
+					</div>
+					<div class="gathering-keyboard-bg">
+						<button type="button" class="mui-btn"
+							onclick="keyWord(this.innerHTML)">6</button>
+					</div>
+				</div>
+				<div>
+					<div class="gathering-keyboard-bg">
+						<button type="button" class="mui-btn"
+							onclick="keyWord(this.innerHTML)">7</button>
+					</div>
+					<div class="gathering-keyboard-bg">
+						<button type="button" class="mui-btn"
+							onclick="keyWord(this.innerHTML)">8</button>
+					</div>
+					<div class="gathering-keyboard-bg">
+						<button type="button" class="mui-btn"
+							onclick="keyWord(this.innerHTML)">9</button>
+					</div>
+				</div>
+				<div>
+					<div class="gathering-keyboard-bg">
+						<button type="button" class="mui-btn"
+							onclick="keyWordDot(this.innerHTML)">.</button>
+					</div>
+					<div class="gathering-keyboard-bg">
+						<button type="button" class="mui-btn"
+							onclick="keyWord(this.innerHTML)">0</button>
+					</div>
+					<div class="gathering-keyboard-bg">
+						<button type="button" class="mui-btn gathering-delete">&nbsp;</button>
+					</div>
+				</div>
+			</div>
+		</nav>
+		<div id="popover"
+			class="mui-popover mui-popover-bottom mui-popover-action gathering-popover-bg">
+			<img id="1" class="gathering-popover-img"
+				src="images/gathering-popover-3.jpg" /><img id="2"
+				class="gathering-popover-img" src="images/gathering-popover-2.jpg" />
+			<!--<img id="3" class="gathering-popover-img" src="img/gathering-popover-1.jpg"/><img id="4" class="gathering-popover-img" src="img/gathering-popover-4.jpg"/>-->
+		</div>
+		<!--<div id="popover" class="mui-popover mui-popover-bottom mui-popover-action gathering-popover-bg">
+			  <img id="1" class="gathering-popover-img" src="img/gathering-popover-3.jpg"/><img	id="2" class="gathering-popover-img" src="img/gathering-popover-2.jpg"/><img id="3" class="gathering-popover-img" src="img/gathering-popover-1.jpg"/><img id="4" class="gathering-popover-img" src="img/gathering-popover-4.jpg"/>
+			</div>-->
+	</div>
+	</div>
+	<script src="js/mui.min.js"></script>
+	<script src="js/app.js"></script>
+	<script src="js/castapp.js"></script>
+	<script src="js/gathering.js"></script>
+	<script type="text/javascript">
+		var n = self.location.href.indexOf("?")//查看是否包含参数
+		var code =null;
+		if(n>0){
+			var para=self.location.href.substr(n+1);
+			code = para.substr(5);
+		}
+		mui.init();
+	</script>
+</body>
+
+</html>

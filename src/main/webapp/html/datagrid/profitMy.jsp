@@ -168,7 +168,9 @@ function dialog_profitInfos(agentid,date){
 			    	    height: '100%',
 			    	    tableWidth:'99%',
 			    	    gridTitle : ' ',
-			    	    local: 'local',
+			    	    local: 'remote',
+			    	    dataUrl:"profit.do?type=getProfit",
+			    	    postData : profitInfos_datas,
 			    	    showToolbar: false,
 			    	    data:result,			    	    
 			    	    columns: [

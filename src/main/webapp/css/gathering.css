@@ -1,0 +1,100 @@
+body {
+	background: #28262B;
+}
+/*
+ * mui框架CSS修改
+ */
+.mui-bar-nav {
+	background: #28262B;
+	font-family: "微软雅黑";
+}
+.mui-title {
+	color: white !important;
+}
+.mui-content {
+	background: #28262B;
+}
+.mui-btn {
+	width: 100%;
+	border: none;
+	padding-top: .8rem !important;
+	padding-bottom: .8rem !important;
+	border-radius: .5rem;
+	font-size: 1.2rem;
+	font-weight: bold;
+}
+/*
+ * 自定义CSS样式 
+ */
+.gathering-top-hint {
+	padding-top: 2rem !important;
+	background: #28262B;
+	color: #F7F8F8;
+	text-align: center;
+}
+
+.gathering-keyboard-bg {
+	display: inline-block;
+	width: 33.3%;
+	text-align: center;
+	padding: .3rem;
+}
+
+.mui-bar-tab {
+	background: #EFF2F7 !important;
+	padding-bottom: .5rem;
+}
+
+.gathering-gathering {
+	padding-top: .9rem;
+	padding-bottom: .9rem;
+	text-align: center;
+	background: #35B3ED !important;
+	color: white;
+	width: 100%;
+	font-size: 1rem;
+}
+
+.mui-bar-nav {
+	box-shadow: none !important;
+	border-bottom: 1px solid #2C404E !important;
+}
+
+.gathering-input-bg {
+	width: 60%;
+	margin-left: 20%;
+	margin-top: 2.5rem;
+}
+
+.gathering-input {
+	font-family: "微软雅黑";
+	color: white;
+	font-size: 2.5rem;
+	display: inline-block;
+	text-align: center;
+	background: #28262B !important;
+	border: none !important;
+	margin-left: 3% !important;
+	height: 5rem !important;
+	margin-top: .5rem;
+	font-weight: lighter !important;
+	border-bottom: 1px solid #35B3ED !important;
+}
+
+.gathering-popover-bg {
+	background: white !important;
+	padding-top: .5rem;
+}
+
+.gathering-popover-img {
+	width: 25%;
+	margin-left: 17.5%;
+	padding: 1.2rem;
+}
+
+.gathering-delete {
+	background: url(../img/gathering-delete-bg.jpg);
+	background-size: 100% 100%;
+	height: 100%;
+	width: 100%;
+}
