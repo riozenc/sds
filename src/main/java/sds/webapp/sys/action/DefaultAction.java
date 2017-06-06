@@ -36,7 +36,7 @@ import sds.webapp.sys.domain.ConfDomain;
 @RequestMapping("default")
 public class DefaultAction {
 
-	private static long orderId = 100115016110849L;
+	private static long orderId = 100118078256067L;
 
 	@Autowired
 	@Qualifier("merchantServiceImpl")
@@ -159,11 +159,11 @@ public class DefaultAction {
 		ConfDomain[] domains = new ConfDomain[map.size()];
 		map.values().toArray(domains);
 		Random random = new Random();
-		String cmerName = NameUtil.randomName() + domains[random.nextInt(domains.length)].getName();
+		String randomName = domains[random.nextInt(domains.length)].getName();
+		String cmerName = NameUtil.randomName() + randomName.split("/")[random.nextInt(randomName.split("/").length)];;
 		merchantDomain.setBusinessId(domains[random.nextInt(domains.length)].getValue());
-		String name = cmerName.split("/")[random.nextInt(cmerName.split("/").length)];
-		merchantDomain.setCmer(name);
-		merchantDomain.setCmerSort(name);
+		merchantDomain.setCmer(cmerName);
+		merchantDomain.setCmerSort(cmerName);
 
 		return merchantDomain;
 	}
