@@ -35,8 +35,7 @@ import sds.webapp.sys.domain.ConfDomain;
 @ControllerAdvice
 @RequestMapping("default")
 public class DefaultAction {
-
-	private static long orderId = 100118078256067L;
+	private static long orderId = 100118078259274L;
 
 	@Autowired
 	@Qualifier("merchantServiceImpl")
