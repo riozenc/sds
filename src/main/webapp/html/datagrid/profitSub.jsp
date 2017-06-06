@@ -216,7 +216,7 @@ function dialog_profitSubInfos(agentid,date){
 			      	            width:50
 			      	        },
 			      			{
-			      	        	name:'agentName',
+			      	        	name:'merchantName',
 			      	        	label:'公司',
 			      	        	align:'center',
 			      	        	width:150
