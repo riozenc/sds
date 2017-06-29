@@ -56,7 +56,7 @@ public class BalanceMerchantAction extends BaseAction {
 		Map<String, String> map = new HashMap<String, String>();
 
 		BalanceMerchantDomain balanceMerchantDomain = new BalanceMerchantDomain();
-		balanceMerchantDomain.setId(UserUtils.getPrincipal().getMerchantDomain().getId());
+		balanceMerchantDomain.setTargetId(UserUtils.getPrincipal().getMerchantDomain().getId());
 		balanceMerchantDomain.setAccount(UserUtils.getPrincipal().getMerchantDomain().getAccount());
 		balanceMerchantDomain = balanceMerchantService.findByKey(balanceMerchantDomain);
 		if (balanceMerchantDomain == null) {
